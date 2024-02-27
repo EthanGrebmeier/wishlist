@@ -1,10 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { addProduct } from "~/app/wishlist/[wishlistId]/add-product/actions";
+import { addProduct } from "~/app/wishlist/[wishlistId]/actions";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+
 import {
   Form,
   FormControl,
@@ -20,9 +31,10 @@ import { productInputSchema } from "~/schema/wishlist/product";
 
 type AddProductProps = {
   wishlistId: string;
+  onSuccess?: () => void;
 };
 
-const AddProduct = ({ wishlistId }: AddProductProps) => {
+const AddProductForm = ({ wishlistId, onSuccess }: AddProductProps) => {
   const [response, formAction] = useFormState(addProduct, null);
   const form = useForm<z.infer<typeof productInputSchema>>({
     resolver: zodResolver(productInputSchema),
@@ -38,6 +50,12 @@ const AddProduct = ({ wishlistId }: AddProductProps) => {
     },
     wishlistId,
   });
+
+  useEffect(() => {
+    if (response?.message === "success" && onSuccess) {
+      onSuccess();
+    }
+  }, [response, onSuccess]);
 
   return (
     <Form {...form}>
@@ -108,14 +126,35 @@ const AddProduct = ({ wishlistId }: AddProductProps) => {
             </FormItem>
           )}
         />
-        <div className="flex justify-between">
-          <Link href={`/wishlist/${wishlistId}`} variant="button">
-            Back
-          </Link>
-          <SubmitButton />
-        </div>
+        <SubmitButton />
       </form>
     </Form>
+  );
+};
+
+type AddProduct = {
+  wishlistId: string;
+};
+
+export const AddProduct = ({ wishlistId }: AddProduct) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" icon={<PlusIcon width="20" height="20" />}>
+          Add Product
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <h1 className="text-4xl font-medium">Add Product </h1>
+          <AddProductForm
+            onSuccess={() => setIsOpen(false)}
+            wishlistId={wishlistId}
+          />
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWishlist } from "~/app/wishlist/create/actions";
+
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -17,8 +17,15 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PlusIcon } from "lucide-react";
 import { SubmitButton } from "~/components/ui/submit-button";
+import { createWishlist } from "~/app/wishlist/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "~/components/ui/dialog";
 
 export const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -30,7 +37,11 @@ export const createWishlistInputSchema = z.object({
     }),
 });
 
-const CreateWishlistForm = () => {
+type CreateWishlistFormProps = {
+  onSuccess?: () => void;
+};
+
+const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
   const [response, formAction] = useFormState(createWishlist, null);
   const form = useForm<z.infer<typeof createWishlistInputSchema>>({
     resolver: zodResolver(createWishlistInputSchema),
@@ -40,6 +51,12 @@ const CreateWishlistForm = () => {
   const actionWithValidity = formAction.bind(null, {
     ...fields,
   });
+
+  useEffect(() => {
+    if (response?.message === "success" && onSuccess) {
+      onSuccess();
+    }
+  }, [response, onSuccess]);
 
   return (
     <>
@@ -61,19 +78,31 @@ const CreateWishlistForm = () => {
               </FormItem>
             )}
           />
-
-          <div className="flex justify-between">
-            <Button asChild variant="outline" className="space-x-2">
-              <Link href="/wishlist">
-                <ArrowLeft width={20} height={20} /> <span> Back </span>
-              </Link>
-            </Button>
-            <SubmitButton />
-          </div>
+          <SubmitButton />
         </form>
       </Form>
     </>
   );
 };
 
-export default CreateWishlistForm;
+const CreateWishlist = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" icon={<PlusIcon width="20" height="20" />}>
+          Create Wishlist
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <h1 className="text-2xl font-medium">Create Wishlist </h1>
+          <CreateWishlistForm />
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default CreateWishlist;

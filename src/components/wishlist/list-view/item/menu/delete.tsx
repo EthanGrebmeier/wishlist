@@ -11,6 +11,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTrigger,
 } from "~/components/ui/dialog";
@@ -36,7 +37,7 @@ const Delete = () => {
             Are you sure you would like to delete{" "}
             <span className="font-bold"> {wishlist.name}</span>?
           </DialogHeader>
-          <p> This action cannot be undone</p>
+          <DialogDescription> This action cannot be undone</DialogDescription>
           <div className="flex justify-between">
             <DialogClose asChild>
               <Button>Cancel</Button>

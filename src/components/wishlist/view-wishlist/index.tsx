@@ -1,8 +1,6 @@
-import { PlusIcon } from "lucide-react";
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
 import ProductList from "./product-list";
+import { AddProduct } from "./add-product";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -15,15 +13,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
     <div className="max-h-screen overflow-y-auto  py-6">
       <div className="mb-8 flex justify-between gap-4 border-b-2 border-black px-6 pb-4">
         <h1 className="text-4xl font-medium">{wishlist.name} </h1>
-        <Button asChild variant="outline">
-          <Link
-            href={`/wishlist/${wishlistId}/add-product`}
-            className="gap-x-4"
-          >
-            <PlusIcon width="20" height="20" />
-            <span> Add Product </span>
-          </Link>
-        </Button>
+        <AddProduct wishlistId={wishlistId} />
       </div>
       <section className="px-6">
         <ProductList products={wishlist.products} />
