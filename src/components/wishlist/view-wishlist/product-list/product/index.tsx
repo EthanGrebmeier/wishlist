@@ -1,10 +1,10 @@
-import { Product } from "~/types/wishlist";
+import type { WishlistProduct } from "~/types/wishlist";
 import ProductMenu from "./menu";
 import MenuProvider from "./menu/menuProvider";
 import ProductImage from "./image";
 
 type ProductProps = {
-  product: Product;
+  product: WishlistProduct;
 };
 
 const Product = ({ product }: ProductProps) => {

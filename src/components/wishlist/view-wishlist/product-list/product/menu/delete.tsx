@@ -15,13 +15,11 @@ const Delete = () => {
   });
 
   return (
-    <DropdownMenuItem>
-      <form action={actionWithProductId}>
-        <Button variant="ghost" className="text-red-500">
-          Delete
-        </Button>
-      </form>
-    </DropdownMenuItem>
+    <form action={actionWithProductId}>
+      <DropdownMenuItem asChild className="text-red-500">
+        <button className="w-full bg-none outline-none">Delete</button>
+      </DropdownMenuItem>
+    </form>
   );
 };
 

@@ -10,6 +10,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import { type AdapterAccount } from "next-auth/adapters";
+import { wishlistShares } from "./wishlist";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -33,6 +34,7 @@ export const users = createTable("user", {
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
+  users: many(wishlistShares),
 }));
 
 export const accounts = createTable(

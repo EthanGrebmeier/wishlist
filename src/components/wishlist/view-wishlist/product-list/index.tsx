@@ -1,8 +1,8 @@
-import type { Product as ProductType } from "~/types/wishlist";
+import type { WishlistProduct } from "~/types/wishlist";
 import Product from "./product";
 
 type ProductListProps = {
-  products: ProductType[];
+  products: WishlistProduct[];
 };
 
 const ProductList = ({ products }: ProductListProps) => {

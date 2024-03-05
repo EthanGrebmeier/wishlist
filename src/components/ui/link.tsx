@@ -1,7 +1,7 @@
 "use client";
 
 import { default as NextLink } from "next/link";
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
 
@@ -13,20 +13,14 @@ const Link = ({ variant = "default", className, ...rest }: LinkProps) => {
   const pathname = usePathname();
   const isSelected = pathname === rest.href;
 
-  if (variant === "button") {
-    return (
-      <Button className={className} asChild variant="outline">
-        <NextLink {...rest} />
-      </Button>
-    );
-  }
-
   return (
     <NextLink
       className={cn(
         "text-xl font-medium",
+        variant === "button"
+          ? buttonVariants({ variant: "outline", size: "default", className })
+          : className,
         isSelected && "font-bold",
-        className,
       )}
       {...rest}
     />

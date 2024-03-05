@@ -10,10 +10,14 @@ const Navigation = async () => {
   if (!session) {
     return (
       <nav>
-        <Button asChild variant="outline">
-          <Link href="/login">Log In</Link>
-          <Link href="/signup">Sign Up</Link>
-        </Button>
+        <div className="flex  gap-2">
+          <Link variant="button" href="/api/auth/signin">
+            Log In
+          </Link>
+          <Link variant="button" href="/signup">
+            Sign Up
+          </Link>
+        </div>
       </nav>
     );
   }
@@ -22,8 +26,9 @@ const Navigation = async () => {
 
   return (
     <nav>
-      <div>
+      <div className="flex flex-col gap-2">
         <Link href="/wishlist">My Wishlists</Link>
+        <Link href="/wishlist/shared">Shared Wishlists</Link>
       </div>
     </nav>
   );

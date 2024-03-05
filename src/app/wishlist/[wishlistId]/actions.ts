@@ -1,15 +1,19 @@
 "use server";
 
 import { randomUUID } from "crypto";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { productInputSchema } from "~/schema/wishlist/product";
+import { shareWishlistInputSchema } from "~/schema/wishlist/wishlist";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import { products } from "~/server/db/schema/wishlist";
+import {
+  products,
+  wishlistShares,
+  wishlists,
+} from "~/server/db/schema/wishlist";
 
 export const deleteProduct = async (
   prevState: { message: string } | null,
@@ -81,6 +85,8 @@ export const addProduct = async (
 
   const { wishlistId, product } = formData;
 
+  console.log("Server product", product);
+
   const parsedProduct = productInputSchema.safeParse(product);
 
   if (!parsedProduct.success) {
@@ -112,6 +118,104 @@ export const addProduct = async (
   }
 
   revalidatePath(`/wishlist/${wishlistId}`);
+
+  return {
+    message: "success",
+  };
+};
+
+export const shareWishlist = async (
+  prevState: { message: string } | null,
+  input: z.infer<typeof shareWishlistInputSchema>,
+) => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    return {
+      message: "User not found",
+    };
+  }
+
+  const parsedInput = shareWishlistInputSchema.safeParse(input);
+
+  if (!parsedInput.success) {
+    return {
+      message: parsedInput.error.message,
+    };
+  }
+
+  const { wishlistId } = parsedInput.data;
+
+  try {
+    const matchingWishlist = await db.query.wishlists.findFirst({
+      where: and(
+        eq(wishlists.id, wishlistId),
+        eq(wishlists.createdById, session.user.id),
+      ),
+    });
+
+    if (!matchingWishlist) {
+      return {
+        message: "Access Denied",
+      };
+    }
+
+    const wishlistShareId = randomUUID();
+
+    await db.insert(wishlistShares).values({
+      ...parsedInput.data,
+      id: wishlistShareId,
+      createdById: session.user.id,
+    });
+  } catch (e) {
+    console.log("Error sharing wishlist", e);
+    return {
+      message: "Internal Server Error",
+    };
+  }
+
+  return {
+    message: "success",
+  };
+};
+
+export const unshareWishlist = async (
+  prevState: { message: string } | null,
+  input: z.infer<typeof shareWishlistInputSchema>,
+) => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    return {
+      message: "User not found",
+    };
+  }
+
+  const parsedInput = shareWishlistInputSchema.safeParse(input);
+
+  if (!parsedInput.success) {
+    return {
+      message: parsedInput.error.message,
+    };
+  }
+
+  const { wishlistId } = parsedInput.data;
+
+  try {
+    await db
+      .delete(wishlistShares)
+      .where(
+        and(
+          eq(wishlistShares.createdById, session.user.id),
+          eq(wishlistShares.wishlistId, wishlistId),
+        ),
+      );
+  } catch (e) {
+    console.log("Error unsharing wishlist ", e);
+    return {
+      message: "Internal Server Error",
+    };
+  }
 
   return {
     message: "success",

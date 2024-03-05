@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import { wishlists } from "~/server/db/schema/wishlist";
+import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
 
 export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
   const selectedWishlist = await db.query.wishlists.findFirst({
@@ -31,4 +31,25 @@ export const getUserWishlists = async () => {
       products: true,
     },
   });
+};
+
+export const getSharedWishlists = async () => {
+  const userSession = await getServerAuthSession();
+
+  if (!userSession) {
+    throw new Error("No user session");
+  }
+
+  const sharedLists = await db.query.wishlistShares.findMany({
+    where: eq(wishlistShares.sharedWithUserId, userSession.user.id),
+    with: {
+      wishlist: {
+        with: {
+          products: true,
+        },
+      },
+    },
+  });
+
+  return sharedLists.map((list) => list.wishlist);
 };

@@ -4,6 +4,7 @@ export const productInputSchema = z.object({
   name: z.string().min(1, {
     message: "Product Name is required",
   }),
+  brand: z.string().min(1).optional(),
   image: z.string().min(1).optional(),
   price: z.string().min(1).optional(),
   quantity: z.string().min(1).optional(),
