@@ -1,9 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import { ArrowLeft } from "lucide-react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { addProduct } from "~/app/wishlist/[wishlistId]/actions";
@@ -21,44 +20,84 @@ import { SubmitButton } from "~/components/ui/submit-button";
 import { productInputSchema } from "~/schema/wishlist/product";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
 import ProductFormImagePreview from "./image";
+import { updateProduct } from "~/server/actions/product";
+import { useAction } from "next-safe-action/hooks";
+import type { WishlistProduct } from "~/types/wishlist";
 
 type AddProductFormProps = {
   wishlistId: string;
   onSuccess?: () => void;
   defaultValues?: z.infer<typeof partialCompiledProductDataSchema>;
-  setFrame: Dispatch<SetStateAction<"init" | "scrape" | "form">>;
-};
+  setFrame?: Dispatch<SetStateAction<"init" | "scrape" | "form">>;
+  product?: WishlistProduct;
+} & (
+  | {
+      method: "create";
+    }
+  | {
+      method: "update";
+      product: WishlistProduct;
+    }
+);
 export const AddProductForm = ({
   wishlistId,
   onSuccess,
   defaultValues,
   setFrame,
+  method = "create",
+  product,
 }: AddProductFormProps) => {
-  const [response, formAction] = useFormState(addProduct, null);
+  // Two separate useActions due to useAction not liking being provided an action based on a condition
+  const { execute: executeAdd, result: addResult } = useAction(addProduct);
+  const { execute: executeUpdate, result: updateResult } =
+    useAction(updateProduct);
+
   const form = useForm<z.infer<typeof productInputSchema>>({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
-      name: defaultValues?.name ?? "",
-      brand: defaultValues?.brand ?? "",
-      image: defaultValues?.images?.[0] ?? "",
-      price: defaultValues?.price ?? "",
-      url: defaultValues?.url ?? "",
+      name: defaultValues?.name ?? product?.name ?? "",
+      brand: defaultValues?.brand ?? product?.brand ?? "",
+      image: defaultValues?.images?.[0] ?? product?.image ?? "",
+      price: defaultValues?.price ?? product?.price ?? "",
+      url: defaultValues?.url ?? product?.url ?? "",
     },
   });
+
   const fields = form.watch();
 
-  const actionData = formAction.bind(null, {
-    product: {
-      ...fields,
-    },
-    wishlistId,
-  });
+  const executeServerAction = () => {
+    if (method === "create") {
+      executeAdd({
+        wishlistId,
+        product: fields,
+      });
+    } else if (product) {
+      executeUpdate({
+        ...fields,
+        wishlistId,
+        id: product.id,
+      });
+    }
+  };
 
   useEffect(() => {
-    if (response?.message === "success" && onSuccess) {
+    if (
+      method === "create" &&
+      addResult.data?.message === "success" &&
+      onSuccess
+    ) {
+      console.log("onsuccess");
       onSuccess();
     }
-  }, [response, onSuccess]);
+    if (
+      method === "update" &&
+      updateResult.data?.message === "success" &&
+      onSuccess
+    ) {
+      console.log("onsuccess");
+      onSuccess();
+    }
+  }, [onSuccess, addResult, updateResult, method]);
 
   return (
     <div className="flex flex-col gap-4 ">
@@ -78,12 +117,12 @@ export const AddProductForm = ({
           </div>
         </div>
       </section> */}
-      <section className="relative ">
+      <section className="relative overflow-visible px-2">
         <h2 className="pb-2 text-2xl font-medium"> Product Details </h2>
         <Form {...form}>
           <form
-            className=" space-y-4 overflow-y-auto"
-            action={actionData}
+            className=" space-y-4 overflow-y-auto "
+            action={executeServerAction}
             onSubmit={() => form.trigger()}
           >
             <FormField
@@ -172,15 +211,17 @@ export const AddProductForm = ({
               )}
             />
             <div className="flex justify-between">
-              <Button
-                onClick={() =>
-                  defaultValues ? setFrame("scrape") : setFrame("init")
-                }
-                icon={<ArrowLeft width={20} height={20} />}
-                variant="outline"
-              >
-                Back
-              </Button>
+              {setFrame && (
+                <Button
+                  onClick={() =>
+                    defaultValues ? setFrame("scrape") : setFrame("init")
+                  }
+                  icon={<ArrowLeft width={20} height={20} />}
+                  variant="outline"
+                >
+                  Back
+                </Button>
+              )}
               <SubmitButton />
             </div>
           </form>

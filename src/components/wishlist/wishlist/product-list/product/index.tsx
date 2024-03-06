@@ -11,7 +11,7 @@ const Product = ({ product }: ProductProps) => {
   return (
     <div className="w-full space-y-4">
       <div className="relative aspect-square w-full overflow-hidden rounded-md">
-        <MenuProvider productId={product.id} wishlistId={product.wishlistId}>
+        <MenuProvider product={product} wishlistId={product.wishlistId}>
           <div className="absolute right-2 top-2">
             <ProductMenu />
           </div>

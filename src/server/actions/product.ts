@@ -2,7 +2,10 @@
 
 import { load } from "cheerio";
 import type { z } from "zod";
-import { makeSafeAction } from "~/lib/actions/protectedAction";
+import {
+  makeProtectedAction,
+  makeSafeAction,
+} from "~/lib/actions/protectedAction";
 import {
   compiledProductDataSchema,
   type partialCompiledProductDataSchema,
@@ -11,6 +14,10 @@ import {
 } from "~/schema/wishlist/scrape";
 
 import parse from "srcset-parse";
+import { productSchema } from "~/schema/wishlist/product";
+import { db } from "../db";
+import { products } from "../db/schema/wishlist";
+import { and, eq } from "drizzle-orm";
 
 type scrapeProductDataArgs = {
   url: string;
@@ -58,5 +65,24 @@ export const scrapeProductData = makeSafeAction(
     }
 
     return scrapedProductData;
+  },
+);
+
+export const updateProduct = makeProtectedAction(
+  productSchema,
+  async (product, { session }) => {
+    await db
+      .update(products)
+      .set(product)
+      .where(
+        and(
+          eq(products.createdById, session.user.id),
+          eq(products.id, product.id),
+        ),
+      );
+
+    return {
+      message: "success",
+    };
   },
 );

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ViewWishlist from "~/components/wishlist/view-wishlist";
+import ViewWishlist from "~/components/wishlist/wishlist";
 
 type WishlistViewPageProps = {
   params: {

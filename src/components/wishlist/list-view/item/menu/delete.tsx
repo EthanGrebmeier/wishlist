@@ -1,12 +1,10 @@
 "use client";
 import { useFormState } from "react-dom";
-import { deleteProduct } from "~/app/wishlist/[wishlistId]/actions";
 import { Button } from "~/components/ui/button";
 import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
 import { deleteWishlist } from "~/app/wishlist/actions";
 import { useWishlistMenu } from "./menuProvider";
-import { useState } from "react";
 import {
   Dialog,
   DialogClose,

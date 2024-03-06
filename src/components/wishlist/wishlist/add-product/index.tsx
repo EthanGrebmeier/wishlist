@@ -47,6 +47,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
             <ScrapeInput setFrame={setFrame} setScrapedData={setScrapedData} />
           ) : (
             <AddProductForm
+              method="create"
               setFrame={setFrame}
               defaultValues={scrapedData}
               wishlistId={wishlistId}
