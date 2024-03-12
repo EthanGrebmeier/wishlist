@@ -20,8 +20,8 @@ const Link = ({ variant = "default", className, ...rest }: LinkProps) => {
         variant === "button"
           ? buttonVariants({ variant: "outline", size: "default", className })
           : className,
-        isSelected && "font-bold",
       )}
+      data-selected={isSelected ? "active" : "inactive"}
       {...rest}
     />
   );

@@ -12,7 +12,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
 
   return (
     <div className="max-h-screen overflow-y-auto  py-6">
-      <div className="mb-8 flex justify-between gap-4 border-b-2 border-black px-6 pb-4">
+      <div className="mb-8 flex justify-between gap-4  px-6 pb-4">
         <h1 className="text-4xl font-medium">{wishlist.name} </h1>
         <div className="flex space-x-4">
           <AddProduct wishlistId={wishlistId} />

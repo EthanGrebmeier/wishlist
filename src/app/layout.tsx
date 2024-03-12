@@ -1,7 +1,8 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
-import Navigation from "~/components/navigation";
+
+import Sidebar from "~/components/navigation/sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,16 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} bg-yellow-100`}>
+      <body className={`font-sans ${inter.variable} bg-background`}>
         <div className="mx-auto grid grid-cols-[auto_1fr] ">
-          <section className="border-r-2 border-black py-6">
-            <div className="mb-8 border-b-2 border-black ">
-              <p className="px-12 pb-4 text-4xl font-medium"> Wishlist </p>
-            </div>
-            <div className="px-12">
-              <Navigation />
-            </div>
-          </section>
+          <Sidebar />
           {children}
         </div>
       </body>

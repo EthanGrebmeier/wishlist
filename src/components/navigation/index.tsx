@@ -3,20 +3,17 @@ import { Button } from "../ui/button";
 
 import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 import Link from "../ui/link";
+import NavLink from "./navlink";
 
 const Navigation = async () => {
   const session = await getServerAuthSession();
 
   if (!session) {
     return (
-      <nav>
-        <div className="flex  gap-2">
-          <Link variant="button" href="/api/auth/signin">
-            Log In
-          </Link>
-          <Link variant="button" href="/signup">
-            Sign Up
-          </Link>
+      <nav className="flex h-full flex-col justify-end">
+        <div className="flex flex-col gap-2">
+          <NavLink href="/api/auth/signin">Log In</NavLink>
+          <NavLink href="/signup">Sign Up</NavLink>
         </div>
       </nav>
     );
@@ -25,10 +22,13 @@ const Navigation = async () => {
   // const wishlists = await getUserWishlists()
 
   return (
-    <nav>
+    <nav className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-2">
-        <Link href="/wishlist">My Wishlists</Link>
-        <Link href="/wishlist/shared">Shared Wishlists</Link>
+        <NavLink href="/wishlist">My Wishlists</NavLink>
+        <NavLink href="/wishlist/shared">Shared Wishlists</NavLink>
+      </div>
+      <div className="flex">
+        <NavLink href="/api/auth/signout">Log Out</NavLink>
       </div>
     </nav>
   );
