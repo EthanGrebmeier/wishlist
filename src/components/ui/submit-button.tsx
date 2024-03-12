@@ -1,16 +1,22 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { Button } from "./button";
+import { Button, type buttonVariants } from "./button";
 import { Loader } from "lucide-react";
 import type { ReactNode } from "react";
+import type { VariantProps } from "class-variance-authority";
 
 type SubmitButtonProps = {
   children?: ReactNode;
   icon?: ReactNode;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
 };
 
-export const SubmitButton = ({ children, icon }: SubmitButtonProps) => {
+export const SubmitButton = ({
+  children,
+  icon,
+  variant = "outline",
+}: SubmitButtonProps) => {
   const formStatus = useFormStatus();
   return (
     <Button
@@ -22,7 +28,7 @@ export const SubmitButton = ({ children, icon }: SubmitButtonProps) => {
         )
       }
       type="submit"
-      variant="outline"
+      variant={variant}
     >
       {children ?? "Submit"}
     </Button>

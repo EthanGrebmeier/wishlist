@@ -16,7 +16,7 @@ const SharedUsers = async ({ wishlistId }: SharedUsersProps) => {
             <SharedUserItem wishlistId={wishlistId} user={user} key={user.id} />
           ))
         ) : (
-          <p> Nobody yet...</p>
+          <p className="py-2"> Nobody yet...</p>
         )}
       </div>
     </div>

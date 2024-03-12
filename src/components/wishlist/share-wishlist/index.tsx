@@ -1,5 +1,4 @@
 import { PersonStanding } from "lucide-react";
-import { type ReactNode } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -32,8 +31,12 @@ const ShareWishlist = ({ wishlistId, privacyType }: ShareWishlistProps) => {
         <DialogHeader>
           <h1 className="text-2xl font-medium"> Share Settings</h1>
           <Privacy wishlistId={wishlistId} privacyType={privacyType} />
-          <SharedUsers wishlistId={wishlistId} />
-          <ShareWishlistForm wishlistId={wishlistId} />
+          {privacyType === "private" && (
+            <div className="space-y-4 border-t border-slate-200 pt-2">
+              <SharedUsers wishlistId={wishlistId} />
+              <ShareWishlistForm wishlistId={wishlistId} />
+            </div>
+          )}
         </DialogHeader>
       </DialogContent>
     </Dialog>

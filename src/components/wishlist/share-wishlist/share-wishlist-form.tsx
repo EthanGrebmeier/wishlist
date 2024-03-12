@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
-import { shareWishlistInputSchema } from "~/schema/wishlist/wishlist";
 import UserAutocomplete from "./user-autocomplete";
-
-export const shareWishlistSchema = shareWishlistInputSchema.omit({
-  wishlistId: true,
-});
 
 type ShareWishlistFormProps = {
   onSuccess?: () => void;
@@ -19,10 +14,17 @@ const ShareWishlistForm = ({
   wishlistId,
 }: ShareWishlistFormProps) => {
   const [emailInput, setEmailInput] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onFocus={() => setIsOpen(true)}
+      onBlur={() => setIsOpen(false)}
+    >
       <div className="space-y-2">
-        <label htmlFor="email">User Email</label>
+        <label className="text-lg font-medium" htmlFor="email">
+          Find User By Email
+        </label>
         <Input
           name="email"
           type="text"
@@ -34,6 +36,7 @@ const ShareWishlistForm = ({
         onSuccess={onSuccess}
         wishlistId={wishlistId}
         email={emailInput}
+        isOpen={isOpen}
       />
     </div>
   );

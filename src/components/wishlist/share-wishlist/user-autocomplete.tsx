@@ -2,65 +2,117 @@
 
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import type { User } from "~/types/user";
+
 import { findUserByEmail } from "~/server/actions/account";
 import { Button } from "~/components/ui/button";
-import { useFormState } from "react-dom";
 import { shareWishlist } from "~/app/wishlist/[wishlistId]/actions";
+import { useAction } from "next-safe-action/hooks";
+import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { SubmitButton } from "~/components/ui/submit-button";
 
 type UserAutocompleteProps = {
   email: string;
   wishlistId: string;
   onSuccess?: () => void;
+  isOpen: boolean;
 };
 
 const UserAutocomplete = ({
   email,
   wishlistId,
   onSuccess,
+  isOpen,
 }: UserAutocompleteProps) => {
-  const [response, formAction] = useFormState(shareWishlist, null);
+  const [shouldRender, setShouldRender] = useState(false);
+  const { result: shareWishlistResult, execute: executeShareWishlist } =
+    useAction(shareWishlist);
   const [debouncedInput] = useDebounceValue(email, 500);
-  const [matchingUser, setMatchingUser] = useState<User | undefined>(undefined);
+  const {
+    status: findUserByEmailStatus,
+    result: findUserByEmailResult,
+    execute: executeFindUserByEmail,
+  } = useAction(findUserByEmail);
+  const router = useRouter();
+
+  const matchingUser = findUserByEmailResult.data;
 
   useEffect(() => {
-    const getMatchingUsers = async () => {
-      if (!debouncedInput) return;
+    if (isOpen) {
+      setShouldRender(true);
+    } else {
+      const timeout = setTimeout(() => {
+        setShouldRender(false);
+      }, 100);
 
-      const matchingUser = await findUserByEmail(null, {
-        email: debouncedInput,
-      });
-
-      setMatchingUser(matchingUser);
-    };
-    void getMatchingUsers();
-  }, [debouncedInput]);
-
-  useEffect(() => {
-    if (response?.message === "success" && onSuccess) {
-      onSuccess();
+      return () => clearTimeout(timeout);
     }
-  }, [response, onSuccess]);
+  }, [isOpen]);
 
-  if (!matchingUser) return;
+  useEffect(() => {
+    isOpen && executeFindUserByEmail({ email: debouncedInput, wishlistId });
+  }, [debouncedInput, executeFindUserByEmail, wishlistId, isOpen]);
 
-  const actionWithData = formAction.bind(null, {
-    sharedWithUserId: matchingUser?.id,
+  useEffect(() => {
+    if (shareWishlistResult.data?.message === "success") {
+      onSuccess && onSuccess();
+      executeFindUserByEmail({ email: debouncedInput, wishlistId });
+      router.refresh();
+    }
+  }, [
+    shareWishlistResult,
+    onSuccess,
+    router,
+    debouncedInput,
     wishlistId,
-  });
+    executeFindUserByEmail,
+  ]);
+
+  if (!shouldRender) return;
 
   return (
-    <div className="bottom-100 absolute left-0 right-0 translate-y-[8px]">
-      <form
-        action={actionWithData}
-        className="flex items-center justify-between overflow-hidden rounded-md border border-slate-200 bg-white px-4 py-6"
-      >
-        <div>
-          <p> {matchingUser.name}</p>
-          <p> {matchingUser.email}</p>
-        </div>
-        <Button className="w-fit">Share</Button>
-      </form>
+    <div
+      onFocus={(e) => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
+      className="bottom-100 absolute left-0 right-0 translate-y-[8px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+      data-state={isOpen ? "open" : "closed"}
+    >
+      <div className="relative rounded-md border border-slate-200 bg-white px-4 py-6">
+        {findUserByEmailStatus === "executing" && (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-100/60">
+            {" "}
+            <Loader className="animate-spin" height={20} width={20} />{" "}
+          </div>
+        )}
+        {matchingUser ? (
+          <form
+            action={() =>
+              executeShareWishlist({
+                sharedWithUserId: matchingUser?.id,
+                wishlistId,
+              })
+            }
+            className="flex items-center justify-between overflow-hidden   "
+          >
+            <div>
+              <p> {matchingUser.name}</p>
+              <p> {matchingUser.email}</p>
+            </div>
+            {matchingUser.isShared ? (
+              <Button disabled type="button" aria-disabled="true">
+                {" "}
+                Shared{" "}
+              </Button>
+            ) : (
+              <SubmitButton variant="default">Share</SubmitButton>
+            )}
+          </form>
+        ) : (
+          <div className="py-3">
+            <p> No user found</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -41,7 +41,7 @@ const Privacy = ({ privacyType, wishlistId }: PrivacyProps) => {
   }, [result, router]);
 
   return (
-    <section className="space-y-2 border-b border-slate-200 pb-4">
+    <section className="space-y-2 pb-4">
       <h2 className="text-lg font-medium"> Visibility </h2>
       <Select value={privacyTypeInput} onValueChange={handleSelectPrivacyType}>
         <SelectTrigger>

@@ -110,60 +110,44 @@ export const addProduct = makeProtectedAction(
   },
 );
 
-export const shareWishlist = async (
-  prevState: { message: string } | null,
-  input: z.infer<typeof shareWishlistInputSchema>,
-) => {
-  const session = await getServerAuthSession();
+export const shareWishlist = makeProtectedAction(
+  shareWishlistInputSchema,
+  async (input, { session }) => {
+    const { wishlistId } = input;
 
-  if (!session) {
-    return {
-      message: "User not found",
-    };
-  }
+    try {
+      const matchingWishlist = await db.query.wishlists.findFirst({
+        where: and(
+          eq(wishlists.id, wishlistId),
+          eq(wishlists.createdById, session.user.id),
+        ),
+      });
 
-  const parsedInput = shareWishlistInputSchema.safeParse(input);
+      if (!matchingWishlist) {
+        return {
+          message: "Access Denied",
+        };
+      }
 
-  if (!parsedInput.success) {
-    return {
-      message: parsedInput.error.message,
-    };
-  }
+      const wishlistShareId = randomUUID();
 
-  const { wishlistId } = parsedInput.data;
-
-  try {
-    const matchingWishlist = await db.query.wishlists.findFirst({
-      where: and(
-        eq(wishlists.id, wishlistId),
-        eq(wishlists.createdById, session.user.id),
-      ),
-    });
-
-    if (!matchingWishlist) {
+      await db.insert(wishlistShares).values({
+        ...input,
+        id: wishlistShareId,
+        createdById: session.user.id,
+      });
+    } catch (e) {
+      console.log("Error sharing wishlist", e);
       return {
-        message: "Access Denied",
+        message: "Internal Server Error",
       };
     }
 
-    const wishlistShareId = randomUUID();
-
-    await db.insert(wishlistShares).values({
-      ...parsedInput.data,
-      id: wishlistShareId,
-      createdById: session.user.id,
-    });
-  } catch (e) {
-    console.log("Error sharing wishlist", e);
     return {
-      message: "Internal Server Error",
+      message: "success",
     };
-  }
-
-  return {
-    message: "success",
-  };
-};
+  },
+);
 
 export const unshareWishlist = async (
   prevState: { message: string } | null,
