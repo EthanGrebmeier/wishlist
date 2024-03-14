@@ -25,10 +25,10 @@ const Delete = () => {
   });
 
   return (
-    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+    <DropdownMenuItem onClick={(e) => e.preventDefault()}>
       <Dialog>
-        <DialogTrigger asChild>
-          <p className="text-red-500">Delete Wishlist</p>
+        <DialogTrigger className="text-left text-red-500">
+          Delete Wishlist
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="inline-block">

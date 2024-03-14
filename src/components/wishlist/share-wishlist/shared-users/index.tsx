@@ -10,7 +10,7 @@ const SharedUsers = async ({ wishlistId }: SharedUsersProps) => {
   return (
     <div className="spacing-y-2">
       <h2 className="text-lg font-medium"> Currently Shared With: </h2>
-      <div>
+      <div className="flex flex-wrap gap-2">
         {sharedUsers.length ? (
           sharedUsers.map((user) => (
             <SharedUserItem wishlistId={wishlistId} user={user} key={user.id} />

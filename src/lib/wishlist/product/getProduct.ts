@@ -9,9 +9,5 @@ export const getProduct = async ({ productId }: getProductArgs) => {
     where: (product) => eq(product.id, productId),
   });
 
-  if (!product) {
-    throw new Error("Product could not be found");
-  }
-
   return product;
 };

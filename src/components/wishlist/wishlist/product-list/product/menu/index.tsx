@@ -12,7 +12,7 @@ import EditProduct from "./edit";
 const ProductMenu = () => {
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger onClick={(e) => e.preventDefault()} asChild>
         <Button variant="ghost">
           {" "}
           <MoreHorizontal width={20} height={20} />{" "}

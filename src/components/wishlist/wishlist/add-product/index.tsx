@@ -34,9 +34,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" icon={<PlusIcon width="20" height="20" />}>
-          Add Product
-        </Button>
+        <Button icon={<PlusIcon width="20" height="20" />}>Add Product</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

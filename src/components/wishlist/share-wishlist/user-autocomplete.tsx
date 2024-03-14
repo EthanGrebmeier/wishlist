@@ -43,11 +43,11 @@ const UserAutocomplete = ({
     } else {
       const timeout = setTimeout(() => {
         setShouldRender(false);
-      }, 100);
+      }, 120);
 
       return () => clearTimeout(timeout);
     }
-  }, [isOpen]);
+  }, [isOpen, email]);
 
   useEffect(() => {
     isOpen && executeFindUserByEmail({ email: debouncedInput, wishlistId });

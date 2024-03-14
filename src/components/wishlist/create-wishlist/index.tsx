@@ -91,7 +91,7 @@ const CreateWishlist = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" icon={<PlusIcon width="20" height="20" />}>
+        <Button icon={<PlusIcon width="20" height="20" />}>
           Create Wishlist
         </Button>
       </DialogTrigger>

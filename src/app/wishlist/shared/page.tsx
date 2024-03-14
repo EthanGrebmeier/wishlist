@@ -1,21 +1,32 @@
-import ListView from "~/components/wishlist/list-view";
 import ListItem from "~/components/wishlist/list-view/item";
 import { getSharedWishlists } from "~/lib/wishlist/getWishlist";
+import { getServerAuthSession } from "~/server/auth";
 
 const WishlistPage = async () => {
-  const sharedLists = await getSharedWishlists();
+  const [sharedLists, session] = await Promise.all([
+    getSharedWishlists(),
+    getServerAuthSession(),
+  ]);
+
+  if (!session) {
+    return;
+  }
 
   return (
     <div className="max-h-full overflow-y-auto py-6">
-      <div className="mb-4 flex items-center justify-between border-b-2 border-black px-6 pb-4">
+      <div className="mb-4 flex items-center justify-between px-6 pb-4">
         <h1 className="text-4xl font-medium"> Shared Wishlists</h1>
       </div>
-      <div className="px-4 py-6">
-        <div className="grid w-[400px] gap-2">
+      <div className="px-4 py-4">
+        <ul className="grid grid-cols-4 gap-4">
           {sharedLists.map((wishlist) => (
-            <ListItem key={wishlist.id} wishlist={wishlist} />
+            <ListItem
+              user={session.user}
+              key={wishlist.id}
+              wishlist={wishlist}
+            />
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

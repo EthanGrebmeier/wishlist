@@ -7,7 +7,15 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
   const selectedWishlist = await db.query.wishlists.findFirst({
     where: eq(wishlists.id, wishlistId),
     with: {
-      products: true,
+      products: {
+        with: {
+          commitments: {
+            with: {
+              user: true,
+            },
+          },
+        },
+      },
     },
   });
 

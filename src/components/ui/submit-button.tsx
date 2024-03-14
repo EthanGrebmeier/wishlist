@@ -10,12 +10,16 @@ type SubmitButtonProps = {
   children?: ReactNode;
   icon?: ReactNode;
   variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
+  className?: string;
 };
 
 export const SubmitButton = ({
   children,
   icon,
   variant = "outline",
+  size = "default",
+  className,
 }: SubmitButtonProps) => {
   const formStatus = useFormStatus();
   return (
@@ -29,6 +33,8 @@ export const SubmitButton = ({
       }
       type="submit"
       variant={variant}
+      size={size}
+      className={className}
     >
       {children ?? "Submit"}
     </Button>

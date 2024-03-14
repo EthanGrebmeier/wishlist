@@ -23,12 +23,45 @@ export const products = createTable(
   }),
 );
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const productsRelations = relations(products, ({ one, many }) => ({
   wishlist: one(wishlists, {
     fields: [products.wishlistId],
     references: [wishlists.id],
   }),
+  commitments: many(productCommitments),
 }));
+
+export const productCommitments = createTable(
+  "product_commitments",
+  {
+    id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    createdById: varchar("createdById", { length: 255 }).notNull(),
+    productId: varchar("productId", { length: 255 }).notNull(),
+    wishlistId: varchar("wishlistId", { length: 255 }).notNull(),
+  },
+  (example) => ({
+    createdByIdIdx: index("createdById_idx").on(example.createdById),
+    productIdIdx: index("productId_idx").on(example.productId),
+  }),
+);
+
+export const productCommitmentsRelations = relations(
+  productCommitments,
+  ({ one }) => ({
+    wishlist: one(wishlists, {
+      fields: [productCommitments.wishlistId],
+      references: [wishlists.id],
+    }),
+    product: one(products, {
+      fields: [productCommitments.productId],
+      references: [products.id],
+    }),
+    user: one(users, {
+      fields: [productCommitments.createdById],
+      references: [users.id],
+    }),
+  }),
+);
 
 export const wishlists = createTable(
   "wishlists",
@@ -53,6 +86,7 @@ export const wishlists = createTable(
 export const wishlistsRelations = relations(wishlists, ({ many }) => ({
   products: many(products),
   wishlistShares: many(wishlistShares),
+  productCommitments: many(productCommitments),
 }));
 
 export const wishlistShares = createTable(

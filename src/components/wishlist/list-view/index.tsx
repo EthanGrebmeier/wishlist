@@ -1,14 +1,23 @@
 import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 import ListItem from "./item";
+import { getServerAuthSession } from "~/server/auth";
 
 const ListView = async () => {
-  const wishlists = await getUserWishlists();
+  const [wishlists, session] = await Promise.all([
+    getUserWishlists(),
+    getServerAuthSession(),
+  ]);
+
+  if (!session) {
+    return;
+  }
+
   return (
-    <div className="grid w-[400px] gap-4">
+    <ul className="grid grid-cols-4 gap-4">
       {wishlists.map((wishlist) => (
-        <ListItem wishlist={wishlist} key={wishlist.id} />
+        <ListItem user={session.user} wishlist={wishlist} key={wishlist.id} />
       ))}
-    </div>
+    </ul>
   );
 };
 

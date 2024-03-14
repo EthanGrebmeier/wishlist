@@ -18,32 +18,28 @@ export const EditProduct = () => {
   const { product, wishlistId } = useProductMenu();
   const router = useRouter();
 
-  console.log(product);
-
   if (!product || !wishlistId) return;
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <p className="w-full"> Edit Product </p>
-        </DropdownMenuItem>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <h1 className="text-4xl font-medium">Edit Product </h1>
-          <AddProductForm
-            method="update"
-            wishlistId={wishlistId}
-            product={product}
-            onSuccess={() => {
-              router.refresh();
-              setIsOpen(false);
-            }}
-          />
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+    <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger className="w-full text-left">Edit Product</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <h1 className="text-4xl font-medium">Edit Product </h1>
+            <AddProductForm
+              method="update"
+              wishlistId={wishlistId}
+              product={product}
+              onSuccess={() => {
+                router.refresh();
+                setIsOpen(false);
+              }}
+            />
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </DropdownMenuItem>
   );
 };
 

@@ -35,7 +35,7 @@ const SharedUserItem = ({ user, wishlistId }: SharedUserItemProps) => {
       key={user.id}
       className="flex w-fit items-center gap-2 rounded-md bg-slate-100 px-2 py-2 font-bold text-black"
     >
-      <p> {user.email}</p>
+      <p className="text-xs"> {user.email}</p>
       <form className="flex items-center" action={actionWithData}>
         <DeleteShareButton />
       </form>

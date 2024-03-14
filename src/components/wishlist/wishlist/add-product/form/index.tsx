@@ -23,6 +23,7 @@ import ProductFormImagePreview from "./image";
 import { updateProduct } from "~/server/actions/product";
 import { useAction } from "next-safe-action/hooks";
 import type { WishlistProduct } from "~/types/wishlist";
+import { cn } from "~/lib/utils";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -86,7 +87,6 @@ export const AddProductForm = ({
       addResult.data?.message === "success" &&
       onSuccess
     ) {
-      console.log("onsuccess");
       onSuccess();
     }
     if (
@@ -94,7 +94,6 @@ export const AddProductForm = ({
       updateResult.data?.message === "success" &&
       onSuccess
     ) {
-      console.log("onsuccess");
       onSuccess();
     }
   }, [onSuccess, addResult, updateResult, method]);
@@ -117,7 +116,7 @@ export const AddProductForm = ({
           </div>
         </div>
       </section> */}
-      <section className="relative overflow-visible px-2">
+      <section className="relative overflow-visible">
         <h2 className="pb-2 text-2xl font-medium"> Product Details </h2>
         <Form {...form}>
           <form
@@ -210,9 +209,15 @@ export const AddProductForm = ({
                 </FormItem>
               )}
             />
-            <div className="flex justify-between">
+            <div
+              className={cn(
+                "flex",
+                setFrame ? "justify-between" : "justify-end",
+              )}
+            >
               {setFrame && (
                 <Button
+                  type="button"
                   onClick={() =>
                     defaultValues ? setFrame("scrape") : setFrame("init")
                   }

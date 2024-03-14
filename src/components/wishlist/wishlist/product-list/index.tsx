@@ -1,17 +1,18 @@
-import type { WishlistProduct } from "~/types/wishlist";
+import type { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 import Product from "./product";
 
 type ProductListProps = {
-  products: WishlistProduct[];
+  products: WishlistProductWithCommitmentsWithUser[];
+  isEditor: boolean;
 };
 
-const ProductList = ({ products }: ProductListProps) => {
+const ProductList = ({ products, isEditor }: ProductListProps) => {
   return (
-    <div className="grid grid-cols-4 gap-8">
+    <ul className="grid grid-cols-4 gap-4">
       {products.map((product) => (
-        <Product product={product} key={product.id} />
+        <Product isEditor={isEditor} product={product} key={product.id} />
       ))}
-    </div>
+    </ul>
   );
 };
 

@@ -1,24 +1,15 @@
-import Link from "~/components/ui/link";
-
 type ProductImageProps = {
   imageUrl: string | null;
-  link: string | null;
 };
 
 const className = "h-full w-full object-cover";
 
-const ProductImage = ({ imageUrl, link }: ProductImageProps) => {
-  imageUrl = imageUrl ?? "https://placehold.co/600x400/EEE/31343C";
+const ProductImage = ({ imageUrl }: ProductImageProps) => {
+  /* eslint-disable-next-line */
+  imageUrl = imageUrl || "https://placehold.co/600x600";
 
-  if (!link) {
-    return <img src={imageUrl} className={className} />;
-  }
-
-  return (
-    <Link href={link} variant="ghost">
-      <img src={imageUrl} className={className} />
-    </Link>
-  );
+  /* eslint-disable-next-line  */
+  return <img src={imageUrl} className={className} />;
 };
 
 export default ProductImage;

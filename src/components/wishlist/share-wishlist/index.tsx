@@ -20,10 +20,7 @@ const ShareWishlist = ({ wishlistId, privacyType }: ShareWishlistProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          icon={<PersonStanding width={20} height={20} />}
-        >
+        <Button icon={<PersonStanding width={20} height={20} />}>
           Share Wishlist
         </Button>
       </DialogTrigger>

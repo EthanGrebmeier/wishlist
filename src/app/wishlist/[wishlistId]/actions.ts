@@ -48,7 +48,7 @@ export const deleteProduct = async (
       productId,
     });
 
-    if (product.createdById !== session.user.id) {
+    if (product?.createdById !== session.user.id) {
       return {
         message: "Access Denied",
       };
