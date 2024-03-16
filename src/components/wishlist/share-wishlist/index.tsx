@@ -14,9 +14,14 @@ import type { WishlistPrivacy } from "~/types/wishlist";
 type ShareWishlistProps = {
   wishlistId: string;
   privacyType: WishlistPrivacy;
+  userId: string;
 };
 
-const ShareWishlist = ({ wishlistId, privacyType }: ShareWishlistProps) => {
+const ShareWishlist = ({
+  wishlistId,
+  privacyType,
+  userId,
+}: ShareWishlistProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,12 +33,10 @@ const ShareWishlist = ({ wishlistId, privacyType }: ShareWishlistProps) => {
         <DialogHeader>
           <h1 className="text-2xl font-medium"> Share Settings</h1>
           <Privacy wishlistId={wishlistId} privacyType={privacyType} />
-          {privacyType === "private" && (
-            <div className="space-y-4 border-t border-slate-200 pt-2">
-              <SharedUsers wishlistId={wishlistId} />
-              <ShareWishlistForm wishlistId={wishlistId} />
-            </div>
-          )}
+          <div className="space-y-4 border-t border-slate-200 pt-2">
+            <SharedUsers userId={userId} wishlistId={wishlistId} />
+            <ShareWishlistForm wishlistId={wishlistId} />
+          </div>
         </DialogHeader>
       </DialogContent>
     </Dialog>

@@ -1,4 +1,4 @@
-import { index, text, varchar } from "drizzle-orm/mysql-core";
+import { date, index, text, varchar } from "drizzle-orm/mysql-core";
 import { createTable } from "../schema";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
@@ -76,6 +76,7 @@ export const wishlists = createTable(
     })
       .notNull()
       .default("private"),
+    dueDate: date("date"),
   },
   (example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),

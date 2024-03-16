@@ -21,25 +21,25 @@ export const EditProduct = () => {
   if (!product || !wishlistId) return;
 
   return (
-    <DropdownMenuItem onClick={(e) => e.preventDefault()}>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DialogTrigger className="w-full text-left">Edit Product</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <h1 className="text-4xl font-medium">Edit Product </h1>
-            <AddProductForm
-              method="update"
-              wishlistId={wishlistId}
-              product={product}
-              onSuccess={() => {
-                router.refresh();
-                setIsOpen(false);
-              }}
-            />
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </DropdownMenuItem>
+      </DropdownMenuItem>
+      <DialogContent>
+        <DialogHeader>
+          <h1 className="text-4xl font-medium">Edit Product </h1>
+          <AddProductForm
+            method="update"
+            wishlistId={wishlistId}
+            product={product}
+            onSuccess={() => {
+              router.refresh();
+              setIsOpen(false);
+            }}
+          />
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
 };
 

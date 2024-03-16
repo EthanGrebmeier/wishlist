@@ -169,7 +169,7 @@ export const unshareWishlist = async (
     };
   }
 
-  const { wishlistId } = parsedInput.data;
+  const { wishlistId, sharedWithUserId } = parsedInput.data;
 
   try {
     await db
@@ -177,6 +177,7 @@ export const unshareWishlist = async (
       .where(
         and(
           eq(wishlistShares.createdById, session.user.id),
+          eq(wishlistShares.sharedWithUserId, sharedWithUserId),
           eq(wishlistShares.wishlistId, wishlistId),
         ),
       );

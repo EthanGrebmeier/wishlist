@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,8 +15,8 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import Link from "next/link";
-import { ArrowLeft, PlusIcon } from "lucide-react";
+
+import { PlusIcon } from "lucide-react";
 import { SubmitButton } from "~/components/ui/submit-button";
 import { createWishlist } from "~/app/wishlist/actions";
 import {
@@ -26,8 +25,10 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import DatePicker from "./date-picker";
+import { useAction } from "next-safe-action/hooks";
 
-export const createWishlistInputSchema = z.object({
+const createWishlistInputSchema = z.object({
   wishlistName: z
     .string({
       required_error: "Wishlist name is required",
@@ -42,35 +43,28 @@ type CreateWishlistFormProps = {
 };
 
 const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
-  const [response, formAction] = useFormState(createWishlist, null);
+  const { execute } = useAction(createWishlist, { onSuccess });
+  const [date, setDate] = React.useState<Date>();
   const form = useForm<z.infer<typeof createWishlistInputSchema>>({
     resolver: zodResolver(createWishlistInputSchema),
   });
   const fields = form.watch();
-
-  const actionWithValidity = formAction.bind(null, {
-    ...fields,
-  });
-
-  useEffect(() => {
-    if (response?.message === "success" && onSuccess) {
-      onSuccess();
-    }
-  }, [response, onSuccess]);
 
   return (
     <>
       <Form {...form}>
         <form
           onSubmit={() => form.trigger()}
-          action={actionWithValidity}
-          className="w-[400px] space-y-4"
+          action={() => execute({ ...fields, date })}
+          className="relative w-full space-y-4"
         >
           <FormField
             name="wishlistName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Wishlist Name</FormLabel>
+                <FormLabel>
+                  Wishlist Name <sup> *</sup>
+                </FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -78,7 +72,15 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
               </FormItem>
             )}
           />
-          <SubmitButton />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2 text-sm font-medium">
+              <label htmlFor="date-picker">Due Date (optional) </label>
+              <DatePicker date={date} setDate={setDate} />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <SubmitButton />
+          </div>
         </form>
       </Form>
     </>

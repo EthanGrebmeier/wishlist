@@ -5,107 +5,72 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { makeProtectedAction } from "~/lib/actions/protectedAction";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
-import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import { wishlists } from "~/server/db/schema/wishlist";
+import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
 
-export const deleteWishlist = async (
-  prevState: { message: string } | null,
-  formData: { wishlistId: string },
-) => {
-  const session = await getServerAuthSession();
+export const deleteWishlist = makeProtectedAction(
+  z.object({
+    wishlistId: z.string(),
+  }),
+  async ({ wishlistId }, { session }) => {
+    console.log("deleting");
 
-  if (!session) {
-    return {
-      message: "User not found",
-    };
-  }
+    try {
+      const wishlist = await getWishlist({
+        wishlistId,
+      });
 
-  const result = z
-    .object({
-      wishlistId: z.string(),
-    })
-    .safeParse(formData);
+      if (wishlist.createdById !== session.user.id) {
+        return {
+          message: "Access Denied",
+        };
+      }
 
-  if (!result.success) {
-    return {
-      message: "Wishlist ID is required",
-    };
-  }
+      await db.delete(wishlists).where(eq(wishlists.id, wishlistId));
 
-  const { wishlistId } = result.data;
+      revalidatePath(`/wishlist`);
 
-  try {
-    const wishlist = await getWishlist({
-      wishlistId,
-    });
-
-    if (wishlist.createdById !== session.user.id) {
       return {
-        message: "Access Denied",
+        message: "success",
+      };
+    } catch (e) {
+      console.error("Error deleting wishlist", e);
+      return {
+        message: "Unable to delete wishlist",
+      };
+    }
+  },
+);
+
+export const createWishlist = makeProtectedAction(
+  z.object({ wishlistName: z.string(), date: z.date().optional() }),
+  async ({ wishlistName, date }, { session }) => {
+    const wishlistValues = {
+      createdById: session.user.id,
+      name: wishlistName,
+      id: randomUUID(),
+      dueDate: date,
+    };
+    console.log(wishlistValues);
+    try {
+      await db.insert(wishlists).values(wishlistValues);
+
+      await db.insert(wishlistShares).values({
+        createdById: session.user.id,
+        wishlistId: wishlistValues.id,
+        sharedWithUserId: session.user.id,
+
+        id: randomUUID(),
+      });
+    } catch (e) {
+      console.error(e);
+      return {
+        message: "Could not insert wishlist",
       };
     }
 
-    await db.delete(wishlists).where(eq(wishlists.id, wishlistId));
-
-    revalidatePath(`/wishlist`);
-
-    return {
-      message: "success",
-    };
-  } catch (e) {
-    console.error("Error deleting wishlist", e);
-    return {
-      message: "Unable to delete wishlist",
-    };
-  }
-};
-
-const createWishlistInputSchema = z.object({
-  name: z.string({
-    required_error: "Name is required",
-  }),
-  id: z.string(),
-  createdById: z.string(),
-});
-
-export const createWishlist = async (
-  prevState: { message: string } | null,
-  formData: {
-    wishlistName: string;
+    redirect(`/wishlist/${wishlistValues.id}`);
   },
-) => {
-  const session = await getServerAuthSession();
-
-  if (!session) {
-    return {
-      message: "User not found",
-    };
-  }
-
-  const validatedFields = createWishlistInputSchema.safeParse({
-    createdById: session.user.id,
-    name: formData.wishlistName,
-    id: randomUUID(),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      message: validatedFields.error.toString(),
-    };
-  }
-
-  const wishlistValues = validatedFields.data;
-
-  try {
-    await db.insert(wishlists).values(wishlistValues);
-  } catch (e) {
-    console.error(e);
-    return {
-      message: "Could not insert wishlist",
-    };
-  }
-
-  redirect(`/wishlist/${wishlistValues.id}`);
-};
+);

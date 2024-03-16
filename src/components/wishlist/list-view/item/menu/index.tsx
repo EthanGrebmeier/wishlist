@@ -18,7 +18,7 @@ const WishlistMenu = ({ wishlist }: WishlistMenuProps) => {
   return (
     <MenuProvider wishlist={wishlist}>
       <DropdownMenu>
-        <DropdownMenuTrigger onClick={(e) => e.preventDefault()} asChild>
+        <DropdownMenuTrigger asChild>
           <Button variant="ghost">
             {" "}
             <MoreHorizontal width={20} height={20} />{" "}

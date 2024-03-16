@@ -1,10 +1,16 @@
 import type { z } from "zod";
-import type { getWishlist } from "~/lib/wishlist/getWishlist";
 import type { privacyTypeSchema } from "~/schema/wishlist/wishlist";
-import type { productCommitments, products } from "~/server/db/schema/wishlist";
+import type {
+  productCommitments,
+  products,
+  wishlists,
+} from "~/server/db/schema/wishlist";
 import type { User } from "./user";
 
-export type Wishlist = Awaited<ReturnType<typeof getWishlist>>;
+export type Wishlist = typeof wishlists.$inferSelect;
+export type WishlistWithProducts = Wishlist & {
+  products: WishlistProduct[];
+};
 
 export type WishlistProduct = typeof products.$inferSelect;
 

@@ -17,7 +17,7 @@ type SubmitButtonProps = {
 export const SubmitButton = ({
   children,
   icon,
-  variant = "outline",
+  variant = "default",
   size = "default",
   className,
 }: SubmitButtonProps) => {

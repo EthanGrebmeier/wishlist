@@ -1,5 +1,4 @@
 "use client";
-import { useFormState } from "react-dom";
 import { Button } from "~/components/ui/button";
 import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
@@ -13,19 +12,17 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { useAction } from "next-safe-action/hooks";
+import { SubmitButton } from "~/components/ui/submit-button";
 
 const Delete = () => {
-  const [state, action] = useFormState(deleteWishlist, null);
+  const { execute } = useAction(deleteWishlist);
   const { wishlist } = useWishlistMenu();
 
   if (!wishlist) return;
 
-  const actionWithWishlistId = action.bind(null, {
-    wishlistId: wishlist.id,
-  });
-
   return (
-    <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <Dialog>
         <DialogTrigger className="text-left text-red-500">
           Delete Wishlist
@@ -40,8 +37,8 @@ const Delete = () => {
             <DialogClose asChild>
               <Button>Cancel</Button>
             </DialogClose>
-            <form action={actionWithWishlistId}>
-              <Button variant="destructive">Delete</Button>
+            <form action={() => execute({ wishlistId: wishlist.id })}>
+              <SubmitButton variant="destructive">Delete</SubmitButton>
             </form>
           </div>
         </DialogContent>

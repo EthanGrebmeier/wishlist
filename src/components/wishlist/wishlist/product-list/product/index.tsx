@@ -12,16 +12,16 @@ type ProductProps = {
 
 const Product = ({ product, isEditor }: ProductProps) => {
   return (
-    <Link href={getProductSlug(product)}>
-      <li className="w-full space-y-4">
+    <li className="relative">
+      {isEditor && (
+        <MenuProvider product={product} wishlistId={product.wishlistId}>
+          <div className="absolute right-2 top-2 z-10">
+            <ProductMenu />
+          </div>
+        </MenuProvider>
+      )}
+      <Link href={getProductSlug(product)} className="w-full space-y-4">
         <div className="relative aspect-square w-full overflow-hidden rounded-md">
-          {isEditor && (
-            <MenuProvider product={product} wishlistId={product.wishlistId}>
-              <div className="absolute right-2 top-2">
-                <ProductMenu />
-              </div>
-            </MenuProvider>
-          )}
           {!!product.commitments.length && (
             <p className="absolute left-2 top-2 rounded-md border border-green-600 bg-green-200/60 px-2 py-1 text-sm text-green-600">
               Purchased
@@ -36,8 +36,8 @@ const Product = ({ product, isEditor }: ProductProps) => {
             <p className="text-md font-medium"> ${product.price} </p>
           )}
         </div>
-      </li>
-    </Link>
+      </Link>
+    </li>
   );
 };
 

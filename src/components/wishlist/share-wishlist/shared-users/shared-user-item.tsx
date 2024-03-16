@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader, XIcon } from "lucide-react";
+import { Loader, User as UserIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -9,16 +9,21 @@ import { unshareWishlist } from "~/app/wishlist/[wishlistId]/actions";
 import type { User } from "~/types/user";
 
 type SharedUserItemProps = {
-  user: User;
+  userId: string;
+  sharedUser: User;
   wishlistId: string;
 };
 
-const SharedUserItem = ({ user, wishlistId }: SharedUserItemProps) => {
+const SharedUserItem = ({
+  userId,
+  sharedUser,
+  wishlistId,
+}: SharedUserItemProps) => {
   // TODO: Make this optimistic with useOptimistic
   const [state, action] = useFormState(unshareWishlist, null);
 
   const actionWithData = action.bind(null, {
-    sharedWithUserId: user.id,
+    sharedWithUserId: sharedUser.id,
     wishlistId,
   });
 
@@ -31,14 +36,15 @@ const SharedUserItem = ({ user, wishlistId }: SharedUserItemProps) => {
   }, [state, router]);
 
   return (
-    <div
-      key={user.id}
-      className="flex w-fit items-center gap-2 rounded-md bg-slate-100 px-2 py-2 font-bold text-black"
-    >
-      <p className="text-xs"> {user.email}</p>
-      <form className="flex items-center" action={actionWithData}>
-        <DeleteShareButton />
-      </form>
+    <div className="flex w-fit items-center gap-2 rounded-md border border-blue-800 bg-blue-200/60 px-2 py-2 font-bold text-blue-800">
+      <p className="text-xs"> {sharedUser.email}</p>
+      {userId !== sharedUser.id ? (
+        <form className="flex items-center" action={actionWithData}>
+          <DeleteShareButton />
+        </form>
+      ) : (
+        <UserIcon size={20} />
+      )}
     </div>
   );
 };

@@ -13,17 +13,23 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
     getWishlist({ wishlistId }),
     getServerAuthSession(),
   ]);
-  const isEditor = session?.user.id === wishlist.createdById;
+
+  if (!session) {
+    return;
+  }
+
+  const isEditor = session.user.id === wishlist.createdById;
 
   return (
     <div className="grid max-h-screen grid-rows-[auto_1fr] overflow-y-auto py-6">
-      <div className="mb-8 flex justify-between gap-4 px-6 pb-4">
+      <div className="mx-6 mb-8 flex justify-between gap-4 border-b border-slate-200 pb-4">
         <h1 className="text-4xl font-medium">{wishlist.name} </h1>
         <div className="flex space-x-4">
           {isEditor && <AddProduct wishlistId={wishlistId} />}
           {isEditor && (
             <ShareWishlist
               wishlistId={wishlistId}
+              userId={session.user.id}
               privacyType={wishlist.privacyType}
             />
           )}
