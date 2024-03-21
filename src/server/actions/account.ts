@@ -2,11 +2,14 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { users } from "../db/schema/users";
-import { makeSafeAction } from "~/lib/actions/protectedAction";
+import {
+  makeProtectedAction,
+  makeSafeAction,
+} from "~/lib/actions/protectedAction";
 import { z } from "zod";
 import { wishlistShares } from "../db/schema/wishlist";
 
-export const findUserByEmail = makeSafeAction(
+export const findUserByEmail = makeProtectedAction(
   z.object({ email: z.string(), wishlistId: z.string() }),
   async ({ email, wishlistId }) => {
     const user = await db.query.users.findFirst({

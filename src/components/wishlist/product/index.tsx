@@ -31,32 +31,37 @@ const Product = async ({ product, wishlist }: ProductProps) => {
   );
 
   return (
-    <div className="mx-6 mt-8 flex h-screen flex-1 flex-col gap-14">
+    <div className="mx-auto mt-4 flex max-w-[440px] flex-1 flex-col gap-4  px-6 lg:mx-6 lg:mt-8 lg:h-screen lg:max-w-none lg:gap-14 lg:px-0">
       <Link
-        className="flex w-fit items-center space-x-4 hover:underline"
+        className="group flex w-full items-center space-x-4 hover:underline"
         href={getWishlistSlug(wishlist)}
       >
-        <ArrowLeft width={20} height={20} /> <p> Back to {wishlist.name}</p>
+        <ArrowLeft
+          className="translate-x-0 transition-all group-hover:-translate-x-2"
+          width={20}
+          height={20}
+        />{" "}
+        <p> Back to {wishlist.name}</p>
       </Link>
-      <section className="grid w-full flex-1 grid-cols-[640px_1fr] grid-rows-[1fr] gap-24">
-        <div className="flex flex-col gap-4">
+      <section className="flex w-full flex-1 flex-col gap-4 lg:grid lg:grid-cols-[1fr_auto] lg:gap-2 xl:gap-24">
+        <div className="mx-auto inline h-auto gap-4 object-cover align-top text-[0] lg:mx-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="w-full rounded-md"
+            className="block h-auto w-full  rounded-md md:h-auto md:max-h-[740px] md:w-auto md:max-w-full "
             alt={product.name}
             /* eslint-disable-next-line  */
             src={product.image || "https://placehold.co/600x600"}
           />
         </div>
-        <div className="mr-12 flex h-full justify-end ">
-          <div className="-mt-4 flex w-[340px] flex-col justify-between border-l border-gray-200 py-4 pl-8">
+        <div className="mx-auto flex w-full justify-end lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
+          <div className="flex w-full flex-col justify-between gap-6 border-gray-200 py-2 lg:-mt-4 lg:w-[340px] lg:border-l lg:pl-6">
             <div className="flex flex-col gap-2">
               <h1 className="text-4xl font-medium"> {product.name} </h1>
               {product.brand && <p className="text-lg"> {product.brand} </p>}
               {product.price && <p className="text-3xl"> ${product.price} </p>}
             </div>
 
-            <div className="flex flex-col gap-4 ">
+            <div className="flex flex-col gap-4">
               <Commit
                 hasUserCommitted={hasUserCommitted}
                 productCommitments={productCommitments.data?.data}
@@ -69,6 +74,7 @@ const Product = async ({ product, wishlist }: ProductProps) => {
                   target="_blank"
                   href={product.url}
                   icon={<ExternalLink size={20} />}
+                  className="w-full"
                 >
                   View Product
                 </ButtonLink>

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 38 100% 98%;
     --foreground: 0 0% 3.9%;
 
     --card: 0 0% 100%;
@@ -72,5 +72,47 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @keyframes shake {
+    0% {
+      transform: rotate(0deg);
+    }
+    6% {
+      transform: rotate(5deg);
+    }
+    12% {
+      transform: rotate(0deg);
+    }
+    18% {
+      transform: rotate(-5deg);
+    }
+    24% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(5deg);
+    }
+    37% {
+      transform: rotate(0deg);
+    }
+    43% {
+      transform: rotate(-5deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+    56% {
+      transform: rotate(5deg);
+    }
+    62% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-shake {
+    animation: shake 1.2s ease 0s infinite;
   }
 }

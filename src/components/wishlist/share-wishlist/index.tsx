@@ -1,4 +1,4 @@
-import { PersonStanding } from "lucide-react";
+import { PersonStanding, Share } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -10,6 +10,12 @@ import ShareWishlistForm from "./share-wishlist-form";
 import SharedUsers from "./shared-users";
 import Privacy from "./privacy";
 import type { WishlistPrivacy } from "~/types/wishlist";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 
 type ShareWishlistProps = {
   wishlistId: string;
@@ -24,11 +30,19 @@ const ShareWishlist = ({
 }: ShareWishlistProps) => {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button icon={<PersonStanding width={20} height={20} />}>
-          Share Wishlist
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip delayDuration={200}>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button className="border-2 border-black bg-green-200 text-black hover:bg-yellow-400">
+                <Share size={20} />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>Share Wishlist</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <DialogContent>
         <DialogHeader>
           <h1 className="text-2xl font-medium"> Share Settings</h1>

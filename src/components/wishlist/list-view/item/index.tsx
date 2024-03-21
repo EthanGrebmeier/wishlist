@@ -30,12 +30,17 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
           <div className="flex items-center justify-between px-4 pb-2">
             {" "}
             <div>
-              <h2 className="text-2xl group-hover:underline"> {name} </h2>
-              <div className="text-md"> {products.length} Items </div>
+              <h2 className="font-serif text-2xl group-hover:underline">
+                {" "}
+                {name}{" "}
+              </h2>
             </div>
-            {wishlist.dueDate && (
-              <div>{formatDate(wishlist.dueDate, "PPP")}</div>
-            )}
+            <div className="text-end">
+              {wishlist.dueDate && (
+                <p className="text-sm">{formatDate(wishlist.dueDate, "P")}</p>
+              )}
+              <p className="text-sm"> {isEditor ? "You" : user.name} </p>
+            </div>
           </div>
         </div>
       </Link>

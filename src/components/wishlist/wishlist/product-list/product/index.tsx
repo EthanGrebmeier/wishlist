@@ -23,7 +23,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
       <Link href={getProductSlug(product)} className="w-full space-y-4">
         <div className="relative aspect-square w-full overflow-hidden rounded-md">
           {!!product.commitments.length && (
-            <p className="absolute left-2 top-2 rounded-md border border-green-600 bg-green-200/60 px-2 py-1 text-sm text-green-600">
+            <p className="absolute left-2 top-2 rounded-md border border-green-600 bg-green-200 px-2 py-1 text-sm text-green-600">
               Purchased
             </p>
           )}

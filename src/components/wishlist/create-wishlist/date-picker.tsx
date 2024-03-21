@@ -26,7 +26,7 @@ const DatePicker = ({ date, setDate }: DatePickerProps) => {
           id="date-picker"
           variant={"outline"}
           className={cn(
-            "flex w-full items-center justify-center text-left font-normal",
+            "flex w-full items-center justify-center border text-left font-normal",
             !date && "text-muted-foreground",
           )}
         >

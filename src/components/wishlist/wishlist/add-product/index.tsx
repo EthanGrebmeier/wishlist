@@ -15,6 +15,12 @@ import FrameSelect from "./frame-select";
 import ScrapeInput from "./scrape-input";
 import type { z } from "zod";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 
 type AddProduct = {
   wishlistId: string;
@@ -33,9 +39,21 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button icon={<PlusIcon width="20" height="20" />}>Add Product</Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip delayDuration={200}>
+          <>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button className="border-2 border-black bg-green-200 text-black hover:bg-green-600">
+                  {" "}
+                  <PlusIcon width="20" height="20" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Add Product</TooltipContent>
+          </>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent>
         <DialogHeader>
           <h1 className="text-4xl font-medium">Add Product </h1>

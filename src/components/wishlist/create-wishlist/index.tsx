@@ -23,10 +23,12 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
 import DatePicker from "./date-picker";
 import { useAction } from "next-safe-action/hooks";
+import ColorPicker from "./color-picker";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -63,7 +65,7 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Wishlist Name <sup> *</sup>
+                  Wishlist Name<sup>*</sup>
                 </FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
@@ -78,6 +80,7 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
               <DatePicker date={date} setDate={setDate} />
             </div>
           </div>
+          <ColorPicker />
           <div className="flex justify-end">
             <SubmitButton />
           </div>
@@ -99,7 +102,9 @@ const CreateWishlist = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <h1 className="text-2xl font-medium">Create Wishlist </h1>
+          <DialogTitle className="font-serif text-4xl font-medium">
+            Create Wishlist{" "}
+          </DialogTitle>
           <CreateWishlistForm />
         </DialogHeader>
       </DialogContent>

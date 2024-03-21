@@ -6,7 +6,7 @@ import { serverActionResponseSchema } from "../db/schema/common";
 import { privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import { db } from "../db";
 import { wishlists } from "../db/schema/wishlist";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 const inputSchema = z.object({
   wishlistId: z.string(),
@@ -43,5 +43,25 @@ export const setPrivacyType = makeProtectedAction(
     return {
       message: "success",
     };
+  },
+);
+
+export const updateTitle = makeProtectedAction(
+  z.object({
+    title: z.string(),
+    wishlistId: z.string(),
+  }),
+  async ({ title, wishlistId }, { session }) => {
+    await db
+      .update(wishlists)
+      .set({
+        name: title,
+      })
+      .where(
+        and(
+          eq(wishlists.id, wishlistId),
+          eq(wishlists.createdById, session.user.id),
+        ),
+      );
   },
 );

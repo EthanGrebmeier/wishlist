@@ -1,14 +1,19 @@
+import { Scroll } from "lucide-react";
+import TitleBar from "~/components/ui/title-bar";
 import CreateWishlist from "~/components/wishlist/create-wishlist";
 import ListView from "~/components/wishlist/list-view";
 
 const WishlistPage = () => {
   return (
-    <div className="max-h-full overflow-y-auto py-6">
-      <div className="mb-4 flex items-center justify-between  px-6 pb-2">
-        <h1 className="text-4xl font-medium"> My Wishlists</h1>
+    <div className="max-h-full overflow-y-auto py-4 lg:py-8">
+      <TitleBar>
+        <span className="flex items-center gap-4">
+          <TitleBar.Title>My Wishlists </TitleBar.Title>{" "}
+          <Scroll className="-mt-1" size="20" />
+        </span>
         <CreateWishlist />
-      </div>
-      <div className="px-4 py-6">
+      </TitleBar>
+      <div className="px-6 lg:py-4">
         <ListView />
       </div>
     </div>

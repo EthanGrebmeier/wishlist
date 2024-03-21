@@ -3,6 +3,8 @@ import ProductList from "./product-list";
 import { AddProduct } from "./add-product";
 import ShareWishlist from "../share-wishlist";
 import { getServerAuthSession } from "~/server/auth";
+import TitleBar from "~/components/ui/title-bar";
+import TitleDisplay from "./settings/title-display";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -21,10 +23,14 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
   const isEditor = session.user.id === wishlist.createdById;
 
   return (
-    <div className="grid max-h-screen grid-rows-[auto_1fr] overflow-y-auto py-6">
-      <div className="mx-6 mb-8 flex justify-between gap-4 border-b border-slate-200 pb-4">
-        <h1 className="text-4xl font-medium">{wishlist.name} </h1>
-        <div className="flex space-x-4">
+    <div className="grid max-h-screen grid-rows-[auto_1fr] overflow-y-auto py-4 lg:py-8">
+      <TitleBar>
+        <TitleDisplay
+          isEditor={isEditor}
+          wishlistId={wishlistId}
+          title={wishlist.name}
+        />
+        <div className="flex gap-4 lg:flex-row">
           {isEditor && <AddProduct wishlistId={wishlistId} />}
           {isEditor && (
             <ShareWishlist
@@ -34,7 +40,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
             />
           )}
         </div>
-      </div>
+      </TitleBar>
       <section className="overflow-y-auto px-6">
         <ProductList isEditor={isEditor} products={wishlist.products} />
       </section>

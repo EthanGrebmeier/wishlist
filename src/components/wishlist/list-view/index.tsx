@@ -13,7 +13,7 @@ const ListView = async () => {
   }
 
   return (
-    <ul className="grid grid-cols-4 gap-4">
+    <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {wishlists.map((wishlist) => (
         <ListItem user={session.user} wishlist={wishlist} key={wishlist.id} />
       ))}
