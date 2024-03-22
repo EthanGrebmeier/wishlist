@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { makeProtectedAction } from "~/lib/actions/protectedAction";
-import { serverActionResponseSchema } from "../db/schema/common";
 import { privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import { db } from "../db";
 import { wishlists } from "../db/schema/wishlist";

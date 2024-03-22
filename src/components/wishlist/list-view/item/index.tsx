@@ -4,6 +4,8 @@ import Link from "~/components/ui/link";
 import Image from "next/image";
 import type { User } from "next-auth";
 import { formatDate } from "date-fns";
+import { cn } from "~/lib/utils";
+import { colors } from "~/consts/colors";
 
 type ListItemProps = {
   wishlist: WishlistWithProducts;
@@ -11,7 +13,7 @@ type ListItemProps = {
 };
 
 const ListItem = ({ wishlist, user }: ListItemProps) => {
-  const { name, id, products } = wishlist;
+  const { name, id, products, color } = wishlist;
 
   const isEditor = wishlist.createdById === user.id;
 
@@ -23,7 +25,13 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
         </div>
       )}
       <Link href={`/wishlist/${id}`}>
-        <div className=" group w-full space-y-4 overflow-hidden rounded-md bg-slate-100">
+        <div
+          className={cn(
+            "group w-full space-y-4 overflow-hidden rounded-md",
+            colors.find((colorTheme) => colorTheme.name === color)
+              ?.background ?? "bg-white",
+          )}
+        >
           <div className="relative aspect-square w-full overflow-hidden object-cover">
             <Image alt="placeholder" src="https://placehold.co/600x600" fill />
           </div>

@@ -1,40 +1,15 @@
-import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import type { z } from "zod";
+import { colors } from "~/consts/colors";
 import { cn } from "~/lib/utils";
+import type { colorSchema } from "~/schema/wishlist/wishlist";
 
-const colors = [
-  {
-    name: "red",
-    className: "bg-red-500",
-  },
-  {
-    name: "blue",
-    className: "bg-blue-300",
-  },
-  {
-    name: "green",
-    className: "bg-green-300",
-  },
-  {
-    name: "yellow",
-    className: "bg-yellow-300",
-  },
-  {
-    name: "orange",
-    className: "bg-orange-300",
-  },
-  {
-    name: "pink",
-    className: "bg-pink-200",
-  },
-  {
-    name: "white",
-    className: "bg-white",
-  },
-];
+type ColorPickerProps = {
+  selectedColor: z.infer<typeof colorSchema>;
+  setSelectedColor: Dispatch<SetStateAction<z.infer<typeof colorSchema>>>;
+};
 
-const ColorPicker = () => {
-  const [selectedColor, setSelectedColor] = useState("");
-
+const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-medium" htmlFor="color">
@@ -50,7 +25,7 @@ const ColorPicker = () => {
               onClick={() => setSelectedColor(color.name)}
               type="button"
               className={cn(
-                color.className,
+                color.background,
                 "aspect-square w-6 rounded-full border border-slate-800 transition-[width] group-hover:w-full ",
                 selectedColor === color.name && "border-2",
               )}

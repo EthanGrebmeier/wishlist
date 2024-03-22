@@ -29,6 +29,7 @@ import {
 import DatePicker from "./date-picker";
 import { useAction } from "next-safe-action/hooks";
 import ColorPicker from "./color-picker";
+import type { colorSchema } from "~/schema/wishlist/wishlist";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -47,6 +48,8 @@ type CreateWishlistFormProps = {
 const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
   const { execute } = useAction(createWishlist, { onSuccess });
   const [date, setDate] = React.useState<Date>();
+  const [selectedColor, setSelectedColor] =
+    React.useState<z.infer<typeof colorSchema>>("white");
   const form = useForm<z.infer<typeof createWishlistInputSchema>>({
     resolver: zodResolver(createWishlistInputSchema),
   });
@@ -57,7 +60,7 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
       <Form {...form}>
         <form
           onSubmit={() => form.trigger()}
-          action={() => execute({ ...fields, date })}
+          action={() => execute({ ...fields, date, color: selectedColor })}
           className="relative w-full space-y-4"
         >
           <FormField
@@ -80,7 +83,10 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
               <DatePicker date={date} setDate={setDate} />
             </div>
           </div>
-          <ColorPicker />
+          <ColorPicker
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
           <div className="flex justify-end">
             <SubmitButton />
           </div>

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { makeProtectedAction } from "~/lib/actions/protectedAction";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
+import { colorSchema } from "~/schema/wishlist/wishlist";
 import { db } from "~/server/db";
 import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
 
@@ -45,15 +46,19 @@ export const deleteWishlist = makeProtectedAction(
 );
 
 export const createWishlist = makeProtectedAction(
-  z.object({ wishlistName: z.string(), date: z.date().optional() }),
-  async ({ wishlistName, date }, { session }) => {
+  z.object({
+    wishlistName: z.string(),
+    date: z.date().optional(),
+    color: colorSchema,
+  }),
+  async ({ wishlistName, date, color }, { session }) => {
     const wishlistValues = {
       createdById: session.user.id,
       name: wishlistName,
       id: randomUUID(),
       dueDate: date,
+      color,
     };
-    console.log(wishlistValues);
     try {
       await db.insert(wishlists).values(wishlistValues);
 

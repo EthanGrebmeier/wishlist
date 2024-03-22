@@ -77,6 +77,19 @@ export const wishlists = createTable(
       .notNull()
       .default("private"),
     dueDate: date("date"),
+    color: varchar("color", {
+      length: 255,
+      enum: [
+        "red",
+        "green",
+        "yellow",
+        "pink",
+        "orange",
+        "blue",
+        "white",
+        "lavender",
+      ],
+    }).default("white"),
   },
   (example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),
