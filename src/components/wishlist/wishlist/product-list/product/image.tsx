@@ -2,7 +2,7 @@ type ProductImageProps = {
   imageUrl: string | null;
 };
 
-const className = "h-full w-full object-cover";
+const className = "h-full w-auto object-cover object-center  mx-auto";
 
 const ProductImage = ({ imageUrl }: ProductImageProps) => {
   /* eslint-disable-next-line */
