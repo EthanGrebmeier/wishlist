@@ -111,8 +111,8 @@ const CreateWishlist = () => {
           <DialogTitle className="font-serif text-4xl font-medium">
             Create Wishlist{" "}
           </DialogTitle>
-          <CreateWishlistForm />
         </DialogHeader>
+        <CreateWishlistForm />
       </DialogContent>
     </Dialog>
   );

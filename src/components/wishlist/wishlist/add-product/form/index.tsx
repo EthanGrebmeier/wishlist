@@ -100,138 +100,116 @@ export const AddProductForm = ({
   }, [onSuccess, addResult, updateResult, method]);
 
   return (
-    <div className="flex flex-col gap-4 ">
-      {/* <section>
-        <h2 className="pb-2 text-2xl font-medium"> Product Preview </h2>
-        <div className="mx-auto w-[280px]">
-          <div className="mb-2 aspect-square w-full overflow-hidden rounded-md">
-            <img
-              src={fields.image ?? "https://placehold.co/600x400/EEE/31343C"}
-            />
-          </div>
-          <div className="flex h-6 w-full items-center justify-between gap-4">
-            <p className="text-xl font-medium"> {fields.name} </p>
-            {fields.price && (
-              <p className="text-md font-medium"> ${fields.price} </p>
+    <Form {...form}>
+      <form
+        className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto p-4"
+        action={executeServerAction}
+        onSubmit={() => form.trigger()}
+      >
+        <FormField
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Product Name<sup> * </sup>
+              </FormLabel>
+              <FormControl>
+                <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="brand"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Brand</FormLabel>
+              <FormControl>
+                <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="image"
+          render={({ field }) => (
+            <div className=" grid grid-cols-[1fr_auto] gap-4">
+              <div className="flex w-full items-center">
+                <FormItem className="w-full">
+                  <FormLabel>Product Image</FormLabel>
+
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+              <ProductFormImagePreview
+                setImageUrl={(value: string) => form.setValue("image", value)}
+                imageUrl={fields.image}
+              />
+            </div>
+          )}
+        />
+        <FormField
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Price</FormLabel>
+              <FormControl>
+                <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="quantity"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Quantity</FormLabel>
+              <FormControl>
+                <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="url"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Link </FormLabel>
+              <FormControl>
+                <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="h-12">
+          <div
+            className={cn(
+              "absolute bottom-0 left-0 right-0 m-4 mt-8 flex bg-background",
+              setFrame ? "justify-between" : "justify-end",
             )}
+          >
+            {setFrame && (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setFrame("scrape")}
+                icon={<ArrowLeft width={20} height={20} />}
+              >
+                Back
+              </Button>
+            )}
+            <SubmitButton />
           </div>
         </div>
-      </section> */}
-      <section>
-        <Form {...form}>
-          <form
-            className=" flex h-full flex-col gap-4 overflow-y-auto px-4 py-2"
-            action={executeServerAction}
-            onSubmit={() => form.trigger()}
-          >
-            <FormField
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Product Name<sup> * </sup>
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="brand"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="image"
-              render={({ field }) => (
-                <div className=" grid grid-cols-[1fr_auto] gap-4">
-                  <div className="flex w-full items-center">
-                    <FormItem className="w-full">
-                      <FormLabel>Product Image</FormLabel>
-
-                      <FormControl>
-                        <Input type="text" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  </div>
-                  <ProductFormImagePreview
-                    setImageUrl={(value: string) =>
-                      form.setValue("image", value)
-                    }
-                    imageUrl={fields.image}
-                  />
-                </div>
-              )}
-            />
-            <FormField
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Price</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Quantity</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Link </FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="h-12">
-              <div
-                className={cn(
-                  "absolute bottom-0 left-0 right-0 m-4 mt-8 flex bg-background",
-                  setFrame ? "justify-between" : "justify-end",
-                )}
-              >
-                {setFrame && (
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setFrame("scrape")}
-                    icon={<ArrowLeft width={20} height={20} />}
-                  >
-                    Back
-                  </Button>
-                )}
-                <SubmitButton />
-              </div>
-            </div>
-          </form>
-        </Form>
-      </section>
-    </div>
+      </form>
+    </Form>
   );
 };

@@ -51,7 +51,7 @@ const EditTitleForm = ({
             wishlistId,
           });
         }}
-        className="space-y-4"
+        className="space-y-4 px-4 "
       >
         <FormField
           name="title"
@@ -69,7 +69,7 @@ const EditTitleForm = ({
         />
         <SubmitButton
           icon={<Pencil size={20} />}
-          className="absolute bottom-7 right-6"
+          className="absolute bottom-5 right-6"
         />
       </form>
     </Form>

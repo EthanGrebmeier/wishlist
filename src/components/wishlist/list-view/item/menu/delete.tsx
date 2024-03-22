@@ -28,10 +28,14 @@ const Delete = () => {
           Delete Wishlist
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader className="inline-block">
+          <DialogHeader className="inline-block font-serif text-4xl font-medium">
+            Delete Wishlist
+          </DialogHeader>
+          <p>
+            {" "}
             Are you sure you would like to delete{" "}
             <span className="font-bold"> {wishlist.name}</span>?
-          </DialogHeader>
+          </p>
           <DialogDescription> This action cannot be undone</DialogDescription>
           <div className="flex justify-between">
             <DialogClose asChild>

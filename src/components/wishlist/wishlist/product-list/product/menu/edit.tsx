@@ -26,23 +26,21 @@ export const EditProduct = () => {
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DialogTrigger className="w-full text-left">Edit Product</DialogTrigger>
       </DropdownMenuItem>
-      <DialogContent className="flex flex-col py-4">
+      <DialogContent className="flex flex-col">
         <DialogHeader>
-          <DialogTitle className="px-4 font-serif text-4xl font-medium">
+          <DialogTitle className="font-serif text-4xl font-medium">
             Edit Product{" "}
           </DialogTitle>
         </DialogHeader>
-        <div className="overflow-y-auto">
-          <AddProductForm
-            method="update"
-            wishlistId={wishlistId}
-            product={product}
-            onSuccess={() => {
-              router.refresh();
-              setIsOpen(false);
-            }}
-          />
-        </div>
+        <AddProductForm
+          method="update"
+          wishlistId={wishlistId}
+          product={product}
+          onSuccess={() => {
+            router.refresh();
+            setIsOpen(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

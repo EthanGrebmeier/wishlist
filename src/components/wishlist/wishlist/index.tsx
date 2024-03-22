@@ -27,7 +27,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
       <TitleBar>
         <TitleDisplay
           isEditor={isEditor}
-          wishlistId={wishlistId}
+          wishlist={wishlist}
           title={wishlist.name}
         />
         <div className="flex gap-4 lg:flex-row">

@@ -45,13 +45,17 @@ const Product = async ({ product, wishlist }: ProductProps) => {
       </Link>
       <section className="flex w-full flex-1 flex-col gap-4 lg:grid lg:grid-cols-[1fr_auto] lg:gap-2 xl:gap-24">
         <div className="mx-auto inline h-auto gap-4 object-cover align-top text-[0] lg:mx-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="block h-auto w-full  rounded-md md:h-auto md:max-h-[740px] md:w-auto md:max-w-full "
-            alt={product.name}
-            /* eslint-disable-next-line  */
-            src={product.image || "https://placehold.co/600x600"}
-          />
+          <div className="flex h-full w-full items-center justify-center ">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <div className="aspect-square overflow-hidden rounded-md border border-gray-200 bg-white">
+              <img
+                className="mx-auto h-full w-auto object-cover object-center md:max-h-[540px]  md:w-auto"
+                alt={product.name}
+                /* eslint-disable-next-line  */
+                src={product.image || "https://placehold.co/600x600"}
+              />
+            </div>
+          </div>
         </div>
         <div className="mx-auto flex w-full justify-end lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
           <div className="flex w-full flex-col justify-between gap-6 border-gray-200 py-2 lg:-mt-4 lg:w-[340px] lg:border-l lg:pl-6">

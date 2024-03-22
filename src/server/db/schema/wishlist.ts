@@ -89,7 +89,9 @@ export const wishlists = createTable(
         "white",
         "lavender",
       ],
-    }).default("white"),
+    })
+      .default("white")
+      .notNull(),
   },
   (example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),

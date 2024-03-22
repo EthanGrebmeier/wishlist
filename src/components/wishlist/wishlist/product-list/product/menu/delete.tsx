@@ -39,11 +39,14 @@ const Delete = () => {
         </DialogTrigger>
       </DropdownMenuItem>
       <DialogContent>
-        <DialogHeader className="inline-block">
+        <DialogHeader className="inline-block font-serif text-4xl font-medium">
+          Delete Product
+        </DialogHeader>
+        <p>
           Are you sure you would like to delete{" "}
           <span className="font-bold"> {product.name}</span>?
-        </DialogHeader>
-        <DialogDescription> This action cannot be undone</DialogDescription>
+        </p>{" "}
+        <DialogDescription>This action cannot be undone</DialogDescription>
         <div className="flex justify-between">
           <DialogClose asChild>
             <Button>Cancel</Button>
