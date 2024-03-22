@@ -38,7 +38,7 @@ const Commit = ({
     if (hasUserCommitted) {
       return (
         <div className="flex flex-col gap-4">
-          <div className="flex h-11 items-center justify-center rounded-md border border-green-600 bg-green-200/60 px-4 text-center text-sm font-medium text-green-600">
+          <div className="flex h-11 items-center justify-center rounded-md border border-primary-foreground bg-primary px-4 text-center text-sm font-medium text-primary-foreground">
             <p>
               {" "}
               <span className="font-extrabold"> You </span> are getting this
