@@ -24,6 +24,7 @@ import { updateProduct } from "~/server/actions/product";
 import { useAction } from "next-safe-action/hooks";
 import type { WishlistProduct } from "~/types/wishlist";
 import { cn } from "~/lib/utils";
+import { DialogFooter } from "~/components/ui/dialog";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -116,10 +117,10 @@ export const AddProductForm = ({
           </div>
         </div>
       </section> */}
-      <section className="relative overflow-visible">
+      <section>
         <Form {...form}>
           <form
-            className=" flex flex-col gap-4 overflow-y-auto px-4 py-2"
+            className=" flex h-full flex-col gap-4 overflow-y-auto px-4 py-2"
             action={executeServerAction}
             onSubmit={() => form.trigger()}
           >
@@ -208,23 +209,25 @@ export const AddProductForm = ({
                 </FormItem>
               )}
             />
-            <div
-              className={cn(
-                "mt-8 flex",
-                setFrame ? "justify-between" : "justify-end",
-              )}
-            >
-              {setFrame && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setFrame("scrape")}
-                  icon={<ArrowLeft width={20} height={20} />}
-                >
-                  Back
-                </Button>
-              )}
-              <SubmitButton />
+            <div className="h-12">
+              <div
+                className={cn(
+                  "absolute bottom-0 left-0 right-0 m-4 mt-8 flex bg-background",
+                  setFrame ? "justify-between" : "justify-end",
+                )}
+              >
+                {setFrame && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setFrame("scrape")}
+                    icon={<ArrowLeft width={20} height={20} />}
+                  >
+                    Back
+                  </Button>
+                )}
+                <SubmitButton />
+              </div>
             </div>
           </form>
         </Form>

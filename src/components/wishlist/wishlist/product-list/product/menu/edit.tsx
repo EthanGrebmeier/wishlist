@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
 
@@ -25,9 +26,13 @@ export const EditProduct = () => {
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DialogTrigger className="w-full text-left">Edit Product</DialogTrigger>
       </DropdownMenuItem>
-      <DialogContent>
+      <DialogContent className="flex flex-col py-4">
         <DialogHeader>
-          <h1 className="text-4xl font-medium">Edit Product </h1>
+          <DialogTitle className="px-4 font-serif text-4xl font-medium">
+            Edit Product{" "}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="overflow-y-auto">
           <AddProductForm
             method="update"
             wishlistId={wishlistId}
@@ -37,7 +42,7 @@ export const EditProduct = () => {
               setIsOpen(false);
             }}
           />
-        </DialogHeader>
+        </div>
       </DialogContent>
     </Dialog>
   );
