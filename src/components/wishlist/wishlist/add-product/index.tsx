@@ -11,7 +11,6 @@ import {
 } from "~/components/ui/dialog";
 
 import { AddProductForm } from "./form";
-import FrameSelect from "./frame-select";
 import ScrapeInput from "./scrape-input";
 import type { z } from "zod";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
@@ -28,13 +27,19 @@ type AddProduct = {
 
 export const AddProduct = ({ wishlistId }: AddProduct) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [frame, setFrame] = useState<"init" | "scrape" | "form">("init");
+  const [frame, setFrame] = useState<"scrape" | "form">("scrape");
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
   >(undefined);
 
   useEffect(() => {
-    setFrame("init");
+    if (!isOpen) {
+      const timeout = setTimeout(() => {
+        setFrame("scrape");
+      }, 200);
+
+      return clearTimeout(timeout);
+    }
   }, [isOpen]);
 
   return (
@@ -57,9 +62,9 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
       <DialogContent className="px-0">
         <DialogHeader>
           <h1 className="px-4 font-serif text-4xl">Add Product </h1>
-          {frame === "init" ? (
-            <FrameSelect setFrame={setFrame} />
-          ) : frame === "scrape" ? (
+        </DialogHeader>
+        <div>
+          {frame === "scrape" ? (
             <ScrapeInput setFrame={setFrame} setScrapedData={setScrapedData} />
           ) : (
             <AddProductForm
@@ -73,7 +78,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
               }}
             />
           )}
-        </DialogHeader>
+        </div>
       </DialogContent>
     </Dialog>
   );

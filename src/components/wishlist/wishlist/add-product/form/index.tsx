@@ -29,7 +29,7 @@ type AddProductFormProps = {
   wishlistId: string;
   onSuccess?: () => void;
   defaultValues?: z.infer<typeof partialCompiledProductDataSchema>;
-  setFrame?: Dispatch<SetStateAction<"init" | "scrape" | "form">>;
+  setFrame?: Dispatch<SetStateAction<"scrape" | "form">>;
   product?: WishlistProduct;
 } & (
   | {
@@ -119,7 +119,7 @@ export const AddProductForm = ({
       <section className="relative overflow-visible">
         <Form {...form}>
           <form
-            className=" flex flex-col gap-4 overflow-y-auto px-4 py-2 "
+            className=" flex flex-col gap-4 overflow-y-auto px-4 py-2"
             action={executeServerAction}
             onSubmit={() => form.trigger()}
           >
@@ -210,18 +210,16 @@ export const AddProductForm = ({
             />
             <div
               className={cn(
-                "flex",
+                "mt-8 flex",
                 setFrame ? "justify-between" : "justify-end",
               )}
             >
               {setFrame && (
                 <Button
                   type="button"
-                  onClick={() =>
-                    defaultValues ? setFrame("scrape") : setFrame("init")
-                  }
+                  variant="secondary"
+                  onClick={() => setFrame("scrape")}
                   icon={<ArrowLeft width={20} height={20} />}
-                  variant="outline"
                 >
                   Back
                 </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ChevronsRight, Sparkles } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ import {
 import { scrapeProductData } from "~/server/actions/product";
 
 type ScrapeInputProps = {
-  setFrame: Dispatch<SetStateAction<"init" | "scrape" | "form">>;
+  setFrame: Dispatch<SetStateAction<"scrape" | "form">>;
   setScrapedData: Dispatch<
     SetStateAction<z.infer<typeof partialCompiledProductDataSchema> | undefined>
   >;
@@ -56,7 +56,7 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
   return (
     <Form {...form}>
       <form
-        className="space-y-4"
+        className="space-y-8 px-4 "
         action={execute}
         onSubmit={() => form.trigger()}
       >
@@ -64,9 +64,7 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Product URL<sup> * </sup>
-              </FormLabel>
+              <FormLabel>Product Link</FormLabel>
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>
@@ -74,14 +72,14 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
             </FormItem>
           )}
         />
-        <div className="flex justify-between">
+        <div className="mt-8 flex justify-between">
           <Button
-            onClick={() => setFrame("init")}
-            icon={<ArrowLeft width={20} height={20} />}
-            variant="outline"
+            onClick={() => setFrame("form")}
+            icon={<ChevronsRight size={20} />}
+            variant="secondary"
             type="button"
           >
-            Back
+            Skip
           </Button>
           <SubmitButton icon={<Sparkles width={20} height={20} />}>
             Autofill
