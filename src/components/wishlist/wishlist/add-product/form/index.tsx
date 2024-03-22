@@ -117,10 +117,9 @@ export const AddProductForm = ({
         </div>
       </section> */}
       <section className="relative overflow-visible">
-        <h2 className="pb-2 text-2xl font-medium"> Product Details </h2>
         <Form {...form}>
           <form
-            className=" space-y-4 overflow-y-auto "
+            className=" flex flex-col gap-4 overflow-y-auto px-4 py-2 "
             action={executeServerAction}
             onSubmit={() => form.trigger()}
           >

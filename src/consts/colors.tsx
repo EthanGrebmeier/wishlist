@@ -5,6 +5,10 @@ type Color = { name: z.infer<typeof colorSchema>; background: string };
 
 export const colors: Color[] = [
   {
+    name: "white",
+    background: "bg-white",
+  },
+  {
     name: "red",
     background: "bg-red-500",
   },
@@ -17,6 +21,10 @@ export const colors: Color[] = [
     background: "bg-green-300",
   },
   {
+    name: "lavender",
+    background: "bg-purple-200",
+  },
+  {
     name: "yellow",
     background: "bg-yellow-300",
   },
@@ -27,9 +35,5 @@ export const colors: Color[] = [
   {
     name: "pink",
     background: "bg-pink-200",
-  },
-  {
-    name: "white",
-    background: "bg-white",
   },
 ];

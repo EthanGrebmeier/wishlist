@@ -9,9 +9,11 @@ type ProductListProps = {
 const ProductList = ({ products, isEditor }: ProductListProps) => {
   return (
     <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {products.map((product) => (
-        <Product isEditor={isEditor} product={product} key={product.id} />
-      ))}
+      {products
+        .sort((a) => (a.commitments.length ? 1 : -1))
+        .map((product) => (
+          <Product isEditor={isEditor} product={product} key={product.id} />
+        ))}
     </ul>
   );
 };

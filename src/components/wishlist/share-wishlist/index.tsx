@@ -34,7 +34,7 @@ const ShareWishlist = ({
         <Tooltip delayDuration={200}>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <Button className="border-2 border-black bg-green-200 text-black hover:bg-yellow-400">
+              <Button>
                 <Share size={20} />
               </Button>
             </DialogTrigger>

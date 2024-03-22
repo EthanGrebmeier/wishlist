@@ -13,10 +13,16 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { SubmitButton } from "~/components/ui/submit-button";
+import { useEffect, useState } from "react";
 
 const Delete = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [state, action] = useFormState(deleteProduct, null);
   const { product, wishlistId } = useProductMenu();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [product]);
 
   if (!product || !wishlistId) return;
 
@@ -26,7 +32,7 @@ const Delete = () => {
   });
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DialogTrigger className="w-full text-left text-red-500">
           Delete {product.name}

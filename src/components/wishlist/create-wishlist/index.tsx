@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 
-import { PlusIcon } from "lucide-react";
+import { FilePlus, PlusIcon } from "lucide-react";
 import { SubmitButton } from "~/components/ui/submit-button";
 import { createWishlist } from "~/app/wishlist/actions";
 import {
@@ -78,8 +78,8 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
             )}
           />
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2 text-sm font-medium">
-              <label htmlFor="date-picker">Due Date (optional) </label>
+            <div className="flex flex-col gap-2 text-lg font-medium">
+              <label htmlFor="date-picker">Due Date </label>
               <DatePicker date={date} setDate={setDate} />
             </div>
           </div>
@@ -87,8 +87,8 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
           />
-          <div className="flex justify-end">
-            <SubmitButton />
+          <div className="absolute bottom-1 right-0 flex justify-end">
+            <SubmitButton icon={<FilePlus size={20} />} />
           </div>
         </form>
       </Form>

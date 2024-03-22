@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Pencil } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -55,18 +56,21 @@ const EditTitleForm = ({
         <FormField
           name="title"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Title<sup>* </sup>
-              </FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <div>
+              <FormItem className="max-w-[320px]">
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </div>
           )}
         />
-        <SubmitButton />
+        <SubmitButton
+          icon={<Pencil size={20} />}
+          className="absolute bottom-7 right-6"
+        />
       </form>
     </Form>
   );

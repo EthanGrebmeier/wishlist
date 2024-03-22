@@ -38,9 +38,9 @@ const TitleDisplay = ({ title, wishlistId, isEditor }: UpdateNameProps) => {
       <TooltipProvider>
         <Tooltip delayDuration={200}>
           <TooltipTrigger asChild>
-            <DialogTrigger className="group flex items-center gap-2">
+            <DialogTrigger className="group flex items-center gap-4">
               <TitleBar.Title>{title}</TitleBar.Title>
-              <div className="rounded-md border-2 border-black bg-green-600 p-1 opacity-0 transition-opacity duration-300 group-hover:animate-bounce group-hover:opacity-100 ">
+              <div className="animate-bounce rounded-md border-2 border-black bg-primary p-1 opacity-0 transition-opacity duration-1000 group-hover:opacity-100">
                 <Pencil size={15} />
               </div>
             </DialogTrigger>
@@ -55,9 +55,9 @@ const TitleDisplay = ({ title, wishlistId, isEditor }: UpdateNameProps) => {
             <DialogTitle className="text-4xl font-medium">
               Edit Title
             </DialogTitle>
-            <div className="-mt-2 rounded-md border-2 border-black bg-green-600 p-1 ">
+            {/* <div className="-mt-2 rounded-md border-2 border-black bg-primary p-1 ">
               <Pencil size={15} />
-            </div>
+            </div> */}
           </div>
           <EditTitleForm
             onSuccess={() => {

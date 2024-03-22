@@ -44,7 +44,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
           <>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
-                <Button className="border-2 border-black bg-green-200 text-black hover:bg-green-600">
+                <Button>
                   {" "}
                   <PlusIcon width="20" height="20" />
                 </Button>
@@ -54,9 +54,9 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
           </>
         </Tooltip>
       </TooltipProvider>
-      <DialogContent>
+      <DialogContent className="px-0">
         <DialogHeader>
-          <h1 className="text-4xl font-medium">Add Product </h1>
+          <h1 className="px-4 font-serif text-4xl">Add Product </h1>
           {frame === "init" ? (
             <FrameSelect setFrame={setFrame} />
           ) : frame === "scrape" ? (

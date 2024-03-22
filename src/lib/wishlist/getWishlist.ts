@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
@@ -42,14 +42,17 @@ export const getUserWishlists = async () => {
 };
 
 export const getSharedWishlists = async () => {
-  const userSession = await getServerAuthSession();
+  const session = await getServerAuthSession();
 
-  if (!userSession) {
+  if (!session) {
     throw new Error("No user session");
   }
 
   const sharedLists = await db.query.wishlistShares.findMany({
-    where: eq(wishlistShares.sharedWithUserId, userSession.user.id),
+    where: and(
+      eq(wishlistShares.sharedWithUserId, session.user.id),
+      not(eq(wishlistShares.createdById, session.user.id)),
+    ),
     with: {
       wishlist: {
         with: {
