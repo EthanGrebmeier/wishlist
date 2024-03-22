@@ -56,7 +56,7 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
   return (
     <Form {...form}>
       <form
-        className="space-y-8 px-4 "
+        className="space-y-8 px-4 py-4 "
         action={execute}
         onSubmit={() => form.trigger()}
       >

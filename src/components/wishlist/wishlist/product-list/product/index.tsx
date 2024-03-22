@@ -21,7 +21,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
         </MenuProvider>
       )}
       <Link href={getProductSlug(product)} className="w-full space-y-4">
-        <div className="relative aspect-square w-full overflow-hidden rounded-md bg-slate-100">
+        <div className="relative aspect-square w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
           {!!product.commitments.length && (
             <p className="absolute left-2 top-2 rounded-md border border-primary-foreground bg-primary px-2 py-1 text-sm text-primary-foreground">
               Purchased

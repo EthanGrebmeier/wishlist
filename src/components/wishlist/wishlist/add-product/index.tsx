@@ -61,7 +61,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
       </TooltipProvider>
       <DialogContent className="px-0">
         <DialogHeader>
-          <h1 className="px-4 font-serif text-4xl">Add Product </h1>
+          <h1 className="px-4 pt-4 font-serif text-4xl">Add Product </h1>
         </DialogHeader>
         <div>
           {frame === "scrape" ? (
