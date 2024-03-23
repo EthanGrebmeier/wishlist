@@ -18,7 +18,6 @@ import { Input } from "~/components/ui/input";
 
 import { FilePlus, PlusIcon } from "lucide-react";
 import { SubmitButton } from "~/components/ui/submit-button";
-import { createWishlist } from "~/app/wishlist/actions";
 import {
   Dialog,
   DialogContent,
@@ -30,6 +29,7 @@ import DatePicker from "./date-picker";
 import { useAction } from "next-safe-action/hooks";
 import ColorPicker from "./color-picker";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
+import { createWishlist, updateWishlist } from "~/server/actions/wishlist";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -43,16 +43,37 @@ const createWishlistInputSchema = z.object({
 
 type CreateWishlistFormProps = {
   onSuccess?: () => void;
+  values?: WishlistFormValues;
 };
 
-const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
-  const { execute } = useAction(createWishlist, { onSuccess });
-  const [date, setDate] = React.useState<Date>();
-  const [selectedColor, setSelectedColor] =
-    React.useState<z.infer<typeof colorSchema>>("white");
+interface WishlistFormValues {
+  wishlistId: string;
+  wishlistName: string;
+  date: Date | null;
+  color: z.infer<typeof colorSchema>;
+}
+
+export const CreateWishlistForm = ({
+  onSuccess,
+  values,
+}: CreateWishlistFormProps) => {
+  const { execute: executeCreate } = useAction(createWishlist, { onSuccess });
+  const { execute: executeUpdate } = useAction(updateWishlist, { onSuccess });
+  const [date, setDate] = React.useState<Date | undefined>(
+    values?.date ?? undefined,
+  );
+  const [selectedColor, setSelectedColor] = React.useState<
+    z.infer<typeof colorSchema>
+  >(values?.color ?? "white");
   const form = useForm<z.infer<typeof createWishlistInputSchema>>({
     resolver: zodResolver(createWishlistInputSchema),
+    defaultValues: {
+      wishlistName: values?.wishlistName ?? "",
+    },
   });
+
+  const method = values ? "UPDATE" : "CREATE";
+
   const fields = form.watch();
 
   return (
@@ -60,7 +81,16 @@ const CreateWishlistForm = ({ onSuccess }: CreateWishlistFormProps) => {
       <Form {...form}>
         <form
           onSubmit={() => form.trigger()}
-          action={() => execute({ ...fields, date, color: selectedColor })}
+          action={() =>
+            method === "CREATE"
+              ? executeCreate({ ...fields, date, color: selectedColor })
+              : executeUpdate({
+                  ...fields,
+                  date,
+                  color: selectedColor,
+                  id: values?.wishlistId ?? "",
+                })
+          }
           className="relative w-full space-y-4"
         >
           <FormField

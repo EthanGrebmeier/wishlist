@@ -22,7 +22,7 @@ const WishlistPage = async () => {
           <BookUser className="-mt-1" size={20} />
         </span>
       </TitleBar>
-      <div className="px-6 py-4">
+      <div className="px-6 pt-4">
         <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {sharedLists.map((wishlist) => (
             <ListItem

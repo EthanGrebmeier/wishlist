@@ -5,6 +5,7 @@ import ShareWishlist from "../share-wishlist";
 import { getServerAuthSession } from "~/server/auth";
 import TitleBar from "~/components/ui/title-bar";
 import TitleDisplay from "./settings/title-display";
+import EditWishlist from "./edit-wishlist";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -23,7 +24,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
   const isEditor = session.user.id === wishlist.createdById;
 
   return (
-    <div className="grid max-h-screen grid-rows-[auto_1fr] overflow-y-auto py-4 lg:py-8">
+    <div className="grid max-h-screen grid-rows-[auto_1fr] overflow-y-auto pt-4 lg:pt-8">
       <TitleBar>
         <TitleDisplay
           isEditor={isEditor}
@@ -39,9 +40,10 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
               privacyType={wishlist.privacyType}
             />
           )}
+          {isEditor && <EditWishlist wishlist={wishlist} />}
         </div>
       </TitleBar>
-      <section className="overflow-y-auto px-6">
+      <section className="overflow-y-auto px-6 pt-4 ">
         <ProductList isEditor={isEditor} products={wishlist.products} />
       </section>
     </div>

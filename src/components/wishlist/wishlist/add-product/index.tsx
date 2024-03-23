@@ -49,10 +49,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
           <>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
-                <Button>
-                  {" "}
-                  <PlusIcon width="20" height="20" />
-                </Button>
+                <Button icon={<PlusIcon size={20} />}>Add Product</Button>
               </DialogTrigger>
             </TooltipTrigger>
             <TooltipContent>Add Product</TooltipContent>

@@ -13,7 +13,7 @@ const WishlistPage = () => {
         </span>
         <CreateWishlist />
       </TitleBar>
-      <div className="px-6 lg:py-4">
+      <div className="px-6 pt-4">
         <ListView />
       </div>
     </div>

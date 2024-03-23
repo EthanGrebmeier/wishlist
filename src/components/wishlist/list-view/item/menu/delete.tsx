@@ -2,7 +2,6 @@
 import { Button } from "~/components/ui/button";
 import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
-import { deleteWishlist } from "~/app/wishlist/actions";
 import { useWishlistMenu } from "./menuProvider";
 import {
   Dialog,
@@ -14,6 +13,7 @@ import {
 } from "~/components/ui/dialog";
 import { useAction } from "next-safe-action/hooks";
 import { SubmitButton } from "~/components/ui/submit-button";
+import { deleteWishlist } from "~/server/actions/wishlist";
 
 const Delete = () => {
   const { execute } = useAction(deleteWishlist);

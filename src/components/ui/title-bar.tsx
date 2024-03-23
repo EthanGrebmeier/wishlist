@@ -7,7 +7,7 @@ type TitleBarProps = {
 
 const TitleBar = ({ children }: TitleBarProps) => {
   return (
-    <div className="mx-6 flex items-center justify-between border-gray-200 pb-4 lg:mb-8 lg:border-b">
+    <div className="mx-6 flex h-16 items-center justify-between border-gray-200 pb-4 lg:border-b">
       {children}
     </div>
   );
@@ -21,7 +21,12 @@ const Title = ({
   className?: string;
 }) => {
   return (
-    <h1 className={cn("py-1 font-serif text-3xl font-medium", className)}>
+    <h1
+      className={cn(
+        "py-1 font-serif text-2xl font-medium md:text-3xl",
+        className,
+      )}
+    >
       {" "}
       {children}{" "}
     </h1>
