@@ -8,15 +8,18 @@ import {
 } from "~/components/ui/dropdown-menu";
 import Delete from "./delete";
 import EditProduct from "./edit";
+import { useProductMenu } from "./menuProvider";
 
 const ProductMenu = () => {
+  const { product } = useProductMenu();
+  if (!product) return;
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu key={product.id} modal={false}>
       <DropdownMenuTrigger onClick={(e) => e.preventDefault()} asChild>
-        <Button variant="ghost">
+        <button className="rounded-md p-2 transition-all hover:bg-slate-300">
           {" "}
           <MoreHorizontal width={20} height={20} />{" "}
-        </Button>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <Delete />

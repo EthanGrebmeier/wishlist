@@ -3,11 +3,17 @@ import { cn } from "~/lib/utils";
 
 type TitleBarProps = {
   children?: ReactNode;
+  className?: string;
 };
 
-const TitleBar = ({ children }: TitleBarProps) => {
+const TitleBar = ({ children, className }: TitleBarProps) => {
   return (
-    <div className="mx-6 flex h-16 items-center justify-between border-gray-200 pb-4 lg:border-b">
+    <div
+      className={cn(
+        "z-10 flex items-center justify-between bg-background px-6 md:h-16 md:pb-4 ",
+        className,
+      )}
+    >
       {children}
     </div>
   );

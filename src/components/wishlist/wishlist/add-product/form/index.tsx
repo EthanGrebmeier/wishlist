@@ -24,7 +24,6 @@ import { updateProduct } from "~/server/actions/product";
 import { useAction } from "next-safe-action/hooks";
 import type { WishlistProduct } from "~/types/wishlist";
 import { cn } from "~/lib/utils";
-import { DialogFooter } from "~/components/ui/dialog";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -54,12 +53,15 @@ export const AddProductForm = ({
   const { execute: executeUpdate, result: updateResult } =
     useAction(updateProduct);
 
+  console.log(defaultValues);
+
   const form = useForm<z.infer<typeof productInputSchema>>({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
       name: defaultValues?.name ?? product?.name ?? "",
       brand: defaultValues?.brand ?? product?.brand ?? "",
       image: defaultValues?.images?.[0] ?? product?.image ?? "",
+      quantity: defaultValues?.quantity ?? product?.quantity ?? "",
       price: defaultValues?.price ?? product?.price ?? "",
       url: defaultValues?.url ?? product?.url ?? "",
     },
@@ -114,7 +116,7 @@ export const AddProductForm = ({
                 Product Name<sup> * </sup>
               </FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input autoComplete="off" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

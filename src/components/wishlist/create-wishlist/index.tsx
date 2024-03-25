@@ -49,7 +49,7 @@ type CreateWishlistFormProps = {
 interface WishlistFormValues {
   wishlistId: string;
   wishlistName: string;
-  date: Date | null;
+  date: string | null;
   color: z.infer<typeof colorSchema>;
 }
 
@@ -60,7 +60,7 @@ export const CreateWishlistForm = ({
   const { execute: executeCreate } = useAction(createWishlist, { onSuccess });
   const { execute: executeUpdate } = useAction(updateWishlist, { onSuccess });
   const [date, setDate] = React.useState<Date | undefined>(
-    values?.date ?? undefined,
+    values?.date ? new Date(values?.date) ?? undefined : undefined,
   );
   const [selectedColor, setSelectedColor] = React.useState<
     z.infer<typeof colorSchema>
@@ -133,7 +133,7 @@ const CreateWishlist = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button icon={<PlusIcon width="20" height="20" />}>
-          Create Wishlist
+          <span className="sr-only"> Create Wishlist </span>
         </Button>
       </DialogTrigger>
       <DialogContent>

@@ -12,7 +12,7 @@ type ColorPickerProps = {
 
 const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <label className="text-lg font-medium" htmlFor="color">
         Color
       </label>
@@ -20,7 +20,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
         {colors.map((color) => (
           <li
             key={color.name}
-            className="group flex aspect-square h-full w-full items-center justify-center"
+            className="group flex aspect-square w-full items-center justify-center"
           >
             <motion.button
               onClick={() => setSelectedColor(color.name)}

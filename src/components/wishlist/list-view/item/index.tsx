@@ -16,26 +16,42 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
   const { name, id, products, color } = wishlist;
 
   const isEditor = wishlist.createdById === user.id;
+  const backgroundClass =
+    colors.find((colorTheme) => colorTheme.name === color)?.background ??
+    "bg-white";
 
   return (
     <li className="relative">
+      {wishlist.dueDate && (
+        <div
+          className={cn(
+            "absolute left-2 top-2 z-10 rounded-md border-2 border-black p-1 font-medium",
+            backgroundClass,
+          )}
+        >
+          <p className="text-sm">{formatDate(wishlist.dueDate, "P")}</p>
+        </div>
+      )}
       {isEditor && (
-        <div className="absolute right-4 top-4 z-10">
+        <div className="absolute right-2 top-2 z-10">
           <WishlistMenu wishlist={wishlist} />
         </div>
       )}
       <Link href={`/wishlist/${id}`}>
         <div
           className={cn(
-            "group w-full space-y-4 overflow-hidden rounded-md",
-            colors.find((colorTheme) => colorTheme.name === color)
-              ?.background ?? "bg-white",
+            "group w-full overflow-hidden rounded-md border-2 border-black",
           )}
         >
           <div className="relative aspect-square w-full overflow-hidden object-cover">
             <Image alt="placeholder" src="https://placehold.co/600x600" fill />
           </div>
-          <div className="flex items-center justify-between px-4 pb-2">
+          <div
+            className={cn(
+              "flex items-center justify-between border-t-2 border-black px-4 py-2",
+              backgroundClass,
+            )}
+          >
             {" "}
             <div>
               <h2 className="font-serif text-2xl group-hover:underline">
@@ -44,10 +60,7 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
               </h2>
             </div>
             <div className="text-end">
-              {wishlist.dueDate && (
-                <p className="text-sm">{formatDate(wishlist.dueDate, "P")}</p>
-              )}
-              <p className="text-sm"> {isEditor ? "You" : user.name} </p>
+              <p className="text-sm"> {isEditor ? "You" : "Fix me"} </p>
             </div>
           </div>
         </div>

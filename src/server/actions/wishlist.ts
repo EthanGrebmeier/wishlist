@@ -47,7 +47,7 @@ export const deleteWishlist = makeProtectedAction(
 
 export const createWishlist = makeProtectedAction(
   z.object({
-    wishlistName: z.string(),
+    wishlistName: z.string().min(1),
     date: z.date().optional(),
     color: colorSchema,
   }),
@@ -56,7 +56,7 @@ export const createWishlist = makeProtectedAction(
       createdById: session.user.id,
       name: wishlistName,
       id: randomUUID(),
-      dueDate: date,
+      dueDate: date?.toDateString(),
       color,
     };
     try {
@@ -90,7 +90,7 @@ export const updateWishlist = makeProtectedAction(
   async ({ wishlistName, date, color, id }, { session }) => {
     const wishlistValues = {
       name: wishlistName,
-      dueDate: date,
+      dueDate: date?.toDateString(),
       color,
     };
     try {

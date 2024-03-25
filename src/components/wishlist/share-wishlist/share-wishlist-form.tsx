@@ -30,6 +30,7 @@ const ShareWishlistForm = ({
           type="text"
           onChange={(e) => setEmailInput(e.target.value)}
           value={emailInput}
+          autoComplete="off"
         />
       </div>
       <UserAutocomplete

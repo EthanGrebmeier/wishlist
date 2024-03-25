@@ -38,7 +38,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
         setFrame("scrape");
       }, 200);
 
-      return clearTimeout(timeout);
+      return () => clearTimeout(timeout);
     }
   }, [isOpen]);
 
@@ -49,7 +49,9 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
           <>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
-                <Button icon={<PlusIcon size={20} />}>Add Product</Button>
+                <Button icon={<PlusIcon size={20} />}>
+                  <span className="hidden lg:block"> Add Product</span>
+                </Button>
               </DialogTrigger>
             </TooltipTrigger>
             <TooltipContent>Add Product</TooltipContent>

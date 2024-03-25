@@ -34,6 +34,7 @@ export const compiledProductDataSchema = z.object({
   name: z.string(),
   images: z.array(z.string()),
   description: z.string(),
+  quantity: z.string(),
   brand: z.string(),
   price: z.string(),
   currency: z.string(),

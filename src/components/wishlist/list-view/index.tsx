@@ -1,22 +1,27 @@
-import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 import ListItem from "./item";
-import { getServerAuthSession } from "~/server/auth";
 
-const ListView = async () => {
-  const [wishlists, session] = await Promise.all([
-    getUserWishlists(),
-    getServerAuthSession(),
-  ]);
+import type { WishlistWithProducts } from "~/types/wishlist";
+import type { Session } from "next-auth";
+import { Frown } from "lucide-react";
 
-  if (!session) {
-    return;
-  }
+type ListViewProps = {
+  wishlists: WishlistWithProducts[];
+  session: Session;
+};
 
+const ListView = async ({ wishlists, session }: ListViewProps) => {
   return (
-    <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
-      {wishlists.map((wishlist) => (
-        <ListItem user={session.user} wishlist={wishlist} key={wishlist.id} />
-      ))}
+    <ul className="grid gap-4 px-6 pt-4 sm:grid-cols-2 md:grid-cols-4">
+      {wishlists.length ? (
+        wishlists.map((wishlist) => (
+          <ListItem user={session.user} wishlist={wishlist} key={wishlist.id} />
+        ))
+      ) : (
+        <div className="flex gap-4">
+          <p className="font-serif text-3xl"> No wishlists found </p>
+          <Frown size={30} />
+        </div>
+      )}
     </ul>
   );
 };

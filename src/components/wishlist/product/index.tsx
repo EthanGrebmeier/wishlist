@@ -31,7 +31,7 @@ const Product = async ({ product, wishlist }: ProductProps) => {
   );
 
   return (
-    <div className="mx-auto mt-4 flex max-w-[440px] flex-1 flex-col gap-4  px-6 lg:mx-6 lg:mt-8 lg:h-screen lg:max-w-none lg:gap-14 lg:px-0">
+    <div className="mx-auto mt-4 flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-6 lg:mx-6 lg:mt-8 lg:grid  lg:h-screen lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[auto_1fr] lg:gap-14 lg:px-0">
       <Link
         className="group flex w-full items-center space-x-4 hover:underline"
         href={getWishlistSlug(wishlist)}
@@ -41,26 +41,26 @@ const Product = async ({ product, wishlist }: ProductProps) => {
           width={20}
           height={20}
         />{" "}
-        <p> Back to {wishlist.name}</p>
+        <p className="text-sm md:text-lg"> Back to {wishlist.name}</p>
       </Link>
-      <section className="flex w-full flex-1 flex-col gap-4 lg:grid lg:grid-cols-[1fr_auto] lg:gap-2 xl:gap-24">
-        <div className="mx-auto inline h-auto gap-4 object-cover align-top text-[0] lg:mx-0">
-          <div className="flex h-full w-full items-center justify-center ">
+      <section className="flex h-full w-full flex-col gap-4 overflow-hidden lg:grid lg:grid-cols-[1fr_min-content] lg:gap-2 xl:gap-24">
+        <div className="w-full gap-4 pb-4 align-top lg:mx-0">
+          <div className="flex w-full items-center justify-center overflow-hidden rounded-md border border-gray-200  bg-white md:h-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <div className="aspect-square overflow-hidden rounded-md border border-gray-200 bg-white">
-              <img
-                className="mx-auto h-full w-auto object-cover object-center md:max-h-[540px]  md:w-auto"
-                alt={product.name}
-                /* eslint-disable-next-line  */
-                src={product.image || "https://placehold.co/600x600"}
-              />
-            </div>
+            <img
+              className="h-[340px] w-auto object-cover object-center"
+              alt={product.name}
+              /* eslint-disable-next-line  */
+              src={product.image || "https://placehold.co/600x600"}
+            />
           </div>
         </div>
-        <div className="mx-auto flex w-full justify-end lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
-          <div className="flex w-full flex-col justify-between gap-6 border-gray-200 py-2 lg:-mt-4 lg:w-[340px] lg:border-l lg:pl-6">
+        <div className="mx-auto flex w-full justify-end pt-1 lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
+          <div className="flex w-full flex-col justify-between gap-6  py-4 lg:-mt-4 lg:w-[340px] lg:pl-6">
             <div className="flex flex-col gap-2">
-              <h1 className="text-4xl font-medium"> {product.name} </h1>
+              <h1 className="text-3xl font-medium md:text-4xl">
+                {product.name}
+              </h1>
               {product.brand && <p className="text-lg"> {product.brand} </p>}
               {product.price && <p className="text-3xl"> ${product.price} </p>}
             </div>

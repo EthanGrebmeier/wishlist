@@ -1,11 +1,13 @@
 import { Scroll } from "lucide-react";
+import { Suspense } from "react";
 import TitleBar from "~/components/ui/title-bar";
 import CreateWishlist from "~/components/wishlist/create-wishlist";
-import ListView from "~/components/wishlist/list-view";
+import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
+import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 
-const WishlistPage = () => {
+const WishlistPage = async () => {
   return (
-    <div className="max-h-full overflow-y-auto py-4 lg:py-8">
+    <div className="h-full max-h-full overflow-y-auto py-4 lg:py-8">
       <TitleBar>
         <span className="flex items-center gap-4">
           <TitleBar.Title>My Wishlists </TitleBar.Title>{" "}
@@ -13,9 +15,9 @@ const WishlistPage = () => {
         </span>
         <CreateWishlist />
       </TitleBar>
-      <div className="px-6 pt-4">
-        <ListView />
-      </div>
+      <Suspense>
+        <WishlistGrid getWishlists={getUserWishlists} />
+      </Suspense>
     </div>
   );
 };

@@ -4,11 +4,16 @@ import { default as NextLink } from "next/link";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
 
-type LinkProps = React.ComponentProps<typeof NextLink>;
+interface LinkProps extends React.ComponentProps<typeof NextLink> {
+  shallowSelected?: boolean;
+}
 
-const Link = ({ className, ...rest }: LinkProps) => {
+const Link = ({ className, shallowSelected, ...rest }: LinkProps) => {
   const pathname = usePathname();
-  const isSelected = pathname === rest.href;
+  const isSelected = shallowSelected
+    ? // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      pathname.includes(rest.href.toString())
+    : pathname === rest.href;
 
   return (
     <NextLink

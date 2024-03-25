@@ -40,11 +40,11 @@ const TitleDisplay = ({ title, wishlist, isEditor }: UpdateNameProps) => {
       <TooltipProvider>
         <Tooltip delayDuration={200}>
           <TooltipTrigger asChild>
-            <DialogTrigger className="group flex items-center gap-4">
+            <DialogTrigger className="group flex w-fit items-center gap-4">
               <TitleBar.Title>{title}</TitleBar.Title>
               <div
                 className={cn(
-                  "animate-bounce rounded-md border-2 border-black p-1 opacity-0 transition-opacity duration-1000 group-hover:opacity-100",
+                  "hidden animate-bounce rounded-md border-2 border-black p-1 opacity-0 transition-opacity duration-1000 group-hover:opacity-100 md:block",
                   getBackgroundColor(wishlist.color),
                 )}
               >

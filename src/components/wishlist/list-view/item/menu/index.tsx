@@ -17,12 +17,12 @@ type WishlistMenuProps = {
 const WishlistMenu = ({ wishlist }: WishlistMenuProps) => {
   return (
     <MenuProvider wishlist={wishlist}>
-      <DropdownMenu>
+      <DropdownMenu key={wishlist.id}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost">
+          <button className="rounded-md p-2 transition-all hover:bg-slate-300">
             {" "}
             <MoreHorizontal width={20} height={20} />{" "}
-          </Button>
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <Delete />

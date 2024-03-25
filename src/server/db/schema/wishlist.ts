@@ -1,4 +1,4 @@
-import { date, index, text, varchar } from "drizzle-orm/mysql-core";
+import { date, index, text, varchar } from "drizzle-orm/pg-core";
 import { createTable } from "../schema";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
@@ -18,8 +18,8 @@ export const products = createTable(
     wishlistId: varchar("wishlistId", { length: 255 }).notNull(),
   },
   (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
+    createdByIdIdx: index("products_createdById_idx").on(example.createdById),
+    nameIndex: index("products_name_idx").on(example.name),
   }),
 );
 
@@ -94,8 +94,8 @@ export const wishlists = createTable(
       .notNull(),
   },
   (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
+    createdByIdIdx: index("wishlists_createdById_idx").on(example.createdById),
+    nameIndex: index("wishlists_name_idx").on(example.name),
   }),
 );
 
@@ -114,7 +114,9 @@ export const wishlistShares = createTable(
     sharedWithUserId: varchar("sharedWithUserId", { length: 255 }).notNull(),
   },
   (example) => ({
-    sharedWithUserId: index("sharedWithUserId").on(example.sharedWithUserId),
+    sharedWithUserId: index("wishlist_shares_sharedWithUserId").on(
+      example.sharedWithUserId,
+    ),
   }),
 );
 
