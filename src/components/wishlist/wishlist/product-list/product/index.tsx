@@ -12,7 +12,7 @@ type ProductProps = {
 
 const Product = ({ product, isEditor }: ProductProps) => {
   return (
-    <li className="relative">
+    <li className="relative isolate">
       {isEditor && (
         <MenuProvider product={product} wishlistId={product.wishlistId}>
           <div className="absolute right-2 top-2 z-10">

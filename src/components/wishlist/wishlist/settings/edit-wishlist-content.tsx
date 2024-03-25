@@ -9,15 +9,15 @@ import { CreateWishlistForm } from "../../create-wishlist";
 import type { Wishlist } from "~/types/wishlist";
 import { useRouter } from "next/navigation";
 
-type EditWishlistContentProps = {
+type WishlistSettingsContentProps = {
   wishlist: Wishlist;
   onSuccess?: () => void;
 };
 
-const EditWishlistContent = ({
+const WishlistSettingsContent = ({
   wishlist,
   onSuccess,
-}: EditWishlistContentProps) => {
+}: WishlistSettingsContentProps) => {
   const router = useRouter();
 
   return (
@@ -43,4 +43,4 @@ const EditWishlistContent = ({
   );
 };
 
-export default EditWishlistContent;
+export default WishlistSettingsContent;

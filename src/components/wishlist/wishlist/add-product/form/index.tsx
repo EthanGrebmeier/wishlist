@@ -114,7 +114,7 @@ export const AddProductForm = ({
                 Product Name<sup> * </sup>
               </FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input autoComplete="off" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

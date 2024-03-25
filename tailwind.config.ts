@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xs: "440px",
+      },
       colors: {
         green: {
           200: "hsl(82, 52%, 88%)",

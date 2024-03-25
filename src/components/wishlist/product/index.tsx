@@ -41,7 +41,7 @@ const Product = async ({ product, wishlist }: ProductProps) => {
           width={20}
           height={20}
         />{" "}
-        <p> Back to {wishlist.name}</p>
+        <p className="text-sm md:text-lg"> Back to {wishlist.name}</p>
       </Link>
       <section className="flex w-full flex-1 flex-col gap-4 lg:grid lg:grid-cols-[1fr_auto] lg:gap-2 xl:gap-24">
         <div className="mx-auto inline h-auto gap-4 object-cover align-top text-[0] lg:mx-0">
