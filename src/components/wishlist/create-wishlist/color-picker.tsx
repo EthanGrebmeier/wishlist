@@ -12,11 +12,11 @@ type ColorPickerProps = {
 
 const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col gap-2">
       <label className="text-lg font-medium" htmlFor="color">
         Color
       </label>
-      <ul id="color" className="grid w-full max-w-[140px] grid-cols-4 gap-2">
+      <ul id="color" className="grid w-full max-w-[140px] grid-cols-4 gap-1.5 ">
         {colors.map((color) => (
           <li
             key={color.name}
@@ -30,7 +30,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
               }}
               className={cn(
                 color.background,
-                "aspect-square w-6 rounded-full border border-slate-800 transition-[width] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 group-hover:w-full",
+                "aspect-square w-7 rounded-full border border-slate-800 transition-[width] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 group-hover:w-full",
                 selectedColor === color.name && "border-2",
               )}
             >

@@ -53,8 +53,6 @@ export const AddProductForm = ({
   const { execute: executeUpdate, result: updateResult } =
     useAction(updateProduct);
 
-  console.log(defaultValues);
-
   const form = useForm<z.infer<typeof productInputSchema>>({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
@@ -108,39 +106,41 @@ export const AddProductForm = ({
         action={executeServerAction}
         onSubmit={() => form.trigger()}
       >
-        <FormField
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Product Name<sup> * </sup>
-              </FormLabel>
-              <FormControl>
-                <Input autoComplete="off" type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="brand"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Brand</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Name<sup> * </sup>
+                </FormLabel>
+                <FormControl>
+                  <Input autoComplete="off" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Brand</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           name="image"
           render={({ field }) => (
             <div className=" grid grid-cols-[1fr_auto] gap-4">
               <div className="flex w-full items-center">
                 <FormItem className="w-full">
-                  <FormLabel>Product Image</FormLabel>
+                  <FormLabel>Image</FormLabel>
 
                   <FormControl>
                     <Input type="text" {...field} />
@@ -155,35 +155,37 @@ export const AddProductForm = ({
             </div>
           )}
         />
-        <FormField
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Price</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="quantity"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Quantity</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <FormField
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="quantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Quantity</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Link </FormLabel>
+              <FormLabel>Link </FormLabel>
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>
@@ -194,7 +196,7 @@ export const AddProductForm = ({
         <div className="h-12">
           <div
             className={cn(
-              "absolute bottom-0 left-0 right-0 m-4 mt-8 flex bg-background",
+              "absolute bottom-0 left-0 right-0 mt-8 flex bg-background p-4 ",
               setFrame ? "justify-between" : "justify-end",
             )}
           >

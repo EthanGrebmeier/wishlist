@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronsRight, Sparkles } from "lucide-react";
+import { ChevronsRight, ClipboardPaste, Sparkles } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,12 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { SubmitButton } from "~/components/ui/submit-button";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+} from "~/components/ui/tooltip";
 import {
   scrapeInputSchema,
   type partialCompiledProductDataSchema,
@@ -66,7 +72,30 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
             <FormItem>
               <FormLabel>Product Link</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <div className="relative flex gap-2">
+                  <Input type="text" {...field} />
+                  <TooltipProvider>
+                    <Tooltip delayDuration={100}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={async () => {
+                            form.setValue(
+                              "url",
+                              await navigator.clipboard.readText(),
+                            );
+                          }}
+                          className="-mt-1"
+                          variant="secondary"
+                          type="button"
+                        >
+                          {" "}
+                          <ClipboardPaste size={20} />{" "}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Paste Copied URL</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

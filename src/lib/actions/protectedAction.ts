@@ -1,4 +1,5 @@
 import { createSafeActionClient } from "next-safe-action";
+import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 
 export type ServerActionResponse = {
@@ -10,7 +11,7 @@ export const makeProtectedAction = createSafeActionClient({
     const session = await getServerAuthSession();
 
     if (!session) {
-      throw new Error("User not found");
+      redirect("/");
     }
 
     return { session };

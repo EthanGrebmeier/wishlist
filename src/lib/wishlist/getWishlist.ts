@@ -1,9 +1,12 @@
 import { and, eq, not } from "drizzle-orm";
+import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
 
 export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
+  const session = await getServerAuthSession();
+
   const selectedWishlist = await db.query.wishlists.findFirst({
     where: eq(wishlists.id, wishlistId),
     with: {
@@ -19,6 +22,19 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
     },
   });
 
+  if (
+    selectedWishlist?.isSecret &&
+    session?.user.id === selectedWishlist.createdById
+  ) {
+    return {
+      ...selectedWishlist,
+      products: selectedWishlist.products.map((product) => ({
+        ...product,
+        commitments: [],
+      })),
+    };
+  }
+
   if (!selectedWishlist) {
     throw new Error(`No wishlist found by ID ${wishlistId}`);
   }
@@ -26,11 +42,15 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
   return selectedWishlist;
 };
 
-export const getUserWishlists = async () => {
+type getWishlistsArgs = {
+  limit?: number;
+};
+
+export const getUserWishlists = async (config?: getWishlistsArgs) => {
   const userSession = await getServerAuthSession();
 
   if (!userSession) {
-    throw new Error("No user session");
+    redirect("/");
   }
 
   return db.query.wishlists.findMany({
@@ -38,14 +58,15 @@ export const getUserWishlists = async () => {
     with: {
       products: true,
     },
+    limit: config?.limit,
   });
 };
 
-export const getSharedWishlists = async () => {
+export const getSharedWishlists = async (config?: getWishlistsArgs) => {
   const session = await getServerAuthSession();
 
   if (!session) {
-    throw new Error("No user session");
+    redirect("/");
   }
 
   const sharedLists = await db.query.wishlistShares.findMany({
@@ -60,6 +81,7 @@ export const getSharedWishlists = async () => {
         },
       },
     },
+    limit: config?.limit,
   });
 
   return sharedLists.map((list) => list.wishlist).filter(Boolean);

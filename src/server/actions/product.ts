@@ -164,9 +164,6 @@ export const getProductCommitments = makeProtectedAction(
       },
     });
 
-    return {
-      message: "success",
-      data: dbCommitments,
-    };
+    return dbCommitments;
   },
 );

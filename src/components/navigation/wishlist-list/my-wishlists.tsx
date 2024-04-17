@@ -3,7 +3,7 @@ import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 import WishlistList from ".";
 
 const MyWishlists = async () => {
-  const wishlists = await getUserWishlists();
+  const wishlists = await getUserWishlists({ limit: 4 });
   return <WishlistList wishlists={wishlists} />;
 };
 

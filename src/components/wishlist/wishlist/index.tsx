@@ -6,25 +6,23 @@ import { getServerAuthSession } from "~/server/auth";
 import TitleBar from "~/components/ui/title-bar";
 import TitleDisplay from "./settings/title-display";
 import WishlistSettings from "./settings";
+import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 
 type ViewWishlistProps = {
   wishlistId: string;
 };
 
 const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
-  const [wishlist, session] = await Promise.all([
+  const [wishlist, sharedUsers, session] = await Promise.all([
     getWishlist({ wishlistId }),
+    getSharedUsers({ wishlistId }),
     getServerAuthSession(),
   ]);
 
-  if (!session) {
-    return;
-  }
-
-  const isEditor = session.user.id === wishlist.createdById;
+  const isEditor = session?.user.id === wishlist.createdById;
 
   return (
-    <div className=" w-full grid-rows-[auto_1fr] pt-4 sm:grid md:relative md:max-h-screen md:overflow-y-auto lg:pt-8">
+    <div className=" grid h-full w-full grid-rows-[auto_1fr] pt-4 md:relative md:max-h-screen md:overflow-y-auto lg:pt-8">
       <TitleBar className="sticky top-20 w-full flex-wrap items-start gap-2 md:relative md:top-0 md:flex-row md:items-center md:gap-0">
         <TitleDisplay
           isEditor={isEditor}
@@ -35,6 +33,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
           {isEditor && <AddProduct wishlistId={wishlistId} />}
           {isEditor && (
             <ShareWishlist
+              sharedUsers={sharedUsers}
               wishlistId={wishlistId}
               userId={session.user.id}
               privacyType={wishlist.privacyType}
@@ -44,7 +43,28 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
         </div>
       </TitleBar>
       <section className="overflow-y-auto px-6 py-4">
-        <ProductList isEditor={isEditor} products={wishlist.products} />
+        {wishlist.products.length ? (
+          <ProductList isEditor={isEditor} products={wishlist.products} />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-8">
+            {isEditor ? (
+              <div className="flex w-fit flex-col items-center justify-center gap-4">
+                <p className="text-center font-serif text-3xl font-medium md:text-4xl">
+                  {" "}
+                  Let&apos;s add your first product!
+                </p>
+                <AddProduct wishlistId={wishlistId} />
+              </div>
+            ) : (
+              <div>
+                <p className="font-serif text-4xl font-medium">
+                  {" "}
+                  No products found...
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </div>
   );

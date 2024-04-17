@@ -1,4 +1,3 @@
-import Link from "~/components/ui/link";
 import { colors } from "~/consts/colors";
 import { cn } from "~/lib/utils";
 import type { Wishlist } from "~/types/wishlist";
@@ -10,7 +9,7 @@ type WishlistListProps = {
 
 const WishlistList = ({ wishlists }: WishlistListProps) => {
   return (
-    <div className="flex flex-col gap-1 pl-4">
+    <div className="flex flex-col gap-1 pl-2">
       {wishlists.map((wishlist) => (
         <NavLink
           className="flex h-auto w-full items-center justify-start gap-2 rounded-md border-0 px-2 py-0 text-lg font-medium data-[selected=active]:bg-green-200"

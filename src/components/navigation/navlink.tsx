@@ -21,7 +21,7 @@ const NavLink = ({
   return (
     <Link
       className={cn(
-        "group flex h-10 w-full items-center justify-between gap-2 rounded-md border-2 border-transparent px-4 transition-colors hover:bg-blue-200 data-[selected=active]:border-black data-[selected=active]:bg-green-200",
+        "group flex h-8 w-full items-center justify-between gap-2 rounded-md px-2 text-xl transition-colors hover:bg-blue-200  data-[selected=active]:bg-green-200",
         className,
       )}
       href={href}

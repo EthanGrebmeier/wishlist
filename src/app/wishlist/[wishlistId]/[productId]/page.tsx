@@ -21,7 +21,11 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
 
   return (
     <Suspense fallback="Loading...">
-      <Product wishlist={wishlist} product={product} />
+      <Product
+        isSecret={wishlist.isSecret}
+        wishlist={wishlist}
+        product={product}
+      />
     </Suspense>
   );
 };

@@ -18,7 +18,7 @@ export const users = createTable("user", {
   emailVerified: timestamp("emailVerified", {
     mode: "date",
     precision: 3,
-  }).default(sql`CURRENT_TIMESTAMP(3)`),
+  }).defaultNow(),
   image: varchar("image", { length: 255 }),
 });
 

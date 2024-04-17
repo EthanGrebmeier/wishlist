@@ -1,13 +1,13 @@
-import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
+import type { User } from "~/types/user";
 import SharedUserItem from "./shared-user-item";
 
 type SharedUsersProps = {
   wishlistId: string;
   userId: string;
+  sharedUsers: User[];
 };
 
-const SharedUsers = async ({ wishlistId, userId }: SharedUsersProps) => {
-  const sharedUsers = await getSharedUsers({ wishlistId });
+const SharedUsers = ({ wishlistId, userId, sharedUsers }: SharedUsersProps) => {
   return (
     <div className="space-y-2">
       <h2 className="text-lg font-medium"> Currently Shared With </h2>

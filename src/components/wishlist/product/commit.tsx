@@ -1,5 +1,6 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
@@ -37,36 +38,37 @@ const Commit = ({
   if (productCommitments?.length) {
     if (hasUserCommitted) {
       return (
-        <div className="flex flex-col gap-4">
-          <div className="flex h-11 items-center justify-center rounded-md border border-primary-foreground bg-primary px-4 text-center text-sm font-medium text-primary-foreground">
-            <p>
+        <div className="flex flex-col gap-2">
+          <div className="flex   flex-col justify-center  text-balance font-medium text-black">
+            <p className="max-w-[340px] text-balance border-b-2 border-black pb-2 font-serif text-2xl">
               {" "}
-              <span className="font-extrabold"> You </span> are getting this
-              item{" "}
+              <span className="italic"> You </span> are getting this item!{" "}
             </p>
+            <form action={() => executeUncommit({ productId: product.id })}>
+              <p className="mb-2 text-balance pt-2 font-serif text-lg">
+                {" "}
+                No longer able to commit?{" "}
+              </p>
+              <SubmitButton
+                icon={<Trash2 size={20} />}
+                className="w-full"
+                size="lg"
+                variant="destructive"
+              >
+                Cancel Commitment
+              </SubmitButton>
+            </form>
           </div>
-          <form
-            className="rounded-md border border-gray-200 bg-slate-100/40 px-4 py-6"
-            action={() => executeUncommit({ productId: product.id })}
-          >
-            <p className="mb-4 text-center text-sm">
-              {" "}
-              No longer able to commit to this item?{" "}
-            </p>
-            <SubmitButton className="w-full" size="lg" variant="destructive">
-              Cancel Commitment
-            </SubmitButton>
-          </form>
         </div>
       );
     }
 
     return (
-      <ul className="flex h-11 items-center justify-center rounded-md border border-green-600 bg-green-200/60 px-4 text-center text-sm font-medium text-green-600">
+      <ul className="flex items-center text-balance font-serif text-2xl  font-medium text-black">
         {productCommitments.map((commitment) => (
           <li key={commitment.id}>
-            <span className="font-extrabold"> {commitment.user.name} </span> is
-            getting this item!
+            <span className="italic"> {commitment.user.name} </span> is getting
+            this item!
           </li>
         ))}
       </ul>
@@ -80,11 +82,10 @@ const Commit = ({
           productId: product.id,
         })
       }
-      className="rounded-md border border-gray-200 bg-slate-100/40 px-4 py-6"
+      // className="rounded-md border-2 border-black bg-green-100 px-4 py-6 "
     >
-      <p className="mb-4 text-center text-sm">
-        {" "}
-        Would you like to commit to this item?{" "}
+      <p className="mb-4 text-balance font-serif text-2xl font-medium leading-tight">
+        Would you like to commit to this item?
       </p>
       <SubmitButton variant="default" size="lg" className="w-full">
         I will purchase this item

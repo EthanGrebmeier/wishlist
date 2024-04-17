@@ -3,6 +3,7 @@ import type { privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import type {
   productCommitments,
   products,
+  wishlistShares,
   wishlists,
 } from "~/server/db/schema/wishlist";
 import type { User } from "./user";
@@ -23,4 +24,6 @@ export type WishlistProductCommitmentsWithUser = WishlistProductCommitments & {
   user: User;
 };
 
+export type WishlistShares = typeof wishlistShares.$inferSelect;
+export type WishlistSharesWithUser = WishlistShares & User;
 export type WishlistPrivacy = z.infer<typeof privacyTypeSchema>;

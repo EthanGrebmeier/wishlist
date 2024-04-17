@@ -33,6 +33,7 @@ const WishlistSettingsContent = ({
           date: wishlist.dueDate,
           color: wishlist.color,
           wishlistName: wishlist.name,
+          isSecret: wishlist.isSecret,
         }}
         onSuccess={() => {
           router.refresh();

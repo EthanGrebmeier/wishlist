@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 
-import { FilePlus, PlusIcon } from "lucide-react";
+import { FilePlus, Lock, PlusIcon, Unlock } from "lucide-react";
 import { SubmitButton } from "~/components/ui/submit-button";
 import {
   Dialog,
@@ -30,6 +30,15 @@ import { useAction } from "next-safe-action/hooks";
 import ColorPicker from "./color-picker";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
 import { createWishlist, updateWishlist } from "~/server/actions/wishlist";
+import { useMediaQuery } from "usehooks-ts";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "~/components/ui/drawer";
+import { Switch } from "~/components/ui/switch";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -51,6 +60,7 @@ interface WishlistFormValues {
   wishlistName: string;
   date: string | null;
   color: z.infer<typeof colorSchema>;
+  isSecret: boolean;
 }
 
 export const CreateWishlistForm = ({
@@ -62,6 +72,7 @@ export const CreateWishlistForm = ({
   const [date, setDate] = React.useState<Date | undefined>(
     values?.date ? new Date(values?.date) ?? undefined : undefined,
   );
+  const [isSecret, setIsSecret] = useState(values?.isSecret ?? false);
   const [selectedColor, setSelectedColor] = React.useState<
     z.infer<typeof colorSchema>
   >(values?.color ?? "white");
@@ -83,12 +94,18 @@ export const CreateWishlistForm = ({
           onSubmit={() => form.trigger()}
           action={() =>
             method === "CREATE"
-              ? executeCreate({ ...fields, date, color: selectedColor })
+              ? executeCreate({
+                  ...fields,
+                  date,
+                  color: selectedColor,
+                  isSecret,
+                })
               : executeUpdate({
                   ...fields,
                   date,
                   color: selectedColor,
                   id: values?.wishlistId ?? "",
+                  isSecret,
                 })
           }
           className="relative w-full space-y-4"
@@ -107,18 +124,38 @@ export const CreateWishlistForm = ({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-8">
             <div className="flex flex-col gap-2 text-lg font-medium">
               <label htmlFor="date-picker">Due Date </label>
               <DatePicker date={date} setDate={setDate} />
             </div>
+            <ColorPicker
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
           </div>
-          <ColorPicker
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
-          />
-          <div className="absolute bottom-1 right-0 flex justify-end">
-            <SubmitButton icon={<FilePlus size={20} />} />
+
+          <div className="mr-2 flex w-full items-center justify-between gap-2 rounded-md border-2 border-black px-4 py-2">
+            <div>
+              <div className="flex items-center gap-2">
+                {" "}
+                <p className=" text-lg font-medium"> Keep it a secret? </p>{" "}
+                {isSecret ? <Lock size={20} /> : <Unlock size={20} />}
+              </div>
+              <p className="max-w-[300px] text-balance text-sm leading-tight">
+                {" "}
+                Enable this if you would like to keep purchased items from being
+                spoiled for yourself!
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch checked={isSecret} onCheckedChange={setIsSecret} />
+            </div>
+          </div>
+          <div className="flex w-full justify-end">
+            <SubmitButton icon={<FilePlus size={20} />}>
+              {values ? "Update" : "Create"}
+            </SubmitButton>
           </div>
         </form>
       </Form>
@@ -126,25 +163,57 @@ export const CreateWishlistForm = ({
   );
 };
 
-const CreateWishlist = () => {
+type CreateWishlistProps = {
+  trigger?: ReactNode;
+};
+
+const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  if (isDesktop) {
+    return (
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          {trigger ?? (
+            <Button icon={<PlusIcon width="20" height="20" />}>
+              <span className="sr-only "> Create Wishlist </span>
+            </Button>
+          )}
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="font-serif text-4xl font-medium">
+              Create Wishlist{" "}
+            </DialogTitle>
+          </DialogHeader>
+          <CreateWishlistForm />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button icon={<PlusIcon width="20" height="20" />}>
-          <span className="sr-only"> Create Wishlist </span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="font-serif text-4xl font-medium">
-            Create Wishlist{" "}
-          </DialogTitle>
-        </DialogHeader>
-        <CreateWishlistForm />
-      </DialogContent>
-    </Dialog>
+    <Drawer>
+      <DrawerTrigger asChild>
+        {trigger ?? (
+          <Button icon={<PlusIcon width="20" height="20" />}>
+            <span className="sr-only "> Create Wishlist </span>
+          </Button>
+        )}
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle className="font-serif text-4xl font-medium">
+            Create Wishlist
+          </DrawerTitle>
+        </DrawerHeader>
+        <div className="px-4 pb-4">
+          <CreateWishlistForm />
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 };
 

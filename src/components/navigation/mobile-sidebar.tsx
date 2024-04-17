@@ -11,6 +11,13 @@ import {
 } from "../ui/sheet";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
 
 type MobileSidebarProps = {
   navigation: JSX.Element;
@@ -22,8 +29,39 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOpen]);
+
+  useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  return (
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+      <DrawerTrigger asChild>
+        <Button
+          variant="default"
+          className="fixed bottom-4 right-2 z-10 flex h-11 w-11 rounded-full border-2 border-black bg-green-200 p-2 lg:hidden"
+        >
+          <Menu className="h-full w-full" />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle className="font-serif text-4xl font-medium">
+            Wishlist
+          </DrawerTitle>
+        </DrawerHeader>
+        <div className="p-4 text-black">{navigation}</div>
+      </DrawerContent>
+    </Drawer>
+  );
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -34,9 +72,12 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <h1 className="text-left text-4xl font-medium"> Navigation</h1>
+          <h1 className="text-left font-serif text-4xl font-medium">
+            {" "}
+            Wishlist{" "}
+          </h1>
         </SheetHeader>
-        <SheetDescription className="h-full pb-6 pt-4">
+        <SheetDescription className="h-full pb-6 pt-4 text-black">
           {navigation}
         </SheetDescription>
       </SheetContent>

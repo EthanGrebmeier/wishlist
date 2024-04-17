@@ -1,9 +1,10 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
 import NavAccount from "./account";
-import { BookUser, Scroll } from "lucide-react";
+import { BookUser, Plus, Scroll } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import SharedWishlists from "./wishlist-list/shared-wishlists";
+import CreateWishlist from "../wishlist/create-wishlist";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
@@ -11,7 +12,7 @@ const Navigation = async () => {
   // const wishlists = await getUserWishlists()
 
   return (
-    <nav className="flex h-full w-[220px] flex-col justify-between">
+    <nav className="flex h-full w-full flex-col justify-between gap-8 md:w-[220px]">
       <div className="flex flex-col gap-2">
         {isSignedIn && (
           <>
@@ -19,6 +20,16 @@ const Navigation = async () => {
               My Wishlists{" "}
             </NavLink>
             <MyWishlists />
+            <div className="w-full pl-2">
+              <CreateWishlist
+                trigger={
+                  <button className="group flex w-full items-center justify-between rounded-md px-2 text-lg font-medium transition-all hover:bg-green-200">
+                    Create Wishlist{" "}
+                    <Plus className="group-hover:animate-shake " size={20} />
+                  </button>
+                }
+              />
+            </div>
             <NavLink href="/wishlist/shared" Icon={BookUser}>
               Shared Wishlists
             </NavLink>

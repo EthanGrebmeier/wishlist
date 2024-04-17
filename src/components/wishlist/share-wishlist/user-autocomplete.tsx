@@ -50,13 +50,20 @@ const UserAutocomplete = ({
   }, [isOpen, email]);
 
   useEffect(() => {
-    isOpen && executeFindUserByEmail({ email: debouncedInput, wishlistId });
+    isOpen &&
+      executeFindUserByEmail({
+        email: debouncedInput.toLowerCase(),
+        wishlistId,
+      });
   }, [debouncedInput, executeFindUserByEmail, wishlistId, isOpen]);
 
   useEffect(() => {
     if (shareWishlistResult.data?.message === "success") {
       onSuccess && onSuccess();
-      executeFindUserByEmail({ email: debouncedInput, wishlistId });
+      executeFindUserByEmail({
+        email: debouncedInput.toLowerCase(),
+        wishlistId,
+      });
       router.refresh();
     }
   }, [

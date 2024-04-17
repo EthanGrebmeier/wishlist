@@ -10,9 +10,10 @@ import { getServerAuthSession } from "~/server/auth";
 type ProductProps = {
   product: WishlistProduct;
   wishlist: Wishlist;
+  isSecret: boolean;
 };
 
-const Product = async ({ product, wishlist }: ProductProps) => {
+const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
   const [productCommitments, session] = await Promise.all([
     getProductCommitments({
       productId: product.id,
@@ -25,7 +26,7 @@ const Product = async ({ product, wishlist }: ProductProps) => {
   }
 
   const hasUserCommitted = Boolean(
-    productCommitments.data?.data.find(
+    productCommitments.data?.find(
       (commitment) => commitment.createdById === session.user.id,
     ),
   );
@@ -41,11 +42,11 @@ const Product = async ({ product, wishlist }: ProductProps) => {
           width={20}
           height={20}
         />{" "}
-        <p className="text-sm md:text-lg"> Back to {wishlist.name}</p>
+        <p className="text-lg"> Back to {wishlist.name}</p>
       </Link>
-      <section className="flex h-full w-full flex-col gap-4 overflow-hidden lg:grid lg:grid-cols-[1fr_min-content] lg:gap-2 xl:gap-24">
+      <section className="flex h-full w-full flex-col gap-4 overflow-hidden transition-all lg:grid lg:grid-cols-[1fr_min-content] lg:gap-4">
         <div className="w-full gap-4 pb-4 align-top lg:mx-0">
-          <div className="flex w-full items-center justify-center overflow-hidden rounded-md border border-gray-200  bg-white md:h-full">
+          <div className="flex w-full items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white md:h-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="h-[340px] w-auto object-cover object-center"
@@ -55,7 +56,7 @@ const Product = async ({ product, wishlist }: ProductProps) => {
             />
           </div>
         </div>
-        <div className="mx-auto flex w-full justify-end pt-1 lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
+        <div className="mx-auto flex w-full max-w-[400px] justify-end pt-1 lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
           <div className="flex w-full flex-col justify-between gap-6  py-4 lg:-mt-4 lg:w-[340px] lg:pl-6">
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-medium md:text-4xl">
@@ -66,11 +67,15 @@ const Product = async ({ product, wishlist }: ProductProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <Commit
-                hasUserCommitted={hasUserCommitted}
-                productCommitments={productCommitments.data?.data}
-                product={product}
-              />
+              {/** Only hide commitments for the owner of the wishlist */}
+              {!(isSecret && wishlist.createdById === session.user.id) && (
+                <Commit
+                  hasUserCommitted={hasUserCommitted}
+                  productCommitments={productCommitments.data}
+                  product={product}
+                />
+              )}
+
               {product.url && (
                 <ButtonLink
                   variant="secondary"

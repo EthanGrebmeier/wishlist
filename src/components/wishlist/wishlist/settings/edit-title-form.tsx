@@ -67,10 +67,7 @@ const EditTitleForm = ({
             </div>
           )}
         />
-        <SubmitButton
-          icon={<Pencil size={20} />}
-          className="absolute bottom-5 right-6"
-        />
+        <SubmitButton icon={<Pencil size={20} />} />
       </form>
     </Form>
   );

@@ -1,4 +1,4 @@
-import { date, index, text, varchar } from "drizzle-orm/pg-core";
+import { boolean, date, index, text, varchar } from "drizzle-orm/pg-core";
 import { createTable } from "../schema";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
@@ -69,6 +69,7 @@ export const wishlists = createTable(
     id: varchar("id", { length: 255 }).notNull().primaryKey(),
     name: varchar("name", { length: 255 }).notNull(),
     image: varchar("image", { length: 255 }),
+    isSecret: boolean("isSecret").default(false).notNull(),
     createdById: varchar("createdById", { length: 255 }).notNull(),
     privacyType: varchar("privacyType", {
       length: 255,
