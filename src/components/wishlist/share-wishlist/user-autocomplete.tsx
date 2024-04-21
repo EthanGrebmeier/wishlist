@@ -38,7 +38,7 @@ const UserAutocomplete = ({
   const matchingUser = findUserByEmailResult.data;
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && email) {
       setShouldRender(true);
     } else {
       const timeout = setTimeout(() => {
@@ -84,7 +84,7 @@ const UserAutocomplete = ({
       className="bottom-100 absolute left-0 right-0 translate-y-[8px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       data-state={isOpen ? "open" : "closed"}
     >
-      <div className="relative rounded-md border border-slate-200 bg-white px-4 py-6">
+      <div className="relative rounded-md border-2 border-black bg-white px-4 py-6">
         {findUserByEmailStatus === "executing" && (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-100/60">
             {" "}
@@ -102,8 +102,8 @@ const UserAutocomplete = ({
             className="flex items-center justify-between overflow-hidden   "
           >
             <div>
-              <p> {matchingUser.name}</p>
-              <p> {matchingUser.email}</p>
+              <p className="text-xl font-medium"> {matchingUser.name}</p>
+              <p className="font-sm"> {matchingUser.email}</p>
             </div>
             {matchingUser.isShared ? (
               <Button disabled type="button" aria-disabled="true">

@@ -1,3 +1,4 @@
+"use client";
 import type { WishlistWithProducts } from "~/types/wishlist";
 import WishlistMenu from "./menu";
 import Link from "~/components/ui/link";
@@ -6,6 +7,7 @@ import type { User } from "next-auth";
 import { formatDate } from "date-fns";
 import { cn } from "~/lib/utils";
 import { colors } from "~/consts/colors";
+import { motion } from "framer-motion";
 
 type ListItemProps = {
   wishlist: WishlistWithProducts;
@@ -13,7 +15,7 @@ type ListItemProps = {
 };
 
 const ListItem = ({ wishlist, user }: ListItemProps) => {
-  const { name, id, products, color } = wishlist;
+  const { name, id, color } = wishlist;
 
   const isEditor = wishlist.createdById === user.id;
   const backgroundClass =
@@ -21,11 +23,16 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
     "bg-white";
 
   return (
-    <li className="relative">
+    <motion.li
+      whileHover={{
+        translateY: -4,
+      }}
+      className="relative isolate"
+    >
       {wishlist.dueDate && (
         <div
           className={cn(
-            "absolute left-2 top-2 z-10 rounded-md border-2 border-black p-1 font-medium",
+            "absolute left-2 top-2 z-[10] rounded-md border-2 border-black p-1 font-medium",
             backgroundClass,
           )}
         >
@@ -54,7 +61,7 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
           >
             {" "}
             <div>
-              <h2 className="font-serif text-2xl group-hover:underline">
+              <h2 className="line-clamp-1 font-serif text-2xl group-hover:underline">
                 {" "}
                 {name}{" "}
               </h2>
@@ -65,7 +72,7 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
           </div>
         </div>
       </Link>
-    </li>
+    </motion.li>
   );
 };
 

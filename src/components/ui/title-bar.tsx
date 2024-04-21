@@ -4,17 +4,20 @@ import { cn } from "~/lib/utils";
 type TitleBarProps = {
   children?: ReactNode;
   className?: string;
+  wrapperClassName?: string;
 };
 
-const TitleBar = ({ children, className }: TitleBarProps) => {
+const TitleBar = ({ children, className, wrapperClassName }: TitleBarProps) => {
   return (
-    <div
-      className={cn(
-        "z-10 flex items-center justify-between bg-background px-6 md:h-16 md:pb-4 ",
-        className,
-      )}
-    >
-      {children}
+    <div className={cn("z-10 bg-none px-2 md:px-6", wrapperClassName)}>
+      <div
+        className={cn(
+          " flex min-h-16 items-center justify-between overflow-hidden rounded-md border-2 border-black bg-background px-2 shadow-sm",
+          className,
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 };
@@ -29,7 +32,7 @@ const Title = ({
   return (
     <h1
       className={cn(
-        "py-1 font-serif text-2xl font-medium md:text-3xl",
+        "-mb-1 font-serif text-2xl font-medium md:text-3xl",
         className,
       )}
     >

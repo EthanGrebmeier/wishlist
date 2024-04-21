@@ -24,6 +24,8 @@ import { updateProduct } from "~/server/actions/product";
 import { useAction } from "next-safe-action/hooks";
 import type { WishlistProduct } from "~/types/wishlist";
 import { cn } from "~/lib/utils";
+import Incrementor from "~/components/ui/incrementor";
+import { Textarea } from "~/components/ui/textarea";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -57,9 +59,10 @@ export const AddProductForm = ({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
       name: defaultValues?.name ?? product?.name ?? "",
+      description: defaultValues?.description ?? product?.description ?? "",
       brand: defaultValues?.brand ?? product?.brand ?? "",
       image: defaultValues?.images?.[0] ?? product?.image ?? "",
-      quantity: defaultValues?.quantity ?? product?.quantity ?? "",
+      quantity: defaultValues?.quantity ?? product?.quantity ?? "1",
       price: defaultValues?.price ?? product?.price ?? "",
       url: defaultValues?.url ?? product?.url ?? "",
     },
@@ -102,11 +105,11 @@ export const AddProductForm = ({
   return (
     <Form {...form}>
       <form
-        className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto p-4"
+        className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4 pb-20"
         action={executeServerAction}
         onSubmit={() => form.trigger()}
       >
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-4">
           <FormField
             name="name"
             render={({ field }) => (
@@ -121,6 +124,8 @@ export const AddProductForm = ({
               </FormItem>
             )}
           />
+        </div>
+        <div>
           <FormField
             name="brand"
             render={({ field }) => (
@@ -128,6 +133,20 @@ export const AddProductForm = ({
                 <FormLabel>Brand</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div>
+          <FormField
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea className="resize-none" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,18 +187,17 @@ export const AddProductForm = ({
               </FormItem>
             )}
           />
-          <FormField
-            name="quantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Quantity</FormLabel>
-                <FormControl>
-                  <Input type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="space-y-2">
+            <label className="text-lg font-medium" htmlFor="quantity">
+              Quantity
+            </label>
+            <Incrementor
+              onQuantityChange={(value) =>
+                form.setValue("quantity", value.toString())
+              }
+              value={parseInt(fields.quantity ?? "1")}
+            />
+          </div>
         </div>
         <FormField
           name="url"
@@ -193,25 +211,25 @@ export const AddProductForm = ({
             </FormItem>
           )}
         />
-        <div className="h-12">
-          <div
-            className={cn(
-              "absolute bottom-0 left-0 right-0 mt-8 flex bg-background p-4 ",
-              setFrame ? "justify-between" : "justify-end",
-            )}
-          >
-            {setFrame && (
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setFrame("scrape")}
-                icon={<ArrowLeft width={20} height={20} />}
-              >
-                Back
-              </Button>
-            )}
-            <SubmitButton />
-          </div>
+        <div
+          className={cn(
+            "absolute bottom-0 left-0 right-0 flex border-t-2 border-black bg-background px-4 py-4 ",
+            setFrame ? "justify-between" : "justify-end",
+          )}
+        >
+          {setFrame && (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setFrame("scrape")}
+              icon={<ArrowLeft width={20} height={20} />}
+            >
+              Back
+            </Button>
+          )}
+          <SubmitButton>
+            {setFrame ? "Add Product" : "Update Product"}
+          </SubmitButton>
         </div>
       </form>
     </Form>

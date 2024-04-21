@@ -35,6 +35,7 @@ export const SubmitButton = ({
       variant={variant}
       size={size}
       className={className}
+      disabled={formStatus.pending}
     >
       {children ?? "Submit"}
     </Button>

@@ -87,6 +87,7 @@ const config = {
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/container-queries"),
+    require("tailwind-gradient-mask-image"),
   ],
 } satisfies Config;
 

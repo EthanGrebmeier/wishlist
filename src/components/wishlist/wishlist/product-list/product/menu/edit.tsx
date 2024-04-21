@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import {
   Dialog,
@@ -21,24 +21,42 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
+import type { WishlistProduct } from "~/types/wishlist";
 
-export const EditProduct = () => {
+type EditProductProps = {
+  trigger?: ReactNode;
+  wishlistId?: string;
+  product?: WishlistProduct;
+};
+
+export const EditProduct = ({
+  trigger,
+  wishlistId,
+  product,
+}: EditProductProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { product, wishlistId } = useProductMenu();
+  const { product: menuProduct, wishlistId: menuWishlistId } = useProductMenu();
   const router = useRouter();
+
+  const editedProduct = menuProduct ?? product;
+  const editedWishlistId = menuWishlistId ?? wishlistId;
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  if (!product || !wishlistId) return;
+  if (!(editedProduct && editedWishlistId)) return;
 
   if (isDesktop) {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <DialogTrigger className="w-full text-left">
-            Edit Product
-          </DialogTrigger>
-        </DropdownMenuItem>
+        {trigger ? (
+          <DialogTrigger asChild>{trigger}</DialogTrigger>
+        ) : (
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <DialogTrigger className="w-full text-left">
+              Edit Product
+            </DialogTrigger>
+          </DropdownMenuItem>
+        )}
         <DialogContent className="flex flex-col">
           <DialogHeader>
             <DialogTitle className="font-serif text-4xl font-medium">
@@ -47,8 +65,8 @@ export const EditProduct = () => {
           </DialogHeader>
           <AddProductForm
             method="update"
-            wishlistId={wishlistId}
-            product={product}
+            wishlistId={editedWishlistId}
+            product={editedProduct}
             onSuccess={() => {
               router.refresh();
               setIsOpen(false);
@@ -61,9 +79,16 @@ export const EditProduct = () => {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-        <DrawerTrigger className="w-full text-left">Edit Product</DrawerTrigger>
-      </DropdownMenuItem>
+      {trigger ? (
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      ) : (
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <DrawerTrigger className="w-full text-left">
+            Edit Product
+          </DrawerTrigger>
+        </DropdownMenuItem>
+      )}
+
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="font-serif text-4xl font-medium">
@@ -73,8 +98,8 @@ export const EditProduct = () => {
         <div className="max-h-[clamp(400px,80vh,800px)] overflow-y-scroll p-4">
           <AddProductForm
             method="update"
-            wishlistId={wishlistId}
-            product={product}
+            wishlistId={editedWishlistId}
+            product={editedProduct}
             onSuccess={() => {
               router.refresh();
               setIsOpen(false);

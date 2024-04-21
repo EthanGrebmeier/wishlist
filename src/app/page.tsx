@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ButtonLink from "~/components/ui/button-link";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function HomePage() {
@@ -8,14 +8,16 @@ export default async function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center ">
       {user ? (
-        <div className="space-y-2">
-          <div>Welcome, {user.name}</div>
-          <Link href="/api/auth/signout">Sign out</Link>
+        <div className="w-fit space-y-2">
+          <h1 className="font-serif text-4xl font-medium">
+            Welcome, {user.name}!
+          </h1>
+          <ButtonLink href="/api/auth/signout">Sign out</ButtonLink>
         </div>
       ) : (
-        <div className="space-y-2">
-          <div>Not Signed In </div>
-          <Link href="/api/auth/signin">Sign in</Link>
+        <div className="w-fit space-y-2">
+          <h1 className="font-serif text-4xl font-medium">Welcome!</h1>
+          <ButtonLink href="/api/auth/signin">Sign in</ButtonLink>
         </div>
       )}
     </main>

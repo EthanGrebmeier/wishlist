@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "mb-[6px] bg-primary text-black hover:bg-primary/90 border-black border-2 transition-all hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
+          "mb-[8px] bg-primary text-black hover:bg-primary/90 border-black border-2 transition-all hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
         destructive:
-          "mb-[6px] bg-destructive border-2 border-black text-black-foreground hover:bg-destructive/90 transition-all hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
+          "mb-[8px] bg-destructive border-2 border-black text-black-foreground hover:bg-destructive/90 transition-all hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
         outline:
           "border-2 border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "mb-[6px] bg-secondary border-black border-2 text-black hover:bg-secondary/80 hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
+          "mb-[8px] bg-secondary border-black border-2 text-black hover:bg-secondary/80 hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

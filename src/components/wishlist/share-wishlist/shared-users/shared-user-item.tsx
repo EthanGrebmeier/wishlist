@@ -36,8 +36,8 @@ const SharedUserItem = ({
   }, [state, router]);
 
   return (
-    <div className="flex w-fit items-center gap-2 rounded-md border border-blue-800 bg-blue-200/60 px-2 py-2 font-bold text-blue-800">
-      <p className="text-xs"> {sharedUser.email}</p>
+    <div className="flex w-fit items-center gap-2 rounded-md border-2 border-black bg-[#71def1] px-2 py-2 font-bold text-black">
+      <p className="text-sm "> {sharedUser.email}</p>
       {userId !== sharedUser.id ? (
         <form className="flex items-center" action={actionWithData}>
           <DeleteShareButton />

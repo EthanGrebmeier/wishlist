@@ -115,4 +115,10 @@
   .animate-shake {
     animation: shake 1.2s ease 0s infinite;
   }
+
+  .skeleton {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: rgb(226 232 240);
+    border-radius: 8px;
+  }
 }

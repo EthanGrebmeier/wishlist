@@ -1,9 +1,12 @@
+"use client";
+
 import type { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 import ProductMenu from "./menu";
 import MenuProvider from "./menu/menuProvider";
 import ProductImage from "./image";
 import Link from "~/components/ui/link";
 import { getProductSlug } from "~/lib/wishlist/product/getProductSlug";
+import { motion } from "framer-motion";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -12,7 +15,12 @@ type ProductProps = {
 
 const Product = ({ product, isEditor }: ProductProps) => {
   return (
-    <li className="relative isolate overflow-hidden rounded-md border-2 border-black">
+    <motion.li
+      whileHover={{
+        translateY: -4,
+      }}
+      className="relative isolate overflow-hidden rounded-md border-2 border-black"
+    >
       {isEditor && (
         <MenuProvider product={product} wishlistId={product.wishlistId}>
           <div className="absolute right-2 top-2 z-10">
@@ -30,14 +38,17 @@ const Product = ({ product, isEditor }: ProductProps) => {
           <ProductImage imageUrl={product.image} />
         </div>
 
-        <div className="flex w-full items-center justify-between gap-4 border-t-2 border-black bg-green-200 px-2 py-2">
-          <p className="font-serif text-2xl"> {product.name} </p>
+        <div className="flex w-full items-center justify-between gap-4 border-t-2 border-black bg-[#efeec4] px-2 py-2">
+          <p className="line-clamp-1 overflow-ellipsis font-serif text-2xl">
+            {" "}
+            {product.name}{" "}
+          </p>
           {product.price && (
             <p className="text-md font-medium"> ${product.price} </p>
           )}
         </div>
       </Link>
-    </li>
+    </motion.li>
   );
 };
 

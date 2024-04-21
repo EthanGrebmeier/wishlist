@@ -7,9 +7,9 @@ const WishlistPage = async () => {
   return (
     <div className="max-h-full overflow-y-auto py-8">
       <TitleBar>
-        <span className="flex items-center gap-4">
+        <span className="flex items-center gap-4 pl-2">
+          <BookUser size={25} />
           <TitleBar.Title> Shared Wishlists</TitleBar.Title>
-          <BookUser className="-mt-1" size={20} />
         </span>
       </TitleBar>
       <WishlistGrid getWishlists={getSharedWishlists} />

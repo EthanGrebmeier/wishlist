@@ -63,8 +63,8 @@ const ShareWishlist = ({
         <DialogContent>
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium"> Share </h1>
-            <Privacy wishlistId={wishlistId} privacyType={privacyType} />
-            <div className="space-y-4 border-t border-slate-200 pt-2">
+            {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
+            <div className="space-y-4  pt-2">
               <SharedUsers
                 sharedUsers={sharedUsers}
                 userId={userId}

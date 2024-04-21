@@ -12,7 +12,7 @@ const Navigation = async () => {
   // const wishlists = await getUserWishlists()
 
   return (
-    <nav className="flex h-full w-full flex-col justify-between gap-8 md:w-[220px]">
+    <nav className="flex h-full w-full flex-col justify-between gap-8 lg:w-[220px]">
       <div className="flex flex-col gap-2">
         {isSignedIn && (
           <>
@@ -23,9 +23,9 @@ const Navigation = async () => {
             <div className="w-full pl-2">
               <CreateWishlist
                 trigger={
-                  <button className="group flex w-full items-center justify-between rounded-md px-2 text-lg font-medium transition-all hover:bg-green-200">
-                    Create Wishlist{" "}
+                  <button className="group flex w-full items-center gap-1 rounded-md px-1 text-lg font-medium transition-all hover:bg-green-300">
                     <Plus className="group-hover:animate-shake " size={20} />
+                    Create Wishlist{" "}
                   </button>
                 }
               />

@@ -27,16 +27,21 @@ import {
   scrapeInputSchema,
   type partialCompiledProductDataSchema,
 } from "~/schema/wishlist/scrape";
-import { scrapeProductData } from "~/server/actions/product";
+import { scrapeProductData } from "~/server/actions/scrape";
 
 type ScrapeInputProps = {
   setFrame: Dispatch<SetStateAction<"scrape" | "form">>;
   setScrapedData: Dispatch<
     SetStateAction<z.infer<typeof partialCompiledProductDataSchema> | undefined>
   >;
+  onStatusChange: () => void;
 };
 
-const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
+const ScrapeInput = ({
+  setFrame,
+  setScrapedData,
+  onStatusChange,
+}: ScrapeInputProps) => {
   const form = useForm<z.infer<typeof scrapeInputSchema>>({
     resolver: zodResolver(scrapeInputSchema),
     defaultValues: {
@@ -47,10 +52,12 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
   const input = form.watch();
 
   const actionWithData = scrapeProductData.bind(null, {
-    url: input.url,
+    pageToScrape: input.url,
   });
 
-  const { execute, result } = useAction(actionWithData);
+  const { execute, result } = useAction(actionWithData, {
+    onSettled: onStatusChange,
+  });
 
   useEffect(() => {
     if (result.data) {
@@ -62,7 +69,7 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
   return (
     <Form {...form}>
       <form
-        className="space-y-8 "
+        className="space-y-8 pb-10 md:pb-16"
         action={execute}
         onSubmit={() => form.trigger()}
       >
@@ -101,7 +108,7 @@ const ScrapeInput = ({ setFrame, setScrapedData }: ScrapeInputProps) => {
             </FormItem>
           )}
         />
-        <div className="mt-8 flex justify-between">
+        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 md:py-4">
           <Button
             onClick={() => setFrame("form")}
             icon={<ChevronsRight size={20} />}

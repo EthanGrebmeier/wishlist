@@ -1,11 +1,12 @@
-import { ArrowLeft, ExternalLink } from "lucide-react";
-import Link from "~/components/ui/link";
+import { ArrowLeft, ExternalLink, Pencil } from "lucide-react";
 import { getWishlistSlug } from "~/lib/wishlist/getWishlistSlug";
 import type { Wishlist, WishlistProduct } from "~/types/wishlist";
 import Commit from "./commit";
 import { getProductCommitments } from "~/server/actions/product";
 import ButtonLink from "~/components/ui/button-link";
 import { getServerAuthSession } from "~/server/auth";
+import EditProduct from "../wishlist/product-list/product/menu/edit";
+import { Button } from "~/components/ui/button";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -31,51 +32,42 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
     ),
   );
 
+  const isOwner = session.user.id === wishlist.createdById;
+
   return (
-    <div className="mx-auto mt-4 flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-6 lg:mx-6 lg:mt-8 lg:grid  lg:h-screen lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[auto_1fr] lg:gap-14 lg:px-0">
-      <Link
-        className="group flex w-full items-center space-x-4 hover:underline"
-        href={getWishlistSlug(wishlist)}
-      >
-        <ArrowLeft
-          className="translate-x-0 transition-all group-hover:-translate-x-2"
-          width={20}
-          height={20}
-        />{" "}
-        <p className="text-lg"> Back to {wishlist.name}</p>
-      </Link>
-      <section className="flex h-full w-full flex-col gap-4 overflow-hidden transition-all lg:grid lg:grid-cols-[1fr_min-content] lg:gap-4">
-        <div className="w-full gap-4 pb-4 align-top lg:mx-0">
-          <div className="flex w-full items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white md:h-full">
+    <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:px-6 lg:mx-6 lg:mt-8 lg:grid lg:h-screen lg:max-h-screen lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">
+      <section className="flex h-full w-full flex-col gap-x-4 gap-y-2 overflow-hidden transition-all lg:grid lg:grid-cols-[1fr_min-content] lg:gap-4">
+        <div className="flex w-full items-start gap-4 align-top lg:mx-0">
+          <div className="relative flex max-h-[440px] w-full items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white object-contain object-center transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className="h-[340px] w-auto object-cover object-center"
+              // className="h-full w-max"
               alt={product.name}
               /* eslint-disable-next-line  */
               src={product.image || "https://placehold.co/600x600"}
             />
-          </div>
-        </div>
-        <div className="mx-auto flex w-full max-w-[400px] justify-end pt-1 lg:mx-0 lg:mr-4 lg:h-full lg:max-w-none">
-          <div className="flex w-full flex-col justify-between gap-6  py-4 lg:-mt-4 lg:w-[340px] lg:pl-6">
-            <div className="flex flex-col gap-2">
-              <h1 className="text-3xl font-medium md:text-4xl">
-                {product.name}
-              </h1>
-              {product.brand && <p className="text-lg"> {product.brand} </p>}
-              {product.price && <p className="text-3xl"> ${product.price} </p>}
-            </div>
-
-            <div className="flex flex-col gap-4">
-              {/** Only hide commitments for the owner of the wishlist */}
-              {!(isSecret && wishlist.createdById === session.user.id) && (
-                <Commit
-                  hasUserCommitted={hasUserCommitted}
-                  productCommitments={productCommitments.data}
+            <ButtonLink
+              variant="secondary"
+              size="lg"
+              href={getWishlistSlug(wishlist)}
+              icon={<ArrowLeft size={20} />}
+              className="absolute left-2 top-2 h-10 w-10 rounded-full p-0"
+            >
+              <span className="sr-only"> Back to {wishlist.name} </span>
+            </ButtonLink>
+            <div className="absolute right-2 top-2 flex gap-4">
+              {isOwner && (
+                <EditProduct
                   product={product}
+                  wishlistId={wishlist.id}
+                  trigger={
+                    <Button
+                      className="h-10 w-10 rounded-full p-0"
+                      icon={<Pencil size={20} />}
+                    />
+                  }
                 />
               )}
-
               {product.url && (
                 <ButtonLink
                   variant="secondary"
@@ -83,13 +75,54 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                   target="_blank"
                   href={product.url}
                   icon={<ExternalLink size={20} />}
-                  className="w-full"
-                >
-                  View Product
-                </ButtonLink>
+                  className="h-10 w-10 rounded-full p-0"
+                ></ButtonLink>
               )}
             </div>
           </div>
+        </div>
+        <div className="mx-auto mb-4 flex w-full flex-col justify-between gap-2  lg:h-full lg:w-[320px] lg:max-w-none ">
+          <div className="rounded-md border-2 border-black ">
+            <div className="relative flex w-full flex-col gap-2 p-4">
+              <div className="flex max-w-[80%] flex-col gap-2">
+                <h1 className="text-3xl font-medium md:text-4xl">
+                  {product.name}
+                </h1>
+                {product.brand && (
+                  <p className="font-serif text-lg font-medium">
+                    {" "}
+                    {product.brand}{" "}
+                  </p>
+                )}
+                {product.price && (
+                  <p className="text-3xl"> ${product.price} </p>
+                )}
+              </div>
+              {product.quantity && (
+                <p className="absolute right-4 top-4 text-3xl">
+                  x{product.quantity}{" "}
+                </p>
+              )}
+            </div>
+            {product.description && (
+              <div className=" mt-4 border-t-2 border-t-black p-4">
+                <p className="text-lg">{product.description}</p>
+              </div>
+            )}
+          </div>
+
+          {!(isSecret && wishlist.createdById === session.user.id) && (
+            <div className="flex w-full flex-col justify-end gap-6 rounded-md border-2 border-black p-4 lg:-mt-4">
+              <div className="flex flex-col gap-4">
+                {/** Only hide commitments for the owner of the wishlist */}
+                <Commit
+                  hasUserCommitted={hasUserCommitted}
+                  productCommitments={productCommitments.data}
+                  product={product}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

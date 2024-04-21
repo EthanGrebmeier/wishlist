@@ -14,40 +14,82 @@ import {
 import { useAction } from "next-safe-action/hooks";
 import { SubmitButton } from "~/components/ui/submit-button";
 import { deleteWishlist } from "~/server/actions/wishlist";
+import { useMediaQuery } from "usehooks-ts";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "~/components/ui/drawer";
 
 const Delete = () => {
   const { execute } = useAction(deleteWishlist);
   const { wishlist } = useWishlistMenu();
 
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   if (!wishlist) return;
 
-  return (
-    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-      <Dialog>
-        <DialogTrigger className="text-left text-red-500">
-          Delete Wishlist
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader className="inline-block font-serif text-4xl font-medium">
+  if (isDesktop) {
+    return (
+      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <Dialog>
+          <DialogTrigger className="text-left text-red-500">
             Delete Wishlist
-          </DialogHeader>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader className="inline-block font-serif text-4xl font-medium">
+              Delete Wishlist
+            </DialogHeader>
+            <p>
+              {" "}
+              Are you sure you would like to delete{" "}
+              <span className="font-bold"> {wishlist.name}</span>?
+            </p>
+            <DialogDescription> This action cannot be undone</DialogDescription>
+            <div className="flex justify-between">
+              <DialogClose asChild>
+                <Button>Cancel</Button>
+              </DialogClose>
+              <form action={() => execute({ wishlistId: wishlist.id })}>
+                <SubmitButton variant="destructive">Delete</SubmitButton>
+              </form>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </DropdownMenuItem>
+    );
+  }
+
+  return (
+    <Drawer>
+      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <DrawerTrigger className="w-full text-left text-red-500">
+          Delete Wishlist
+        </DrawerTrigger>
+      </DropdownMenuItem>
+      <DrawerContent>
+        <DrawerHeader className="text-start">
+          <DrawerTitle className="font-serif text-4xl font-medium">
+            Delete Wishlist
+          </DrawerTitle>
           <p>
-            {" "}
-            Are you sure you would like to delete{" "}
+            Are you sure you would like to delete
             <span className="font-bold"> {wishlist.name}</span>?
           </p>
-          <DialogDescription> This action cannot be undone</DialogDescription>
-          <div className="flex justify-between">
-            <DialogClose asChild>
-              <Button>Cancel</Button>
-            </DialogClose>
-            <form action={() => execute({ wishlistId: wishlist.id })}>
-              <SubmitButton variant="destructive">Delete</SubmitButton>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </DropdownMenuItem>
+        </DrawerHeader>
+        <DrawerDescription className="px-4">
+          This action cannot be undone
+        </DrawerDescription>
+        <div className="p-4">
+          <form action={() => execute({ wishlistId: wishlist.id })}>
+            <SubmitButton variant="destructive">Delete</SubmitButton>
+          </form>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 };
 

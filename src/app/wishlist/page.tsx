@@ -1,5 +1,6 @@
-import { Scroll } from "lucide-react";
+import { PlusIcon, Scroll } from "lucide-react";
 import { Suspense } from "react";
+import { Button } from "~/components/ui/button";
 import TitleBar from "~/components/ui/title-bar";
 import CreateWishlist from "~/components/wishlist/create-wishlist";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
@@ -7,18 +8,33 @@ import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
   return (
-    <div className="h-full max-h-full overflow-y-auto py-4 lg:py-8">
-      <TitleBar>
-        <span className="flex items-center gap-4">
-          <TitleBar.Title>My Wishlists </TitleBar.Title>{" "}
-          <Scroll className="-mt-1" size="20" />
-        </span>
-        <CreateWishlist />
-      </TitleBar>
-      <Suspense>
-        <WishlistGrid getWishlists={getUserWishlists} />
-      </Suspense>
-    </div>
+    <>
+      <div className="h-full max-h-full py-4 md:overflow-y-auto lg:py-8">
+        <TitleBar wrapperClassName="sticky top-[72px] md:top-0 md:relative">
+          <span className="flex items-center justify-center gap-4 pl-2">
+            <Scroll size="25" />
+            <TitleBar.Title>My Wishlists</TitleBar.Title>{" "}
+          </span>
+
+          <div className="hidden md:block">
+            <CreateWishlist />
+          </div>
+        </TitleBar>
+        <Suspense>
+          <WishlistGrid getWishlists={getUserWishlists} />
+        </Suspense>
+      </div>
+      <CreateWishlist
+        trigger={
+          <Button
+            className="fixed bottom-4 left-1 z-10 flex h-11 w-11 rounded-full border-2 border-black bg-green-200 p-2 md:hidden"
+            icon={<PlusIcon size={20} />}
+          >
+            {/* <span> Create Wishlist </span> */}
+          </Button>
+        }
+      />
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -31,12 +31,13 @@ import {
 
 type AddProduct = {
   wishlistId: string;
+  trigger?: ReactNode;
 };
 
-export const AddProduct = ({ wishlistId }: AddProduct) => {
+export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   const [isOpen, setIsOpen] = useState(false);
   const [frame, setFrame] = useState<"scrape" | "form">("scrape");
-  const [height, setHeight] = useState(392);
+  const [height, setHeight] = useState(400);
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
   >(undefined);
@@ -54,8 +55,12 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
     }
   }, [isOpen]);
 
+  const recalculateHeight = () => {
+    setHeight((innerContainerRef.current?.offsetHeight ?? 126) + 36);
+  };
+
   useEffect(() => {
-    setHeight((innerContainerRef.current?.offsetHeight ?? 156) + 36);
+    recalculateHeight();
   }, [frame, isOpen]);
 
   if (isDesktop) {
@@ -66,9 +71,11 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
             <>
               <TooltipTrigger asChild>
                 <DialogTrigger asChild>
-                  <Button icon={<PlusIcon size={20} />}>
-                    <span className=" hidden lg:block"> Add Product</span>
-                  </Button>
+                  {trigger ?? (
+                    <Button icon={<PlusIcon size={20} />}>
+                      <span className=" hidden lg:block"> Add Product</span>
+                    </Button>
+                  )}
                 </DialogTrigger>
               </TooltipTrigger>
               <TooltipContent>Add Product</TooltipContent>
@@ -84,6 +91,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
               <ScrapeInput
                 setFrame={setFrame}
                 setScrapedData={setScrapedData}
+                onStatusChange={recalculateHeight}
               />
             ) : (
               <AddProductForm
@@ -106,13 +114,15 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button icon={<PlusIcon size={20} />}>
-          <span className=" hidden lg:block"> Add Product</span>
-        </Button>
+        {trigger ?? (
+          <Button icon={<PlusIcon size={20} />}>
+            <span className=" hidden lg:block"> Add Product</span>
+          </Button>
+        )}
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle className="font-serif text-4xl font-medium">
+        <DrawerHeader className="border-b-2 border-black md:border-none md:pb-0">
+          <DrawerTitle className=" font-serif text-4xl font-medium ">
             Add Product
           </DrawerTitle>
         </DrawerHeader>
@@ -125,6 +135,7 @@ export const AddProduct = ({ wishlistId }: AddProduct) => {
               <ScrapeInput
                 setFrame={setFrame}
                 setScrapedData={setScrapedData}
+                onStatusChange={recalculateHeight}
               />
             ) : (
               <AddProductForm

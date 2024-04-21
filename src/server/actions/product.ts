@@ -1,16 +1,7 @@
 "use server";
 
-import { load } from "cheerio";
 import { z } from "zod";
-import {
-  makeProtectedAction,
-  makeSafeAction,
-} from "~/lib/actions/protectedAction";
-import {
-  type partialCompiledProductDataSchema,
-  scrapeInputSchema,
-  scrapeLDJSONSchema,
-} from "~/schema/wishlist/scrape";
+import { makeProtectedAction } from "~/lib/actions/protectedAction";
 
 import { productSchema } from "~/schema/wishlist/product";
 import { db } from "../db";
@@ -22,55 +13,6 @@ import {
 import { and, eq, or } from "drizzle-orm";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { randomUUID } from "crypto";
-
-type scrapeProductDataArgs = {
-  url: string;
-};
-
-export const scrapeProductData = makeSafeAction(
-  scrapeInputSchema,
-  async ({ url }: scrapeProductDataArgs) => {
-    const scrapedProductData: z.infer<typeof partialCompiledProductDataSchema> =
-      {
-        name: undefined,
-        description: undefined,
-        images: [],
-        brand: undefined,
-        price: undefined,
-        currency: undefined,
-        url,
-      };
-    const result = await fetch(url);
-
-    // Load html content into cheerio
-    const $ = load(await result.text());
-
-    // Find ldJSON
-    const ldJSONText = $(`script[type="application/ld+json"]`).text();
-
-    try {
-      const ldJSON: unknown = JSON.parse(ldJSONText);
-      const parsedJson = scrapeLDJSONSchema.safeParse(ldJSON);
-
-      if (parsedJson.success) {
-        const data = parsedJson.data;
-        scrapedProductData.name = data.name;
-        scrapedProductData.description = data.description;
-        const ldJsonImage = data.image;
-        if (ldJsonImage) {
-          scrapedProductData.images?.push(ldJsonImage);
-        }
-        scrapedProductData.price = data.offers.price;
-        scrapedProductData.currency = data.offers.priceCurrency;
-        scrapedProductData.brand = data.brand?.name;
-      }
-    } catch (e) {
-      // Error finding ldJson
-    }
-
-    return scrapedProductData;
-  },
-);
 
 export const updateProduct = makeProtectedAction(
   productSchema,
