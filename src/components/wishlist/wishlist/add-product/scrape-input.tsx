@@ -17,12 +17,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { SubmitButton } from "~/components/ui/submit-button";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipContent,
-} from "~/components/ui/tooltip";
+import { Tooltip } from "~/components/ui/tooltip";
 import {
   scrapeInputSchema,
   type partialCompiledProductDataSchema,
@@ -81,27 +76,22 @@ const ScrapeInput = ({
               <FormControl>
                 <div className="relative flex gap-2">
                   <Input type="text" {...field} />
-                  <TooltipProvider>
-                    <Tooltip delayDuration={100}>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={async () => {
-                            form.setValue(
-                              "url",
-                              await navigator.clipboard.readText(),
-                            );
-                          }}
-                          className="-mt-1"
-                          variant="secondary"
-                          type="button"
-                        >
-                          {" "}
-                          <ClipboardPaste size={20} />{" "}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Paste Copied URL</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip text="Paste Copied URL">
+                    <Button
+                      onClick={async () => {
+                        form.setValue(
+                          "url",
+                          await navigator.clipboard.readText(),
+                        );
+                      }}
+                      className="-mt-1"
+                      variant="secondary"
+                      type="button"
+                    >
+                      {" "}
+                      <ClipboardPaste size={20} />{" "}
+                    </Button>
+                  </Tooltip>
                 </div>
               </FormControl>
               <FormMessage />

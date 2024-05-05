@@ -9,8 +9,8 @@ import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 const WishlistPage = async () => {
   return (
     <>
-      <div className="h-full max-h-full py-4 md:overflow-y-auto lg:py-8">
-        <TitleBar wrapperClassName="sticky top-[72px] md:top-0 md:relative">
+      <div className="h-full max-h-full md:overflow-y-auto md:pt-4 lg:pt-8">
+        <TitleBar>
           <span className="flex items-center justify-center gap-4 pl-2">
             <Scroll size="25" />
             <TitleBar.Title>My Wishlists</TitleBar.Title>{" "}

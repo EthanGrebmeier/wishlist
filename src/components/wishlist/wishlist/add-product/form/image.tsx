@@ -3,12 +3,7 @@
 import { AlertTriangle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
+import { Tooltip } from "~/components/ui/tooltip";
 
 type ProductFormImagePreviewProps = {
   imageUrl?: string;
@@ -54,18 +49,11 @@ const ProductFormImagePreview = ({
         />
       </div>
       {imageUrl && !isImageValid && (
-        <TooltipProvider delayDuration={200}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="absolute left-2 top-2 rounded-md p-1 transition-all hover:bg-yellow-400/80">
-                <AlertTriangle width={20} height={20} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p> Invalid URL</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip text="Invalid URL">
+          <div className="absolute left-2 top-2 rounded-md p-1 transition-all hover:bg-yellow-400/80">
+            <AlertTriangle width={20} height={20} />
+          </div>
+        </Tooltip>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import { cn } from "~/lib/utils";
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
-const Tooltip = TooltipPrimitive.Root;
+const ShadTooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
@@ -26,5 +26,26 @@ const TooltipContent = React.forwardRef<
   />
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+const Tooltip = ({
+  text,
+  children,
+  delayMs = 100,
+}: {
+  text: string;
+  children: React.ReactNode;
+  delayMs?: number;
+}) => {
+  return (
+    <TooltipProvider>
+      <ShadTooltip delayDuration={delayMs}>
+        <TooltipContent>
+          <p> {text} </p>
+        </TooltipContent>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+      </ShadTooltip>
+    </TooltipProvider>
+  );
+};
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

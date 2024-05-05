@@ -9,14 +9,18 @@ type TitleBarProps = {
 
 const TitleBar = ({ children, className, wrapperClassName }: TitleBarProps) => {
   return (
-    <div className={cn("z-10 bg-none px-2 md:px-6", wrapperClassName)}>
+    <div className="sticky top-0 z-10 mx-auto -mt-1 w-full bg-background pt-2 md:relative md:top-0">
       <div
-        className={cn(
-          " flex min-h-16 items-center justify-between overflow-hidden rounded-md border-2 border-black bg-background px-2 shadow-sm",
-          className,
-        )}
+        className={cn("translate-y-1 bg-none px-2 md:px-6", wrapperClassName)}
       >
-        {children}
+        <div
+          className={cn(
+            " flex min-h-16 items-center justify-between overflow-hidden rounded-md border-2 border-black bg-background px-2 shadow-sm",
+            className,
+          )}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -32,7 +36,7 @@ const Title = ({
   return (
     <h1
       className={cn(
-        "-mb-1 font-serif text-2xl font-medium md:text-3xl",
+        "-mb-1 font-serif text-xl font-medium md:text-2xl",
         className,
       )}
     >

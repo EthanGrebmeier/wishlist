@@ -14,12 +14,6 @@ import { AddProductForm } from "./form";
 import ScrapeInput from "./scrape-input";
 import type { z } from "zod";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Drawer,
@@ -66,22 +60,13 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   if (isDesktop) {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <TooltipProvider>
-          <Tooltip delayDuration={200}>
-            <>
-              <TooltipTrigger asChild>
-                <DialogTrigger asChild>
-                  {trigger ?? (
-                    <Button icon={<PlusIcon size={20} />}>
-                      <span className=" hidden lg:block"> Add Product</span>
-                    </Button>
-                  )}
-                </DialogTrigger>
-              </TooltipTrigger>
-              <TooltipContent>Add Product</TooltipContent>
-            </>
-          </Tooltip>
-        </TooltipProvider>
+        <DialogTrigger asChild>
+          {trigger ?? (
+            <Button icon={<PlusIcon size={20} />}>
+              <span className=" hidden lg:block"> Add Product</span>
+            </Button>
+          )}
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium">Add Product </h1>
@@ -127,7 +112,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
           </DrawerTitle>
         </DrawerHeader>
         <div
-          className="max-h-[clamp(400px,80vh,800px)] overflow-y-scroll p-4 transition-all"
+          className="max-h-[clamp(400px,80vh,500px)] overflow-y-scroll p-4 transition-all"
           style={{ height }}
         >
           <div ref={innerContainerRef}>

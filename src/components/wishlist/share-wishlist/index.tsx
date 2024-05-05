@@ -12,12 +12,7 @@ import ShareWishlistForm from "./share-wishlist-form";
 import SharedUsers from "./shared-users";
 import Privacy from "./privacy";
 import type { WishlistPrivacy } from "~/types/wishlist";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
+import { Tooltip } from "~/components/ui/tooltip";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Drawer,
@@ -33,6 +28,7 @@ type ShareWishlistProps = {
   privacyType: WishlistPrivacy;
   userId: string;
   sharedUsers: User[];
+  isEditor: boolean;
 };
 
 const ShareWishlist = ({
@@ -40,27 +36,20 @@ const ShareWishlist = ({
   privacyType,
   userId,
   sharedUsers,
+  isEditor,
 }: ShareWishlistProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
       <Dialog>
-        <TooltipProvider>
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <DialogTrigger asChild>
-                <Button icon={<Share size={20} />}>
-                  {" "}
-                  <span className="hidden lg:block"> Share </span>
-                </Button>
-              </DialogTrigger>
-            </TooltipTrigger>
-            <TooltipContent>Share Wishlist</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip text="Share Wishlist">
+          <DialogTrigger>
+            <Button icon={<Share size={20} />}></Button>
+          </DialogTrigger>
+        </Tooltip>
 
-        <DialogContent>
+        <DialogContent className="max-w-[360px]">
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium"> Share </h1>
             {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
@@ -69,8 +58,9 @@ const ShareWishlist = ({
                 sharedUsers={sharedUsers}
                 userId={userId}
                 wishlistId={wishlistId}
+                isEditor={isEditor}
               />
-              <ShareWishlistForm wishlistId={wishlistId} />
+              {isEditor && <ShareWishlistForm wishlistId={wishlistId} />}
             </div>
           </DialogHeader>
         </DialogContent>
@@ -98,6 +88,7 @@ const ShareWishlist = ({
               sharedUsers={sharedUsers}
               userId={userId}
               wishlistId={wishlistId}
+              isEditor={isEditor}
             />
             <ShareWishlistForm wishlistId={wishlistId} />
           </div>

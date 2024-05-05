@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { User } from "lucide-react";
+import { DoorOpen, User } from "lucide-react";
 import Link from "../ui/link";
 
 type NavAccountProps = {
@@ -28,7 +28,12 @@ const NavAccount = ({ isSignedIn }: NavAccountProps) => {
         {isSignedIn ? (
           <>
             <DropdownMenuItem asChild>
-              <Link href="/api/auth/signout">Log Out</Link>
+              <Link
+                href="/api/auth/signout"
+                className="flex items-center justify-between"
+              >
+                <p> Log Out </p> <DoorOpen size={20} />
+              </Link>
             </DropdownMenuItem>
           </>
         ) : (

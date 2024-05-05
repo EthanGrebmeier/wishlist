@@ -5,7 +5,7 @@ import { getSharedWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
   return (
-    <div className="max-h-full overflow-y-auto py-8">
+    <div className="max-h-full md:overflow-y-auto md:py-8">
       <TitleBar>
         <span className="flex items-center gap-4 pl-2">
           <BookUser size={25} />

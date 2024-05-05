@@ -9,6 +9,9 @@ import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import { Button } from "~/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { cn, getBackgroundColor } from "~/lib/utils";
+import { Tooltip } from "~/components/ui/tooltip";
+import WishlistHeader from "./header";
+import { redirect } from "next/navigation";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -21,44 +24,24 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
     getServerAuthSession(),
   ]);
 
+  if (
+    !session ||
+    !sharedUsers.find((sharedUser) => sharedUser.id === session.user.id)
+  ) {
+    redirect("/");
+  }
+
   const isEditor = session?.user.id === wishlist.createdById;
 
   return (
     <>
       <div className=" grid h-full w-full grid-rows-[auto_1fr] md:relative md:max-h-screen md:overflow-y-auto md:pt-4 lg:pt-8">
-        <TitleBar
-          wrapperClassName="sticky top-[72px] md:top-0 md:relative"
-          className=" w-full flex-wrap gap-2 md:flex-row md:gap-0"
-        >
-          <div className="flex flex-1 items-center gap-4 pl-2">
-            <div
-              className={cn(
-                "flex h-6 w-6 flex-shrink-0 rounded-full border-2 border-black",
-                getBackgroundColor(wishlist.color),
-              )}
-            ></div>
-            <TitleBar.Title>{wishlist.name}</TitleBar.Title>
-          </div>
-          <div className="flex flex-nowrap space-x-1 overflow-x-auto xs:w-fit md:space-x-4 md:px-0 ">
-            {isEditor && (
-              <div className="hidden md:block">
-                {" "}
-                <AddProduct wishlistId={wishlistId} />{" "}
-              </div>
-            )}
-            {isEditor && (
-              <div className="hidden md:block">
-                <ShareWishlist
-                  sharedUsers={sharedUsers}
-                  wishlistId={wishlistId}
-                  userId={session.user.id}
-                  privacyType={wishlist.privacyType}
-                />
-              </div>
-            )}
-            {isEditor && <WishlistSettings wishlist={wishlist} />}
-          </div>
-        </TitleBar>
+        <WishlistHeader
+          wishlist={wishlist}
+          isEditor={isEditor}
+          sharedUsers={sharedUsers}
+          session={session}
+        />
         <section className="overflow-y-auto px-2 py-4 md:px-6">
           {wishlist.products.length ? (
             <ProductList isEditor={isEditor} products={wishlist.products} />

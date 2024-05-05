@@ -8,6 +8,7 @@ import { formatDate } from "date-fns";
 import { cn } from "~/lib/utils";
 import { colors } from "~/consts/colors";
 import { motion } from "framer-motion";
+import DueDate from "../../due-date";
 
 type ListItemProps = {
   wishlist: WishlistWithProducts;
@@ -30,14 +31,7 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
       className="relative isolate"
     >
       {wishlist.dueDate && (
-        <div
-          className={cn(
-            "absolute left-2 top-2 z-[10] rounded-md border-2 border-black p-1 font-medium",
-            backgroundClass,
-          )}
-        >
-          <p className="text-sm">{formatDate(wishlist.dueDate, "P")}</p>
-        </div>
+        <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />
       )}
       {isEditor && (
         <div className="absolute right-2 top-2 z-10">

@@ -5,18 +5,25 @@ type SharedUsersProps = {
   wishlistId: string;
   userId: string;
   sharedUsers: User[];
+  isEditor: boolean;
 };
 
-const SharedUsers = ({ wishlistId, userId, sharedUsers }: SharedUsersProps) => {
+const SharedUsers = ({
+  wishlistId,
+  userId,
+  sharedUsers,
+  isEditor,
+}: SharedUsersProps) => {
   return (
     <div className="space-y-2">
       <h2 className="text-lg font-medium"> Currently Shared With </h2>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid w-full gap-2">
         {sharedUsers.length ? (
           sharedUsers
             .sort((a) => (a.id === "userId" ? 1 : -1))
             .map((sharedUser) => (
               <SharedUserItem
+                isEditor={isEditor}
                 userId={userId}
                 wishlistId={wishlistId}
                 sharedUser={sharedUser}
