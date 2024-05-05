@@ -62,6 +62,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
           <CreateWishlistForm
             values={{
               wishlistId: wishlist.id,
+              imageUrl: wishlist.imageUrl,
               date: wishlist.dueDate,
               color: wishlist.color,
               wishlistName: wishlist.name,

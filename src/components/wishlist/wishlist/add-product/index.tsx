@@ -50,7 +50,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   }, [isOpen]);
 
   const recalculateHeight = () => {
-    setHeight((innerContainerRef.current?.offsetHeight ?? 126) + 36);
+    setHeight((innerContainerRef.current?.offsetHeight ?? 126) + 46);
   };
 
   useEffect(() => {

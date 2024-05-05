@@ -44,7 +44,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
               // className="h-full w-max"
               alt={product.name}
               /* eslint-disable-next-line  */
-              src={product.image || "https://placehold.co/600x600"}
+              src={product.imageUrl || "https://placehold.co/600x600"}
             />
             <ButtonLink
               variant="secondary"

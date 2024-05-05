@@ -26,6 +26,7 @@ import { cn } from "~/lib/utils";
 import Incrementor from "~/components/ui/incrementor";
 import { Textarea } from "~/components/ui/textarea";
 import ProductImageInput from "./image";
+import PriceInput from "./price";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -158,31 +159,33 @@ export const AddProductForm = ({
             )}
           />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 xs:grid-cols-[200px_auto] xs:gap-4">
           <ProductImageInput setImageUrl={setImageUrl} imageUrl={imageUrl} />
-          <div className="flex flex-col justify-between pb-2">
-            <FormField
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="space-y-2">
-              <label className="text-lg font-medium" htmlFor="quantity">
-                Quantity
-              </label>
-              <Incrementor
-                onQuantityChange={(value) =>
-                  form.setValue("quantity", value.toString())
-                }
-                value={parseInt(fields.quantity ?? "1")}
+          <div className="flex flex-col justify-between gap-4 pb-2 xs:gap-0 ">
+            <div className="flex flex-row gap-4 xs:flex-col xs:gap-0 ">
+              <FormField
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <FormControl>
+                      <PriceInput type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
+              <div className="space-y-2">
+                <label className="text-lg font-medium" htmlFor="quantity">
+                  Quantity
+                </label>
+                <Incrementor
+                  onQuantityChange={(value) =>
+                    form.setValue("quantity", value.toString())
+                  }
+                  value={parseInt(fields.quantity ?? "1")}
+                />
+              </div>
             </div>
             <FormField
               name="url"

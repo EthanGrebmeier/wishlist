@@ -98,7 +98,7 @@ const ScrapeInput = ({
             </FormItem>
           )}
         />
-        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 md:py-4">
+        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 pb-4 md:py-4">
           <Button
             onClick={() => setFrame("form")}
             icon={<ChevronsRight size={20} />}

@@ -1,5 +1,8 @@
 {
   "cSpell.words": [
     "Uploadthing"
-  ]
+  ],
+  "workbench.editor.customLabels.patterns": {
+    "**/components/**/index.tsx": "${dirname} - Component"
+  },
 }
