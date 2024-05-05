@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { formatDate, parseISO } from "date-fns";
 import { Calendar } from "lucide-react";
 import React from "react";
 import { cn, getBackgroundColor } from "~/lib/utils";
@@ -23,7 +23,7 @@ const DueDate = ({ wishlist, className }: DueDateProps) => {
       )}
     >
       <Calendar size={20} />{" "}
-      <p className="text-sm">{formatDate(wishlist.dueDate, "P")}</p>
+      <p className="text-sm">{formatDate(parseISO(wishlist.dueDate), "P")}</p>
     </div>
   );
 };
