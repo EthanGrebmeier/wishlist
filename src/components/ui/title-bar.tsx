@@ -9,7 +9,7 @@ type TitleBarProps = {
 
 const TitleBar = ({ children, className, wrapperClassName }: TitleBarProps) => {
   return (
-    <div className="sticky top-0 z-10 mx-auto -mt-1 w-full bg-background pt-2 md:relative md:top-0">
+    <div className="sticky top-0 z-10 mx-auto -mt-1 w-full bg-background pt-2 md:pt-8">
       <div
         className={cn("translate-y-1 bg-none px-2 md:px-6", wrapperClassName)}
       >

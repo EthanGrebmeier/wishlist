@@ -11,7 +11,7 @@ type ListViewProps = {
 
 const ListView = async ({ wishlists, session }: ListViewProps) => {
   return (
-    <ul className="grid gap-4 overflow-y-scroll px-2 py-4 sm:grid-cols-2 md:max-h-[calc(100svh-100px)] md:px-6 lg:grid-cols-3 xl:grid-cols-4">
+    <ul className="grid gap-4 px-2 py-4 sm:grid-cols-2 md:px-6 lg:grid-cols-3 xl:grid-cols-4">
       {wishlists.length ? (
         wishlists.map((wishlist) => (
           <ListItem user={session.user} wishlist={wishlist} key={wishlist.id} />

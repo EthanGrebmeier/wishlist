@@ -28,7 +28,7 @@ const WishlistHeader = ({
 }: WishlistHeaderProps) => {
   return (
     <TitleBar
-      wrapperClassName="sticky top-[72px] md:top-0 md:relative"
+      wrapperClassName="sticky top-[72px] md:top-0"
       className=" w-full flex-wrap items-start py-2 md:flex-col"
     >
       <div
@@ -40,7 +40,7 @@ const WishlistHeader = ({
         <div className="flex flex-row items-center gap-2">
           <div
             className={cn(
-              "flex hidden h-6 w-6 flex-shrink-0 rounded-full border-2 border-black md:flex",
+              "hidden h-6 w-6 flex-shrink-0 rounded-full border-2 border-black md:flex",
               getBackgroundColor(wishlist.color),
             )}
           ></div>

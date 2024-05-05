@@ -178,7 +178,7 @@ const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
         <DialogTrigger asChild>
           {trigger ?? (
             <Button icon={<PlusIcon width="20" height="20" />}>
-              <span className="sr-only "> Create Wishlist </span>
+              <span> Create Wishlist </span>
             </Button>
           )}
         </DialogTrigger>

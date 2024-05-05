@@ -35,18 +35,18 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
 
   return (
     <>
-      <div className=" grid h-full w-full grid-rows-[auto_1fr] md:relative md:max-h-screen md:overflow-y-auto md:pt-4 lg:pt-8">
+      <div className=" relative h-full w-full">
         <WishlistHeader
           wishlist={wishlist}
           isEditor={isEditor}
           sharedUsers={sharedUsers}
           session={session}
         />
-        <section className="overflow-y-auto px-2 py-4 md:px-6">
+        <section className="px-2 py-4 md:px-6">
           {wishlist.products.length ? (
             <ProductList isEditor={isEditor} products={wishlist.products} />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-8">
+            <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
               {isEditor ? (
                 <div className="flex w-fit flex-col items-center justify-center gap-4">
                   <p className="text-balance text-center font-serif text-3xl font-medium md:text-4xl">
