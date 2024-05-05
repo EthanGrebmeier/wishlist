@@ -1,14 +1,17 @@
 import { BookUser } from "lucide-react";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
 import { getSharedWishlists } from "~/lib/wishlist/getWishlist";
 
-const WishlistPage = async () => {
+const SharedWishlistPage = async () => {
   return (
-    <div className="max-h-full md:overflow-y-auto md:py-8">
+    <div>
       <TitleBar>
         <span className="flex items-center gap-4 pl-2">
-          <BookUser size={25} />
+          <ColoredIconWrapper className="bg-yellow-300">
+            <BookUser size="25" />
+          </ColoredIconWrapper>
           <TitleBar.Title> Shared Wishlists</TitleBar.Title>
         </span>
       </TitleBar>
@@ -17,4 +20,4 @@ const WishlistPage = async () => {
   );
 };
 
-export default WishlistPage;
+export default SharedWishlistPage;
