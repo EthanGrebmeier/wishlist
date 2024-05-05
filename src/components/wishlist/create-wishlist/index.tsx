@@ -39,6 +39,7 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { Switch } from "~/components/ui/switch";
+import ImageUpload from "../../ui/image-upload";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -57,6 +58,7 @@ type CreateWishlistFormProps = {
 
 interface WishlistFormValues {
   wishlistId: string;
+  imageUrl: string | null;
   wishlistName: string;
   date: string | null;
   color: z.infer<typeof colorSchema>;
@@ -69,6 +71,9 @@ export const CreateWishlistForm = ({
 }: CreateWishlistFormProps) => {
   const { execute: executeCreate } = useAction(createWishlist, { onSuccess });
   const { execute: executeUpdate } = useAction(updateWishlist, { onSuccess });
+  const [uploadedImageURL, setUploadedImageURL] = useState(
+    values?.imageUrl ?? undefined,
+  );
   const [date, setDate] = React.useState<Date | undefined>(
     values?.date ? new Date(values?.date) ?? undefined : undefined,
   );
@@ -99,6 +104,7 @@ export const CreateWishlistForm = ({
                   date,
                   color: selectedColor,
                   isSecret,
+                  imageUrl: uploadedImageURL,
                 })
               : executeUpdate({
                   ...fields,
@@ -106,29 +112,36 @@ export const CreateWishlistForm = ({
                   color: selectedColor,
                   id: values?.wishlistId ?? "",
                   isSecret,
+                  imageUrl: uploadedImageURL,
                 })
           }
           className="relative w-full space-y-4"
         >
-          <FormField
-            name="wishlistName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Wishlist Name<sup>*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Input type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="grid grid-cols-2 gap-8">
+            <FormField
+              name="wishlistName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Wishlist Name<sup>*</sup>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex flex-col gap-2 text-lg font-medium">
               <label htmlFor="date-picker">Due Date </label>
               <DatePicker date={date} setDate={setDate} />
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-8">
+            <ImageUpload
+              uploadedImageURL={uploadedImageURL}
+              setUploadedImageURL={setUploadedImageURL}
+            />
             <ColorPicker
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}

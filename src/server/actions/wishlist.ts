@@ -47,10 +47,13 @@ export const createWishlist = makeProtectedAction(
   z.object({
     wishlistName: z.string().min(1),
     date: z.date().optional(),
+    imageUrl: z.string().optional(),
     isSecret: z.boolean(),
     color: colorSchema,
   }),
-  async ({ wishlistName, date, color, isSecret }, { session }) => {
+  async ({ wishlistName, date, color, isSecret, imageUrl }, { session }) => {
+    console.log("server url", imageUrl);
+
     const wishlistValues = {
       createdById: session.user.id,
       name: wishlistName,
@@ -58,6 +61,7 @@ export const createWishlist = makeProtectedAction(
       dueDate: date?.toDateString(),
       color,
       isSecret,
+      imageUrl,
     };
     try {
       await db.insert(wishlists).values(wishlistValues);
@@ -87,13 +91,18 @@ export const updateWishlist = makeProtectedAction(
     date: z.date().optional(),
     color: colorSchema,
     isSecret: z.boolean(),
+    imageUrl: z.string().optional(),
   }),
-  async ({ wishlistName, date, color, isSecret, id }, { session }) => {
+  async (
+    { wishlistName, date, color, isSecret, id, imageUrl },
+    { session },
+  ) => {
     const wishlistValues = {
       name: wishlistName,
       dueDate: date?.toDateString(),
       color,
       isSecret,
+      imageUrl,
     };
     try {
       await db

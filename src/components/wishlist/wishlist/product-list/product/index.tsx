@@ -39,7 +39,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
                 <p className="text-sm font-medium text-black"> Purchased </p>
               </div>
             )}
-            <ProductImage imageUrl={product.image} />
+            <ProductImage imageUrl={product.imageUrl} />
           </div>
 
           <div className="flex w-full items-center justify-between gap-4 border-t-2 border-black bg-[#efeec4] px-2 py-2">

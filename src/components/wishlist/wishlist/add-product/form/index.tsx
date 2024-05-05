@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { addProduct } from "~/app/wishlist/[wishlistId]/actions";
@@ -19,13 +19,13 @@ import { Input } from "~/components/ui/input";
 import { SubmitButton } from "~/components/ui/submit-button";
 import { productInputSchema } from "~/schema/wishlist/product";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
-import ProductFormImagePreview from "./image";
 import { updateProduct } from "~/server/actions/product";
 import { useAction } from "next-safe-action/hooks";
 import type { WishlistProduct } from "~/types/wishlist";
 import { cn } from "~/lib/utils";
 import Incrementor from "~/components/ui/incrementor";
 import { Textarea } from "~/components/ui/textarea";
+import ProductImageInput from "./image";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -50,6 +50,10 @@ export const AddProductForm = ({
   method = "create",
   product,
 }: AddProductFormProps) => {
+  const [imageUrl, setImageUrl] = useState(
+    defaultValues?.images?.[0] ?? product?.imageUrl ?? undefined,
+  );
+
   // Two separate useActions due to useAction not liking being provided an action based on a condition
   const { execute: executeAdd, result: addResult } = useAction(addProduct);
   const { execute: executeUpdate, result: updateResult } =
@@ -61,7 +65,6 @@ export const AddProductForm = ({
       name: defaultValues?.name ?? product?.name ?? "",
       description: defaultValues?.description ?? product?.description ?? "",
       brand: defaultValues?.brand ?? product?.brand ?? "",
-      image: defaultValues?.images?.[0] ?? product?.image ?? "",
       quantity: defaultValues?.quantity ?? product?.quantity ?? "1",
       price: defaultValues?.price ?? product?.price ?? "",
       url: defaultValues?.url ?? product?.url ?? "",
@@ -73,14 +76,16 @@ export const AddProductForm = ({
   const executeServerAction = () => {
     if (method === "create") {
       executeAdd({
+        ...fields,
+        imageUrl,
         wishlistId,
-        product: fields,
       });
     } else if (product) {
       executeUpdate({
         ...fields,
         wishlistId,
         id: product.id,
+        imageUrl,
       });
     }
   };
@@ -153,64 +158,47 @@ export const AddProductForm = ({
             )}
           />
         </div>
-        <FormField
-          name="image"
-          render={({ field }) => (
-            <div className=" grid grid-cols-[1fr_auto] gap-4">
-              <div className="flex w-full items-center">
-                <FormItem className="w-full">
-                  <FormLabel>Image</FormLabel>
-
+        <div className="grid grid-cols-2 gap-4">
+          <ProductImageInput setImageUrl={setImageUrl} imageUrl={imageUrl} />
+          <div className="flex flex-col justify-between pb-2">
+            <FormField
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
                     <Input type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              </div>
-              <ProductFormImagePreview
-                setImageUrl={(value: string) => form.setValue("image", value)}
-                imageUrl={fields.image}
+              )}
+            />
+            <div className="space-y-2">
+              <label className="text-lg font-medium" htmlFor="quantity">
+                Quantity
+              </label>
+              <Incrementor
+                onQuantityChange={(value) =>
+                  form.setValue("quantity", value.toString())
+                }
+                value={parseInt(fields.quantity ?? "1")}
               />
             </div>
-          )}
-        />
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <FormField
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="space-y-2">
-            <label className="text-lg font-medium" htmlFor="quantity">
-              Quantity
-            </label>
-            <Incrementor
-              onQuantityChange={(value) =>
-                form.setValue("quantity", value.toString())
-              }
-              value={parseInt(fields.quantity ?? "1")}
+            <FormField
+              name="url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link </FormLabel>
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
         </div>
-        <FormField
-          name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Link </FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <div
           className={cn(
             "absolute bottom-0 left-0 right-0 flex border-t-2 border-black bg-background px-4 py-4 ",

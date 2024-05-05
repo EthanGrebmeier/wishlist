@@ -45,7 +45,11 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
           )}
         >
           <div className="relative aspect-square w-full overflow-hidden object-cover">
-            <Image alt="placeholder" src="https://placehold.co/600x600" fill />
+            <img
+              alt="placeholder"
+              src={wishlist.imageUrl ?? "https://placehold.co/600x600"}
+              className="h-full w-full"
+            />
           </div>
           <div
             className={cn(

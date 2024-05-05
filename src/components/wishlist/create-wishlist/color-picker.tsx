@@ -16,26 +16,23 @@ const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
       <label className="text-lg font-medium" htmlFor="color">
         Color
       </label>
-      <ul id="color" className="grid w-full grid-cols-4 gap-1.5 ">
+      <ul id="color" className="grid w-full grid-cols-3 gap-1 ">
         {colors.map((color) => (
           <li
             key={color.name}
             className="group flex aspect-square w-full items-center justify-center"
           >
-            <motion.button
+            <button
               onClick={() => setSelectedColor(color.name)}
               type="button"
-              whileTap={{
-                scale: 1.2,
-              }}
               className={cn(
                 color.background,
-                "aspect-square w-9 rounded-full border border-slate-800 transition-[width] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 group-hover:w-full",
-                selectedColor === color.name && "border-2",
+                "aspect-square w-12 rounded-full border border-slate-800 transition-[transform] hover:scale-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                selectedColor === color.name && "scale-125 border-2",
               )}
             >
               {" "}
-            </motion.button>
+            </button>
           </li>
         ))}
       </ul>

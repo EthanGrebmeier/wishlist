@@ -13,7 +13,7 @@ export const products = createTable(
     price: varchar("price", { length: 255 }),
     quantity: varchar("quantity", { length: 255 }),
     url: varchar("url", { length: 255 }),
-    image: varchar("image", { length: 255 }),
+    imageUrl: varchar("imageUrl", { length: 255 }),
     createdById: varchar("createdById", { length: 255 }).notNull(),
     wishlistId: varchar("wishlistId", { length: 255 }).notNull(),
   },
@@ -68,9 +68,9 @@ export const wishlists = createTable(
   {
     id: varchar("id", { length: 255 }).notNull().primaryKey(),
     name: varchar("name", { length: 255 }).notNull(),
-    image: varchar("image", { length: 255 }),
     isSecret: boolean("isSecret").default(false).notNull(),
     createdById: varchar("createdById", { length: 255 }).notNull(),
+    imageUrl: varchar("imageUrl", { length: 255 }),
     privacyType: varchar("privacyType", {
       length: 255,
       enum: ["private", "public", "link"],

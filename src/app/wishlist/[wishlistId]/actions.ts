@@ -70,26 +70,11 @@ export const deleteProduct = async (
 };
 
 export const addProduct = makeProtectedAction(
-  z.object({ wishlistId: z.string(), product: productInputSchema }),
-  async ({ wishlistId, product }, { session }) => {
-    const parsedProduct = productInputSchema.safeParse(product);
-
-    if (!parsedProduct.success) {
-      return {
-        message: parsedProduct.error.message,
-      };
-    }
-
-    if (!wishlistId) {
-      return {
-        message: "Wishlist ID is required",
-      } as const;
-    }
-
+  productInputSchema.extend({ wishlistId: z.string() }),
+  async (product, { session }) => {
     const productValues = {
-      ...parsedProduct.data,
+      ...product,
       id: randomUUID(),
-      wishlistId,
       createdById: session.user.id,
     };
 
@@ -102,7 +87,7 @@ export const addProduct = makeProtectedAction(
       } as const;
     }
 
-    revalidatePath(`/wishlist/${wishlistId}`);
+    revalidatePath(`/wishlist/${product.wishlistId}`);
 
     return {
       message: "success",

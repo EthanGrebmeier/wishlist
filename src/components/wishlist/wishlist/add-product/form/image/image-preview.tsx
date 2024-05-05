@@ -40,17 +40,18 @@ const ProductFormImagePreview = ({
   }, [debouncedUrl]);
 
   return (
-    <div className="relative  w-[120px] translate-y-4 ">
-      <div className="aspect-square w-full overflow-hidden rounded-md border border-black">
+    <div className="relative w-full">
+      <div className="aspect-square w-full overflow-hidden rounded-md border border-black object-cover">
         <img
           src={
             isImageValid ? imageUrl : "https://placehold.co/600x600/EEE/31343C"
           }
+          className="h-full w-full"
         />
       </div>
       {imageUrl && !isImageValid && (
         <Tooltip text="Invalid URL">
-          <div className="absolute left-2 top-2 rounded-md p-1 transition-all hover:bg-yellow-400/80">
+          <div className="absolute -right-2 -top-2 rounded-md p-1 transition-all hover:bg-yellow-400/80">
             <AlertTriangle width={20} height={20} />
           </div>
         </Tooltip>

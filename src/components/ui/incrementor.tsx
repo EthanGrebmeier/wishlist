@@ -53,7 +53,7 @@ const Incrementor = ({ onQuantityChange, value }: IncrementorProps) => {
       </button>
       <input
         name="quantity"
-        className="w-full text-center text-lg tabular-nums"
+        className="w-full bg-transparent text-center text-lg tabular-nums"
         value={internalTextValue ?? value}
         onChange={onChange}
         onFocus={onFocus}

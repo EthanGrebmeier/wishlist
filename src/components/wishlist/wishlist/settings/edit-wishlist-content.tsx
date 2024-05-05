@@ -29,6 +29,7 @@ const WishlistSettingsContent = ({
       </DialogHeader>
       <CreateWishlistForm
         values={{
+          imageUrl: wishlist.imageUrl,
           wishlistId: wishlist.id,
           date: wishlist.dueDate,
           color: wishlist.color,
