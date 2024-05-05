@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
+import { withUt } from "uploadthing/tw";
 
-const config = {
+const config = withUt({
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -89,6 +90,6 @@ const config = {
     require("@tailwindcss/container-queries"),
     require("tailwind-gradient-mask-image"),
   ],
-} satisfies Config;
+}) satisfies Config;
 
 export default config;
