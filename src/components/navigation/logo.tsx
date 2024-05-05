@@ -2,8 +2,14 @@ import { Scroll } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 import ColoredIconWrapper from "../ui/colored-icon-wrapper";
+import { cn } from "~/lib/utils";
+import LogoIcon from "./logo-icon";
 
-const Logo = () => {
+type LogoProps = {
+  className?: string;
+};
+
+const Logo = ({ className }: LogoProps) => {
   return (
     // <Image
     //   src={"/fillaneed-logo-1.png"}
@@ -11,12 +17,12 @@ const Logo = () => {
     //   height={80}
     //   width={140}
     // />
-    <div className="flex items-center gap-4 pt-4">
-      <p className="mt-2 font-serif text-4xl font-medium">Fillaneed</p>
+    <div className={cn("relative flex items-center gap-4 pt-4", className)}>
+      <p className="mt-2 font-serif text-5xl tracking-tight  lg:text-4xl">
+        fillaneed
+      </p>
 
-      <ColoredIconWrapper>
-        <Scroll size="25" />
-      </ColoredIconWrapper>
+      <LogoIcon />
     </div>
   );
 };

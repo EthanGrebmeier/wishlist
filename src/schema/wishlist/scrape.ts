@@ -3,7 +3,6 @@ import { z } from "zod";
 export const scrapeInputSchema = z.object({
   url: z.string().refine(
     (val) => {
-      console.log(val);
       const URLRegex =
         /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/;
       return URLRegex.test(val);

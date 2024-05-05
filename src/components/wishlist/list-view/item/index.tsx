@@ -28,7 +28,7 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
       whileHover={{
         translateY: -4,
       }}
-      className="relative isolate"
+      className="group relative isolate"
     >
       {wishlist.dueDate && (
         <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />

@@ -3,7 +3,7 @@ import { Tooltip } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
 import type { User } from "~/types/user";
 
-const SharedUserThumbnail = ({
+export const SharedUserThumbnail = ({
   children,
   className,
 }: {

@@ -1,5 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
+import { UTApi, UploadThingError } from "uploadthing/server";
 import { getServerAuthSession } from "../auth";
 
 const f = createUploadthing();
@@ -21,12 +21,25 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-
-      console.log("file url", file.url);
-
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { url: file.url };
     }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
+
+export const deleteFile = async (fileUrl: string | null) => {
+  "use server";
+  if (!fileUrl) {
+    return;
+  }
+
+  const fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+  const utapi = new UTApi();
+
+  try {
+    await utapi.deleteFiles(fileName);
+  } catch (e) {
+    console.log(`Error deleting file ${fileUrl}`, e);
+  }
+};

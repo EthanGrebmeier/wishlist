@@ -1,8 +1,30 @@
-import { and, eq, not } from "drizzle-orm";
+import { and, desc, eq, exists, not, notExists } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import { wishlistShares, wishlists } from "~/server/db/schema/wishlist";
+import {
+  productReceipts,
+  wishlistShares,
+  wishlists,
+} from "~/server/db/schema/wishlist";
+
+export const getMyGifts = async () => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/");
+  }
+
+  return db.query.products.findMany({
+    where: ({ id }, { eq }) =>
+      exists(
+        db
+          .select()
+          .from(productReceipts)
+          .where(({ productId }) => eq(id, productId)),
+      ),
+  });
+};
 
 export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
   const session = await getServerAuthSession();
@@ -11,6 +33,13 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
     where: eq(wishlists.id, wishlistId),
     with: {
       products: {
+        where: ({ id }) =>
+          notExists(
+            db
+              .select()
+              .from(productReceipts)
+              .where(({ productId }) => eq(productId, id)),
+          ),
         with: {
           commitments: {
             with: {
@@ -58,6 +87,7 @@ export const getUserWishlists = async (config?: getWishlistsArgs) => {
     with: {
       products: true,
     },
+    orderBy: desc(wishlists.updatedAt),
     limit: config?.limit,
   });
 };

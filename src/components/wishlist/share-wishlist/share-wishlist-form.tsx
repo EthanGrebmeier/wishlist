@@ -24,14 +24,15 @@ const ShareWishlistForm = ({
       onBlur={() => setIsOpen(false)}
     >
       <div className="space-y-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col">
           {" "}
           <label className="text-lg font-medium" htmlFor="email">
             Find User By Email
           </label>
-          <Tooltip text="Email must be an exact match">
-            <HelpCircle size={20} />
-          </Tooltip>
+          <p className="text-sm tracking-tight">
+            {" "}
+            Email must be an exact match{" "}
+          </p>
         </div>
         <Input
           name="email"

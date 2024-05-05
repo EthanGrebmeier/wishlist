@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import type { z } from "zod";
 import { colors } from "~/consts/colors";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
+import { nanoid } from "nanoid";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -14,3 +15,5 @@ export function getBackgroundColor(color: z.infer<typeof colorSchema>) {
     colors[0]?.background
   );
 }
+
+export const generateId = () => nanoid(14);

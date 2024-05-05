@@ -16,6 +16,7 @@ import {
 } from "~/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { CreateWishlistForm } from "../../create-wishlist";
+import DeleteWishlist from "./delete-wishlist";
 
 type EditWishlistProps = {
   wishlist: Wishlist;
@@ -58,7 +59,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
             Wishlist Settings
           </DrawerTitle>
         </DrawerHeader>
-        <div className="px-4 pb-4">
+        <div className="flex max-h-[clamp(400px,80vh,500px)] flex-col gap-4 overflow-y-scroll px-4 pb-4">
           <CreateWishlistForm
             values={{
               wishlistId: wishlist.id,
@@ -70,6 +71,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
             }}
             onSuccess={() => {
               router.refresh();
+              setIsOpen(false);
             }}
           />
         </div>

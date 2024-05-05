@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Product from "~/components/wishlist/product";
 import ProductLoading from "~/components/wishlist/product/loading";
@@ -16,7 +16,7 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
 
   const product = await getProduct({ productId });
   if (!product) {
-    notFound();
+    redirect("/");
   }
   const wishlist = await getWishlist({ wishlistId: product?.wishlistId });
 

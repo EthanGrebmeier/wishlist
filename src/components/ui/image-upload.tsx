@@ -15,11 +15,11 @@ const ImageUpload = ({
   setUploadedImageURL,
 }: ImageUploadProps) => {
   return (
-    <div className="flex h-fit flex-col gap-2">
+    <div className="flex w-full flex-col gap-2">
       <p className="text-lg font-medium">Image</p>
-      <div className="flex items-center">
-        <div className="relative">
-          <div className="aspect-square h-full overflow-hidden rounded-md border-2 border-black">
+      <div className="flex w-full items-center ">
+        <div className="relative w-full">
+          <div className="aspect-square h-full w-full overflow-hidden rounded-md border-2 border-black">
             <div className="h-full w-full object-cover ">
               <img
                 src={uploadedImageURL ?? "https://placehold.co/600x600"}

@@ -7,16 +7,26 @@ import { productSchema } from "~/schema/wishlist/product";
 import { db } from "../db";
 import {
   productCommitments,
+  productReceipts,
   products,
   wishlistShares,
+  wishlists,
 } from "../db/schema/wishlist";
 import { and, eq, or } from "drizzle-orm";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
-import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
+import { generateId } from "~/lib/utils";
 
 export const updateProduct = makeProtectedAction(
   productSchema,
   async (product, { session }) => {
+    // confirm user can perform this action
+    const dbProduct = await getProduct({ productId: product.id });
+
+    if (dbProduct?.createdById !== session.user.id) {
+      throw new Error("Access denied");
+    }
+
     await db
       .update(products)
       .set(product)
@@ -26,6 +36,13 @@ export const updateProduct = makeProtectedAction(
           eq(products.id, product.id),
         ),
       );
+
+    await db
+      .update(wishlists)
+      .set({
+        updatedAt: new Date(),
+      })
+      .where(eq(wishlists.id, product.wishlistId));
 
     return {
       message: "success",
@@ -42,6 +59,15 @@ export const commitToProduct = makeProtectedAction(
 
     if (!dbProduct) {
       throw new Error("Product doesn't exist");
+    }
+
+    const matchingProductReceipt = await db.query.productReceipts.findFirst({
+      where: eq(productReceipts.productId, productId),
+    });
+
+    if (matchingProductReceipt) {
+      // We want to refresh the user's page since they are seeing stale data
+      return revalidatePath(`/product/${productId}`);
     }
 
     const dbShares = await db.query.wishlistShares.findFirst({
@@ -62,7 +88,7 @@ export const commitToProduct = makeProtectedAction(
       createdById: session.user.id,
       productId: dbProduct.id,
       wishlistId: dbProduct.wishlistId,
-      id: randomUUID(),
+      id: generateId(),
     });
 
     return {
@@ -76,6 +102,15 @@ export const uncommitToProduct = makeProtectedAction(
     productId: z.string(),
   }),
   async ({ productId }, { session }) => {
+    const matchingProductReceipt = await db.query.productReceipts.findFirst({
+      where: eq(productReceipts.productId, productId),
+    });
+
+    if (matchingProductReceipt) {
+      // We want to refresh the user's page since they are seeing stale data
+      return revalidatePath(`/product/${productId}`);
+    }
+
     await db
       .delete(productCommitments)
       .where(
@@ -107,5 +142,59 @@ export const getProductCommitments = makeProtectedAction(
     });
 
     return dbCommitments;
+  },
+);
+
+export const markProductReceived = makeProtectedAction(
+  z.object({
+    productId: z.string(),
+    wishlistId: z.string(),
+    purchasedByUserId: z.string().optional(),
+  }),
+  async ({ productId, wishlistId, purchasedByUserId }, { session }) => {
+    // confirm user can perform this action
+    const dbProduct = await getProduct({ productId });
+
+    if (dbProduct?.createdById !== session.user.id) {
+      throw new Error("Access denied");
+    }
+
+    // Make sure there aren't any receipts yet
+    const matchingProductReceipt = await db.query.productReceipts.findFirst({
+      where: eq(productReceipts.productId, productId),
+    });
+
+    if (matchingProductReceipt) {
+      // We want to refresh the user's page since they are seeing stale data
+      return revalidatePath(`/product/${productId}`);
+    }
+
+    await db.insert(productReceipts).values({
+      createdById: session.user.id,
+      productId: productId,
+      wishlistId,
+      purchasedByUserId,
+      id: generateId(),
+    });
+
+    await db
+      .delete(productCommitments)
+      .where(eq(productCommitments.productId, productId));
+  },
+);
+
+export const getProductReceipts = makeProtectedAction(
+  z.object({ productId: z.string() }),
+  async ({ productId }, { session }) => {
+    // confirm user can perform this action
+    const dbProduct = await getProduct({ productId });
+
+    if (dbProduct?.createdById !== session.user.id) {
+      throw new Error("Access denied");
+    }
+
+    return db.query.productReceipts.findFirst({
+      where: eq(productReceipts.productId, productId),
+    });
   },
 );

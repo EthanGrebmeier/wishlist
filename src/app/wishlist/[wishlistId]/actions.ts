@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { makeProtectedAction } from "~/lib/actions/protectedAction";
+import { generateId } from "~/lib/utils";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { productInputSchema } from "~/schema/wishlist/product";
 import { shareWishlistInputSchema } from "~/schema/wishlist/wishlist";
@@ -15,71 +16,67 @@ import {
   wishlistShares,
   wishlists,
 } from "~/server/db/schema/wishlist";
+import { deleteFile } from "~/server/uploadthing";
 
-export const deleteProduct = async (
-  prevState: { message: string } | null,
-  formData: { productId: string; wishlistId: string },
-) => {
-  const session = await getServerAuthSession();
+export const deleteProduct = makeProtectedAction(
+  z.object({ productId: z.string(), wishlistId: z.string() }),
+  async ({ productId, wishlistId }, { session }) => {
+    try {
+      const product = await getProduct({
+        productId,
+      });
 
-  if (!session) {
-    return {
-      message: "User not found",
-    };
-  }
+      if (product?.createdById !== session.user.id) {
+        return {
+          message: "Access Denied",
+        };
+      }
 
-  const result = z
-    .object({
-      productId: z.string(),
-      wishlistId: z.string(),
-    })
-    .safeParse(formData);
+      // 1. Delete Product Image
 
-  if (!result.success) {
-    return {
-      message: "Product ID is required",
-    };
-  }
+      await deleteFile(product.imageUrl);
 
-  const { productId, wishlistId } = result.data;
+      // 2. Delete Product
+      await db.delete(products).where(eq(products.id, productId));
 
-  try {
-    const product = await getProduct({
-      productId,
-    });
+      await db
+        .update(wishlists)
+        .set({
+          updatedAt: new Date(),
+        })
+        .where(eq(wishlists.id, product.wishlistId));
 
-    if (product?.createdById !== session.user.id) {
+      revalidatePath(`/wishlist/${wishlistId}`);
+
       return {
-        message: "Access Denied",
+        message: "success",
+      };
+    } catch (e) {
+      console.error("Error deleting product", e);
+      return {
+        message: "Unable to delete product",
       };
     }
-
-    await db.delete(products).where(eq(products.id, productId));
-
-    revalidatePath(`/wishlist/${wishlistId}`);
-
-    return {
-      message: "success",
-    };
-  } catch (e) {
-    console.error("Error deleting product", e);
-    return {
-      message: "Unable to delete product",
-    };
-  }
-};
+  },
+);
 
 export const addProduct = makeProtectedAction(
   productInputSchema.extend({ wishlistId: z.string() }),
   async (product, { session }) => {
     const productValues = {
       ...product,
-      id: randomUUID(),
+      id: generateId(),
       createdById: session.user.id,
     };
 
     try {
       await db.insert(products).values(productValues);
+      await db
+        .update(wishlists)
+        .set({
+          updatedAt: new Date(),
+        })
+        .where(eq(wishlists.id, product.wishlistId));
     } catch (e) {
       console.error("Error inserting product", e);
       return {
@@ -114,7 +111,7 @@ export const shareWishlist = makeProtectedAction(
         };
       }
 
-      const wishlistShareId = randomUUID();
+      const wishlistShareId = generateId();
 
       await db.insert(wishlistShares).values({
         ...input,

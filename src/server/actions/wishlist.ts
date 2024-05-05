@@ -4,12 +4,14 @@ import { z } from "zod";
 import { makeProtectedAction } from "~/lib/actions/protectedAction";
 import { colorSchema, privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import { db } from "../db";
-import { wishlistShares, wishlists } from "../db/schema/wishlist";
+import { products, wishlistShares, wishlists } from "../db/schema/wishlist";
 import { and, eq } from "drizzle-orm";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
 import { revalidatePath } from "next/cache";
 import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
+import { deleteFile } from "../uploadthing";
+import { generateId } from "~/lib/utils";
 
 export const deleteWishlist = makeProtectedAction(
   z.object({
@@ -27,6 +29,39 @@ export const deleteWishlist = makeProtectedAction(
         };
       }
 
+      // First we need to clean up all child products
+
+      // Step 1. Delete product images
+
+      // Get products with images URLs
+      const productImageUrls = wishlist.products
+        .map((product) => product.imageUrl)
+        .filter(Boolean);
+
+      const deleteProductImages = Promise.all(productImageUrls.map(deleteFile));
+
+      // Step 2. Delete product objects
+      const deleteProducts = db
+        .delete(products)
+        .where(eq(products.wishlistId, wishlistId));
+
+      // Step 3. Delete Wishlist Shares
+      const deleteShares = db
+        .delete(wishlistShares)
+        .where(eq(wishlistShares.wishlistId, wishlistId));
+
+      // Step 4. Delete Wishlist Image
+      const deleteWishlistImage = deleteFile(wishlist.imageUrl);
+
+      // Wait for all promises to resolve
+      await Promise.all([
+        deleteProductImages,
+        deleteProducts,
+        deleteShares,
+        deleteWishlistImage,
+      ]);
+
+      // Step 5. Delete Wishlist
       await db.delete(wishlists).where(eq(wishlists.id, wishlistId));
 
       revalidatePath(`/wishlist`);
@@ -52,12 +87,10 @@ export const createWishlist = makeProtectedAction(
     color: colorSchema,
   }),
   async ({ wishlistName, date, color, isSecret, imageUrl }, { session }) => {
-    console.log("server url", imageUrl);
-
     const wishlistValues = {
       createdById: session.user.id,
       name: wishlistName,
-      id: randomUUID(),
+      id: generateId(),
       dueDate: date?.toDateString(),
       color,
       isSecret,
@@ -71,7 +104,7 @@ export const createWishlist = makeProtectedAction(
         wishlistId: wishlistValues.id,
         sharedWithUserId: session.user.id,
 
-        id: randomUUID(),
+        id: generateId(),
       });
     } catch (e) {
       console.error(e);

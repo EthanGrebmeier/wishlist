@@ -1,5 +1,4 @@
 "use client";
-import { useFormState } from "react-dom";
 import { deleteProduct } from "~/app/wishlist/[wishlistId]/actions";
 import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { useProductMenu } from "./menuProvider";
@@ -24,10 +23,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
+import { useAction } from "next-safe-action/hooks";
 
 const Delete = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [state, action] = useFormState(deleteProduct, null);
+  const { execute } = useAction(deleteProduct);
   const { product, wishlistId } = useProductMenu();
 
   useEffect(() => {
@@ -38,10 +38,12 @@ const Delete = () => {
 
   if (!product || !wishlistId) return;
 
-  const actionWithProductId = action.bind(null, {
-    productId: product.id,
-    wishlistId,
-  });
+  const actionWithProductId = () => {
+    execute({
+      productId: product.id,
+      wishlistId: product.wishlistId,
+    });
+  };
 
   if (isDesktop) {
     return (

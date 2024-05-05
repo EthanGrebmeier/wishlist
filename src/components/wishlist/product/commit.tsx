@@ -9,6 +9,7 @@ import type {
   WishlistProduct,
   WishlistProductCommitmentsWithUser,
 } from "~/types/wishlist";
+import SharedUserThumbnail from "../share-wishlist/shared-users/shared-user-thumbnail";
 
 type CommitProps = {
   product: WishlistProduct;
@@ -51,7 +52,7 @@ const Commit = ({
               </p>
               <SubmitButton
                 icon={<Trash2 size={20} />}
-                className="w-full"
+                className="w-fit"
                 size="lg"
                 variant="destructive"
               >
@@ -66,9 +67,17 @@ const Commit = ({
     return (
       <ul className="flex items-center text-balance font-serif text-2xl  font-medium text-black">
         {productCommitments.map((commitment) => (
-          <li key={commitment.id}>
-            <span className="italic"> {commitment.user.name} </span> is getting
-            this item!
+          <li key={commitment.id} className="flex items-center">
+            {commitment.user.image && (
+              <SharedUserThumbnail>
+                <img src={commitment.user.image} />
+              </SharedUserThumbnail>
+            )}
+            <p>
+              {" "}
+              <span className="italic"> {commitment.user.name} </span> is
+              getting this item!
+            </p>
           </li>
         ))}
       </ul>
@@ -87,7 +96,7 @@ const Commit = ({
       <p className="mb-4 text-balance font-serif text-2xl font-medium leading-tight">
         Would you like to commit to this item?
       </p>
-      <SubmitButton variant="default" size="lg" className="w-full">
+      <SubmitButton variant="default" size="lg" className="w-fit">
         I will purchase this item
       </SubmitButton>
     </form>

@@ -1,4 +1,6 @@
 import { createRouteHandler } from "uploadthing/next";
+import { UTApi } from "uploadthing/server";
+import { z } from "zod";
 import { ourFileRouter } from "~/server/uploadthing";
 
 // Export routes for Next App Router

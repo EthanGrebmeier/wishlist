@@ -44,7 +44,7 @@ const ShareWishlist = ({
     return (
       <Dialog>
         <Tooltip text="Share Wishlist">
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button icon={<Share size={20} />}></Button>
           </DialogTrigger>
         </Tooltip>
@@ -82,8 +82,8 @@ const ShareWishlist = ({
           </DrawerTitle>
         </DrawerHeader>
         <div className="p-4 pb-28">
-          <Privacy wishlistId={wishlistId} privacyType={privacyType} />
-          <div className="space-y-4 border-t border-slate-200 pt-2">
+          {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
+          <div className="space-y-4">
             <SharedUsers
               sharedUsers={sharedUsers}
               userId={userId}

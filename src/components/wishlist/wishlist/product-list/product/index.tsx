@@ -23,7 +23,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="relative isolate overflow-hidden rounded-md border-2 border-black"
+        className="group relative isolate overflow-hidden rounded-md border-2 border-black"
       >
         {isEditor && (
           <MenuProvider product={product} wishlistId={product.wishlistId}>
@@ -33,7 +33,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
           </MenuProvider>
         )}
         <Link href={getProductSlug(product)} className="w-full ">
-          <div className="relative aspect-square w-full overflow-hidden bg-background ">
+          <div className="relative aspect-square w-full overflow-hidden bg-background object-cover ">
             {!!product.commitments.length && (
               <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 p-1 font-medium ">
                 <p className="text-sm font-medium text-black"> Purchased </p>

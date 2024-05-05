@@ -40,6 +40,7 @@ import {
 } from "~/components/ui/drawer";
 import { Switch } from "~/components/ui/switch";
 import ImageUpload from "../../ui/image-upload";
+import DeleteWishlist from "../wishlist/settings/delete-wishlist";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -165,6 +166,7 @@ export const CreateWishlistForm = ({
               <Switch checked={isSecret} onCheckedChange={setIsSecret} />
             </div>
           </div>
+          {values && <DeleteWishlist wishlistId={values.wishlistId} />}
           <div className="flex w-full justify-end">
             <SubmitButton icon={<FilePlus size={20} />}>
               {values ? "Update" : "Create"}
