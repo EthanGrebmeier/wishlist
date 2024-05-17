@@ -140,17 +140,18 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 </div>
               </div>
             )}
-            {isOwner && !productReceipts.data ? (
-              <Suspense
-                fallback={
-                  <div className="skeleton h-24 w-full md:w-1/2 lg:w-full"></div>
-                }
-              >
-                <ConfirmReceipt product={product} wishlist={wishlist} />
-              </Suspense>
-            ) : (
-              <ConfirmedReceipt />
-            )}
+            {isOwner &&
+              (!productReceipts.data ? (
+                <Suspense
+                  fallback={
+                    <div className="skeleton h-24 w-full md:w-1/2 lg:w-full"></div>
+                  }
+                >
+                  <ConfirmReceipt product={product} wishlist={wishlist} />
+                </Suspense>
+              ) : (
+                <ConfirmedReceipt />
+              ))}
           </div>
         </div>
       </section>

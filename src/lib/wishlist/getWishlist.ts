@@ -21,7 +21,9 @@ export const getMyGifts = async () => {
         db
           .select()
           .from(productReceipts)
-          .where(({ productId }) => eq(id, productId)),
+          .where(({ productId, createdById }) =>
+            and(eq(id, productId), eq(createdById, session.user.id)),
+          ),
       ),
   });
 };

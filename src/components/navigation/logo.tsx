@@ -1,28 +1,33 @@
-import { Scroll } from "lucide-react";
-import Image from "next/image";
-import { useRef } from "react";
-import ColoredIconWrapper from "../ui/colored-icon-wrapper";
 import { cn } from "~/lib/utils";
 import LogoIcon from "./logo-icon";
 
 type LogoProps = {
   className?: string;
+  textClassName?: string;
+  size?: "base" | "large";
+  ariaHidden?: boolean;
 };
 
-const Logo = ({ className }: LogoProps) => {
+const Logo = ({
+  className,
+  textClassName,
+  size,
+  ariaHidden = false,
+}: LogoProps) => {
   return (
-    // <Image
-    //   src={"/fillaneed-logo-1.png"}
-    //   alt="Fillaneed"
-    //   height={80}
-    //   width={140}
-    // />
-    <div className={cn("relative flex items-center gap-4 pt-4", className)}>
-      <p className="mt-2 font-serif text-5xl tracking-tight  lg:text-4xl">
+    <div className={cn("relative flex items-center gap-4", className)}>
+      <p
+        className={cn(
+          "font-serif  tracking-tight ",
+          size === "large" ? "text-5xl md:text-7xl" : "text-5xl lg:text-4xl",
+          textClassName,
+        )}
+        aria-hidden={ariaHidden}
+      >
         fillaneed
       </p>
 
-      <LogoIcon />
+      <LogoIcon size={size} />
     </div>
   );
 };

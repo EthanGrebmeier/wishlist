@@ -112,7 +112,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
           </DrawerTitle>
         </DrawerHeader>
         <div
-          className="max-h-[clamp(400px,80vh,500px)] overflow-y-scroll p-4 transition-all"
+          className="max-h-[80svh] overflow-y-scroll p-4 transition-all"
           style={{ height }}
         >
           <div ref={innerContainerRef}>

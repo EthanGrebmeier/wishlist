@@ -128,11 +128,12 @@ export const wishlists = createTable(
   }),
 );
 
-export const wishlistsRelations = relations(wishlists, ({ many }) => ({
+export const wishlistsRelations = relations(wishlists, ({ many, one }) => ({
   products: many(products),
   wishlistShares: many(wishlistShares),
   productCommitments: many(productCommitments),
   productReceipts: many(productReceipts),
+  magicWishlistLinks: one(magicWishlistLinks),
 }));
 
 export const wishlistShares = createTable(
@@ -193,6 +194,32 @@ export const productReceiptsRelations = relations(
     users: one(users, {
       fields: [productReceipts.purchasedByUserId],
       references: [users.id],
+    }),
+  }),
+);
+
+export const magicWishlistLinks = createTable(
+  "magic-wishlist-links",
+  {
+    id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    wishlistId: varchar("wishlistId", { length: 255 }).notNull(),
+    createdById: varchar("createdById", { length: 255 }).notNull(),
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+      precision: 3,
+    }).defaultNow(),
+  },
+  (example) => ({
+    wishlistId: index("magic_wishlist_links_wishlistId").on(example.wishlistId),
+  }),
+);
+
+export const magicWishlistLinksRelations = relations(
+  magicWishlistLinks,
+  ({ one }) => ({
+    wishlist: one(wishlists, {
+      fields: [magicWishlistLinks.wishlistId],
+      references: [wishlists.id],
     }),
   }),
 );

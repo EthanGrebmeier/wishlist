@@ -80,7 +80,7 @@ const Modal = ({ wishlist, sharedUsers, product }: ModalProps) => {
             Have you received this item?
           </DrawerTitle>
         </DrawerHeader>
-        <div className="p-4">
+        <div className="max-h-[80svh] overflow-y-scroll p-4">
           <ModalContent
             sharedUsers={sharedUsers}
             wishlist={wishlist}

@@ -59,7 +59,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
             Wishlist Settings
           </DrawerTitle>
         </DrawerHeader>
-        <div className="flex max-h-[clamp(400px,80vh,500px)] flex-col gap-4 overflow-y-scroll px-4 pb-4">
+        <div className="flex max-h-[80svh] flex-col gap-4 overflow-y-scroll px-4 pb-4">
           <CreateWishlistForm
             values={{
               wishlistId: wishlist.id,

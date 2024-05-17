@@ -39,10 +39,7 @@ const NavAccount = ({ isSignedIn }: NavAccountProps) => {
         ) : (
           <>
             <DropdownMenuItem asChild>
-              <Link href="/api/auth/signin">Log In</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/signup">Sign Up</Link>
+              <Link href="/api/auth/sign-in">Log In</Link>
             </DropdownMenuItem>
           </>
         )}

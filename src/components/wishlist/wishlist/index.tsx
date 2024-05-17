@@ -1,15 +1,10 @@
 import { getWishlist } from "~/lib/wishlist/getWishlist";
 import ProductList from "./product-list";
 import { AddProduct } from "./add-product";
-import ShareWishlist from "../share-wishlist";
 import { getServerAuthSession } from "~/server/auth";
-import TitleBar from "~/components/ui/title-bar";
-import WishlistSettings from "./settings";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import { Button } from "~/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { cn, getBackgroundColor } from "~/lib/utils";
-import { Tooltip } from "~/components/ui/tooltip";
 import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
 

@@ -3,6 +3,7 @@
 import { load } from "cheerio";
 import { z } from "zod";
 import { makeProtectedAction } from "~/lib/actions/protectedAction";
+import { getMatchingScraper } from "~/lib/scrape/site-specs";
 
 export const scrapeProductData = makeProtectedAction(
   z.object({
@@ -16,6 +17,7 @@ export const scrapeProductData = makeProtectedAction(
           status: 500,
         });
       }
+
       console.log("Fetching");
 
       // launch a new headless browser with dev / prod options
@@ -28,7 +30,11 @@ export const scrapeProductData = makeProtectedAction(
       console.log(contentText);
       const $ = load(contentText);
 
-      console.log("done");
+      // const matchingScraper = getMatchingScraper(pageToScrape);
+
+      // if (matchingScraper) {
+      //   return matchingScraper($);
+      // }
 
       // Get og content
       const getMetaTagContent = async (field: string) => {

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Suspense } from "react";
 import TitleBar from "~/components/ui/title-bar";
-import { Tooltip } from "~/components/ui/tooltip";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import ShareWishlist from "../../share-wishlist";
 import { AddProduct } from "../add-product";
@@ -8,10 +7,9 @@ import WishlistSettings from "../settings";
 import type { Wishlist } from "~/types/wishlist";
 import type { User } from "~/types/user";
 import type { Session } from "next-auth";
-import SharedUserThumbnail, {
-  SharedUserThumbnailView,
-} from "../../share-wishlist/shared-users/shared-user-thumbnail";
+import { SharedUserThumbnailView } from "../../share-wishlist/shared-users/shared-user-thumbnail";
 import DueDate from "../../due-date";
+import MagicLink from "../../share-wishlist/magic-link/index";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
@@ -52,10 +50,30 @@ const WishlistHeader = ({
             <div>
               <ShareWishlist
                 sharedUsers={sharedUsers}
+                magicLink={
+                  <Suspense
+                    fallback={
+                      <div className="h-[206px] w-[324px] pb-6">
+                        <div className="flex flex-col">
+                          <h3 className="font-sans text-lg font-medium">
+                            Magic Link
+                          </h3>
+                          <p className="mb-2 text-balance font-sans text-sm tracking-tight">
+                            Share this link with anyone to grant access to this
+                            wishlist
+                          </p>
+                          <div className="skeleton h-12 w-full"></div>
+                          <div className="skeleton h-12 w-24"></div>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <MagicLink wishlistId={wishlist.id} />
+                  </Suspense>
+                }
                 wishlistId={wishlist.id}
                 isEditor={isEditor}
                 userId={session.user.id}
-                privacyType={wishlist.privacyType}
               />
             </div>
           )}

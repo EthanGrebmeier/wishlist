@@ -26,7 +26,7 @@ const WishlistList = ({ wishlists }: WishlistListProps) => {
           >
             {" "}
           </span>{" "}
-          <p className="line-clamp-1">{wishlist.name}</p>
+          <p className="line-clamp-1 flex-1">{wishlist.name}</p>
         </NavLink>
       ))}
     </div>

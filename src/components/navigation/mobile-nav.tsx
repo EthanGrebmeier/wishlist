@@ -46,12 +46,14 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
           <Menu className="h-full w-full" />
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="mx-auto max-w-[440px]">
+      <DrawerContent className="mx-auto max-w-[440px] ">
         <DrawerHeader>
           <DrawerTitle className="sr-only">Navigation</DrawerTitle>
           <Logo className="mx-auto w-fit" />
         </DrawerHeader>
-        <div className=" w-full  p-4 text-black">{navigation}</div>
+        <div className=" max-h-[80svh] w-full overflow-y-scroll p-4 text-black">
+          {navigation}
+        </div>
       </DrawerContent>
     </Drawer>
   );

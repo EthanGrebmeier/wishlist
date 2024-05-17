@@ -70,11 +70,14 @@ export const commitToProduct = makeProtectedAction(
       return revalidatePath(`/product/${productId}`);
     }
 
+    // Ensure the wishlist is shared with the user
     const dbShares = await db.query.wishlistShares.findFirst({
       where: and(
         eq(wishlistShares.wishlistId, dbProduct.wishlistId),
         or(
+          // Either the wishlist is shared with the user
           eq(wishlistShares.sharedWithUserId, session.user.id),
+          // OR the user is the one who made the wishlist
           eq(wishlistShares.createdById, session.user.id),
         ),
       ),

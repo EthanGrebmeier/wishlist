@@ -10,8 +10,6 @@ import {
 } from "~/components/ui/dialog";
 import ShareWishlistForm from "./share-wishlist-form";
 import SharedUsers from "./shared-users";
-import Privacy from "./privacy";
-import type { WishlistPrivacy } from "~/types/wishlist";
 import { Tooltip } from "~/components/ui/tooltip";
 import { useMediaQuery } from "usehooks-ts";
 import {
@@ -22,10 +20,11 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import type { User } from "~/types/user";
+import type { ReactNode } from "react";
 
 type ShareWishlistProps = {
   wishlistId: string;
-  privacyType: WishlistPrivacy;
+  magicLink: ReactNode;
   userId: string;
   sharedUsers: User[];
   isEditor: boolean;
@@ -33,7 +32,7 @@ type ShareWishlistProps = {
 
 const ShareWishlist = ({
   wishlistId,
-  privacyType,
+  magicLink,
   userId,
   sharedUsers,
   isEditor,
@@ -49,20 +48,21 @@ const ShareWishlist = ({
           </DialogTrigger>
         </Tooltip>
 
-        <DialogContent className="max-w-[360px]">
+        <DialogContent className="w-full max-w-[440px]">
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium"> Share </h1>
             {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
-            <div className="space-y-4  pt-2">
-              <SharedUsers
-                sharedUsers={sharedUsers}
-                userId={userId}
-                wishlistId={wishlistId}
-                isEditor={isEditor}
-              />
-              {isEditor && <ShareWishlistForm wishlistId={wishlistId} />}
-            </div>
           </DialogHeader>
+          <div className="flex flex-col gap-4 overflow-hidden  pt-2">
+            <SharedUsers
+              sharedUsers={sharedUsers}
+              userId={userId}
+              wishlistId={wishlistId}
+              isEditor={isEditor}
+            />
+            {isEditor && magicLink}
+            {isEditor && <ShareWishlistForm wishlistId={wishlistId} />}
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -71,17 +71,15 @@ const ShareWishlist = ({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button icon={<Share size={20} />}>
-          <span className="hidden lg:block"> Share </span>
-        </Button>
+        <Button icon={<Share size={20} />}></Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="mx-auto max-w-[440px]">
         <DrawerHeader>
           <DrawerTitle className="font-serif text-4xl font-medium">
             Share
           </DrawerTitle>
         </DrawerHeader>
-        <div className="p-4 pb-28">
+        <div className="max-h-[80svh] overflow-y-scroll p-4 pb-28">
           {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
           <div className="space-y-4">
             <SharedUsers
@@ -90,6 +88,7 @@ const ShareWishlist = ({
               wishlistId={wishlistId}
               isEditor={isEditor}
             />
+            {magicLink}
             <ShareWishlistForm wishlistId={wishlistId} />
           </div>
         </div>

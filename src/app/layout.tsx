@@ -1,11 +1,8 @@
 import "~/styles/globals.css";
-
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 
-import Sidebar from "~/components/navigation/sidebar";
 import { ourFileRouter } from "~/server/uploadthing";
 
 const orbiter = localFont({
@@ -58,10 +55,7 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <div className="mx-auto grid grid-cols-1 pb-16 md:pb-0 lg:grid-cols-[auto_1fr]">
-          <Sidebar />
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );

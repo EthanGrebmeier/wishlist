@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { unshareWishlist } from "~/app/wishlist/[wishlistId]/actions";
+import { unshareWishlist } from "~/app/(main)/wishlist/[wishlistId]/actions";
 import { Tooltip } from "~/components/ui/tooltip";
 import type { User } from "~/types/user";
 
