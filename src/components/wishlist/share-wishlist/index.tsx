@@ -53,14 +53,16 @@ const ShareWishlist = ({
             <h1 className="font-serif text-4xl font-medium"> Share </h1>
             {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
           </DialogHeader>
-          <div className="flex flex-col gap-4 overflow-hidden  pt-2">
-            <SharedUsers
-              sharedUsers={sharedUsers}
-              userId={userId}
-              wishlistId={wishlistId}
-              isEditor={isEditor}
-            />
-            {isEditor && magicLink}
+          <div className="flex min-w-0 flex-col gap-2">
+            <div className="flex min-w-0 flex-col gap-4 overflow-hidden pt-2">
+              <SharedUsers
+                sharedUsers={sharedUsers}
+                userId={userId}
+                wishlistId={wishlistId}
+                isEditor={isEditor}
+              />
+              {isEditor && magicLink}
+            </div>
             {isEditor && <ShareWishlistForm wishlistId={wishlistId} />}
           </div>
         </DialogContent>

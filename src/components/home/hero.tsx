@@ -23,6 +23,7 @@ const Hero = () => {
           }}
           transition={{
             duration: 0.55,
+            delay: 0.05,
           }}
           whileHover={{
             rotate: -12,
@@ -45,6 +46,7 @@ const Hero = () => {
           }}
           transition={{
             duration: 0.35,
+            delay: 0.15,
           }}
           whileHover={{
             rotate: -12,
@@ -67,6 +69,7 @@ const Hero = () => {
           }}
           transition={{
             duration: 0.35,
+            delay: 0.1,
           }}
           whileHover={{
             rotate: -12,
