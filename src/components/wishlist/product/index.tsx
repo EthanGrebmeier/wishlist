@@ -96,7 +96,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
           <div className="rounded-md border-2 border-black ">
             <div className="relative flex w-full flex-col gap-2 p-4 pb-4">
               <div className="flex max-w-[80%] flex-col gap-2">
-                <h1 className="text-3xl font-medium md:text-4xl">
+                <h1 className="overflow-hidden text-wrap break-words text-3xl font-medium md:text-4xl">
                   {product.name}
                 </h1>
                 {product.brand && (
@@ -129,7 +129,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
 
           <div className="flex flex-col gap-2  md:flex-row lg:flex-col">
             {!(isSecret && isOwner) && !productReceipts.data && (
-              <div className="flex w-full flex-col justify-end gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full">
+              <div className="flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full">
                 <div className="flex flex-col gap-4">
                   {/** Only hide commitments for the owner of the wishlist */}
                   <Commit

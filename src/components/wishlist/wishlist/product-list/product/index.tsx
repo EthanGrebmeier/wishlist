@@ -43,7 +43,7 @@ const Product = ({ product, isEditor }: ProductProps) => {
           </div>
 
           <div className="flex w-full items-center justify-between gap-4 border-t-2 border-black bg-[#efeec4] px-2 py-2">
-            <p className="line-clamp-1 overflow-ellipsis font-serif text-2xl">
+            <p className="-mb-[2px] line-clamp-1 overflow-ellipsis font-serif text-2xl group-hover:underline">
               {" "}
               {product.name}{" "}
             </p>

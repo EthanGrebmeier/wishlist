@@ -62,57 +62,65 @@ const ScrapeInput = ({
   }, [result, setScrapedData, setFrame]);
 
   return (
-    <Form {...form}>
-      <form
-        className="space-y-8 pb-10 md:pb-16"
-        action={execute}
-        onSubmit={() => form.trigger()}
-      >
-        <FormField
-          name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Link</FormLabel>
-              <FormControl>
-                <div className="relative flex gap-2">
-                  <Input type="text" {...field} />
-                  <Tooltip text="Paste Copied URL">
-                    <Button
-                      onClick={async () => {
-                        form.setValue(
-                          "url",
-                          await navigator.clipboard.readText(),
-                        );
-                      }}
-                      className="-mt-1"
-                      variant="secondary"
-                      type="button"
-                    >
-                      {" "}
-                      <ClipboardPaste size={20} />{" "}
-                    </Button>
-                  </Tooltip>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 pb-4 md:py-4">
-          <Button
-            onClick={() => setFrame("form")}
-            icon={<ChevronsRight size={20} />}
-            variant="secondary"
-            type="button"
-          >
-            Skip
-          </Button>
-          <SubmitButton icon={<Sparkles width={20} height={20} />}>
-            Autofill
-          </SubmitButton>
-        </div>
-      </form>
-    </Form>
+    <div className="flex flex-col">
+      <h2 className="text-lg font-medium">Autofill</h2>
+      <p className="mb-2  text-sm tracking-tight">
+        {" "}
+        Input a link to a product and we will populate as much information as we
+        can{" "}
+      </p>
+      <Form {...form}>
+        <form
+          className="space-y-8 pb-10 md:pb-16"
+          action={execute}
+          onSubmit={() => form.trigger()}
+        >
+          <FormField
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="sr-only">Product Link</FormLabel>
+                <FormControl>
+                  <div className="relative flex gap-2">
+                    <Input type="text" {...field} />
+                    <Tooltip text="Paste Copied URL">
+                      <Button
+                        onClick={async () => {
+                          form.setValue(
+                            "url",
+                            await navigator.clipboard.readText(),
+                          );
+                        }}
+                        className="-mt-1"
+                        variant="secondary"
+                        type="button"
+                      >
+                        {" "}
+                        <ClipboardPaste size={20} />{" "}
+                      </Button>
+                    </Tooltip>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 pb-4 md:py-4">
+            <Button
+              onClick={() => setFrame("form")}
+              icon={<ChevronsRight size={20} />}
+              variant="secondary"
+              type="button"
+            >
+              Skip
+            </Button>
+            <SubmitButton icon={<Sparkles width={20} height={20} />}>
+              Autofill
+            </SubmitButton>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 

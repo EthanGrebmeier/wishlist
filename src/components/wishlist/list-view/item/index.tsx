@@ -46,7 +46,6 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
         >
           <div className="relative aspect-square w-full overflow-hidden object-cover">
             <img
-              alt="placeholder"
               src={wishlist.imageUrl ?? "https://placehold.co/600x600"}
               className="h-full w-full"
             />
@@ -57,13 +56,10 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
               backgroundClass,
             )}
           >
-            {" "}
-            <div>
-              <h2 className="line-clamp-1 font-serif text-2xl group-hover:underline">
-                {" "}
-                {name}{" "}
-              </h2>
-            </div>
+            <h2 className="-mb-[2px] line-clamp-1 font-serif text-2xl group-hover:underline">
+              {" "}
+              {name}{" "}
+            </h2>
             <div className="text-end">
               <p className="text-sm"> {isEditor ? "You" : "Fix me"} </p>
             </div>

@@ -32,7 +32,7 @@ const WishlistHeader = ({
       <div
         className={cn(
           "flex w-full flex-1 items-center justify-between gap-4",
-          (isEditor || wishlist.dueDate) && "border-b-2 border-black pb-4",
+          (isEditor || wishlist.dueDate) && "border-b-2 border-black pb-2",
         )}
       >
         <div className="flex flex-row items-center gap-2">

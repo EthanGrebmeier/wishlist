@@ -1,6 +1,5 @@
 "use client";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +15,9 @@ const ProductMenu = () => {
   return (
     <DropdownMenu key={product.id} modal={false}>
       <DropdownMenuTrigger onClick={(e) => e.preventDefault()} asChild>
-        <button className="group w-full justify-between rounded-md border-2 border-black bg-background p-2 text-xl font-medium transition-all hover:bg-green-200">
+        <button className="group w-full justify-between rounded-md border-2 border-black bg-background p-1 text-xl font-medium transition-all hover:bg-green-200">
           {" "}
-          <MoreHorizontal width={20} height={20} />{" "}
+          <MoreHorizontal size={15} />{" "}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

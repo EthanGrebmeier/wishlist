@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -24,6 +23,7 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { useAction } from "next-safe-action/hooks";
+import { Trash2 } from "lucide-react";
 
 const Delete = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,17 +59,19 @@ const Delete = () => {
               Delete Product
             </DialogTitle>
           </DialogHeader>
-          <p>
-            Are you sure you would like to delete{" "}
+          <p className="text-lg font-medium">
+            Are you sure you would like to delete the following wishlist?
             <span className="font-bold"> {product.name}</span>?
-          </p>{" "}
-          <DialogDescription>This action cannot be undone</DialogDescription>
+          </p>
+          <p>This action cannot be undone</p>
           <div className="flex justify-between">
             <DialogClose asChild>
               <Button>Cancel</Button>
             </DialogClose>
             <form action={actionWithProductId}>
-              <SubmitButton variant="destructive">Delete</SubmitButton>
+              <SubmitButton icon={<Trash2 size={20} />} variant="destructive">
+                Delete
+              </SubmitButton>
             </form>
           </div>
         </DialogContent>
@@ -78,7 +80,7 @@ const Delete = () => {
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DrawerTrigger className="w-full text-left text-red-500">
           Delete Product
@@ -89,10 +91,10 @@ const Delete = () => {
           <DrawerTitle className="font-serif text-4xl font-medium">
             Delete Product
           </DrawerTitle>
-          <p>
+          <p className="text-lg font-medium">
             Are you sure you would like to delete{" "}
             <span className="font-bold"> {product.name}</span>?
-          </p>{" "}
+          </p>
         </DrawerHeader>
         <DrawerDescription className="px-4">
           This action cannot be undone

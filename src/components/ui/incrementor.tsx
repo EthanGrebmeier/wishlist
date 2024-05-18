@@ -47,8 +47,13 @@ const Incrementor = ({ onQuantityChange, value }: IncrementorProps) => {
   };
 
   return (
-    <div className="flex h-10 w-full items-center justify-between gap-2 rounded-md border border-black px-4">
-      <button className="text-2xl" type="button" onClick={decrement}>
+    <div className="flex h-10 w-full items-center justify-between gap-2 rounded-md border border-black px-2">
+      <button
+        className="rounded-md px-4 text-2xl transition-colors hover:bg-red-200 disabled:hover:bg-transparent"
+        type="button"
+        onClick={decrement}
+        disabled={value - 1 <= 0}
+      >
         -
       </button>
       <input
@@ -59,7 +64,11 @@ const Incrementor = ({ onQuantityChange, value }: IncrementorProps) => {
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <button className="text-2xl" type="button" onClick={increment}>
+      <button
+        className="rounded-md px-4 text-2xl transition-colors hover:bg-green-200"
+        type="button"
+        onClick={increment}
+      >
         +
       </button>
     </div>

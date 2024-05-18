@@ -45,6 +45,7 @@ export const scrapeProductData = makeProtectedAction(
       console.log("Searching");
 
       const responseBody = {
+        url: pageToScrape,
         name: "",
         description: "",
         images: [] as string[],

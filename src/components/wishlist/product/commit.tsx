@@ -67,13 +67,16 @@ const Commit = ({
     return (
       <ul className="flex items-center text-balance font-serif text-2xl  font-medium text-black">
         {productCommitments.map((commitment) => (
-          <li key={commitment.id} className="flex items-center">
+          <li
+            key={commitment.id}
+            className="flex items-center gap-4 overflow-hidden"
+          >
             {commitment.user.image && (
               <SharedUserThumbnail>
                 <img src={commitment.user.image} />
               </SharedUserThumbnail>
             )}
-            <p>
+            <p className="flex-1">
               {" "}
               <span className="italic"> {commitment.user.name} </span> is
               getting this item!

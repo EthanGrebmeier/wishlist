@@ -43,10 +43,9 @@ const Delete = () => {
             <DialogHeader className="inline-block font-serif text-4xl font-medium">
               Delete Wishlist
             </DialogHeader>
-            <p>
-              {" "}
-              Are you sure you would like to delete{" "}
-              <span className="font-bold"> {wishlist.name}</span>?
+            <p className="text-lg font-medium">
+              Are you sure you would like to delete
+              <span className="text-sm font-bold"> {wishlist.name}</span>?
             </p>
             <DialogDescription> This action cannot be undone</DialogDescription>
             <div className="flex justify-between">
@@ -75,9 +74,9 @@ const Delete = () => {
           <DrawerTitle className="font-serif text-4xl font-medium">
             Delete Wishlist
           </DrawerTitle>
-          <p>
+          <p className="text-lg font-medium">
             Are you sure you would like to delete
-            <span className="font-bold"> {wishlist.name}</span>?
+            <span className="text-sm font-bold"> {wishlist.name}</span>?
           </p>
         </DrawerHeader>
         <DrawerDescription className="px-4">

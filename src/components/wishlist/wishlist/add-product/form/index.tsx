@@ -204,7 +204,7 @@ export const AddProductForm = ({
 
         <div
           className={cn(
-            "absolute bottom-0 left-0 right-0 flex border-t-2 border-black bg-background px-4 py-4 ",
+            "absolute bottom-0 left-0 right-0 flex rounded-b-md border-t-2 border-black bg-background px-4 py-4",
             setFrame ? "justify-between" : "justify-end",
           )}
         >

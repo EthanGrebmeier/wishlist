@@ -19,26 +19,27 @@ type ProviderListProps = {
 };
 
 const ProviderList = ({ providers, magicLinkId }: ProviderListProps) => {
-  const linkBase = env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000";
-
-  const callbackUrl =
-    linkBase + (magicLinkId ? `/wishlist/join/${magicLinkId}` : "");
+  const callbackUrl = magicLinkId
+    ? `/wishlist/join/${magicLinkId}`
+    : "/wishlist";
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {Object.values(providers).map((provider) => (
-        <div key={provider.id}>
-          <Button
-            onClick={() =>
-              signIn(provider.id, {
-                callbackUrl,
-              })
-            }
-          >
-            Sign in with {provider.name}
-          </Button>
-        </div>
-      ))}
+      {Object.values(providers)
+        .sort((a, b) => b.name.charCodeAt(0) - a.name.charCodeAt(0))
+        .map((provider) => (
+          <div key={provider.id}>
+            <Button
+              onClick={() =>
+                signIn(provider.id, {
+                  callbackUrl,
+                })
+              }
+            >
+              Sign in with {provider.name}
+            </Button>
+          </div>
+        ))}
     </div>
   );
 };
