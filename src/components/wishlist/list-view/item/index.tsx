@@ -2,9 +2,7 @@
 import type { WishlistWithProducts } from "~/types/wishlist";
 import WishlistMenu from "./menu";
 import Link from "~/components/ui/link";
-import Image from "next/image";
 import type { User } from "next-auth";
-import { formatDate } from "date-fns";
 import { cn } from "~/lib/utils";
 import { colors } from "~/consts/colors";
 import { motion } from "framer-motion";

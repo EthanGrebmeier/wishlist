@@ -23,7 +23,9 @@ const DueDate = ({ wishlist, className }: DueDateProps) => {
       )}
     >
       <Calendar size={20} />{" "}
-      <p className="text-sm">{formatDate(parseISO(wishlist.dueDate), "P")}</p>
+      <time className="text-sm">
+        {formatDate(parseISO(wishlist.dueDate), "P")}
+      </time>
     </div>
   );
 };

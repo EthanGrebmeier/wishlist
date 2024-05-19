@@ -1,13 +1,11 @@
-import { endOfTomorrow, formatDate, parseISO } from "date-fns";
+import { endOfTomorrow, formatDate } from "date-fns";
 import {
-  Cake,
   CakeSlice,
   Calendar,
   Gift,
   Heart,
   Lock,
   School,
-  Scroll,
   UserCircle,
 } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -42,7 +40,9 @@ export default async function HomePage() {
             <MockCard title="21st Birthday!" color="bg-green-400">
               <div className=" absolute left-2 top-2 flex items-center gap-2 rounded-md border-2 border-black bg-green-400 p-1 font-medium">
                 <Calendar size={20} />{" "}
-                <p className="text-sm">{formatDate(endOfTomorrow(), "P")}</p>
+                <time className="text-sm">
+                  {formatDate(endOfTomorrow(), "P")}
+                </time>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <CakeSlice size={50} />
