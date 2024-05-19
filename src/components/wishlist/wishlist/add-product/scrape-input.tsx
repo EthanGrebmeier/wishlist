@@ -25,7 +25,7 @@ import {
 import { scrapeProductData } from "~/server/actions/scrape";
 
 type ScrapeInputProps = {
-  setFrame: Dispatch<SetStateAction<"scrape" | "form">>;
+  setView: Dispatch<SetStateAction<"scrape" | "form">>;
   setScrapedData: Dispatch<
     SetStateAction<z.infer<typeof partialCompiledProductDataSchema> | undefined>
   >;
@@ -33,7 +33,7 @@ type ScrapeInputProps = {
 };
 
 const ScrapeInput = ({
-  setFrame,
+  setView,
   setScrapedData,
   onStatusChange,
 }: ScrapeInputProps) => {
@@ -57,9 +57,9 @@ const ScrapeInput = ({
   useEffect(() => {
     if (result.data) {
       setScrapedData(result.data);
-      setFrame("form");
+      setView("form");
     }
-  }, [result, setScrapedData, setFrame]);
+  }, [result, setScrapedData, setView]);
 
   return (
     <div className="flex flex-col">
@@ -107,7 +107,7 @@ const ScrapeInput = ({
           />
           <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 pb-4 md:py-4">
             <Button
-              onClick={() => setFrame("form")}
+              onClick={() => setView("form")}
               icon={<ChevronsRight size={20} />}
               variant="secondary"
               type="button"

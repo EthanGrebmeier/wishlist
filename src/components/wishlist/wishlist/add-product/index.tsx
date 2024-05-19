@@ -30,7 +30,7 @@ type AddProduct = {
 
 export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [frame, setFrame] = useState<"scrape" | "form">("scrape");
+  const [view, setView] = useState<"scrape" | "form">("scrape");
   const [height, setHeight] = useState(400);
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
@@ -42,7 +42,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   useEffect(() => {
     if (!isOpen) {
       const timeout = setTimeout(() => {
-        setFrame("scrape");
+        setView("scrape");
       }, 200);
 
       return () => clearTimeout(timeout);
@@ -55,7 +55,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
 
   useEffect(() => {
     recalculateHeight();
-  }, [frame, isOpen]);
+  }, [view, isOpen]);
 
   if (isDesktop) {
     return (
@@ -72,16 +72,16 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
             <h1 className="font-serif text-4xl font-medium">Add Product </h1>
           </DialogHeader>
           <div>
-            {frame === "scrape" ? (
+            {view === "scrape" ? (
               <ScrapeInput
-                setFrame={setFrame}
+                setView={setView}
                 setScrapedData={setScrapedData}
                 onStatusChange={recalculateHeight}
               />
             ) : (
               <AddProductForm
                 method="create"
-                setFrame={setFrame}
+                setView={setView}
                 defaultValues={scrapedData}
                 wishlistId={wishlistId}
                 onSuccess={() => {
@@ -116,16 +116,16 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
           style={{ height }}
         >
           <div ref={innerContainerRef}>
-            {frame === "scrape" ? (
+            {view === "scrape" ? (
               <ScrapeInput
-                setFrame={setFrame}
+                setView={setView}
                 setScrapedData={setScrapedData}
                 onStatusChange={recalculateHeight}
               />
             ) : (
               <AddProductForm
                 method="create"
-                setFrame={setFrame}
+                setView={setView}
                 defaultValues={scrapedData}
                 wishlistId={wishlistId}
                 onSuccess={() => {

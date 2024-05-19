@@ -32,7 +32,7 @@ type AddProductFormProps = {
   wishlistId: string;
   onSuccess?: () => void;
   defaultValues?: z.infer<typeof partialCompiledProductDataSchema>;
-  setFrame?: Dispatch<SetStateAction<"scrape" | "form">>;
+  setView?: Dispatch<SetStateAction<"scrape" | "form">>;
   product?: WishlistProduct;
 } & (
   | {
@@ -47,7 +47,7 @@ export const AddProductForm = ({
   wishlistId,
   onSuccess,
   defaultValues,
-  setFrame,
+  setView,
   method = "create",
   product,
 }: AddProductFormProps) => {
@@ -205,21 +205,21 @@ export const AddProductForm = ({
         <div
           className={cn(
             "absolute bottom-0 left-0 right-0 flex rounded-b-md border-t-2 border-black bg-background px-4 py-4",
-            setFrame ? "justify-between" : "justify-end",
+            setView ? "justify-between" : "justify-end",
           )}
         >
-          {setFrame && (
+          {setView && (
             <Button
               type="button"
               variant="secondary"
-              onClick={() => setFrame("scrape")}
+              onClick={() => setView("scrape")}
               icon={<ArrowLeft width={20} height={20} />}
             >
               Back
             </Button>
           )}
           <SubmitButton>
-            {setFrame ? "Add Product" : "Update Product"}
+            {setView ? "Add Product" : "Update Product"}
           </SubmitButton>
         </div>
       </form>
