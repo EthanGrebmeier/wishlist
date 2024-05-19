@@ -92,7 +92,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
             </div>
           </div>
         </div>
-        <div className="mx-auto mb-4 flex max-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:h-full  lg:w-[320px] lg:max-w-none lg:gap-8 ">
+        <div className="mx-auto mb-4 flex max-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:h-full  lg:min-h-[calc(100svh-64px)] lg:w-[320px] lg:max-w-none lg:gap-8">
           <div className="rounded-md border-2 border-black ">
             <div className="relative flex w-full flex-col gap-2 p-4 pb-4">
               <div className="flex max-w-[80%] flex-col gap-2">
