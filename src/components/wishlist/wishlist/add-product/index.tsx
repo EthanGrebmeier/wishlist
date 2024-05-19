@@ -31,7 +31,6 @@ type AddProduct = {
 export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<"scrape" | "form">("scrape");
-  const [height, setHeight] = useState(400);
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
   >(undefined);
@@ -49,13 +48,11 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
     }
   }, [isOpen]);
 
-  const recalculateHeight = () => {
-    setHeight((innerContainerRef.current?.offsetHeight ?? 126) + 46);
-  };
-
   useEffect(() => {
-    recalculateHeight();
-  }, [view, isOpen]);
+    if (view === "scrape") {
+      setScrapedData(undefined);
+    }
+  }, [view]);
 
   if (isDesktop) {
     return (
@@ -73,11 +70,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
           </DialogHeader>
           <div>
             {view === "scrape" ? (
-              <ScrapeInput
-                setView={setView}
-                setScrapedData={setScrapedData}
-                onStatusChange={recalculateHeight}
-              />
+              <ScrapeInput setView={setView} setScrapedData={setScrapedData} />
             ) : (
               <AddProductForm
                 method="create"
@@ -112,15 +105,15 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
           </DrawerTitle>
         </DrawerHeader>
         <div
-          className="max-h-[80svh] overflow-y-scroll p-4 transition-all"
-          style={{ height }}
+          className="max-h-[80svh] overflow-y-auto p-4 transition-all"
+          // style={{ height }}
         >
           <div ref={innerContainerRef}>
             {view === "scrape" ? (
               <ScrapeInput
                 setView={setView}
                 setScrapedData={setScrapedData}
-                onStatusChange={recalculateHeight}
+                // onStatusChange={recalculateHeight}
               />
             ) : (
               <AddProductForm

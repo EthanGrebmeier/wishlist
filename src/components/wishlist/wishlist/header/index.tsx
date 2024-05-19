@@ -80,7 +80,12 @@ const WishlistHeader = ({
         </div>
       </div>
       {(isEditor || wishlist.dueDate) && (
-        <div className="flex w-full items-center justify-between pt-2">
+        <div
+          className={cn(
+            "flex w-full items-center justify-between pt-2",
+            wishlist.dueDate ? "justify-between" : "justify-end",
+          )}
+        >
           <DueDate wishlist={wishlist} />
           {isEditor && (
             <div className="flex flex-nowrap space-x-1 overflow-x-auto xs:w-fit md:space-x-4 md:px-0 ">

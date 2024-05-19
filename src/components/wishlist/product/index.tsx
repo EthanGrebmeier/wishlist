@@ -44,10 +44,10 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
   const isOwner = session.user.id === wishlist.createdById;
 
   return (
-    <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:max-w-[800px] md:px-6 lg:mx-6 lg:mt-8 lg:grid lg:h-[calc(100svh-32px)] lg:max-h-[calc(100svh-32px)] lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">
+    <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:max-w-[800px] md:px-6 lg:mx-6 lg:mt-8 lg:grid  lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">
       <section className="flex h-full w-full flex-col gap-x-4 gap-y-2 overflow-hidden transition-all lg:grid lg:grid-cols-[1fr_min-content] lg:gap-4">
         <div className="flex w-full items-start justify-center gap-4 align-top lg:mx-0">
-          <div className=" relative items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
+          <div className="relative items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className=" max-h-[calc(100svh-44px)] w-[600px]"
@@ -92,7 +92,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
             </div>
           </div>
         </div>
-        <div className="mx-auto mb-4 flex max-h-full w-full flex-col justify-between gap-2 overflow-y-auto  lg:h-full lg:w-[320px] lg:max-w-none ">
+        <div className="mx-auto mb-4 flex max-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:h-full  lg:w-[320px] lg:max-w-none lg:gap-8 ">
           <div className="rounded-md border-2 border-black ">
             <div className="relative flex w-full flex-col gap-2 p-4 pb-4">
               <div className="flex max-w-[80%] flex-col gap-2">

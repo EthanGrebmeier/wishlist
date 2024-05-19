@@ -3,10 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsRight, ClipboardPaste, Sparkles } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { Button } from "~/components/ui/button";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import {
   Form,
   FormControl,
@@ -29,7 +30,7 @@ type ScrapeInputProps = {
   setScrapedData: Dispatch<
     SetStateAction<z.infer<typeof partialCompiledProductDataSchema> | undefined>
   >;
-  onStatusChange: () => void;
+  onStatusChange?: () => void;
 };
 
 const ScrapeInput = ({
@@ -37,6 +38,7 @@ const ScrapeInput = ({
   setScrapedData,
   onStatusChange,
 }: ScrapeInputProps) => {
+  const [formError, setFormError] = useState("");
   const form = useForm<z.infer<typeof scrapeInputSchema>>({
     resolver: zodResolver(scrapeInputSchema),
     defaultValues: {
@@ -58,17 +60,25 @@ const ScrapeInput = ({
     if (result.data) {
       setScrapedData(result.data);
       setView("form");
+    } else if (result.serverError) {
+      setFormError("Error autofilling from provided url");
     }
   }, [result, setScrapedData, setView]);
 
   return (
-    <div className="flex flex-col">
-      <h2 className="text-lg font-medium">Autofill</h2>
-      <p className="mb-2  text-sm tracking-tight">
-        {" "}
-        Input a link to a product and we will populate as much information as we
-        can{" "}
-      </p>
+    <div className="flex flex-col pb-4">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-medium">Autofill</h2>
+          <p className="text-sm tracking-tight">
+            {" "}
+            Input a link to a product to autofill information
+          </p>
+        </div>
+        <ColoredIconWrapper className="bg-purple-300">
+          <Sparkles size={30} />
+        </ColoredIconWrapper>
+      </div>
       <Form {...form}>
         <form
           className="space-y-8 pb-10 md:pb-16"
@@ -79,7 +89,7 @@ const ScrapeInput = ({
             name="url"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">Product Link</FormLabel>
+                <FormLabel>Product Link</FormLabel>
                 <FormControl>
                   <div className="relative flex gap-2">
                     <Input type="text" {...field} />
@@ -102,6 +112,9 @@ const ScrapeInput = ({
                   </div>
                 </FormControl>
                 <FormMessage />
+                {formError && (
+                  <p className="text-sm text-red-400">{formError}</p>
+                )}
               </FormItem>
             )}
           />

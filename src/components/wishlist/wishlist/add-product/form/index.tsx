@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -27,6 +27,7 @@ import Incrementor from "~/components/ui/incrementor";
 import { Textarea } from "~/components/ui/textarea";
 import ProductImageInput from "./image";
 import PriceInput from "./price";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -109,89 +110,51 @@ export const AddProductForm = ({
   }, [onSuccess, addResult, updateResult, method]);
 
   return (
-    <Form {...form}>
-      <form
-        className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4 pb-20"
-        action={executeServerAction}
-        onSubmit={() => form.trigger()}
-      >
-        <div className="grid gap-4">
-          <FormField
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Name<sup> * </sup>
-                </FormLabel>
-                <FormControl>
-                  <Input autoComplete="off" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div>
+      {defaultValues && (
+        <div className="mb-4 flex items-center justify-between text-sm tracking-tight">
+          <div>
+            <p className="text-lg font-medium">
+              {" "}
+              Product Information Autofilled{" "}
+            </p>
+            <p>We&apos;ve gathered the following product information</p>
+            <p>Please ensure that it is correct</p>
+          </div>
+          <ColoredIconWrapper className="bg-purple-300">
+            <Sparkles size={30} />
+          </ColoredIconWrapper>
         </div>
-        <div>
-          <FormField
-            name="brand"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Brand</FormLabel>
-                <FormControl>
-                  <Input type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div>
-          <FormField
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea className="resize-none" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-4 xs:grid-cols-[200px_auto] xs:gap-4">
-          <ProductImageInput setImageUrl={setImageUrl} imageUrl={imageUrl} />
-          <div className="flex flex-col justify-between gap-4 pb-2 xs:gap-0 ">
-            <div className="flex flex-row gap-4 xs:flex-col xs:gap-0 ">
-              <FormField
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <FormControl>
-                      <PriceInput type="text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="space-y-2">
-                <label className="text-lg font-medium" htmlFor="quantity">
-                  Quantity
-                </label>
-                <Incrementor
-                  onQuantityChange={(value) =>
-                    form.setValue("quantity", value.toString())
-                  }
-                  value={parseInt(fields.quantity ?? "1")}
-                />
-              </div>
-            </div>
+      )}
+
+      <Form {...form}>
+        <form
+          className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4 pb-20"
+          action={executeServerAction}
+          onSubmit={() => form.trigger()}
+        >
+          <div className="grid gap-4">
             <FormField
-              name="url"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Link </FormLabel>
+                  <FormLabel>
+                    Name<sup> * </sup>
+                  </FormLabel>
+                  <FormControl>
+                    <Input autoComplete="off" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div>
+            <FormField
+              name="brand"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Brand</FormLabel>
                   <FormControl>
                     <Input type="text" {...field} />
                   </FormControl>
@@ -200,29 +163,85 @@ export const AddProductForm = ({
               )}
             />
           </div>
-        </div>
+          <div>
+            <FormField
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea className="resize-none" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 xs:grid-cols-[200px_auto] xs:gap-4">
+            <ProductImageInput setImageUrl={setImageUrl} imageUrl={imageUrl} />
+            <div className="flex flex-col justify-between gap-4 pb-2 xs:gap-0 ">
+              <div className="flex flex-row gap-4 xs:flex-col xs:gap-0 ">
+                <FormField
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <PriceInput type="text" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="space-y-2">
+                  <label className="text-lg font-medium" htmlFor="quantity">
+                    Quantity
+                  </label>
+                  <Incrementor
+                    onQuantityChange={(value) =>
+                      form.setValue("quantity", value.toString())
+                    }
+                    value={parseInt(fields.quantity ?? "1")}
+                  />
+                </div>
+              </div>
+              <FormField
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Link </FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
-        <div
-          className={cn(
-            "absolute bottom-0 left-0 right-0 flex rounded-b-md border-t-2 border-black bg-background px-4 py-4",
-            setView ? "justify-between" : "justify-end",
-          )}
-        >
-          {setView && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setView("scrape")}
-              icon={<ArrowLeft width={20} height={20} />}
-            >
-              Back
-            </Button>
-          )}
-          <SubmitButton>
-            {setView ? "Add Product" : "Update Product"}
-          </SubmitButton>
-        </div>
-      </form>
-    </Form>
+          <div
+            className={cn(
+              "absolute bottom-0 left-0 right-0 flex rounded-b-md border-t-2 border-black bg-background px-4 py-4",
+              setView ? "justify-between" : "justify-end",
+            )}
+          >
+            {setView && (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setView("scrape")}
+                icon={<ArrowLeft width={20} height={20} />}
+              >
+                Back
+              </Button>
+            )}
+            <SubmitButton>
+              {setView ? "Add Product" : "Update Product"}
+            </SubmitButton>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };

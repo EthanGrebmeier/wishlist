@@ -22,7 +22,7 @@ const ProductFormImagePreview = ({
 
   return (
     <div className="relative w-full">
-      <div className="aspect-square w-full overflow-hidden rounded-md border border-black object-cover object-center">
+      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-black object-cover object-center">
         <img
           src={debouncedUrl ?? "https://placehold.co/600x600/EEE/31343C"}
           onError={() => setIsImageValid(false)}

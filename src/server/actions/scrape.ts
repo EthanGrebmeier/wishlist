@@ -13,28 +13,32 @@ export const scrapeProductData = makeProtectedAction(
     try {
       // check for https for safety!
       if (!pageToScrape?.includes("https://")) {
-        return new Response("Sorry, missing https", {
-          status: 500,
-        });
+        throw new Error("Missing https");
       }
 
       console.log("Fetching");
 
       // launch a new headless browser with dev / prod options
 
-      const content = await fetch(pageToScrape);
+      const content = await fetch(pageToScrape, {
+        cache: "no-store",
+      });
 
       console.log("Loading into cheerio");
 
       const contentText = await content.text();
-      console.log(contentText);
       const $ = load(contentText);
 
-      // const matchingScraper = getMatchingScraper(pageToScrape);
+      const matchingScraper = getMatchingScraper(pageToScrape);
 
-      // if (matchingScraper) {
-      //   return matchingScraper($);
-      // }
+      if (matchingScraper) {
+        const scrapedData = matchingScraper($);
+
+        return {
+          ...scrapedData,
+          url: pageToScrape,
+        };
+      }
 
       // Get og content
       const getMetaTagContent = async (field: string) => {
@@ -86,13 +90,15 @@ export const scrapeProductData = makeProtectedAction(
         responseBody.brand = ogBrand;
       }
 
-      if (!ogTitle) {
-        console.log("searching for title");
+      if (!responseBody.name) {
         const h1Title = $("h1");
         responseBody.name = h1Title.text();
       }
 
-      console.log("Get images");
+      if (!responseBody.name) {
+        const title = $("title");
+        responseBody.name = title.text();
+      }
 
       const productImages = [
         ...new Set(
@@ -106,10 +112,16 @@ export const scrapeProductData = makeProtectedAction(
 
       console.log("Get price");
 
-      const priceElement = $('[class*="price"][class*="prod"]')
-        .map(() => $(this).text())
+      const priceElements = $('[class*="price"]:not(:has(*))')
         .toArray()
-        .find((text) => text.includes("$"));
+        .map((element) => $(element).text().replace(/\s/g, ""));
+
+      const priceElement = priceElements
+        .find((text) =>
+          text.match(/(\$[0-9,]+(\.[0-9]{2})?)/)?.[0]?.replace("$", ""),
+        )
+        ?.match(/(\$[0-9,]+(\.[0-9]{2})?)/)?.[0]
+        ?.replace("$", "");
 
       if (priceElement) {
         responseBody.price = priceElement;
@@ -123,6 +135,7 @@ export const scrapeProductData = makeProtectedAction(
       return responseBody;
     } catch (e) {
       console.log("Error", e);
+      throw e;
     }
   },
 );
