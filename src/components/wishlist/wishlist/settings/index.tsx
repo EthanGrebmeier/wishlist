@@ -32,7 +32,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button icon={<Settings size={20} />}>
+          <Button variant="secondary" icon={<Settings size={20} />}>
             {" "}
             <span className="hidden lg:block "> Settings </span>
           </Button>
@@ -48,7 +48,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button icon={<Settings size={20} />}>
+        <Button variant="secondary" icon={<Settings size={20} />}>
           {" "}
           <span className="hidden lg:block "> Settings </span>
         </Button>
