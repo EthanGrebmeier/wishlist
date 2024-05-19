@@ -1,18 +1,32 @@
 import type { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 import Product from "./product";
+import { sortProductsByPriority } from "~/lib/wishlist/sortProductsByPriority";
+import type { z } from "zod";
+import type { colorSchema } from "~/schema/wishlist/wishlist";
 
 type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
   isEditor: boolean;
+  wishlistColor: z.infer<typeof colorSchema>;
 };
 
-const ProductList = ({ products, isEditor }: ProductListProps) => {
+const ProductList = ({
+  products,
+  isEditor,
+  wishlistColor,
+}: ProductListProps) => {
   return (
     <ul className="grid gap-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
       {products
         .sort((a) => (a.commitments.length ? 1 : -1))
+        .sort(sortProductsByPriority)
         .map((product) => (
-          <Product isEditor={isEditor} product={product} key={product.id} />
+          <Product
+            wishlistColor={wishlistColor}
+            isEditor={isEditor}
+            product={product}
+            key={product.id}
+          />
         ))}
     </ul>
   );

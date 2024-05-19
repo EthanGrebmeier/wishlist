@@ -20,6 +20,12 @@ export const products = createTable(
     price: varchar("price", { length: 255 }),
     quantity: varchar("quantity", { length: 255 }),
     url: varchar("url", { length: 255 }),
+    priority: varchar("priority", {
+      length: 255,
+      enum: ["high", "normal", "low"],
+    })
+      .default("normal")
+      .notNull(),
     imageUrl: varchar("imageUrl", { length: 255 }),
     createdById: varchar("createdById", { length: 255 }).notNull(),
     wishlistId: varchar("wishlistId", { length: 255 }).notNull(),

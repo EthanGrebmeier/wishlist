@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { z } from "zod";
 import { addProduct } from "~/app/(main)/wishlist/[wishlistId]/actions";
 import { Button } from "~/components/ui/button";
 import {
@@ -28,6 +28,13 @@ import { Textarea } from "~/components/ui/textarea";
 import ProductImageInput from "./image";
 import PriceInput from "./price";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -70,6 +77,7 @@ export const AddProductForm = ({
       quantity: defaultValues?.quantity ?? product?.quantity ?? "1",
       price: defaultValues?.price ?? product?.price ?? "",
       url: defaultValues?.url ?? product?.url ?? "",
+      priority: product?.priority ?? "normal",
     },
   });
 
@@ -129,7 +137,7 @@ export const AddProductForm = ({
 
       <Form {...form}>
         <form
-          className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4 pb-20"
+          className=" -mx-4 flex h-full flex-col gap-4 overflow-y-auto px-4"
           action={executeServerAction}
           onSubmit={() => form.trigger()}
         >
@@ -149,7 +157,7 @@ export const AddProductForm = ({
               )}
             />
           </div>
-          <div>
+          <div className="grid grid-cols-2 gap-4 ">
             <FormField
               name="brand"
               render={({ field }) => (
@@ -157,6 +165,37 @@ export const AddProductForm = ({
                   <FormLabel>Brand</FormLabel>
                   <FormControl>
                     <Input type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Priority</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={z.string().parse(field.value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          className="focus:bg-yellow-200"
+                          value="high"
+                        >
+                          High
+                        </SelectItem>
+                        <SelectItem value="normal">Normal</SelectItem>
+                        <SelectItem className="focus:bg-red-200" value="low">
+                          Low
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -221,10 +260,7 @@ export const AddProductForm = ({
           </div>
 
           <div
-            className={cn(
-              "absolute bottom-0 left-0 right-0 flex rounded-b-md border-t-2 border-black bg-background px-4 py-4",
-              setView ? "justify-between" : "justify-end",
-            )}
+            className={cn("flex ", setView ? "justify-between" : "justify-end")}
           >
             {setView && (
               <Button

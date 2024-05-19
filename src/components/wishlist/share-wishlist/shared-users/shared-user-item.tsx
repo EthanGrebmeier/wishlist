@@ -40,7 +40,7 @@ const SharedUserItem = ({
   }, [state, router]);
   // bg - [#E8EDDF];
   return (
-    <div className="relative flex w-full items-center justify-between gap-4 font-medium text-black">
+    <div className="relative flex w-full items-center justify-between gap-4 pr-1 font-medium text-black">
       <div className="flex items-center gap-2">
         <div className="relative aspect-square w-10 overflow-hidden rounded-full border-2 border-black object-cover">
           {sharedUser.image && <img src={sharedUser.image}></img>}
@@ -53,13 +53,11 @@ const SharedUserItem = ({
         </div>
       </div>
       {userId !== sharedUser.id && isEditor && (
-        <Tooltip text="Remove Shared User">
-          <div className="rounded-md border-2 border-black bg-red-400 p-1 ">
-            <form className="flex items-center" action={actionWithData}>
-              <DeleteShareButton />
-            </form>
-          </div>
-        </Tooltip>
+        <form className="flex items-center" action={actionWithData}>
+          <Tooltip text="Remove Shared User">
+            <DeleteShareButton />
+          </Tooltip>
+        </form>
       )}
     </div>
   );
@@ -69,7 +67,7 @@ const DeleteShareButton = () => {
   const formStatus = useFormStatus();
 
   return (
-    <button className="text-sm">
+    <button className="rounded-md border-2 border-black bg-red-400 p-1 ">
       {formStatus.pending ? (
         <Loader size={15} className=" animate-spin" />
       ) : (

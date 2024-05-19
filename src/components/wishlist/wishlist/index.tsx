@@ -39,7 +39,11 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
         />
         <section className="px-2 py-4 md:px-6">
           {wishlist.products.length ? (
-            <ProductList isEditor={isEditor} products={wishlist.products} />
+            <ProductList
+              wishlistColor={wishlist.color}
+              isEditor={isEditor}
+              products={wishlist.products}
+            />
           ) : (
             <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
               {isEditor ? (

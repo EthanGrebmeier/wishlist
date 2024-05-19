@@ -39,10 +39,10 @@ const Tooltip = ({
   return (
     <TooltipProvider>
       <ShadTooltip delayDuration={delayMs}>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent>
           <p> {text} </p>
         </TooltipContent>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
       </ShadTooltip>
     </TooltipProvider>
   );
