@@ -16,9 +16,15 @@ type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
   isEditor: boolean;
   wishlistColor: z.infer<typeof colorSchema>;
+  hideStatus: boolean;
 };
 
-const Product = ({ product, isEditor, wishlistColor }: ProductProps) => {
+const Product = ({
+  product,
+  isEditor,
+  wishlistColor,
+  hideStatus,
+}: ProductProps) => {
   return (
     <AnimatePresence>
       <motion.li
@@ -39,13 +45,14 @@ const Product = ({ product, isEditor, wishlistColor }: ProductProps) => {
         )}
         <Link href={getProductSlug(product)} className="w-full ">
           <div className="relative aspect-square w-full overflow-hidden bg-background object-cover ">
-            {!!product.commitments.length ? (
-              <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                <p className="text-sm font-medium text-black"> Purchased </p>
-              </div>
-            ) : (
-              <Priority priorityLevel={product.priority} />
-            )}
+            {!hideStatus &&
+              (!!product.commitments.length ? (
+                <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
+                  <p className="text-sm font-medium text-black"> Purchased </p>
+                </div>
+              ) : (
+                <Priority priorityLevel={product.priority} />
+              ))}
             <ProductImage imageUrl={product.imageUrl} />
           </div>
 

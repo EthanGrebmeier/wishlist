@@ -8,12 +8,14 @@ type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
   isEditor: boolean;
   wishlistColor: z.infer<typeof colorSchema>;
+  hideStatus?: boolean;
 };
 
 const ProductList = ({
   products,
   isEditor,
   wishlistColor,
+  hideStatus = false,
 }: ProductListProps) => {
   return (
     <ul className="grid gap-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
@@ -25,6 +27,7 @@ const ProductList = ({
             wishlistColor={wishlistColor}
             isEditor={isEditor}
             product={product}
+            hideStatus={hideStatus}
             key={product.id}
           />
         ))}

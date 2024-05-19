@@ -21,6 +21,7 @@ const MyGiftsPage = async () => {
       <section className="px-2 py-4 md:px-6">
         {products.length ? (
           <ProductList
+            hideStatus={true}
             wishlistColor="white"
             isEditor={true}
             products={products
