@@ -48,7 +48,10 @@ const Product = ({
             {!hideStatus &&
               (!!product.commitments.length ? (
                 <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                  <p className="text-sm font-medium text-black"> Purchased </p>
+                  <p className="-mb-[1px] text-sm font-medium text-black">
+                    {" "}
+                    Purchased{" "}
+                  </p>
                 </div>
               ) : (
                 <Priority priorityLevel={product.priority} />

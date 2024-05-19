@@ -26,7 +26,7 @@ const Priority = ({ priorityLevel }: PriorityProps) => {
       )}
     >
       {priorityIcons[priorityLevel]}
-      <p>{priorityLevel} Priority</p>
+      <p className="-mb-[1px]">{priorityLevel} Priority</p>
     </div>
   );
 };

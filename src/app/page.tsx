@@ -92,7 +92,10 @@ export default async function HomePage() {
               <p className="text-2xl"> What they see </p>
               <MockCard title="Dream Gift" price={"$25"} color="bg-green-200">
                 <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                  <p className="text-sm font-medium text-black"> Purchased </p>
+                  <p className="-mb-[1px] text-sm font-medium text-black">
+                    {" "}
+                    Purchased{" "}
+                  </p>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Gift size={50} />
