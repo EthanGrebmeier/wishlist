@@ -53,11 +53,7 @@ const SharedUserItem = ({
         </div>
       </div>
       {userId !== sharedUser.id && isEditor && (
-        <form className="flex items-center" action={actionWithData}>
-          <Tooltip text="Remove Shared User">
-            <DeleteShareButton />
-          </Tooltip>
-        </form>
+        sharedUser.
       )}
     </div>
   );

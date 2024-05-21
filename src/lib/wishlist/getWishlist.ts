@@ -103,7 +103,10 @@ export const getSharedWishlists = async (config?: getWishlistsArgs) => {
 
   const sharedLists = await db.query.wishlistShares.findMany({
     where: and(
-      eq(wishlistShares.sharedWithUserId, session.user.id),
+      and(
+        eq(wishlistShares.sharedWithUserId, session.user.id),
+        not(eq(wishlistShares.type, "invitee")),
+      ),
       not(eq(wishlistShares.createdById, session.user.id)),
     ),
     with: {

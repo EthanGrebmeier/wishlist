@@ -46,7 +46,7 @@ export function InviteEmail({
           fontFamily="Orbiter"
           fallbackFontFamily="Times New Roman"
           webFont={{
-            url: "https://www.fillaneed.xyz/fonts/TASAOrbiterVF",
+            url: "https://www.fillaneed.xyz/fonts/TASAOrbiterVF.woff2",
             format: "woff2",
           }}
           fontWeight={400}
