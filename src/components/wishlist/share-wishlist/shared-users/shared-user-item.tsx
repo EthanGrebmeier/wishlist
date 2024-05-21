@@ -1,7 +1,6 @@
 "use client";
 
-import { Loader, User as UserIcon, XIcon } from "lucide-react";
-import Image from "next/image";
+import { Loader, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -53,7 +52,11 @@ const SharedUserItem = ({
         </div>
       </div>
       {userId !== sharedUser.id && isEditor && (
-        sharedUser.
+        <form className="flex items-center" action={actionWithData}>
+          <Tooltip text="Remove Shared User">
+            <DeleteShareButton />
+          </Tooltip>
+        </form>
       )}
     </div>
   );
