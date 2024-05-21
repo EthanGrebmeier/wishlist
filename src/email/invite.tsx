@@ -6,6 +6,7 @@ import {
   Head,
   Html,
   Img,
+  Link,
   Section,
   Tailwind,
   Text,
@@ -42,21 +43,11 @@ export function InviteEmail({
           fontWeight={400}
           fontStyle="normal"
         />
-        <Font
-          fontFamily="Orbiter"
-          fallbackFontFamily="Times New Roman"
-          webFont={{
-            url: "https://www.fillaneed.xyz/fonts/TASAOrbiterVF.woff2",
-            format: "woff2",
-          }}
-          fontWeight={400}
-          fontStyle="normal"
-        />
       </Head>
       <Tailwind>
-        <Body className="mx-auto max-w-[480px] rounded-md border-2 border-solid border-black p-4">
+        <Body className="mx-auto max-w-[480px] rounded-md border-2 border-solid border-black px-4 py-12 font-sans">
           <Container className="mx-auto my-0">
-            <Section className="mt-8">
+            <Section>
               <Img
                 src={`https://www.fillaneed.xyz/images/logo.png`}
                 width="120"
@@ -65,32 +56,28 @@ export function InviteEmail({
                 className="mx-auto my-0"
               />
             </Section>
-            <Text
-              style={{
-                fontFamily: "Junicode",
-              }}
-              className="text-3xl"
-            >
-              Hey there {toUser.name},
-            </Text>
-            <Text
-              style={{
-                fontFamily: "Orbiter",
-              }}
-              className="mt-8 text-xl"
-            >
-              <strong> {fromUser.name} </strong> has invited you to join{" "}
-              <strong> {wishlist.name} </strong> on Fillaneed!
-            </Text>
-            <Button
-              className="mt-8 overflow-hidden rounded-md border-2 border-solid border-black bg-green-200 px-4 py-2 font-medium text-black"
-              href={`https://www.fillaneed.xyz${url}`}
-              style={{
-                fontFamily: "Orbiter",
-              }}
-            >
-              Accept Invitation
-            </Button>
+            <Section className="mt-12">
+              <Text
+                style={{
+                  fontFamily: "Junicode",
+                }}
+                className=" text-2xl"
+              >
+                Hey there {toUser.name},
+              </Text>
+              <Text className="my-4 font-sans text-xl">
+                <strong> {fromUser.name} </strong> has invited you to join{" "}
+                <strong> {wishlist.name} </strong> on Fillaneed!
+              </Text>
+            </Section>
+            <Section className="mt-4">
+              <Link
+                className="overflow-hidden rounded-md border-2 border-solid border-black bg-green-200 px-4 py-2 font-sans font-semibold text-black"
+                href={`https://www.fillaneed.xyz${url}`}
+              >
+                Accept Invitation
+              </Link>
+            </Section>
           </Container>
         </Body>
       </Tailwind>
