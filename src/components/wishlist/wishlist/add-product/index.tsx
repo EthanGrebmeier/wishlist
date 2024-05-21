@@ -64,7 +64,7 @@ export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-h-[80svh] overflow-y-auto">
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium">Add Product </h1>
           </DialogHeader>
