@@ -1,5 +1,5 @@
 "use client";
-import { deleteProduct } from "~/app/(main)/wishlist/[wishlistId]/actions";
+import { deleteProduct } from "~/app/(main)/wishlist/[wishlistId]/actions.tsx";
 import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { useProductMenu } from "./menuProvider";
 import {

@@ -4,6 +4,7 @@ import LogoIcon from "./logo-icon";
 type LogoProps = {
   className?: string;
   textClassName?: string;
+  iconClassName?: string;
   size?: "base" | "large";
   ariaHidden?: boolean;
 };
@@ -11,6 +12,7 @@ type LogoProps = {
 const Logo = ({
   className,
   textClassName,
+  iconClassName,
   size,
   ariaHidden = false,
 }: LogoProps) => {
@@ -27,7 +29,7 @@ const Logo = ({
         fillaneed
       </p>
 
-      <LogoIcon size={size} />
+      <LogoIcon iconClassName={iconClassName} size={size} />
     </div>
   );
 };

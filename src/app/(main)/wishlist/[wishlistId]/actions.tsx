@@ -11,11 +11,16 @@ import { shareWishlistInputSchema } from "~/schema/wishlist/wishlist";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 import {
+  magicWishlistLinks,
   products,
   wishlistShares,
   wishlists,
 } from "~/server/db/schema/wishlist";
 import { deleteFile } from "~/server/uploadthing";
+import { Resend } from "resend";
+import { InviteEmail } from "~/email/invite";
+import { users } from "~/server/db/schema/users";
+import { env } from "~/env";
 
 export const deleteProduct = makeProtectedAction(
   z.object({ productId: z.string(), wishlistId: z.string() }),
@@ -97,16 +102,54 @@ export const shareWishlist = makeProtectedAction(
     const { wishlistId } = input;
 
     try {
-      const matchingWishlist = await db.query.wishlists.findFirst({
-        where: and(
-          eq(wishlists.id, wishlistId),
-          eq(wishlists.createdById, session.user.id),
+      const [userToShareWith, matchingWishlist] = await Promise.all([
+        db.query.users.findFirst({
+          where: eq(users.id, input.sharedWithUserId),
+        }),
+        db.query.wishlists.findFirst({
+          where: and(
+            eq(wishlists.id, wishlistId),
+            eq(wishlists.createdById, session.user.id),
+          ),
+        }),
+      ]);
+
+      if (!matchingWishlist || !userToShareWith) {
+        return {
+          message: "Access Denied",
+        };
+      }
+
+      const magicLink = await db.query.magicWishlistLinks.findFirst({
+        where: eq(magicWishlistLinks.wishlistId, matchingWishlist.id),
+      });
+
+      if (!magicLink) {
+        return {
+          message: "Unable to share wishlist",
+        };
+      }
+
+      const resend = new Resend(env.RESEND_API_KEY);
+
+      const email = await resend.emails.send({
+        from: "invite@fillaneed.xyz",
+        to: userToShareWith.email,
+        subject: "You've been invited to join a wishlist!",
+        react: (
+          <InviteEmail
+            toUser={userToShareWith}
+            fromUser={session.user}
+            url={`/wishlist/join/${magicLink.id}`}
+            wishlist={matchingWishlist}
+          />
         ),
       });
 
-      if (!matchingWishlist) {
+      if (email.error) {
+        console.log(email.error);
         return {
-          message: "Access Denied",
+          message: "Internal Server Error",
         };
       }
 
@@ -116,6 +159,7 @@ export const shareWishlist = makeProtectedAction(
         ...input,
         id: wishlistShareId,
         createdById: session.user.id,
+        type: "invitee",
       });
     } catch (e) {
       console.log("Error sharing wishlist", e);

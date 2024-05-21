@@ -1,14 +1,19 @@
 import "~/styles/globals.css";
+
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 
+import Sidebar from "~/components/navigation/sidebar";
 import { ourFileRouter } from "~/server/uploadthing";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const orbiter = localFont({
   src: [
     {
-      path: "../fonts/TASAOrbiterVF.woff2",
+      path: "../../public/fonts/TASAOrbiterVF.woff2",
     },
   ],
   variable: "--font-sans",
@@ -17,12 +22,12 @@ const orbiter = localFont({
 const junicode = localFont({
   src: [
     {
-      path: "../fonts/Junicode.ttf",
+      path: "../../public/fonts/Junicode.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../fonts/Junicode-Bold.ttf",
+      path: "../../public/fonts/Junicode-Bold.ttf",
       weight: "700",
       style: "normal",
     },
@@ -31,9 +36,9 @@ const junicode = localFont({
 });
 
 export const metadata = {
-  title: "Wishlist",
+  title: "Fillaneed",
   description: "Create your dream wishlist",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.png" }],
 };
 
 export default function RootLayout({
@@ -55,7 +60,7 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        {children}
+        <div className="h-screen w-full">{children}</div>
       </body>
     </html>
   );

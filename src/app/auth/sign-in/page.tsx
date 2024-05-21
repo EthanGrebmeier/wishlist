@@ -28,7 +28,7 @@ const SignIn = async () => {
         </Link>
       </div>
       <div className="w-fit">
-        <Logo size={"large"} />
+        <Logo iconClassName="right-0" size={"large"} className="pr-8" />
       </div>
       <div className="mt-4 flex flex-col items-center gap-4 rounded-md">
         <h1 className="font-serif text-4xl">Sign In</h1>

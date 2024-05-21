@@ -37,7 +37,7 @@ const MockCard = ({
           color,
         )}
       >
-        <p className="font-serif text-xl md:text-2xl"> {title} </p>{" "}
+        <p className="-mb-[2px] font-serif text-xl md:text-2xl"> {title} </p>{" "}
         {price && <p className="text-xl font-medium"> {price} </p>}
       </div>
     </motion.div>

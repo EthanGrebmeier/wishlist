@@ -5,7 +5,7 @@ import { useDebounceValue } from "usehooks-ts";
 
 import { findUserByEmail } from "~/server/actions/account";
 import { Button } from "~/components/ui/button";
-import { shareWishlist } from "~/app/(main)/wishlist/[wishlistId]/actions";
+import { shareWishlist } from "~/app/(main)/wishlist/[wishlistId]/actions.tsx";
 import { useAction } from "next-safe-action/hooks";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";

@@ -4,8 +4,15 @@ import React from "react";
 import ColoredIconWrapper from "../ui/colored-icon-wrapper";
 import { Scroll } from "lucide-react";
 import { motion } from "framer-motion";
+import { cn } from "~/lib/utils";
 
-const LogoIcon = ({ size = "base" }: { size?: "base" | "large" }) => {
+const LogoIcon = ({
+  size = "base",
+  iconClassName,
+}: {
+  size?: "base" | "large";
+  iconClassName?: string;
+}) => {
   return (
     <motion.div
       initial={{
@@ -19,7 +26,7 @@ const LogoIcon = ({ size = "base" }: { size?: "base" | "large" }) => {
       transition={{
         duration: 0.4,
       }}
-      className="absolute -right-8 -top-2"
+      className={cn("absolute -right-8 -top-2", iconClassName)}
     >
       <ColoredIconWrapper>
         <Scroll size={size === "base" ? 18 : 24} />

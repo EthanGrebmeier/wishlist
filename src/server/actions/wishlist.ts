@@ -287,7 +287,7 @@ export const joinWishlistViaMagicLink = makeSafeAction(
       // };
     }
 
-    // Ensure wishlist isn't already shared with user
+    // Check if wishlist is already shared with user
     const existingShare = await db.query.wishlistShares.findFirst({
       where: and(
         eq(wishlistShares.sharedWithUserId, session.user.id),
@@ -296,17 +296,27 @@ export const joinWishlistViaMagicLink = makeSafeAction(
     });
 
     if (existingShare) {
-      console.log("EXISTING");
-      redirect(`/wishlist/${wishlist.id}`);
-    }
+      // If we sent them an email invite, make them a viewer
+      if (existingShare.type === "invitee") {
+        await db
+          .update(wishlistShares)
+          .set({
+            type: "viewer",
+          })
+          .where(eq(wishlistShares.id, existingShare.id));
+      }
 
-    // Share wishlist with user
-    await db.insert(wishlistShares).values({
-      id: generateId(),
-      createdById: wishlist?.createdById,
-      sharedWithUserId: session.user.id,
-      wishlistId: magicLinkEntry.wishlistId,
-    });
+      // Redirect them to the wishlist
+      redirect(`/wishlist/${wishlist.id}`);
+    } else {
+      // Make the user a viewer
+      await db.insert(wishlistShares).values({
+        id: generateId(),
+        createdById: wishlist?.createdById,
+        sharedWithUserId: session.user.id,
+        wishlistId: magicLinkEntry.wishlistId,
+      });
+    }
 
     console.log("JUST CREATED");
     redirect(`/wishlist/${wishlist.id}`);

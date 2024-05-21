@@ -149,6 +149,11 @@ export const wishlistShares = createTable(
     wishlistId: varchar("wishlistId", { length: 255 }).notNull(),
     createdById: varchar("createdById", { length: 255 }).notNull(),
     sharedWithUserId: varchar("sharedWithUserId", { length: 255 }).notNull(),
+    type: varchar("type", {
+      enum: ["editor", "viewer", "invitee"],
+    })
+      .default("viewer")
+      .notNull(),
   },
   (example) => ({
     sharedWithUserId: index("wishlist_shares_sharedWithUserId").on(

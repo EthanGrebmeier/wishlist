@@ -1,11 +1,5 @@
 import Sidebar from "~/components/navigation/sidebar";
 
-export const metadata = {
-  title: "Wishlist",
-  description: "Create your dream wishlist",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-};
-
 export default function RootLayout({
   children,
 }: {
