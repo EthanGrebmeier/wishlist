@@ -5,11 +5,11 @@ import { useDebounceValue } from "usehooks-ts";
 
 import { findUserByEmail } from "~/server/actions/account";
 import { Button } from "~/components/ui/button";
-import { shareWishlist } from "~/app/(main)/wishlist/[wishlistId]/actions.tsx";
 import { useAction } from "next-safe-action/hooks";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
+import { shareWishlistEmail } from "~/server/actions/wishlist";
 
 type UserAutocompleteProps = {
   email: string;
@@ -26,7 +26,7 @@ const UserAutocomplete = ({
 }: UserAutocompleteProps) => {
   const [shouldRender, setShouldRender] = useState(false);
   const { result: shareWishlistResult, execute: executeShareWishlist } =
-    useAction(shareWishlist);
+    useAction(shareWishlistEmail);
   const [debouncedInput] = useDebounceValue(email, 500);
   const {
     status: findUserByEmailStatus,

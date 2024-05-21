@@ -46,7 +46,7 @@ export function InviteEmail({
           fontFamily="Orbiter"
           fallbackFontFamily="Times New Roman"
           webFont={{
-            url: "https://www.fillaneed.xyz/fonts/TASAOrbiterVF.woff2",
+            url: "https://www.fillaneed.xyz/fonts/TASAOrbiterVF",
             format: "woff2",
           }}
           fontWeight={400}
@@ -54,14 +54,14 @@ export function InviteEmail({
         />
       </Head>
       <Tailwind>
-        <Body className="mx-auto rounded-md border-2 border-solid border-black p-4">
-          <Container className="mx-auto my-0 max-w-[480px]">
+        <Body className="mx-auto max-w-[480px] rounded-md border-2 border-solid border-black p-4">
+          <Container className="mx-auto my-0">
             <Section className="mt-8">
               <Img
-                src={`https://www.fillaneed.xyz/logo.png`}
+                src={`https://www.fillaneed.xyz/images/logo.png`}
                 width="120"
                 height="33"
-                alt="Vercel"
+                alt="Fillaneed"
                 className="mx-auto my-0"
               />
             </Section>
@@ -77,13 +77,13 @@ export function InviteEmail({
               style={{
                 fontFamily: "Orbiter",
               }}
-              className="mt-8"
+              className="mt-8 text-xl"
             >
               <strong> {fromUser.name} </strong> has invited you to join{" "}
               <strong> {wishlist.name} </strong> on Fillaneed!
             </Text>
             <Button
-              className="mt-8 h-10 overflow-hidden rounded-md border-2 border-solid border-black bg-green-200 px-4 py-2 font-medium text-black"
+              className="mt-8 overflow-hidden rounded-md border-2 border-solid border-black bg-green-200 px-4 py-2 font-medium text-black"
               href={`https://www.fillaneed.xyz${url}`}
               style={{
                 fontFamily: "Orbiter",

@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import UserAutocomplete from "./user-autocomplete";
-import { HelpCircle } from "lucide-react";
-import { Tooltip } from "~/components/ui/tooltip";
 
 type ShareWishlistFormProps = {
   onSuccess?: () => void;

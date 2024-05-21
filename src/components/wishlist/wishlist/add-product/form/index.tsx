@@ -5,7 +5,7 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { addProduct } from "~/app/(main)/wishlist/[wishlistId]/actions.tsx";
+import { addProduct } from "~/app/(main)/wishlist/[wishlistId]/actions";
 import { Button } from "~/components/ui/button";
 import {
   FormField,
