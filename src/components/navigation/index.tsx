@@ -57,7 +57,7 @@ const Navigation = async () => {
       <div className="flex items-center justify-between">
         <SignOutButton />
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className="rounded-md p-1 transition-colors hover:bg-secondary">
             <ShieldQuestion size={20} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
