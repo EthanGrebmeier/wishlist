@@ -4,7 +4,7 @@ import React from "react";
 
 const PrivacyPolicyPage = () => {
   return (
-    <div className="prose mx-auto mt-24 max-w-[640px]">
+    <div className="prose mx-auto mt-24 max-w-[640px] px-4">
       <div className="fixed right-4 top-4">
         <Link href="/">
           <X size={40} />
