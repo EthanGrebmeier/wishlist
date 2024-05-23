@@ -4,8 +4,7 @@ import { cn, getBackgroundColor } from "~/lib/utils";
 import ShareWishlist from "../../share-wishlist";
 import { AddProduct } from "../add-product";
 import WishlistSettings from "../settings";
-import type { Wishlist } from "~/types/wishlist";
-import type { User } from "~/types/user";
+import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 import type { Session } from "next-auth";
 import { SharedUserThumbnailView } from "../../share-wishlist/shared-users/shared-user-thumbnail";
 import DueDate from "../../due-date";
@@ -14,14 +13,16 @@ import MagicLink from "../../share-wishlist/magic-link/index";
 type WishlistHeaderProps = {
   wishlist: Wishlist;
   isEditor: boolean;
-  sharedUsers: User[];
+  isOwner: boolean;
+  wishlistShares: WishlistSharesWithUser[];
   session: Session;
 };
 
 const WishlistHeader = ({
   wishlist,
   isEditor,
-  sharedUsers,
+  isOwner,
+  wishlistShares,
   session,
 }: WishlistHeaderProps) => {
   return (
@@ -45,38 +46,41 @@ const WishlistHeader = ({
           <TitleBar.Title>{wishlist.name}</TitleBar.Title>
         </div>
         <div className="flex items-center gap-2">
-          <SharedUserThumbnailView sharedUsers={sharedUsers} />
-          {isEditor && (
-            <div>
-              <ShareWishlist
-                sharedUsers={sharedUsers}
-                magicLink={
-                  <Suspense
-                    fallback={
-                      <div className="h-[206px] w-[324px] pb-6">
-                        <div className="flex flex-col">
-                          <h3 className="font-sans text-lg font-medium">
-                            Magic Link
-                          </h3>
-                          <p className="mb-2 text-balance font-sans text-sm tracking-tight">
-                            Share this link with anyone to grant access to this
-                            wishlist
-                          </p>
-                          <div className="skeleton h-12 w-full"></div>
-                          <div className="skeleton h-12 w-24"></div>
-                        </div>
+          <SharedUserThumbnailView
+            wishlistShares={wishlistShares.filter(
+              (share) => share.type !== "invitee",
+            )}
+          />
+          <div>
+            <ShareWishlist
+              wishlistShares={wishlistShares}
+              magicLink={
+                <Suspense
+                  fallback={
+                    <div className="h-[206px] w-[324px] pb-6">
+                      <div className="flex flex-col">
+                        <h3 className="font-sans text-lg font-medium">
+                          Magic Link
+                        </h3>
+                        <p className="mb-2 text-balance font-sans text-sm tracking-tight">
+                          Share this link with anyone to grant access to this
+                          wishlist
+                        </p>
+                        <div className="skeleton h-12 w-full"></div>
+                        <div className="skeleton h-12 w-24"></div>
                       </div>
-                    }
-                  >
-                    <MagicLink wishlistId={wishlist.id} />
-                  </Suspense>
-                }
-                wishlistId={wishlist.id}
-                isEditor={isEditor}
-                userId={session.user.id}
-              />
-            </div>
-          )}
+                    </div>
+                  }
+                >
+                  <MagicLink wishlistId={wishlist.id} />
+                </Suspense>
+              }
+              wishlist={wishlist}
+              isEditor={isEditor}
+              isOwner={isOwner}
+              userId={session.user.id}
+            />
+          </div>
         </div>
       </div>
       {(isEditor || wishlist.dueDate) && (
@@ -93,7 +97,7 @@ const WishlistHeader = ({
                 <AddProduct wishlistId={wishlist.id} />{" "}
               </div>
 
-              <WishlistSettings wishlist={wishlist} />
+              <WishlistSettings isOwner={isOwner} wishlist={wishlist} />
             </div>
           )}
         </div>

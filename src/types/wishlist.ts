@@ -9,21 +9,26 @@ import type {
 import type { User } from "./user";
 
 export type Wishlist = typeof wishlists.$inferSelect;
-export type WishlistWithProducts = Wishlist & {
+
+export interface WishlistWithProducts extends Wishlist {
   products: WishlistProduct[];
-};
+}
 
 export type WishlistProduct = typeof products.$inferSelect;
 
-export type WishlistProductWithCommitmentsWithUser = WishlistProduct & {
+export interface WishlistProductWithCommitmentsWithUser
+  extends WishlistProduct {
   commitments: WishlistProductCommitmentsWithUser[];
-};
+}
 
 export type WishlistProductCommitments = typeof productCommitments.$inferSelect;
-export type WishlistProductCommitmentsWithUser = WishlistProductCommitments & {
+export interface WishlistProductCommitmentsWithUser
+  extends WishlistProductCommitments {
   user: User;
-};
+}
 
 export type WishlistShares = typeof wishlistShares.$inferSelect;
-export type WishlistSharesWithUser = WishlistShares & User;
+export interface WishlistSharesWithUser extends WishlistShares {
+  users: User;
+}
 export type WishlistPrivacy = z.infer<typeof privacyTypeSchema>;

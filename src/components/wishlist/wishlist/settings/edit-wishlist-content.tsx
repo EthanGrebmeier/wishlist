@@ -12,11 +12,13 @@ import { useRouter } from "next/navigation";
 type WishlistSettingsContentProps = {
   wishlist: Wishlist;
   onSuccess?: () => void;
+  isOwner: boolean;
 };
 
 const WishlistSettingsContent = ({
   wishlist,
   onSuccess,
+  isOwner,
 }: WishlistSettingsContentProps) => {
   const router = useRouter();
 
@@ -36,6 +38,7 @@ const WishlistSettingsContent = ({
           wishlistName: wishlist.name,
           isSecret: wishlist.isSecret,
         }}
+        isOwner={isOwner}
         onSuccess={() => {
           router.refresh();
           onSuccess && onSuccess();

@@ -1,9 +1,12 @@
 "use server";
 
 import { z } from "zod";
-import { makeProtectedAction } from "~/lib/actions/protectedAction";
+import {
+  checkUserIsWishlistEditor,
+  makeProtectedAction,
+} from "~/lib/actions/protectedAction";
 
-import { productSchema } from "~/schema/wishlist/product";
+import { productInputSchema, productSchema } from "~/schema/wishlist/product";
 import { db } from "../db";
 import {
   productCommitments,
@@ -16,6 +19,7 @@ import { and, eq, or } from "drizzle-orm";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { revalidatePath } from "next/cache";
 import { generateId } from "~/lib/utils";
+import { deleteFile } from "../uploadthing";
 
 export const updateProduct = makeProtectedAction(
   productSchema,
@@ -23,9 +27,14 @@ export const updateProduct = makeProtectedAction(
     // confirm user can perform this action
     const dbProduct = await getProduct({ productId: product.id });
 
-    if (dbProduct?.createdById !== session.user.id) {
-      throw new Error("Access denied");
+    if (!dbProduct) {
+      throw new Error("Product not found");
     }
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
+      wishlistId: dbProduct.wishlistId,
+      session,
+    });
 
     await db
       .update(products)
@@ -158,9 +167,14 @@ export const markProductReceived = makeProtectedAction(
     // confirm user can perform this action
     const dbProduct = await getProduct({ productId });
 
-    if (dbProduct?.createdById !== session.user.id) {
-      throw new Error("Access denied");
+    if (!dbProduct) {
+      throw new Error("Product not found");
     }
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
+      wishlistId: dbProduct.wishlistId,
+      session,
+    });
 
     // Make sure there aren't any receipts yet
     const matchingProductReceipt = await db.query.productReceipts.findFirst({
@@ -192,12 +206,98 @@ export const getProductReceipts = makeProtectedAction(
     // confirm user can perform this action
     const dbProduct = await getProduct({ productId });
 
-    if (dbProduct?.createdById !== session.user.id) {
-      throw new Error("Access denied");
+    if (!dbProduct) {
+      throw new Error("Product not found");
     }
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
+      wishlistId: dbProduct.wishlistId,
+      session,
+    });
 
     return db.query.productReceipts.findFirst({
       where: eq(productReceipts.productId, productId),
     });
+  },
+);
+export const deleteProduct = makeProtectedAction(
+  z.object({ productId: z.string(), wishlistId: z.string() }),
+  async ({ productId, wishlistId }, { session }) => {
+    try {
+      const dbProduct = await getProduct({
+        productId,
+      });
+
+      if (!dbProduct) {
+        throw new Error("Product not found");
+      }
+      // ensure user is an editor of the wishlist
+      await checkUserIsWishlistEditor({
+        wishlistId: dbProduct.wishlistId,
+        session,
+      });
+
+      // 1. Delete Product Image
+      await deleteFile(dbProduct.imageUrl);
+
+      // 2. Delete Product
+      await db.delete(products).where(eq(products.id, productId));
+
+      await db
+        .update(wishlists)
+        .set({
+          updatedAt: new Date(),
+        })
+        .where(eq(wishlists.id, dbProduct.wishlistId));
+
+      revalidatePath(`/wishlist/${wishlistId}`);
+
+      return {
+        message: "success",
+      };
+    } catch (e) {
+      console.error("Error deleting product", e);
+      return {
+        message: "Unable to delete product",
+      };
+    }
+  },
+);
+
+export const addProduct = makeProtectedAction(
+  productInputSchema.extend({ wishlistId: z.string() }),
+  async (product, { session }) => {
+    const productValues = {
+      ...product,
+      id: generateId(),
+      createdById: session.user.id,
+    };
+
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
+      wishlistId: product.wishlistId,
+      session,
+    });
+
+    try {
+      await db.insert(products).values(productValues);
+      await db
+        .update(wishlists)
+        .set({
+          updatedAt: new Date(),
+        })
+        .where(eq(wishlists.id, product.wishlistId));
+    } catch (e) {
+      console.error("Error inserting product", e);
+      return {
+        message: "Error inserting product",
+      } as const;
+    }
+
+    revalidatePath(`/wishlist/${product.wishlistId}`);
+
+    return {
+      message: "success",
+    };
   },
 );

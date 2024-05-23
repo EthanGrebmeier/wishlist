@@ -2,6 +2,7 @@ import React, { type ReactNode } from "react";
 import { Tooltip } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
 import type { User } from "~/types/user";
+import { WishlistSharesWithUser } from "~/types/wishlist";
 
 export const SharedUserThumbnail = ({
   children,
@@ -23,16 +24,16 @@ export const SharedUserThumbnail = ({
 };
 
 export const SharedUserThumbnailView = ({
-  sharedUsers,
+  wishlistShares,
 }: {
-  sharedUsers: User[];
+  wishlistShares: WishlistSharesWithUser[];
 }) => {
   // const const isDesktop = useMediaQuery("(min-width: 768px)");
-  const numThumbnails = sharedUsers.length > 4 ? 3 : 4;
+  const numThumbnails = wishlistShares.length > 4 ? 3 : 4;
 
   return (
-    <div className="flex">
-      {sharedUsers.slice(0, numThumbnails).map((user) => (
+    <div className="hidden xs:flex">
+      {wishlistShares.slice(0, numThumbnails).map(({ users: user }) => (
         <Tooltip text={user.name ?? user.email} key={user.id}>
           <SharedUserThumbnail className="[&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
             {user.image ? (
@@ -43,10 +44,10 @@ export const SharedUserThumbnailView = ({
           </SharedUserThumbnail>
         </Tooltip>
       ))}
-      {sharedUsers.length > numThumbnails && (
+      {wishlistShares.length > numThumbnails && (
         <SharedUserThumbnail className="[&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
           <div className="flex h-full w-full items-center justify-center bg-green-300">
-            <p className=""> +{sharedUsers.length - numThumbnails} </p>
+            <p className=""> +{wishlistShares.length - numThumbnails} </p>
           </div>
         </SharedUserThumbnail>
       )}

@@ -26,7 +26,7 @@ const CopyButton = ({ textToCopy }: { textToCopy: string }) => {
         setWasJustPressed(true);
         await navigator.clipboard.writeText(textToCopy);
       }}
-      className="w-[180px]"
+      className="w-[140px]"
     >
       {wasJustPressed ? "Copied" : "Copy"}
     </Button>

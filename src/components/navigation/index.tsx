@@ -1,10 +1,18 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
-import NavAccount from "./account";
-import { BookUser, Gift, Plus, Scroll } from "lucide-react";
+import SignOutButton from "./sign-out";
+import { BookUser, Gift, Plus, Scroll, ShieldQuestion } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import SharedWishlists from "./wishlist-list/shared-wishlists";
 import CreateWishlist from "../wishlist/create-wishlist";
+import { signOut } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import Link from "next/link";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
@@ -46,8 +54,24 @@ const Navigation = async () => {
           </>
         )}
       </div>
-      <div className="flex">
-        <NavAccount isSignedIn={isSignedIn} />
+      <div className="flex items-center justify-between">
+        <SignOutButton />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ShieldQuestion size={20} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Link href="/privacy">Privacy Policy</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/terms">Terms and Conditions</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/guidelines">Community Guidelines</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

@@ -16,13 +16,13 @@ import {
 } from "~/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { CreateWishlistForm } from "../../create-wishlist";
-import DeleteWishlist from "./delete-wishlist";
 
 type EditWishlistProps = {
   wishlist: Wishlist;
+  isOwner: boolean;
 };
 
-const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
+const WishlistSettings = ({ wishlist, isOwner }: EditWishlistProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
@@ -39,6 +39,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
         </DialogTrigger>
         <WishlistSettingsContent
           onSuccess={() => setIsOpen(false)}
+          isOwner={isOwner}
           wishlist={wishlist}
         />
       </Dialog>
@@ -59,7 +60,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
             Wishlist Settings
           </DrawerTitle>
         </DrawerHeader>
-        <div className="flex max-h-[80svh] flex-col gap-4 overflow-y-scroll px-4 pb-4">
+        <div className="flex max-h-[80svh] flex-col gap-4 overflow-y-auto px-4 pb-4">
           <CreateWishlistForm
             values={{
               wishlistId: wishlist.id,
@@ -69,6 +70,7 @@ const WishlistSettings = ({ wishlist }: EditWishlistProps) => {
               wishlistName: wishlist.name,
               isSecret: wishlist.isSecret,
             }}
+            isOwner={isOwner}
             onSuccess={() => {
               router.refresh();
               setIsOpen(false);

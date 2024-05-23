@@ -7,13 +7,14 @@ import { Button } from "~/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
+import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 type ViewWishlistProps = {
   wishlistId: string;
 };
 
 const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
-  const [wishlist, sharedUsers, session] = await Promise.all([
+  const [wishlist, wishlistShares, session] = await Promise.all([
     getWishlist({ wishlistId }),
     getSharedUsers({ wishlistId }),
     getServerAuthSession(),
@@ -21,12 +22,20 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
 
   if (
     !session ||
-    !sharedUsers.find((sharedUser) => sharedUser.id === session.user.id)
+    !wishlistShares.find(
+      ({ users: sharedUser }) => sharedUser.id === session.user.id,
+    )
   ) {
     redirect("/");
   }
 
-  const isEditor = session?.user.id === wishlist.createdById;
+  const isEditor = verifyUserIsWishlistEditor({
+    wishlist,
+    wishlistShares,
+    session,
+  });
+
+  const isOwner = wishlist.createdById === session.user.id;
 
   return (
     <>
@@ -34,7 +43,8 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
         <WishlistHeader
           wishlist={wishlist}
           isEditor={isEditor}
-          sharedUsers={sharedUsers}
+          isOwner={isOwner}
+          wishlistShares={wishlistShares}
           session={session}
         />
         <section className="px-2 py-4 md:px-6">

@@ -7,16 +7,16 @@ import { cn } from "~/lib/utils";
 import { colors } from "~/consts/colors";
 import { motion } from "framer-motion";
 import DueDate from "../../due-date";
+import { Scroll } from "lucide-react";
 
-type ListItemProps = {
+export type ListItemProps = {
   wishlist: WishlistWithProducts;
-  user: User;
+  isEditor: boolean;
 };
 
-const ListItem = ({ wishlist, user }: ListItemProps) => {
+const ListItem = ({ wishlist, isEditor }: ListItemProps) => {
   const { name, id, color } = wishlist;
 
-  const isEditor = wishlist.createdById === user.id;
   const backgroundClass =
     colors.find((colorTheme) => colorTheme.name === color)?.background ??
     "bg-white";
@@ -42,11 +42,15 @@ const ListItem = ({ wishlist, user }: ListItemProps) => {
             "group w-full overflow-hidden rounded-md border-2 border-black",
           )}
         >
-          <div className="relative aspect-square w-full overflow-hidden object-cover">
-            <img
-              src={wishlist.imageUrl ?? "https://placehold.co/600x600"}
-              className="h-full w-full"
-            />
+          <div className="relative aspect-square w-full overflow-hidden object-cover object-center">
+            {wishlist.imageUrl ? (
+              <img src={wishlist.imageUrl} className="w-full" />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-green-100">
+                {" "}
+                <Scroll size={50} />{" "}
+              </div>
+            )}
           </div>
           <div
             className={cn(

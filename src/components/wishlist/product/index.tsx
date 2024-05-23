@@ -13,6 +13,7 @@ import { Button } from "~/components/ui/button";
 import ConfirmReceipt from "./confirm/index";
 import { Suspense } from "react";
 import ConfirmedReceipt from "./confirm/confirmed-receipt";
+import Priority from "../wishlist/product-list/product/priority";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -96,7 +97,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
           <div className="rounded-md border-2 border-black ">
             <div className="relative flex w-full flex-col gap-2 p-4 pb-4">
               <div className="flex max-w-[80%] flex-col gap-2">
-                <h1 className="overflow-hidden text-wrap break-words text-3xl font-medium md:text-4xl">
+                <h1 className="translate-y-[2px] overflow-hidden text-wrap break-words font-serif text-3xl font-medium md:text-4xl">
                   {product.name}
                 </h1>
                 {product.brand && (
@@ -108,6 +109,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 {product.price && (
                   <p className="text-3xl"> ${product.price} </p>
                 )}
+                <Priority className="mt-3" priorityLevel={product.priority} />
               </div>
               {product.quantity && (
                 <p className="absolute right-4 top-4 text-3xl">
@@ -130,7 +132,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
           <div className="flex flex-col gap-2  md:flex-row lg:flex-col">
             {!(isSecret && isOwner) && !productReceipts.data && (
               <div className="flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   {/** Only hide commitments for the owner of the wishlist */}
                   <Commit
                     hasUserCommitted={hasUserCommitted}

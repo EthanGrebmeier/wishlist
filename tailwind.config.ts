@@ -88,6 +88,7 @@ const config = withUt({
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/container-queries"),
+    require("@tailwindcss/typography"),
     require("tailwind-gradient-mask-image"),
   ],
 }) satisfies Config;

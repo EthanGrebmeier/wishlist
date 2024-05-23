@@ -82,7 +82,7 @@ const Delete = () => {
         <DrawerDescription className="px-4">
           This action cannot be undone
         </DrawerDescription>
-        <div className="max-h-[80svh] overflow-y-scroll p-4">
+        <div className="max-h-[80svh] overflow-y-auto p-4">
           <form action={() => execute({ wishlistId: wishlist.id })}>
             <SubmitButton variant="destructive">Delete</SubmitButton>
           </form>

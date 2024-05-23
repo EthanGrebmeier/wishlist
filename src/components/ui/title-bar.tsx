@@ -34,12 +34,7 @@ const Title = ({
   className?: string;
 }) => {
   return (
-    <h1
-      className={cn(
-        "-mb-1 font-serif text-xl font-medium md:text-2xl",
-        className,
-      )}
-    >
+    <h1 className={cn("font-serif text-2xl font-medium", className)}>
       {" "}
       {children}{" "}
     </h1>

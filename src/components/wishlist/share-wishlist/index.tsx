@@ -19,23 +19,25 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
-import type { User } from "~/types/user";
 import type { ReactNode } from "react";
+import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 
 type ShareWishlistProps = {
-  wishlistId: string;
+  wishlist: Wishlist;
   magicLink: ReactNode;
   userId: string;
-  sharedUsers: User[];
+  wishlistShares: WishlistSharesWithUser[];
   isEditor: boolean;
+  isOwner: boolean;
 };
 
 const ShareWishlist = ({
-  wishlistId,
+  wishlist,
   magicLink,
   userId,
-  sharedUsers,
+  wishlistShares,
   isEditor,
+  isOwner,
 }: ShareWishlistProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -56,14 +58,14 @@ const ShareWishlist = ({
           <div className="flex min-w-0 flex-col gap-2">
             <div className="flex min-w-0 flex-col gap-4 overflow-hidden pt-2">
               <SharedUsers
-                sharedUsers={sharedUsers}
+                wishlistShares={wishlistShares}
                 userId={userId}
-                wishlistId={wishlistId}
-                isEditor={isEditor}
+                wishlist={wishlist}
+                isOwner={isOwner}
               />
               {isEditor && magicLink}
             </div>
-            {isEditor && <ShareWishlistForm wishlistId={wishlistId} />}
+            {isEditor && <ShareWishlistForm wishlistId={wishlist.id} />}
           </div>
         </DialogContent>
       </Dialog>
@@ -81,17 +83,17 @@ const ShareWishlist = ({
             Share
           </DrawerTitle>
         </DrawerHeader>
-        <div className="max-h-[80svh] overflow-y-scroll p-4 pb-28">
+        <div className="max-h-[80svh] overflow-y-auto p-4 pb-28">
           {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
           <div className="space-y-4">
             <SharedUsers
-              sharedUsers={sharedUsers}
+              wishlistShares={wishlistShares}
               userId={userId}
-              wishlistId={wishlistId}
-              isEditor={isEditor}
+              wishlist={wishlist}
+              isOwner={isOwner}
             />
             {magicLink}
-            <ShareWishlistForm wishlistId={wishlistId} />
+            <ShareWishlistForm wishlistId={wishlist.id} />
           </div>
         </div>
       </DrawerContent>

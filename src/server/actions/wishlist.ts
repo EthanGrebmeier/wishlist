@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import {
+  checkUserIsWishlistEditor,
   makeProtectedAction,
   makeSafeAction,
 } from "~/lib/actions/protectedAction";
@@ -37,6 +38,7 @@ export const deleteWishlist = makeProtectedAction(
         wishlistId,
       });
 
+      // Only allow this action if the user is the Owner of the wishlist
       if (wishlist.createdById !== session.user.id) {
         return {
           message: "Access Denied",
@@ -117,7 +119,7 @@ export const createWishlist = makeProtectedAction(
         createdById: session.user.id,
         wishlistId: wishlistValues.id,
         sharedWithUserId: session.user.id,
-
+        type: "editor",
         id: generateId(),
       });
     } catch (e) {
@@ -144,17 +146,11 @@ export const updateWishlist = makeProtectedAction(
     { wishlistName, date, color, isSecret, id, imageUrl },
     { session },
   ) => {
-    // ensure user is the owner of the wishlist
-
-    const wishlist = await getWishlist({
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
       wishlistId: id,
+      session,
     });
-
-    if (wishlist.createdById !== session.user.id) {
-      return {
-        message: "Access Denied",
-      };
-    }
 
     const wishlistValues = {
       name: wishlistName,
@@ -333,17 +329,11 @@ export const generateMagicLink = makeProtectedAction(
     wishlistId: z.string(),
   }),
   async ({ wishlistId }, { session }) => {
-    // ensure user is the owner of the wishlist
-
-    const wishlist = await getWishlist({
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
       wishlistId,
+      session,
     });
-
-    if (wishlist.createdById !== session.user.id) {
-      return {
-        message: "Access Denied",
-      };
-    }
 
     // Delete the row for the existing magic wishlist link
     await db
@@ -372,17 +362,11 @@ export const getMagicLink = makeProtectedAction(
     wishlistId: z.string(),
   }),
   async ({ wishlistId }, { session }) => {
-    // ensure user is the owner of the wishlist
-
-    const wishlist = await getWishlist({
-      wishlistId,
+    // ensure user is an editor of the wishlist
+    await checkUserIsWishlistEditor({
+      wishlistId: wishlistId,
+      session,
     });
-
-    if (wishlist.createdById !== session.user.id) {
-      return {
-        message: "Access Denied",
-      };
-    }
 
     const magicLink = await db.query.magicWishlistLinks.findFirst({
       where: eq(magicWishlistLinks.wishlistId, wishlistId),
@@ -415,23 +399,19 @@ export const shareWishlistEmail = makeProtectedAction(
   async (input, { session }) => {
     const { wishlistId } = input;
 
-    try {
-      const [userToShareWith, matchingWishlist] = await Promise.all([
-        db.query.users.findFirst({
-          where: eq(users.id, input.sharedWithUserId),
-        }),
-        db.query.wishlists.findFirst({
-          where: and(
-            eq(wishlists.id, wishlistId),
-            eq(wishlists.createdById, session.user.id),
-          ),
-        }),
-      ]);
+    // ensure user is an editor of the wishlist
+    const matchingWishlist = await checkUserIsWishlistEditor({
+      wishlistId: wishlistId,
+      session,
+    });
 
-      if (!matchingWishlist || !userToShareWith) {
-        return {
-          message: "Access Denied",
-        };
+    try {
+      const userToShareWith = await db.query.users.findFirst({
+        where: eq(users.id, input.sharedWithUserId),
+      });
+
+      if (!userToShareWith) {
+        throw new Error("Could not find user");
       }
 
       const magicLink = await db.query.magicWishlistLinks.findFirst({
@@ -475,6 +455,67 @@ export const shareWishlistEmail = makeProtectedAction(
       });
     } catch (e) {
       console.log("Error sharing wishlist", e);
+      return {
+        message: "Internal Server Error",
+      };
+    }
+
+    return {
+      message: "success",
+    };
+  },
+);
+
+export const setSharedUserType = makeProtectedAction(
+  z.object({
+    wishlistId: z.string(),
+    sharedUserId: z.string(),
+    shareType: z.union([z.literal("viewer"), z.literal("editor")]),
+  }),
+  async ({ shareType, sharedUserId, wishlistId }, { session }) => {
+    const wishlist = await checkUserIsWishlistEditor({
+      session,
+      wishlistId,
+    });
+
+    // We actually only want to allow the wishlist owner to adjust permissions.
+    // Throw error if the user is not the owner
+    if (wishlist.createdById !== session.user.id) {
+      throw new Error("Access Denied");
+    }
+
+    const updatedShare = await db
+      .update(wishlistShares)
+      .set({
+        type: shareType,
+      })
+      .where(
+        and(
+          eq(wishlistShares.wishlistId, wishlist.id),
+          eq(wishlistShares.sharedWithUserId, sharedUserId),
+        ),
+      );
+
+    console.log(updatedShare);
+  },
+);
+
+export const unshareWishlist = makeProtectedAction(
+  shareWishlistInputSchema,
+  async ({ sharedWithUserId, wishlistId }, { session }) => {
+    try {
+      await checkUserIsWishlistEditor({ wishlistId, session });
+      await db
+        .delete(wishlistShares)
+        .where(
+          and(
+            eq(wishlistShares.createdById, session.user.id),
+            eq(wishlistShares.sharedWithUserId, sharedWithUserId),
+            eq(wishlistShares.wishlistId, wishlistId),
+          ),
+        );
+    } catch (e) {
+      console.log("Error unsharing wishlist ", e);
       return {
         message: "Internal Server Error",
       };

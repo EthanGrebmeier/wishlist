@@ -32,9 +32,9 @@ const MagicLink = async ({ wishlistId }: MagicLinkProps) => {
         <div className="flex min-w-0 flex-col gap-2">
           <div className="flex flex-initial flex-row items-center">
             <div className="w-full min-w-0">
-              <div className="flex items-center gap-2">
-                <div className="flex w-full min-w-0 flex-shrink items-center rounded-md border-2 border-black px-2">
-                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+              <div className="flex flex-col gap-2">
+                <div className="flex w-full min-w-0 flex-shrink items-center rounded-md border-2 border-black pl-2">
+                  <span className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm">
                     {magicLinkUrl}
                   </span>
                   <ResetLink wishlistId={wishlistId} />

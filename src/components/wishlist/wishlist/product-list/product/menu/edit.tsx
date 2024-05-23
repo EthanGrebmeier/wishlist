@@ -95,7 +95,7 @@ export const EditProduct = ({
             Edit Product
           </DrawerTitle>
         </DrawerHeader>
-        <div className="max-h-[80svh] overflow-y-scroll p-4">
+        <div className="max-h-[80svh] overflow-y-auto p-4">
           <AddProductForm
             method="update"
             wishlistId={editedWishlistId}

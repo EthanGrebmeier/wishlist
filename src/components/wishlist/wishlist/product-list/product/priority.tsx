@@ -6,6 +6,7 @@ import type { productPrioritySchema } from "~/schema/wishlist/product";
 
 type PriorityProps = {
   priorityLevel: z.infer<typeof productPrioritySchema>;
+  className?: string;
 };
 
 const priorityIcons = {
@@ -13,7 +14,7 @@ const priorityIcons = {
   low: <ChevronsDown size={15} />,
 };
 
-const Priority = ({ priorityLevel }: PriorityProps) => {
+const Priority = ({ priorityLevel, className }: PriorityProps) => {
   if (priorityLevel === "normal") {
     return null;
   }
@@ -21,8 +22,9 @@ const Priority = ({ priorityLevel }: PriorityProps) => {
   return (
     <div
       className={cn(
-        "absolute left-2 top-2 flex w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black px-1 py-[2px] text-sm capitalize ",
+        "flex w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black px-1 py-[2px] text-sm capitalize ",
         priorityLevel === "high" ? "bg-yellow-400" : "bg-red-300",
+        className,
       )}
     >
       {priorityIcons[priorityLevel]}

@@ -39,23 +39,18 @@ const Commit = ({
   if (productCommitments?.length) {
     if (hasUserCommitted) {
       return (
-        <div className="flex flex-col gap-2">
-          <div className="flex   flex-col justify-center  text-balance font-medium text-black">
-            <p className="max-w-[340px] text-balance border-b-2 border-black pb-2 font-serif text-2xl">
+        <div className="flex flex-col">
+          <h2 className="font-serif text-2xl font-medium">
+            Product Commitment
+          </h2>
+          <div className="flex flex-col justify-center  text-balance text-black">
+            <p className="mb-2 max-w-[340px] text-balance font-sans font-normal">
               {" "}
-              <span className="italic"> You </span> are getting this item!{" "}
+              <span className="font-serif text-lg"> You </span> are getting this
+              item!{" "}
             </p>
             <form action={() => executeUncommit({ productId: product.id })}>
-              <p className="mb-2 text-balance pt-2 font-serif text-lg">
-                {" "}
-                No longer able to commit?{" "}
-              </p>
-              <SubmitButton
-                icon={<Trash2 size={20} />}
-                className="w-fit"
-                size="lg"
-                variant="destructive"
-              >
+              <SubmitButton className="w-fit" size="lg" variant="destructive">
                 Cancel Commitment
               </SubmitButton>
             </form>
@@ -65,25 +60,36 @@ const Commit = ({
     }
 
     return (
-      <ul className="flex items-center text-balance font-serif text-2xl  font-medium text-black">
-        {productCommitments.map((commitment) => (
-          <li
-            key={commitment.id}
-            className="flex items-center gap-4 overflow-hidden"
-          >
-            {commitment.user.image && (
-              <SharedUserThumbnail>
-                <img src={commitment.user.image} />
-              </SharedUserThumbnail>
-            )}
-            <p className="flex-1">
-              {" "}
-              <span className="italic"> {commitment.user.name} </span> is
-              getting this item!
-            </p>
-          </li>
-        ))}
-      </ul>
+      <div>
+        <h2 className="mb-2 font-serif text-2xl font-medium">
+          Product Commitment
+        </h2>
+        <ul className="flex w-full items-center text-balance font-serif  text-2xl font-medium text-black">
+          {productCommitments.map((commitment) => (
+            <li
+              key={commitment.id}
+              className="flex items-center gap-4 overflow-hidden"
+            >
+              <span className="w-fit flex-1 font-sans font-normal leading-tight">
+                {" "}
+                <span className="flex items-center gap-2">
+                  {" "}
+                  {commitment.user.image && (
+                    <SharedUserThumbnail className="h-7 w-7">
+                      <img src={commitment.user.image} />
+                    </SharedUserThumbnail>
+                  )}
+                  <span className="translate-y-[2px] font-serif">
+                    {" "}
+                    {commitment.user.name}{" "}
+                  </span>
+                </span>{" "}
+                is getting this item!
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   }
 
@@ -96,8 +102,9 @@ const Commit = ({
       }
       // className="rounded-md border-2 border-black bg-green-100 px-4 py-6 "
     >
-      <p className="mb-4 text-balance font-serif text-2xl font-medium leading-tight">
-        Would you like to commit to this item?
+      <h2 className="font-serif text-2xl font-medium">Product Commitment</h2>
+      <p className="mb-4 text-balance leading-tight tracking-tight">
+        Committing will let others know that you intend to purchase this item
       </p>
       <SubmitButton variant="default" size="lg" className="w-fit">
         I will purchase this item

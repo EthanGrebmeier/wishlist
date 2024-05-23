@@ -11,6 +11,7 @@ import Priority from "./priority";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import type { z } from "zod";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
+import { Gift } from "lucide-react";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -44,7 +45,7 @@ const Product = ({
           </MenuProvider>
         )}
         <Link href={getProductSlug(product)} className="w-full ">
-          <div className="relative aspect-square w-full overflow-hidden bg-background object-cover ">
+          <div className="relative aspect-square w-full overflow-hidden bg-background  ">
             {!hideStatus &&
               (!!product.commitments.length ? (
                 <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
@@ -54,9 +55,19 @@ const Product = ({
                   </p>
                 </div>
               ) : (
-                <Priority priorityLevel={product.priority} />
+                <Priority
+                  className="absolute left-2 top-2"
+                  priorityLevel={product.priority}
+                />
               ))}
-            <ProductImage imageUrl={product.imageUrl} />
+            {product.imageUrl ? (
+              <ProductImage imageUrl={product.imageUrl} />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-green-100">
+                {" "}
+                <Gift size={50} />{" "}
+              </div>
+            )}
           </div>
 
           <div

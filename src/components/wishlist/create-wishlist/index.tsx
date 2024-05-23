@@ -55,6 +55,7 @@ const createWishlistInputSchema = z.object({
 type CreateWishlistFormProps = {
   onSuccess?: () => void;
   values?: WishlistFormValues;
+  isOwner?: boolean;
 };
 
 interface WishlistFormValues {
@@ -69,6 +70,7 @@ interface WishlistFormValues {
 export const CreateWishlistForm = ({
   onSuccess,
   values,
+  isOwner,
 }: CreateWishlistFormProps) => {
   const { execute: executeCreate } = useAction(createWishlist, { onSuccess });
   const { execute: executeUpdate } = useAction(updateWishlist, { onSuccess });
@@ -166,7 +168,9 @@ export const CreateWishlistForm = ({
               <Switch checked={isSecret} onCheckedChange={setIsSecret} />
             </div>
           </div>
-          {values && <DeleteWishlist wishlistId={values.wishlistId} />}
+          {values && isOwner && (
+            <DeleteWishlist wishlistId={values.wishlistId} />
+          )}
           <div className="flex w-full justify-end">
             <SubmitButton icon={<FilePlus size={20} />}>
               {values ? "Update" : "Create"}

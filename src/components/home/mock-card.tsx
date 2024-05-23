@@ -30,14 +30,20 @@ const MockCard = ({
         // color,
       )}
     >
-      <div className="relative aspect-square w-full"> {children}</div>
+      <div className="relative aspect-square w-full overflow-hidden">
+        {" "}
+        {children}
+      </div>
       <div
         className={cn(
           "flex justify-between border-t-2 border-black p-2",
           color,
         )}
       >
-        <p className="-mb-[2px] font-serif text-xl md:text-2xl"> {title} </p>{" "}
+        <p className="-mb-[2px] line-clamp-1  overflow-ellipsis font-serif text-xl md:text-2xl">
+          {" "}
+          {title}{" "}
+        </p>{" "}
         {price && <p className="text-xl font-medium"> {price} </p>}
       </div>
     </motion.div>

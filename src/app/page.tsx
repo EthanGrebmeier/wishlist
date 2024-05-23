@@ -8,6 +8,7 @@ import {
   School,
   UserCircle,
 } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import Hero from "~/components/home/hero";
 import MockCard from "~/components/home/mock-card";
@@ -24,7 +25,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="flex max-w-[100svw] flex-col items-center justify-center gap-48 overflow-clip bg-background pb-8 sm:gap-24">
+    <main className="flex max-w-[100svw] flex-col items-center justify-center gap-24 overflow-clip bg-background pb-8">
       <Hero />
       <div className="relative flex w-full items-center justify-center px-2">
         <div className="relative flex w-full max-w-[800px] flex-col">
@@ -79,9 +80,9 @@ export default async function HomePage() {
             Turn on &quot;Keep it a secret&quot; mode to keep what&apos;s
             already been purchased a secret to yourself
           </p>
-          <div className="grid w-full max-w-[240px] gap-8 py-8 xs:max-w-[550px] xs:grid-cols-2 sm:gap-4">
+          <div className="grid w-full max-w-[550px] grid-cols-2 gap-8 py-8 sm:gap-4">
             <div className="flex w-full  flex-col items-center gap-2">
-              <p className="text-2xl"> What you see </p>
+              <p className="text-xl xs:text-2xl"> What you see </p>
               <MockCard title="Dream Gift" price={"$25"} color="bg-green-200">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Gift size={50} />
@@ -89,7 +90,7 @@ export default async function HomePage() {
               </MockCard>
             </div>
             <div className="flex w-full flex-col items-center gap-2">
-              <p className="text-2xl"> What they see </p>
+              <p className="text-xl xs:text-2xl"> What they see </p>
               <MockCard title="Dream Gift" price={"$25"} color="bg-green-200">
                 <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
                   <p className="-mb-[1px] text-sm font-medium text-black">
@@ -114,6 +115,17 @@ export default async function HomePage() {
         >
           Sign In
         </ButtonLink>
+      </div>
+      <div className="flex w-full flex-col items-center justify-center gap-2">
+        <Link className="hover:font-bold" href="/privacy">
+          Privacy Policy
+        </Link>
+        <Link className="hover:font-bold" href="/terms">
+          Terms and Conditions
+        </Link>
+        <Link className="hover:font-bold" href="/guidelines">
+          Community Guidelines
+        </Link>
       </div>
     </main>
   );

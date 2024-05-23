@@ -1,33 +1,33 @@
-import type { User } from "~/types/user";
 import SharedUserItem from "./shared-user-item";
+import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 
 type SharedUsersProps = {
-  wishlistId: string;
+  wishlist: Wishlist;
   userId: string;
-  sharedUsers: User[];
-  isEditor: boolean;
+  wishlistShares: WishlistSharesWithUser[];
+  isOwner: boolean;
 };
 
 const SharedUsers = ({
-  wishlistId,
+  wishlist,
   userId,
-  sharedUsers,
-  isEditor,
+  wishlistShares,
+  isOwner,
 }: SharedUsersProps) => {
   return (
     <div className="space-y-2">
       <h2 className="text-lg font-medium"> Currently Shared With </h2>
       <div className="grid max-h-[260px] w-full gap-2 overflow-y-auto border-b-2 border-b-black pb-6">
-        {sharedUsers.length ? (
-          sharedUsers
-            .sort((a) => (a.id === "userId" ? 1 : -1))
-            .map((sharedUser) => (
+        {wishlistShares.length ? (
+          wishlistShares
+            .sort((a) => (a.id === userId ? 1 : -1))
+            .map((wishlistShare) => (
               <SharedUserItem
-                isEditor={isEditor}
+                isOwner={isOwner}
                 userId={userId}
-                wishlistId={wishlistId}
-                sharedUser={sharedUser}
-                key={sharedUser.id}
+                wishlist={wishlist}
+                wishlistShare={wishlistShare}
+                key={wishlistShare.sharedWithUserId}
               />
             ))
         ) : (

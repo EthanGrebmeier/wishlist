@@ -1,42 +1,22 @@
 "use client";
 
-import { Loader, XIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-
-import { unshareWishlist } from "~/app/(main)/wishlist/[wishlistId]/actions";
-import { Tooltip } from "~/components/ui/tooltip";
-import type { User } from "~/types/user";
+import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
+import SharedUserMenu from "./shared-user-menu";
 
 type SharedUserItemProps = {
   userId: string;
-  sharedUser: User;
-  wishlistId: string;
-  isEditor: boolean;
+  wishlistShare: WishlistSharesWithUser;
+  wishlist: Wishlist;
+  isOwner: boolean;
 };
 
 const SharedUserItem = ({
   userId,
-  sharedUser,
-  wishlistId,
-  isEditor,
+  wishlistShare,
+  wishlist,
+  isOwner,
 }: SharedUserItemProps) => {
-  // TODO: Make this optimistic with useOptimistic
-  const [state, action] = useFormState(unshareWishlist, null);
-
-  const actionWithData = action.bind(null, {
-    sharedWithUserId: sharedUser.id,
-    wishlistId,
-  });
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state?.message === "success") {
-      router.refresh();
-    }
-  }, [state, router]);
+  const sharedUser = wishlistShare.users;
   // bg - [#E8EDDF];
   return (
     <div className="relative flex w-full items-center justify-between gap-4 pr-1 font-medium text-black">
@@ -51,28 +31,14 @@ const SharedUserItem = ({
           <p className="text-xs ">{sharedUser.email}</p>
         </div>
       </div>
-      {userId !== sharedUser.id && isEditor && (
-        <form className="flex items-center" action={actionWithData}>
-          <Tooltip text="Remove Shared User">
-            <DeleteShareButton />
-          </Tooltip>
-        </form>
-      )}
+
+      <SharedUserMenu
+        userId={userId}
+        wishlistShare={wishlistShare}
+        wishlist={wishlist}
+        isOwner={isOwner}
+      />
     </div>
-  );
-};
-
-const DeleteShareButton = () => {
-  const formStatus = useFormStatus();
-
-  return (
-    <button className="rounded-md border-2 border-black bg-red-400 p-1 ">
-      {formStatus.pending ? (
-        <Loader size={15} className=" animate-spin" />
-      ) : (
-        <XIcon size={15} />
-      )}
-    </button>
   );
 };
 
