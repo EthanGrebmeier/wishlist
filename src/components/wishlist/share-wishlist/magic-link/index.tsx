@@ -17,7 +17,7 @@ const MagicLink = async ({ wishlistId }: MagicLinkProps) => {
   }
 
   const magicLinkBase = env.VERCEL_PROJECT_PRODUCTION_URL
-    ? "https://www.fillaneed.xyz"
+    ? "www.fillaneed.xyz"
     : "localhost:3000";
 
   const magicLinkUrl = `https://${magicLinkBase}/wishlist/join/${magicLink.id}`;
