@@ -8,12 +8,12 @@ import {
   School,
   UserCircle,
 } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import Hero from "~/components/home/hero";
 import MockCard from "~/components/home/mock-card";
 import ButtonLink from "~/components/ui/button-link";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import Link from "~/components/ui/link";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function HomePage() {

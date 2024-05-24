@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import Link from "next/link";
+import Link from "~/components/ui/link";
 import React from "react";
 
 const TermsPage = () => {
@@ -32,14 +32,13 @@ const TermsPage = () => {
               prohibited by law, and the right to access and use the Service is
               revoked in such jurisdictions.
             </p>
-            <h3>SCOPE.</h3>
+            <h3>Scope.</h3>
             <p>
               The Service is a collaboration and social networking service. The
-              Service allows users to save, organize and share text, graphics,
-              images, music, software, audio, web links, files, video and other
-              information and content.
+              Service allows users to save and share wishlists, images,
+              products, and other information and content.
             </p>
-            <h3>AGE RESTRICTION.</h3>
+            <h3>Age Restriction</h3>
             <p>
               User certifies to Fillaneed that if User is an individual (i.e.,
               not a corporation) User is at least 13 years of age (provided
@@ -51,7 +50,7 @@ const TermsPage = () => {
               Agreement is void where prohibited by law, and the right to access
               the Service is revoked in such jurisdictions.
             </p>
-            <h3>LICENSE.</h3>
+            <h3>License.</h3>
             <p>
               Subject to the terms and conditions of this Agreement, User shall
               have a non-exclusive, non-transferrable, non-sublicensable access
@@ -62,7 +61,7 @@ const TermsPage = () => {
               (or use of) the Service or access to (or use of) any of User’s
               information.).
             </p>
-            <h3>RESTRICTIONS.</h3>
+            <h3>Restrictions</h3>
             <p>
               User shall not, nor permit anyone else to, directly or indirectly:
               (i) reverse engineer, disassemble, decompile or otherwise attempt
@@ -83,7 +82,7 @@ const TermsPage = () => {
               to do so (without any infringement of, or conflict with, the
               rights of any third party).
             </p>
-            <h3>DATA COLLECTION AND ACCESS</h3>
+            <h3>Data Collection and Access</h3>
             <p>
               Data collection activities are subject to restriction by
               Fillaneed. Fillaneed reserves the right to impose limitations,
@@ -111,14 +110,14 @@ const TermsPage = () => {
               abusive data collection practices will be made by Fillaneed, in
               their sole discretion.
             </p>
-            <h3>SPECIAL PERMISSIONS</h3>
+            <h3>Special Permissions</h3>
             <p>
               Fillaneed may grant special permissions for data collection
               activities on a one-to-one basis. If you wish to seek special
               permissions or inquire about data access rights, please contact us
               at <a href="mailto:info@Fillaneed">info@Fillaneed</a>.
             </p>
-            <h3>USER CONTENT.</h3>
+            <h3>User Content.</h3>
             <p>
               The Service permits User to post/publish and products, links,
               images, and other information and content (“User Submissions”).
@@ -207,7 +206,7 @@ const TermsPage = () => {
               Service for inappropriate content, or modifying or removing such
               content from the Service.
             </p>
-            <h3>APPLICATION CONTENT.</h3>
+            <h3>Application Content</h3>
             <p>
               User agrees that the Service contains content, information and
               materials specifically provided by Fillaneed or its partners or

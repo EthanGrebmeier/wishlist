@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import Logo from "~/components/navigation/logo";
-import Link from "next/link";
 import { X } from "lucide-react";
+import Link from "~/components/ui/link";
 
 const SignIn = async () => {
   const providers = await getProviders();

@@ -23,7 +23,7 @@ const MyGiftsPage = async () => {
           <ProductList
             hideStatus={true}
             wishlistColor="white"
-            isEditor={true}
+            canUserEdit={true}
             products={products
               .map((gift) => ({
                 ...gift,

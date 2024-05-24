@@ -9,22 +9,23 @@ import type { Session } from "next-auth";
 import { SharedUserThumbnailView } from "../../share-wishlist/shared-users/shared-user-thumbnail";
 import DueDate from "../../due-date";
 import MagicLink from "../../share-wishlist/magic-link/index";
+import type { UserTypeWithOwner } from "~/types/user";
+import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
-  isEditor: boolean;
-  isOwner: boolean;
+  userStatus: UserTypeWithOwner;
   wishlistShares: WishlistSharesWithUser[];
   session: Session;
 };
 
 const WishlistHeader = ({
   wishlist,
-  isEditor,
-  isOwner,
   wishlistShares,
   session,
+  userStatus,
 }: WishlistHeaderProps) => {
+  const canUserEdit = verifyUserIsWishlistEditor(userStatus);
   return (
     <TitleBar
       wrapperClassName="sticky top-[72px] md:top-0"
@@ -33,7 +34,7 @@ const WishlistHeader = ({
       <div
         className={cn(
           "flex w-full flex-1 items-center justify-between gap-4",
-          (isEditor || wishlist.dueDate) && "border-b-2 border-black pb-2",
+          (canUserEdit || wishlist.dueDate) && "border-b-2 border-black pb-2",
         )}
       >
         <div className="flex flex-row items-center gap-2">
@@ -76,14 +77,13 @@ const WishlistHeader = ({
                 </Suspense>
               }
               wishlist={wishlist}
-              isEditor={isEditor}
-              isOwner={isOwner}
+              userStatus={userStatus}
               userId={session.user.id}
             />
           </div>
         </div>
       </div>
-      {(isEditor || wishlist.dueDate) && (
+      {(canUserEdit || wishlist.dueDate) && (
         <div
           className={cn(
             "flex w-full items-center justify-between pt-2",
@@ -91,13 +91,16 @@ const WishlistHeader = ({
           )}
         >
           <DueDate wishlist={wishlist} />
-          {isEditor && (
-            <div className="flex flex-nowrap space-x-1 overflow-x-auto xs:w-fit md:space-x-4 md:px-0 ">
+          {canUserEdit && (
+            <div className="flex flex-nowrap space-x-1 xs:w-fit md:space-x-4 md:px-0 ">
               <div className="hidden md:block">
                 <AddProduct wishlistId={wishlist.id} />{" "}
               </div>
 
-              <WishlistSettings isOwner={isOwner} wishlist={wishlist} />
+              <WishlistSettings
+                isOwner={userStatus === "owner"}
+                wishlist={wishlist}
+              />
             </div>
           )}
         </div>

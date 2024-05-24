@@ -31,10 +31,10 @@ export const getSharedUserType = async ({
       eq(wishlistShares.wishlistId, wishlistId),
       eq(wishlistShares.sharedWithUserId, session.user.id),
     ),
-    with: {
-      users: true,
+    columns: {
+      type: true,
     },
   });
 
-  return share;
+  return share?.type;
 };

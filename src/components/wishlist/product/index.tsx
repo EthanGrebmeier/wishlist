@@ -14,6 +14,7 @@ import ConfirmReceipt from "./confirm/index";
 import { Suspense } from "react";
 import ConfirmedReceipt from "./confirm/confirmed-receipt";
 import Priority from "../wishlist/product-list/product/priority";
+import PlaceholderImage from "./placeholder-image";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -50,12 +51,18 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
         <div className="flex w-full items-start justify-center gap-4 align-top lg:mx-0">
           <div className="relative items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className=" max-h-[calc(100svh-44px)] w-[600px]"
-              alt={product.name}
-              /* eslint-disable-next-line  */
-              src={product.imageUrl || "https://placehold.co/600x600"}
-            />
+            {product.imageUrl ? (
+              <img
+                className=" max-h-[calc(100svh-44px)] w-[600px]"
+                alt={product.name}
+                /* eslint-disable-next-line  */
+                src={product.imageUrl}
+              />
+            ) : (
+              <div className="aspect-square w-[600px]">
+                <PlaceholderImage />{" "}
+              </div>
+            )}
             <ButtonLink
               variant="secondary"
               size="lg"

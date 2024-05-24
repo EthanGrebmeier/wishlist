@@ -1,6 +1,6 @@
 "use client";
 
-import { Share } from "lucide-react";
+import { Share, UsersRound } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -21,14 +21,15 @@ import {
 } from "~/components/ui/drawer";
 import type { ReactNode } from "react";
 import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
+import type { UserTypeWithOwner } from "~/types/user";
+import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 type ShareWishlistProps = {
   wishlist: Wishlist;
   magicLink: ReactNode;
   userId: string;
   wishlistShares: WishlistSharesWithUser[];
-  isEditor: boolean;
-  isOwner: boolean;
+  userStatus: UserTypeWithOwner;
 };
 
 const ShareWishlist = ({
@@ -36,23 +37,23 @@ const ShareWishlist = ({
   magicLink,
   userId,
   wishlistShares,
-  isEditor,
-  isOwner,
+  userStatus,
 }: ShareWishlistProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const canUserEdit = verifyUserIsWishlistEditor(userStatus);
 
   if (isDesktop) {
     return (
       <Dialog>
         <Tooltip text="Share Wishlist">
           <DialogTrigger asChild>
-            <Button icon={<Share size={20} />}></Button>
+            <Button icon={<UsersRound size={20} />}></Button>
           </DialogTrigger>
         </Tooltip>
 
         <DialogContent className="w-full max-w-[440px]">
           <DialogHeader>
-            <h1 className="font-serif text-4xl font-medium"> Share </h1>
+            <h1 className="font-serif text-4xl font-medium"> Sharing </h1>
             {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
           </DialogHeader>
           <div className="flex min-w-0 flex-col gap-2">
@@ -61,11 +62,12 @@ const ShareWishlist = ({
                 wishlistShares={wishlistShares}
                 userId={userId}
                 wishlist={wishlist}
-                isOwner={isOwner}
+                isOwner={userStatus === "owner"}
+                canUserEdit={canUserEdit}
               />
-              {isEditor && magicLink}
+              {canUserEdit && magicLink}
             </div>
-            {isEditor && <ShareWishlistForm wishlistId={wishlist.id} />}
+            {canUserEdit && <ShareWishlistForm wishlistId={wishlist.id} />}
           </div>
         </DialogContent>
       </Dialog>
@@ -75,22 +77,23 @@ const ShareWishlist = ({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button icon={<Share size={20} />}></Button>
+        <Button icon={<UsersRound size={20} />}></Button>
       </DrawerTrigger>
       <DrawerContent className="mx-auto max-w-[440px]">
         <DrawerHeader>
           <DrawerTitle className="font-serif text-4xl font-medium">
-            Share
+            Sharing
           </DrawerTitle>
         </DrawerHeader>
         <div className="max-h-[80svh] overflow-y-auto p-4 pb-28">
           {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}
           <div className="space-y-4">
             <SharedUsers
+              canUserEdit={canUserEdit}
               wishlistShares={wishlistShares}
               userId={userId}
               wishlist={wishlist}
-              isOwner={isOwner}
+              isOwner={userStatus === "owner"}
             />
             {magicLink}
             <ShareWishlistForm wishlistId={wishlist.id} />

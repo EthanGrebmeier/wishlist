@@ -17,7 +17,10 @@ const Link = ({ className, shallowSelected, ...rest }: LinkProps) => {
 
   return (
     <NextLink
-      className={cn("text-xl font-medium", className)}
+      className={cn(
+        "block ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2",
+        className,
+      )}
       data-selected={isSelected ? "active" : "inactive"}
       {...rest}
     />

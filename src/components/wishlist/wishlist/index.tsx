@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
+import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 type ViewWishlistProps = {
@@ -29,21 +30,19 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
     redirect("/");
   }
 
-  const isEditor = verifyUserIsWishlistEditor({
+  const userStatus = getUserShareType({
     wishlist,
     wishlistShares,
     session,
   });
-
-  const isOwner = wishlist.createdById === session.user.id;
+  const canUserEdit = verifyUserIsWishlistEditor(userStatus);
 
   return (
     <>
       <div className=" relative h-full w-full">
         <WishlistHeader
           wishlist={wishlist}
-          isEditor={isEditor}
-          isOwner={isOwner}
+          userStatus={userStatus}
           wishlistShares={wishlistShares}
           session={session}
         />
@@ -51,12 +50,12 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
           {wishlist.products.length ? (
             <ProductList
               wishlistColor={wishlist.color}
-              isEditor={isEditor}
+              canUserEdit={canUserEdit}
               products={wishlist.products}
             />
           ) : (
             <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
-              {isEditor ? (
+              {canUserEdit ? (
                 <div className="flex w-fit flex-col items-center justify-center gap-4">
                   <p className="text-balance text-center font-serif text-3xl font-medium md:text-4xl">
                     {" "}
@@ -76,7 +75,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
           )}
         </section>
       </div>
-      {isEditor && (
+      {canUserEdit && (
         <AddProduct
           wishlistId={wishlistId}
           trigger={

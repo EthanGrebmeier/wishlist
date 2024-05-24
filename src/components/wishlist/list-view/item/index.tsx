@@ -2,20 +2,23 @@
 import type { WishlistWithProducts } from "~/types/wishlist";
 import WishlistMenu from "./menu";
 import Link from "~/components/ui/link";
-import type { User } from "next-auth";
 import { cn } from "~/lib/utils";
 import { colors } from "~/consts/colors";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import DueDate from "../../due-date";
 import { Scroll } from "lucide-react";
+import type { UserTypeWithOwner } from "~/types/user";
 
 export type ListItemProps = {
   wishlist: WishlistWithProducts;
-  isEditor: boolean;
+  canUserEdit: boolean;
+  userType: UserTypeWithOwner;
 };
 
-const ListItem = ({ wishlist, isEditor }: ListItemProps) => {
+const ListItem = ({ wishlist, canUserEdit }: ListItemProps) => {
   const { name, id, color } = wishlist;
+
+  const shouldNotTranslate = useReducedMotion();
 
   const backgroundClass =
     colors.find((colorTheme) => colorTheme.name === color)?.background ??
@@ -24,19 +27,14 @@ const ListItem = ({ wishlist, isEditor }: ListItemProps) => {
   return (
     <motion.li
       whileHover={{
-        translateY: -4,
+        translateY: shouldNotTranslate ? 0 : -4,
       }}
       className="group relative isolate"
     >
       {wishlist.dueDate && (
         <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />
       )}
-      {isEditor && (
-        <div className="absolute right-2 top-2 z-10">
-          <WishlistMenu wishlist={wishlist} />
-        </div>
-      )}
-      <Link href={`/wishlist/${id}`}>
+      <Link className="text-xl font-medium " href={`/wishlist/${id}`}>
         <div
           className={cn(
             "group w-full overflow-hidden rounded-md border-2 border-black",
@@ -62,12 +60,14 @@ const ListItem = ({ wishlist, isEditor }: ListItemProps) => {
               {" "}
               {name}{" "}
             </h2>
-            <div className="text-end">
-              <p className="text-sm"> {isEditor ? "You" : "Fix me"} </p>
-            </div>
           </div>
         </div>
       </Link>
+      {canUserEdit && (
+        <div className="absolute right-2 top-2 z-10">
+          <WishlistMenu wishlist={wishlist} />
+        </div>
+      )}
     </motion.li>
   );
 };

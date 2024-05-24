@@ -6,14 +6,14 @@ import type { colorSchema } from "~/schema/wishlist/wishlist";
 
 type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
-  isEditor: boolean;
+  canUserEdit: boolean;
   wishlistColor: z.infer<typeof colorSchema>;
   hideStatus?: boolean;
 };
 
 const ProductList = ({
   products,
-  isEditor,
+  canUserEdit,
   wishlistColor,
   hideStatus = false,
 }: ProductListProps) => {
@@ -25,7 +25,7 @@ const ProductList = ({
         .map((product) => (
           <Product
             wishlistColor={wishlistColor}
-            isEditor={isEditor}
+            canUserEdit={canUserEdit}
             product={product}
             hideStatus={hideStatus}
             key={product.id}

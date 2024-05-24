@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import Link from "next/link";
+import Link from "~/components/ui/link";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());

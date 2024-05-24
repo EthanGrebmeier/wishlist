@@ -3,22 +3,22 @@
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { cn } from "~/lib/utils";
 import { unshareWishlist } from "~/server/actions/wishlist";
 import type { User } from "~/types/user";
 
-type UnshareWishlistButtonProps = {
+interface UnshareWishlistButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   wishlistId: string;
   sharedUser: User;
   className?: string;
-};
+}
 
-const UnshareWishlistButton = ({
-  wishlistId,
-  sharedUser,
-  className,
-}: UnshareWishlistButtonProps) => {
+const UnshareWishlistButton = forwardRef<
+  HTMLButtonElement,
+  UnshareWishlistButtonProps
+>(({ wishlistId, sharedUser, className, onClick, ...rest }, ref) => {
   const { execute, status } = useAction(unshareWishlist);
   const router = useRouter();
 
@@ -30,18 +30,27 @@ const UnshareWishlistButton = ({
 
   return (
     <button
-      onClick={() =>
+      onClick={(e) => {
+        onClick && onClick(e);
         execute({
           wishlistId,
           sharedWithUserId: sharedUser.id,
-        })
-      }
-      className={cn("flex w-full items-center gap-2 text-red-400", className)}
+        });
+      }}
+      className={cn(
+        "flex w-full items-center gap-2 text-red-400 ",
+        className,
+        "hover:text-red-400",
+      )}
+      ref={ref}
+      {...rest}
     >
-      <span> Remove User </span>{" "}
+      Remove User
       {status === "executing" && <Loader size={15} className=" animate-spin" />}
     </button>
   );
-};
+});
+
+UnshareWishlistButton.displayName = "UnshareWishlistButton";
 
 export default UnshareWishlistButton;

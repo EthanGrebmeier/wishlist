@@ -1,27 +1,5 @@
-import type { Session } from "next-auth";
-import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
+import type { UserTypeWithOwner } from "~/types/user";
 
-type verifyUserIsWishlistEditorArgs = {
-  wishlist: Wishlist;
-  wishlistShares: WishlistSharesWithUser[];
-  session: Session;
-};
-
-export const verifyUserIsWishlistEditor = ({
-  wishlist,
-  wishlistShares,
-  session,
-}: verifyUserIsWishlistEditorArgs) => {
-  if (wishlist.createdById === session.user.id) {
-    return true;
-  }
-
-  const userIsSharedEditor = Boolean(
-    wishlistShares.find(
-      (share) =>
-        share.sharedWithUserId === session.user.id && share.type === "editor",
-    ),
-  );
-
-  return userIsSharedEditor;
+export const verifyUserIsWishlistEditor = (userType: UserTypeWithOwner) => {
+  return userType === "editor" || userType === "owner";
 };

@@ -2,7 +2,7 @@
 
 import React, { type ReactNode } from "react";
 import { cn } from "~/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type MockCardProps = {
   title: string;
@@ -19,10 +19,12 @@ const MockCard = ({
   children,
   className,
 }: MockCardProps) => {
+  const shouldNotTranslate = useReducedMotion();
+
   return (
     <motion.div
       whileHover={{
-        translateY: -4,
+        translateY: shouldNotTranslate ? 0 : -4,
       }}
       className={cn(
         "relative w-full overflow-clip rounded-md border-2 border-black bg-green-100",
