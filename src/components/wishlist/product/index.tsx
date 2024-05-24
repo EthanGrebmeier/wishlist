@@ -15,6 +15,7 @@ import { Suspense } from "react";
 import ConfirmedReceipt from "./confirm/confirmed-receipt";
 import Priority from "../wishlist/product-list/product/priority";
 import PlaceholderImage from "./placeholder-image";
+import { cn } from "~/lib/utils";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -49,7 +50,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
     <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:max-w-[800px] md:px-6 lg:mx-6 lg:mt-8 lg:grid  lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">
       <section className="flex h-full w-full flex-col gap-x-4 gap-y-2 overflow-hidden transition-all lg:grid lg:grid-cols-[1fr_min-content] lg:gap-4">
         <div className="flex w-full items-start justify-center gap-4 align-top lg:mx-0">
-          <div className="relative items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
+          <div className="relative flex items-center justify-center overflow-hidden rounded-md border-2 border-black  bg-white transition-all md:max-h-[580px] lg:max-h-[calc(100svh-48px)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {product.imageUrl ? (
               <img
@@ -59,9 +60,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 src={product.imageUrl}
               />
             ) : (
-              <div className="aspect-square w-[600px]">
-                <PlaceholderImage />{" "}
-              </div>
+              <PlaceholderImage className="relative mx-auto flex h-[400px] w-screen items-center justify-center overflow-hidden md:max-w-[800px] lg:aspect-square lg:w-[600px] " />
             )}
             <ButtonLink
               variant="secondary"
@@ -102,6 +101,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
         </div>
         <div className="mx-auto mb-4 flex max-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:h-full  lg:min-h-[calc(100svh-64px)] lg:w-[320px] lg:max-w-none lg:gap-8">
           <div className="rounded-md border-2 border-black ">
+            <Priority className="ml-4 mt-4" priorityLevel={product.priority} />
             <div className="relative flex w-full flex-col gap-2 p-4 pb-4">
               <div className="flex max-w-[80%] flex-col gap-2">
                 <h1 className="translate-y-[2px] overflow-hidden text-wrap break-words font-serif text-3xl font-medium md:text-4xl">
@@ -116,7 +116,6 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 {product.price && (
                   <p className="text-3xl"> ${product.price} </p>
                 )}
-                <Priority className="mt-3" priorityLevel={product.priority} />
               </div>
               {product.quantity && (
                 <p className="absolute right-4 top-4 text-3xl">
@@ -138,7 +137,12 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
 
           <div className="flex flex-col gap-2  md:flex-row lg:flex-col">
             {!(isSecret && isOwner) && !productReceipts.data && (
-              <div className="flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full">
+              <div
+                className={cn(
+                  "flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full",
+                  !isOwner ? "md:w-full" : "md:w-1/2",
+                )}
+              >
                 <div className="flex flex-col gap-2">
                   {/** Only hide commitments for the owner of the wishlist */}
                   <Commit
@@ -156,7 +160,15 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                     <div className="skeleton h-24 w-full md:w-1/2 lg:w-full"></div>
                   }
                 >
-                  <ConfirmReceipt product={product} wishlist={wishlist} />
+                  <ConfirmReceipt
+                    className={
+                      !(isSecret && isOwner) && !productReceipts.data
+                        ? "md:w-1/2"
+                        : "md:w-full"
+                    }
+                    product={product}
+                    wishlist={wishlist}
+                  />
                 </Suspense>
               ) : (
                 <ConfirmedReceipt />

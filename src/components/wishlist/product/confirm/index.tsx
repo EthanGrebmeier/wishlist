@@ -3,17 +3,28 @@ import Modal from "./modal";
 import type { Wishlist, WishlistProduct } from "~/types/wishlist";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import AnimatedPackage from "./animated-package";
+import { cn } from "~/lib/utils";
 
 type ConfirmReceiptProps = {
   wishlist: Wishlist;
   product: WishlistProduct;
+  className?: string;
 };
 
-const ConfirmReceipt = async ({ wishlist, product }: ConfirmReceiptProps) => {
+const ConfirmReceipt = async ({
+  wishlist,
+  product,
+  className,
+}: ConfirmReceiptProps) => {
   const wishlistShares = await getSharedUsers({ wishlistId: wishlist.id });
 
   return (
-    <div className="relative flex w-full flex-col justify-between overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full">
+    <div
+      className={cn(
+        "relative flex w-full flex-col justify-between overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full",
+        className,
+      )}
+    >
       <h2 className=" font-serif text-2xl font-medium leading-tight">
         Have you received this item?
       </h2>
