@@ -136,7 +136,7 @@ export const createWishlist = makeProtectedAction(
 export const updateWishlist = makeProtectedAction(
   z.object({
     id: z.string(),
-    wishlistName: z.string(),
+    wishlistName: z.string().min(1),
     date: z.date().optional(),
     color: colorSchema,
     isSecret: z.boolean(),
