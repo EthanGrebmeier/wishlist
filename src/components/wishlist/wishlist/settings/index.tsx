@@ -47,7 +47,7 @@ const WishlistSettings = ({ wishlist, isOwner }: EditWishlistProps) => {
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <Button variant="secondary" icon={<Settings size={20} />}>
           {" "}

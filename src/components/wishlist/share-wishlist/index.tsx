@@ -19,7 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 import type { UserTypeWithOwner } from "~/types/user";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
@@ -39,12 +39,13 @@ const ShareWishlist = ({
   wishlistShares,
   userStatus,
 }: ShareWishlistProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const canUserEdit = verifyUserIsWishlistEditor(userStatus);
 
   if (isDesktop) {
     return (
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <Tooltip text="Share Wishlist">
           <DialogTrigger asChild>
             <Button icon={<UsersRound size={20} />}></Button>
@@ -75,7 +76,7 @@ const ShareWishlist = ({
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <Button icon={<UsersRound size={20} />}></Button>
       </DrawerTrigger>

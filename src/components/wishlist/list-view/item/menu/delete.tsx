@@ -23,8 +23,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "~/components/ui/drawer";
+import { useState } from "react";
 
 const Delete = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { execute } = useAction(deleteWishlist);
   const { wishlist } = useWishlistMenu();
 
@@ -35,7 +37,7 @@ const Delete = () => {
   if (isDesktop) {
     return (
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger className="text-left text-red-500">
             Delete Wishlist
           </DialogTrigger>
@@ -63,13 +65,13 @@ const Delete = () => {
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
         <DrawerTrigger className="w-full text-left text-red-500">
           Delete Wishlist
         </DrawerTrigger>
       </DropdownMenuItem>
-      <DrawerContent>
+      <DrawerContent className="max-w-[440px]">
         <DrawerHeader className="text-start">
           <DrawerTitle className="font-serif text-4xl font-medium">
             Delete Wishlist

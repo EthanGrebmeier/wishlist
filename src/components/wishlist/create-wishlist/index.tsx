@@ -214,7 +214,7 @@ const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         {trigger ?? (
           <Button icon={<PlusIcon width="20" height="20" />}>
@@ -222,7 +222,7 @@ const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
           </Button>
         )}
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="max-w-[440px]">
         <DrawerHeader>
           <DrawerTitle className="font-serif text-4xl font-medium">
             Create Wishlist
