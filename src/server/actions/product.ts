@@ -20,6 +20,7 @@ import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { revalidatePath } from "next/cache";
 import { generateId } from "~/lib/utils";
 import { deleteFile } from "../uploadthing";
+import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 export const updateProduct = makeProtectedAction(
   productSchema,
@@ -36,15 +37,7 @@ export const updateProduct = makeProtectedAction(
       session,
     });
 
-    await db
-      .update(products)
-      .set(product)
-      .where(
-        and(
-          eq(products.createdById, session.user.id),
-          eq(products.id, product.id),
-        ),
-      );
+    await db.update(products).set(product).where(eq(products.id, product.id));
 
     await db
       .update(wishlists)
