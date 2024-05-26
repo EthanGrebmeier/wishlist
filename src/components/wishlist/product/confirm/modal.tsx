@@ -35,14 +35,16 @@ import { cn, getBackgroundColor } from "~/lib/utils";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
 import MockCard from "~/components/home/mock-card";
+import { type Session } from "next-auth";
 
 type ModalProps = {
   wishlist: Wishlist;
   product: WishlistProduct;
   wishlistShares: WishlistSharesWithUser[];
+  session: Session;
 };
 
-const Modal = ({ wishlist, wishlistShares, product }: ModalProps) => {
+const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -62,6 +64,7 @@ const Modal = ({ wishlist, wishlistShares, product }: ModalProps) => {
             </DialogTitle>
           </DialogHeader>
           <ModalContent
+            session={session}
             wishlistShares={wishlistShares}
             wishlist={wishlist}
             product={product}
@@ -87,6 +90,7 @@ const Modal = ({ wishlist, wishlistShares, product }: ModalProps) => {
         </DrawerHeader>
         <div className="max-h-[80svh] overflow-y-auto p-4">
           <ModalContent
+            session={session}
             wishlistShares={wishlistShares}
             wishlist={wishlist}
             product={product}
@@ -99,6 +103,7 @@ const Modal = ({ wishlist, wishlistShares, product }: ModalProps) => {
 };
 
 type ModalContentProps = {
+  session: Session;
   animationDelaySeconds?: number;
   wishlist: Wishlist;
   product: WishlistProduct;
@@ -106,6 +111,7 @@ type ModalContentProps = {
 };
 
 const ModalContent = ({
+  session,
   animationDelaySeconds,
   wishlist,
   product,
@@ -200,37 +206,39 @@ const ModalContent = ({
             Select a user from the list below to credit them for the item
           </p>
           <ul className="mb-6 flex max-h-[210px] flex-col gap-1 overflow-y-auto rounded-md border-2 border-black p-2">
-            {wishlistShares.map(({ users: user }) => (
-              <li key={user.id}>
+            {wishlistShares.map(({ users: sharedUser }) => (
+              <li key={sharedUser.id}>
                 <button
                   type="button"
                   onClick={() => {
-                    if (selectedUserId === user.id) {
+                    if (selectedUserId === sharedUser.id) {
                       setSelectedUserId(undefined);
                     } else {
-                      setSelectedUserId(user.id);
+                      setSelectedUserId(sharedUser.id);
                     }
                   }}
                   className={cn(
                     "flex w-full flex-row items-center justify-between gap-2 rounded-md p-2 transition-all ",
-                    selectedUserId === user.id
+                    selectedUserId === sharedUser.id
                       ? "bg-green-200 font-medium"
                       : "hover:bg-blue-200",
                   )}
                 >
                   <div className="flex items-center gap-2">
                     <SharedUserThumbnail>
-                      {user.image ? (
-                        <img src={user.image} />
+                      {sharedUser.image ? (
+                        <img src={sharedUser.image} />
                       ) : (
                         <div className="h-full w-full bg-green-300"> </div>
                       )}
                     </SharedUserThumbnail>
                     <p className="max-w-[180px] overflow-ellipsis text-center text-lg leading-tight">
-                      {user.id === wishlist.createdById ? "You" : user.name}
+                      {sharedUser.id === session.user.id
+                        ? "You"
+                        : sharedUser.name}
                     </p>
                   </div>
-                  {selectedUserId === user.id && <Check size={20} />}
+                  {selectedUserId === sharedUser.id && <Check size={20} />}
                 </button>
               </li>
             ))}

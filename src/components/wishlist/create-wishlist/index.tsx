@@ -223,7 +223,7 @@ const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
           </Button>
         )}
       </DrawerTrigger>
-      <DrawerContent className="max-w-[440px]">
+      <DrawerContent className="mx-auto max-w-[440px]">
         <DrawerHeader>
           <DrawerTitle className="font-serif text-4xl font-medium">
             Create Wishlist

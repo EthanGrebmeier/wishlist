@@ -4,6 +4,7 @@ import type { Wishlist, WishlistProduct } from "~/types/wishlist";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import AnimatedPackage from "./animated-package";
 import { cn } from "~/lib/utils";
+import { getServerAuthSession } from "~/server/auth";
 
 type ConfirmReceiptProps = {
   wishlist: Wishlist;
@@ -16,7 +17,12 @@ const ConfirmReceipt = async ({
   product,
   className,
 }: ConfirmReceiptProps) => {
+  const session = await getServerAuthSession();
   const wishlistShares = await getSharedUsers({ wishlistId: wishlist.id });
+
+  if (!session) {
+    throw new Error("this should not happen");
+  }
 
   return (
     <div
@@ -33,6 +39,7 @@ const ConfirmReceipt = async ({
         <span className="font-serif"> My Gifts </span>
       </p>
       <Modal
+        session={session}
         product={product}
         wishlistShares={wishlistShares}
         wishlist={wishlist}

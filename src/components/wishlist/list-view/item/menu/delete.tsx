@@ -71,7 +71,7 @@ const Delete = () => {
           Delete Wishlist
         </DrawerTrigger>
       </DropdownMenuItem>
-      <DrawerContent className="max-w-[440px]">
+      <DrawerContent className="mx-auto max-w-[440px]">
         <DrawerHeader className="text-start">
           <DrawerTitle className="font-serif text-4xl font-medium">
             Delete Wishlist

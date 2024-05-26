@@ -16,6 +16,9 @@ import ConfirmedReceipt from "./confirm/confirmed-receipt";
 import Priority from "../wishlist/product-list/product/priority";
 import PlaceholderImage from "./placeholder-image";
 import { cn } from "~/lib/utils";
+import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
+import { getUserShareType } from "~/lib/wishlist/getUserShareType";
+import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -24,15 +27,19 @@ type ProductProps = {
 };
 
 const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
-  const [productCommitments, productReceipts, session] = await Promise.all([
-    getProductCommitments({
-      productId: product.id,
-    }),
-    getProductReceipts({
-      productId: product.id,
-    }),
-    getServerAuthSession(),
-  ]);
+  const [productCommitments, productReceipts, wishlistShares, session] =
+    await Promise.all([
+      getProductCommitments({
+        productId: product.id,
+      }),
+      getProductReceipts({
+        productId: product.id,
+      }),
+      getSharedUsers({
+        wishlistId: wishlist.id,
+      }),
+      getServerAuthSession(),
+    ]);
 
   if (!session) {
     return null;
@@ -44,7 +51,12 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
     ),
   );
 
-  const isOwner = session.user.id === wishlist.createdById;
+  const userStatus = getUserShareType({
+    wishlist,
+    wishlistShares,
+    session,
+  });
+  const canUserEdit = verifyUserIsWishlistEditor(userStatus);
 
   return (
     <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:max-w-[800px] md:px-6 lg:mx-6 lg:mt-8 lg:grid  lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">
@@ -74,7 +86,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
               <span className="sr-only"> Back to {wishlist.name} </span>
             </ButtonLink>
             <div className="absolute right-2 top-2 flex gap-4">
-              {isOwner && (
+              {canUserEdit && (
                 <EditProduct
                   product={product}
                   wishlistId={wishlist.id}
@@ -136,11 +148,11 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
           </div>
 
           <div className="flex flex-col gap-2  md:flex-row lg:flex-col">
-            {!(isSecret && isOwner) && !productReceipts.data && (
+            {!(isSecret && canUserEdit) && !productReceipts.data && (
               <div
                 className={cn(
                   "flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full",
-                  !isOwner ? "md:w-full" : "md:w-1/2",
+                  !canUserEdit ? "md:w-full" : "md:w-1/2",
                 )}
               >
                 <div className="flex flex-col gap-2">
@@ -153,7 +165,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 </div>
               </div>
             )}
-            {isOwner &&
+            {canUserEdit &&
               (!productReceipts.data ? (
                 <Suspense
                   fallback={
@@ -162,7 +174,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 >
                   <ConfirmReceipt
                     className={
-                      !(isSecret && isOwner) && !productReceipts.data
+                      !(isSecret && canUserEdit) && !productReceipts.data
                         ? "md:w-1/2"
                         : "md:w-full"
                     }
