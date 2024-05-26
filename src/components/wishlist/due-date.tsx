@@ -2,7 +2,7 @@ import { formatDate, parseISO } from "date-fns";
 import { Calendar } from "lucide-react";
 import React from "react";
 import { cn, getBackgroundColor } from "~/lib/utils";
-import { Wishlist } from "~/types/wishlist";
+import type { Wishlist } from "~/types/wishlist";
 
 type DueDateProps = {
   className?: string;
