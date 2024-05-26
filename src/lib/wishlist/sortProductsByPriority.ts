@@ -10,5 +10,5 @@ export const sortProductsByPriority = (
   productA: WishlistProduct,
   productB: WishlistProduct,
 ) => {
-  return priorityDict[productA.priority] - priorityDict[productB.priority];
+  return priorityDict[productB.priority] - priorityDict[productA.priority];
 };

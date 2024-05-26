@@ -20,8 +20,8 @@ const ProductList = ({
   return (
     <ul className="grid gap-4 gap-y-6 xs:grid-cols-2 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
       {products
-        .sort((a) => (a.commitments.length ? 1 : -1))
         .sort(sortProductsByPriority)
+        .sort((a) => (a.commitments.length ? 1 : -1))
         .map((product) => (
           <Product
             wishlistColor={wishlistColor}
