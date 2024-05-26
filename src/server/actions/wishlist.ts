@@ -154,7 +154,7 @@ export const updateWishlist = makeProtectedAction(
 
     const wishlistValues = {
       name: wishlistName,
-      dueDate: date?.toDateString(),
+      dueDate: date?.toDateString() ?? null,
       color,
       isSecret,
       imageUrl,

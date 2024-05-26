@@ -41,6 +41,7 @@ import {
 import { Switch } from "~/components/ui/switch";
 import ImageUpload from "../../ui/image-upload";
 import DeleteWishlist from "../wishlist/settings/delete-wishlist";
+import { parseISO } from "date-fns";
 
 const createWishlistInputSchema = z.object({
   wishlistName: z
@@ -78,7 +79,7 @@ export const CreateWishlistForm = ({
     values?.imageUrl ?? undefined,
   );
   const [date, setDate] = React.useState<Date | undefined>(
-    values?.date ? new Date(values?.date) ?? undefined : undefined,
+    values?.date ? new Date(parseISO(values?.date)) ?? undefined : undefined,
   );
   const [isSecret, setIsSecret] = useState(values?.isSecret ?? false);
   const [selectedColor, setSelectedColor] = React.useState<
@@ -136,7 +137,7 @@ export const CreateWishlistForm = ({
               )}
             />
             <div className="flex flex-col gap-2 text-lg font-medium">
-              <label htmlFor="date-picker">Due Date </label>
+              <p>Due Date </p>
               <DatePicker date={date} setDate={setDate} />
             </div>
           </div>
