@@ -61,7 +61,10 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
                     {" "}
                     Let&apos;s add your first product!
                   </p>
-                  <AddProduct wishlistId={wishlistId} />
+                  <AddProduct
+                    shouldDefaultOpen={true}
+                    wishlistId={wishlistId}
+                  />
                 </div>
               ) : (
                 <div>

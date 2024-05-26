@@ -26,10 +26,15 @@ import {
 type AddProduct = {
   wishlistId: string;
   trigger?: ReactNode;
+  shouldDefaultOpen?: boolean;
 };
 
-export const AddProduct = ({ wishlistId, trigger }: AddProduct) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const AddProduct = ({
+  wishlistId,
+  trigger,
+  shouldDefaultOpen = false,
+}: AddProduct) => {
+  const [isOpen, setIsOpen] = useState(shouldDefaultOpen);
   const [view, setView] = useState<"scrape" | "form">("scrape");
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
