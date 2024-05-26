@@ -163,9 +163,7 @@ export const updateWishlist = makeProtectedAction(
       await db
         .update(wishlists)
         .set(wishlistValues)
-        .where(
-          and(eq(wishlists.id, id), eq(wishlists.createdById, session.user.id)),
-        );
+        .where(eq(wishlists.id, id));
     } catch (e) {
       console.error(e);
       throw new Error("Could not update wishlist");
@@ -208,38 +206,6 @@ export const setPrivacyType = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
-
-export const updateTitle = makeProtectedAction(
-  z.object({
-    title: z.string(),
-    wishlistId: z.string(),
-  }),
-  async ({ title, wishlistId }, { session }) => {
-    // ensure user is the owner of the wishlist
-
-    const wishlist = await getWishlist({
-      wishlistId,
-    });
-
-    if (wishlist.createdById !== session.user.id) {
-      return {
-        message: "Access Denied",
-      };
-    }
-
-    await db
-      .update(wishlists)
-      .set({
-        name: title,
-      })
-      .where(
-        and(
-          eq(wishlists.id, wishlistId),
-          eq(wishlists.createdById, session.user.id),
-        ),
-      );
   },
 );
 
