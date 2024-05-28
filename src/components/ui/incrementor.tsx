@@ -38,7 +38,7 @@ const Incrementor = ({ onQuantityChange, value }: IncrementorProps) => {
   const onBlur = () => {
     if (internalTextValue) {
       try {
-        const value = z.coerce.number().parse(internalTextValue);
+        const value = z.coerce.number().positive().parse(internalTextValue);
         onQuantityChange(value || 1);
       } catch {}
     }
