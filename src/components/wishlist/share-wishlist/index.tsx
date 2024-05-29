@@ -52,7 +52,7 @@ const ShareWishlist = ({
           </DialogTrigger>
         </Tooltip>
 
-        <DialogContent className="mx-auto w-full max-w-[440px]">
+        <DialogContent className="mx-auto w-full max-w-[440px] overflow-y-auto">
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium"> Sharing </h1>
             {/* <Privacy wishlistId={wishlistId} privacyType={privacyType} /> */}

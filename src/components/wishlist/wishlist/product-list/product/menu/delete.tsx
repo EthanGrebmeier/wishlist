@@ -53,7 +53,7 @@ const Delete = () => {
             <span className="line-clamp-1 w-full">Delete {product.name} </span>
           </DialogTrigger>
         </DropdownMenuItem>
-        <DialogContent>
+        <DialogContent className=" overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="inline-block font-serif text-4xl font-medium">
               Delete Product

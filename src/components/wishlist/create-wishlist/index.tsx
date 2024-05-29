@@ -202,7 +202,7 @@ const CreateWishlist = ({ trigger }: CreateWishlistProps) => {
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className=" overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-serif text-4xl font-medium">
               Create Wishlist{" "}

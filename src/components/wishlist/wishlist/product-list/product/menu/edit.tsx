@@ -57,7 +57,7 @@ export const EditProduct = ({
             </DialogTrigger>
           </DropdownMenuItem>
         )}
-        <DialogContent className="flex flex-col">
+        <DialogContent className="flex flex-col overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-serif text-4xl font-medium">
               Edit Product{" "}

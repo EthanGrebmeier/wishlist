@@ -41,7 +41,7 @@ const Delete = () => {
           <DialogTrigger className="text-left text-red-500">
             Delete Wishlist
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className=" overflow-y-auto">
             <DialogHeader className="inline-block font-serif text-4xl font-medium">
               Delete Wishlist
             </DialogHeader>

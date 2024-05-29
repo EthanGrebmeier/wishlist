@@ -57,7 +57,7 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
             I have received this item
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[480px] overflow-hidden">
+        <DialogContent className="max-w-[480px] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-serif text-4xl font-medium">
               Mark item as received

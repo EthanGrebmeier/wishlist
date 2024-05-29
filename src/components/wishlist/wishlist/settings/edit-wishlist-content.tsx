@@ -23,7 +23,7 @@ const WishlistSettingsContent = ({
   const router = useRouter();
 
   return (
-    <DialogContent>
+    <DialogContent className=" overflow-y-auto">
       <DialogHeader>
         <DialogTitle className="font-serif text-4xl font-medium">
           Wishlist Settings
