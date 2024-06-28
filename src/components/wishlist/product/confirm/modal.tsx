@@ -132,7 +132,7 @@ const ModalContent = ({
           purchasedByUserId: selectedUserId,
         });
       }}
-      className="relative  pt-2"
+      className="relative  overflow-hidden pt-2"
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col ">
