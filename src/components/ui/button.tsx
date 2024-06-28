@@ -4,20 +4,36 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/lib/utils";
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ",
+const buttonVariants = cva("relative", {
+  variants: {
+    variant: {
+      default: "bg-black rounded-md",
+      destructive: "bg-black rounded-md",
+      secondary: "bg-black rounded-md",
+      outline: "",
+      ghost: "",
+      link: "text-primary underline-offset-4 hover:underline",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+const buttonInnerVariants = cva(
+  "inline-flex items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all",
   {
     variants: {
       variant: {
         default:
-          "mb-[8px] bg-primary text-black hover:bg-primary/90 border-black border-2 transition-all duration-75 ease-in  hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
+          "bg-primary hover:bg-primary/90 -translate-y-1.5 hover:translate-y-[-2px] active:translate-y-[0px]",
         destructive:
-          "mb-[8px] bg-destructive border-2 border-black text-black-foreground hover:bg-destructive/90 transition-all hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
+          "bg-destructive hover:bg-destructive/90 -translate-y-1.5 hover:translate-y-[-2px] active:translate-y-[0px]",
+        secondary:
+          "bg-secondary hover:bg-secondary/90 -translate-y-1.5 hover:translate-y-[-2px] active:translate-y-[0px]",
         outline:
           "border-2 border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "mb-[8px] bg-secondary border-black border-2 text-black hover:bg-secondary/80 hover:translate-y-[2px] active:translate-y-[4px] drop-shadow-[0px_6px_0_black] hover:drop-shadow-[0px_4px_0_black] active:drop-shadow-[0px_2px_0_black]",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -36,7 +52,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonInnerVariants> {
   asChild?: boolean;
   icon?: React.ReactNode;
 }
@@ -50,16 +66,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, size, className }),
+          buttonVariants({ variant, className }),
           icon && "flex gap-4",
         )}
         ref={ref}
         {...props}
       >
-        <>
+        <span className={cn(buttonInnerVariants({ variant, size }))}>
           {icon}
           {children}
-        </>
+        </span>
       </Comp>
     );
   },
