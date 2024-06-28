@@ -1,14 +1,14 @@
 "use client";
 
 import { default as NextLink } from "next/link";
-import { buttonVariants } from "./button";
+import { buttonInnerVariants, buttonVariants } from "./button";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
 import type { VariantProps } from "class-variance-authority";
 
 type LinkProps = React.ComponentProps<typeof NextLink> & {
   variant?: VariantProps<typeof buttonVariants>["variant"];
-  size?: VariantProps<typeof buttonVariants>["size"];
+  size?: VariantProps<typeof buttonInnerVariants>["size"];
   icon?: JSX.Element;
 };
 
@@ -29,15 +29,17 @@ const ButtonLink = ({
         "flex gap-4 text-xl font-medium",
         buttonVariants({
           variant,
-          size,
           className,
+          size,
         }),
       )}
       data-selected={isSelected ? "active" : "inactive"}
       {...rest}
     >
-      {icon}
-      {children}
+      <span className={cn(buttonInnerVariants({ variant, size }))}>
+        {icon}
+        {children}
+      </span>
     </NextLink>
   );
 };

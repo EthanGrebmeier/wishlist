@@ -76,12 +76,12 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
             )}
             <ButtonLink
               variant="secondary"
-              size="lg"
+              size="circle"
               href={
                 productReceipts.data ? "/my-gifts" : getWishlistSlug(wishlist)
               }
               icon={<ArrowLeft size={20} />}
-              className="absolute left-2 top-2 h-10 w-10 rounded-full p-0"
+              className="absolute left-2 top-2"
             >
               <span className="sr-only"> Back to {wishlist.name} </span>
             </ButtonLink>
@@ -91,21 +91,17 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                   product={product}
                   wishlistId={wishlist.id}
                   trigger={
-                    <Button
-                      className="h-10 w-10 rounded-full p-0"
-                      icon={<Pencil size={20} />}
-                    />
+                    <Button size={"circle"} icon={<Pencil size={20} />} />
                   }
                 />
               )}
               {product.url && (
                 <ButtonLink
                   variant="secondary"
-                  size="lg"
+                  size="circle"
                   target="_blank"
                   href={product.url}
                   icon={<ExternalLink size={20} />}
-                  className="h-10 w-10 rounded-full p-0"
                 ></ButtonLink>
               )}
             </div>

@@ -14,6 +14,13 @@ const buttonVariants = cva("relative", {
       ghost: "",
       link: "text-primary underline-offset-4 hover:underline",
     },
+    size: {
+      default: "",
+      sm: "",
+      lg: "",
+      icon: "",
+      circle: "rounded-full",
+    },
   },
   defaultVariants: {
     variant: "default",
@@ -41,6 +48,7 @@ export const buttonInnerVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        circle: "h-10 w-10 rounded-full",
       },
     },
     defaultVariants: {
@@ -66,7 +74,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, className }),
+          buttonVariants({ variant, className, size }),
           icon && "flex gap-4",
         )}
         ref={ref}
