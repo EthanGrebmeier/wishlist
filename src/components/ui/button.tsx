@@ -20,8 +20,8 @@ const buttonVariants = cva("relative", {
   },
 });
 
-const buttonInnerVariants = cva(
-  "inline-flex items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all",
+export const buttonInnerVariants = cva(
+  "inline-flex items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all gap-2 w-full",
   {
     variants: {
       variant: {

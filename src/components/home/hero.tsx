@@ -1,6 +1,5 @@
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
-import { Gift, BookUser, UserCircle, Scroll, Package } from "lucide-react";
+import { Gift, BookUser, UserCircle, Package } from "lucide-react";
 
 import React from "react";
 import Logo from "../navigation/logo";
@@ -9,8 +8,6 @@ import ButtonLink from "../ui/button-link";
 import FlyingIcon from "./flying-icon";
 
 const Hero = () => {
-  const shouldNotAnimate = useReducedMotion();
-
   return (
     <div className=" flex min-h-[calc(100svh-240px)] w-full flex-col items-center justify-center pt-24">
       <div className="relative flex h-fit w-fit flex-col items-center justify-center ">
