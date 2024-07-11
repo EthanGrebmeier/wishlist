@@ -30,8 +30,9 @@ const WishlistPage = async () => {
       <CreateWishlist
         trigger={
           <Button
-            className="fixed bottom-4 left-1 z-10 flex h-11 w-11 rounded-full border-2 border-black bg-green-200 p-2 md:hidden"
-            icon={<PlusIcon size={20} />}
+            size="circle"
+            className="fixed bottom-4 left-1 z-10  md:hidden"
+            icon={<PlusIcon size={25} />}
           >
             {/* <span> Create Wishlist </span> */}
           </Button>

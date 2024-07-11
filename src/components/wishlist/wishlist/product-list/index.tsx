@@ -18,17 +18,18 @@ const ProductList = ({
   hideStatus = false,
 }: ProductListProps) => {
   return (
-    <ul className="grid gap-4 gap-y-6 xs:grid-cols-2 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
+    <ul className="grid grid-cols-2 gap-2 gap-y-6 sm:gap-4 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
       {products
         .sort(sortProductsByPriority)
         .sort((a) => (a.commitments.length ? 1 : -1))
-        .map((product) => (
+        .map((product, index) => (
           <Product
             wishlistColor={wishlistColor}
             canUserEdit={canUserEdit}
             product={product}
             hideStatus={hideStatus}
             key={product.id}
+            animationDelay={0.1 * index}
           />
         ))}
     </ul>

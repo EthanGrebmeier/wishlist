@@ -8,11 +8,13 @@ import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistE
 type ListItemServerWrapperProps = {
   session: Session;
   wishlist: WishlistWithProducts;
+  animationDelay?: number;
 };
 
 const ListItemServerWrapper = async ({
   session,
   wishlist,
+  animationDelay,
 }: ListItemServerWrapperProps) => {
   const wishlistShareType = await getSharedUserType({
     wishlistId: wishlist.id,
@@ -31,6 +33,7 @@ const ListItemServerWrapper = async ({
       wishlist={wishlist}
       canUserEdit={canUserEdit}
       userType={wishlistShareType}
+      animationDelay={animationDelay}
     />
   );
 };

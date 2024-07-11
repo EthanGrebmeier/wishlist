@@ -41,9 +41,10 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
       <DrawerTrigger asChild>
         <Button
           variant="default"
-          className="fixed bottom-4 right-1 z-10 flex h-11 w-11 rounded-full border-2 border-black bg-green-200 p-2 lg:hidden"
+          size="circle"
+          className="fixed bottom-4 right-1 z-10 lg:hidden"
         >
-          <Menu className="h-full w-full" />
+          <Menu size={25} />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="mx-auto max-w-[440px] ">

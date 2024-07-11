@@ -10,13 +10,14 @@ type ListViewProps = {
 
 const ListView = async ({ wishlists, session }: ListViewProps) => {
   return (
-    <ul className="grid gap-4 px-2 py-4 sm:grid-cols-2 md:px-6 lg:grid-cols-3 xl:grid-cols-4">
+    <ul className="grid grid-cols-2 gap-4 px-2 py-4 md:px-6 lg:grid-cols-3 xl:grid-cols-4">
       {wishlists.length ? (
-        wishlists.map((wishlist) => (
+        wishlists.map((wishlist, index) => (
           <ListItemServerWrapper
             session={session}
             wishlist={wishlist}
             key={wishlist.id}
+            animationDelay={index * 0.1}
           />
         ))
       ) : (

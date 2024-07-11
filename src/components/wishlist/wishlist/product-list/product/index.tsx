@@ -11,14 +11,15 @@ import Priority from "./priority";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import type { z } from "zod";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
-import { Gift } from "lucide-react";
 import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
+import Card from "~/components/ui/card";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
   canUserEdit: boolean;
   wishlistColor: z.infer<typeof colorSchema>;
   hideStatus: boolean;
+  animationDelay: number;
 };
 
 const Product = ({
@@ -26,69 +27,60 @@ const Product = ({
   canUserEdit,
   wishlistColor,
   hideStatus,
+  animationDelay = 0,
 }: ProductProps) => {
-  const shouldNotTranslate = useReducedMotion();
-
   return (
-    <AnimatePresence>
-      <motion.li
-        whileHover={{
-          translateY: shouldNotTranslate ? 0 : -4,
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="group relative isolate "
-      >
-        <Link href={getProductSlug(product)}>
-          <div className="w-full overflow-hidden rounded-md border-2 border-black">
-            <div className="relative aspect-square w-full  bg-background  ">
-              {!hideStatus &&
-                (!!product.commitments.length ? (
-                  <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                    <p className="-mb-[1px] text-sm font-medium text-black">
-                      {" "}
-                      Purchased{" "}
-                    </p>
-                  </div>
-                ) : (
-                  <Priority
-                    className="absolute left-2 top-2"
-                    priorityLevel={product.priority}
-                  />
-                ))}
-              {product.imageUrl ? (
-                <ProductImage imageUrl={product.imageUrl} />
+    <Card
+      href={getProductSlug(product)}
+      animationDelay={animationDelay}
+      backgroundColor={getBackgroundColor(wishlistColor)}
+      topContent={
+        <>
+          {canUserEdit && (
+            <MenuProvider product={product} wishlistId={product.wishlistId}>
+              <div className="absolute right-2 top-2 z-10">
+                <ProductMenu />
+              </div>
+            </MenuProvider>
+          )}
+          <div className="relative aspect-square w-full  bg-background  ">
+            {!hideStatus &&
+              (!!product.commitments.length ? (
+                <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
+                  <p className="-mb-[1px] text-sm font-medium text-black">
+                    {" "}
+                    Purchased{" "}
+                  </p>
+                </div>
               ) : (
-                <PlaceholderImage />
-              )}
-            </div>
-
-            <div
-              className={cn(
-                "flex w-full items-center justify-between gap-4 border-t-2 border-black px-2 py-2",
-                getBackgroundColor(wishlistColor),
-              )}
-            >
-              <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md font-serif text-2xl group-hover:underline">
-                {" "}
-                {product.name}{" "}
-              </p>
-              {product.price && (
-                <p className="text-md font-medium"> ${product.price} </p>
-              )}
-            </div>
+                <Priority
+                  className="absolute left-2 top-2"
+                  priorityLevel={product.priority}
+                />
+              ))}
+            {product.imageUrl ? (
+              <ProductImage imageUrl={product.imageUrl} />
+            ) : (
+              <PlaceholderImage />
+            )}
           </div>
-        </Link>
-        {canUserEdit && (
-          <MenuProvider product={product} wishlistId={product.wishlistId}>
-            <div className="absolute right-2 top-2 z-10">
-              <ProductMenu />
-            </div>
-          </MenuProvider>
-        )}
-      </motion.li>
-    </AnimatePresence>
+        </>
+      }
+      bottomContent={
+        <>
+          <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md font-serif text-base group-hover:underline xs:text-xl sm:text-2xl">
+            {" "}
+            {product.name}{" "}
+          </p>
+          {product.price && (
+            <p className="text-sm font-medium sm:text-base">
+              {" "}
+              ${product.price}{" "}
+            </p>
+          )}
+        </>
+      }
+    ></Card>
   );
 };
 
