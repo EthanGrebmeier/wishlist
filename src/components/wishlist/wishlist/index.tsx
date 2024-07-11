@@ -85,7 +85,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
             <Button
               icon={<PlusIcon size={25} />}
               size="circle"
-              className="fixed bottom-4 left-1 z-10 "
+              className="fixed bottom-4 left-1 z-10 md:hidden"
             />
           }
         />
