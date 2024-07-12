@@ -3,10 +3,12 @@
 import Link from "~/components/ui/link";
 import { cn } from "~/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
 
 type ListItemProps = {
-  topContent: JSX.Element;
-  bottomContent: JSX.Element;
+  topContent: ReactNode;
+  bottomContent: ReactNode;
+  children?: ReactNode;
   backgroundColor?: string;
   href: string;
   animationDelay?: number;
@@ -15,6 +17,7 @@ type ListItemProps = {
 export const Card = ({
   topContent,
   bottomContent,
+  children,
   backgroundColor,
   href,
   animationDelay,
@@ -36,6 +39,7 @@ export const Card = ({
         }}
         className="group relative isolate"
       >
+        {children}
         <Link className="text-xl font-medium " href={href}>
           <div
             className={cn(

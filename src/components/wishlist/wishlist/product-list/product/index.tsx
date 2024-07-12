@@ -36,13 +36,6 @@ const Product = ({
       backgroundColor={getBackgroundColor(wishlistColor)}
       topContent={
         <>
-          {canUserEdit && (
-            <MenuProvider product={product} wishlistId={product.wishlistId}>
-              <div className="absolute right-2 top-2 z-10">
-                <ProductMenu />
-              </div>
-            </MenuProvider>
-          )}
           <div className="relative aspect-square w-full  bg-background  ">
             {!hideStatus &&
               (!!product.commitments.length ? (
@@ -80,7 +73,15 @@ const Product = ({
           )}
         </>
       }
-    ></Card>
+    >
+      {canUserEdit && (
+        <MenuProvider product={product} wishlistId={product.wishlistId}>
+          <div className="absolute right-2 top-2 z-10">
+            <ProductMenu />
+          </div>
+        </MenuProvider>
+      )}
+    </Card>
   );
 };
 

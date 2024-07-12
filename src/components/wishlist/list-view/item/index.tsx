@@ -24,17 +24,6 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
       animationDelay={animationDelay}
       topContent={
         <>
-          {wishlist.dueDate && (
-            <DueDate
-              className="absolute left-2 top-2 z-[10]"
-              wishlist={wishlist}
-            />
-          )}
-          {canUserEdit && (
-            <div className="absolute right-2 top-2 z-10">
-              <WishlistMenu wishlist={wishlist} />
-            </div>
-          )}
           <div className="relative aspect-square w-full overflow-hidden object-cover object-center">
             {wishlist.imageUrl ? (
               <img src={wishlist.imageUrl} className="w-full" />
@@ -53,7 +42,16 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
           {name}{" "}
         </h2>
       }
-    ></Card>
+    >
+      {wishlist.dueDate && (
+        <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />
+      )}
+      {canUserEdit && (
+        <div className="absolute right-2 top-2 z-10">
+          <WishlistMenu wishlist={wishlist} />
+        </div>
+      )}
+    </Card>
   );
 };
 
