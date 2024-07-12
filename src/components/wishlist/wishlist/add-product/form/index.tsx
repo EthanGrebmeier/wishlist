@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Pencil, Sparkles } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import ProductFormImagePreview from "./image/image-preview";
 
 type AddProductFormProps = {
   wishlistId: string;
@@ -59,6 +60,7 @@ export const AddProductForm = ({
   method = "create",
   product,
 }: AddProductFormProps) => {
+  const [formView, setFormView] = useState<"form" | "image">("form");
   const [imageUrl, setImageUrl] = useState(
     defaultValues?.images?.[0] ?? product?.imageUrl ?? undefined,
   );
@@ -116,6 +118,16 @@ export const AddProductForm = ({
       onSuccess();
     }
   }, [onSuccess, addResult, updateResult, method]);
+
+  if (formView === "image") {
+    return (
+      <ProductImageInput
+        setFormView={setFormView}
+        setImageUrl={setImageUrl}
+        imageUrl={imageUrl}
+      />
+    );
+  }
 
   return (
     <div>
@@ -217,7 +229,20 @@ export const AddProductForm = ({
             />
           </div>
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-[200px_auto] xs:gap-4">
-            <ProductImageInput setImageUrl={setImageUrl} imageUrl={imageUrl} />
+            <div className="">
+              <p className="mb-2 text-lg font-medium"> Image </p>
+              <div className="relative">
+                <ProductFormImagePreview imageUrl={imageUrl} />
+                <Button
+                  type="button"
+                  size="circle"
+                  onClick={() => setFormView("image")}
+                  className="absolute right-2 top-2"
+                >
+                  <Pencil size={20} />
+                </Button>
+              </div>
+            </div>
             <div className="flex flex-col justify-between gap-4 pb-2 xs:gap-0 ">
               <div className="flex flex-row gap-4 xs:flex-col xs:gap-0 ">
                 <FormField
