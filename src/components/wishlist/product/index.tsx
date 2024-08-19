@@ -66,7 +66,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {product.imageUrl ? (
               <img
-                className=" max-h-[calc(100svh-44px)] w-[600px]"
+                className="h-full w-full object-contain"
                 alt={product.name}
                 /* eslint-disable-next-line  */
                 src={product.imageUrl}
