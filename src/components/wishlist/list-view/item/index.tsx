@@ -6,6 +6,7 @@ import DueDate from "../../due-date";
 import { Scroll } from "lucide-react";
 import type { UserTypeWithOwner } from "~/types/user";
 import Card from "~/components/ui/card";
+import Image from "next/image";
 
 export type ListItemProps = {
   wishlist: WishlistWithProducts;
@@ -26,7 +27,12 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
         <>
           <div className="relative aspect-square w-full overflow-hidden object-cover object-center">
             {wishlist.imageUrl ? (
-              <img src={wishlist.imageUrl} className="w-full" />
+              <Image
+                alt={wishlist.name}
+                fill
+                src={wishlist.imageUrl}
+                className="w-full object-cover"
+              />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-green-100">
                 {" "}

@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
 import MockCard from "~/components/home/mock-card";
 import { type Session } from "next-auth";
+import Image from "next/image";
 
 type ModalProps = {
   wishlist: Wishlist;
@@ -146,11 +147,14 @@ const ModalContent = ({
               <div>
                 <p className="mb-2 text-xl font-medium "> From: </p>
                 <MockCard
+                  className="relative"
                   title={wishlist.name}
                   color={getBackgroundColor(wishlist.color) ?? "bg-white"}
                 >
                   {wishlist.imageUrl ? (
-                    <img
+                    <Image
+                      alt={wishlist.name}
+                      fill
                       src={wishlist.imageUrl}
                       className="w-full object-cover object-center"
                     />
@@ -245,9 +249,13 @@ const ModalContent = ({
                 )}
               >
                 <div className="flex items-center gap-2">
-                  <SharedUserThumbnail>
+                  <SharedUserThumbnail className="relative">
                     {sharedUser.image ? (
-                      <img src={sharedUser.image} />
+                      <Image
+                        alt={sharedUser.name ?? ""}
+                        fill
+                        src={sharedUser.image}
+                      />
                     ) : (
                       <div className="h-full w-full bg-green-300"> </div>
                     )}

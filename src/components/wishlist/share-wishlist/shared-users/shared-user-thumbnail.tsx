@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { type ReactNode } from "react";
 import { Tooltip } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
@@ -35,9 +36,9 @@ export const SharedUserThumbnailView = ({
     <div className="hidden xs:flex">
       {wishlistShares.slice(0, numThumbnails).map(({ users: user }) => (
         <Tooltip text={user.name ?? user.email} key={user.id}>
-          <SharedUserThumbnail className="[&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
+          <SharedUserThumbnail className="relative [&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
             {user.image ? (
-              <img src={user.image}></img>
+              <Image alt={user?.name ?? ""} fill src={user.image}></Image>
             ) : (
               <p>{user.name?.charAt(0)}</p>
             )}

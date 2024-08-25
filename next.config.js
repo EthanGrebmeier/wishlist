@@ -9,7 +9,7 @@ const config = {
   images: {
     remotePatterns: [
       {
-        hostname: "placehold.co",
+        hostname: "**",
       },
     ],
     dangerouslyAllowSVG: true,

@@ -5,6 +5,7 @@ import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import { Tooltip } from "~/components/ui/tooltip";
 import { UploadButton } from "~/lib/upload-thing";
 import PlaceholderImage from "../wishlist/product/placeholder-image";
+import Image from "next/image";
 
 type ImageUploadProps = {
   uploadedImageURL?: string;
@@ -21,12 +22,14 @@ const ImageUpload = ({
       <div className="flex w-full items-center ">
         <div className="relative w-full">
           <div className="aspect-square h-full w-full overflow-hidden rounded-md border-2 border-black">
-            <div className="h-full w-full ">
+            <div className="relative h-full w-full ">
               {uploadedImageURL ? (
-                <img
+                <Image
+                  alt="uploaded image"
+                  fill
                   src={uploadedImageURL}
                   className="h-full w-full object-cover object-center"
-                ></img>
+                />
               ) : (
                 <PlaceholderImage />
               )}

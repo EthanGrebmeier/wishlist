@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
@@ -20,9 +21,11 @@ const ProductFormImagePreview = ({
 
   return (
     <div className="relative w-full">
-      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-black object-cover object-center">
+      <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-black object-cover object-center">
         {debouncedUrl && isImageValid ? (
-          <img
+          <Image
+            alt=""
+            fill
             src={debouncedUrl}
             onError={() => setIsImageValid(false)}
             onLoad={() => setIsImageValid(true)}

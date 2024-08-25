@@ -10,6 +10,7 @@ import type {
   WishlistProductCommitmentsWithUser,
 } from "~/types/wishlist";
 import SharedUserThumbnail from "../share-wishlist/shared-users/shared-user-thumbnail";
+import Image from "next/image";
 
 type CommitProps = {
   product: WishlistProduct;
@@ -75,8 +76,12 @@ const Commit = ({
                 <span className="flex items-center gap-2">
                   {" "}
                   {commitment.user.image && (
-                    <SharedUserThumbnail className="h-7 w-7">
-                      <img src={commitment.user.image} />
+                    <SharedUserThumbnail className="relative h-7 w-7">
+                      <Image
+                        alt={commitment.user.name ?? ""}
+                        fill
+                        src={commitment.user.image}
+                      />
                     </SharedUserThumbnail>
                   )}
                   <span className="translate-y-[2px] font-serif">
