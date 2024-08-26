@@ -194,10 +194,7 @@ const ModalContent = ({
             <Button variant="secondary" onClick={() => setFrame("attribute")}>
               Back
             </Button>
-            <SubmitButton className="w-fit">
-              {" "}
-              {selectedUserId ? "Mark item received" : "Confirm"}
-            </SubmitButton>{" "}
+            <SubmitButton className="w-fit">Confirm</SubmitButton>
           </div>
         </div>
       </form>

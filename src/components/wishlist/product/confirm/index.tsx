@@ -27,7 +27,7 @@ const ConfirmReceipt = async ({
   return (
     <div
       className={cn(
-        "relative grid w-full grid-cols-[1fr_auto] justify-between overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full",
+        "relative grid w-full grid-cols-[1fr_auto] justify-between gap-2 overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full",
         className,
       )}
     >
