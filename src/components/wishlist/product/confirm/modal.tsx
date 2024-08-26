@@ -19,7 +19,14 @@ import type {
 } from "~/types/wishlist";
 import { AnimatePresence, motion } from "framer-motion";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
-import { ArrowRight, Check, Gift, PackageOpen, Scroll } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Gift,
+  PackageCheck,
+  PackageOpen,
+  Scroll,
+} from "lucide-react";
 import {
   Drawer,
   DrawerContent,
@@ -54,14 +61,14 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button size="lg" className="w-fit">
-            I have received this item
+          <Button icon={<PackageCheck size={25} />} className="h-fit w-fit">
+            {" "}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[480px] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-serif text-4xl font-medium">
-              Mark item as received
+              Received this item?
             </DialogTitle>
           </DialogHeader>
           <ModalContent
@@ -139,7 +146,7 @@ const ModalContent = ({
       >
         <div className="flex flex-col gap-6">
           <div className="flex flex-col ">
-            <p className="mb-6 text-xl font-medium">
+            <p className="mb-6 text-xl">
               {" "}
               Marking this item as received will move it{" "}
             </p>
@@ -189,9 +196,7 @@ const ModalContent = ({
             </Button>
             <SubmitButton className="w-fit">
               {" "}
-              {selectedUserId
-                ? "Mark item received"
-                : "Skip and mark item received"}
+              {selectedUserId ? "Mark item received" : "Confirm"}
             </SubmitButton>{" "}
           </div>
         </div>

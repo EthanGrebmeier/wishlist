@@ -27,24 +27,27 @@ const ConfirmReceipt = async ({
   return (
     <div
       className={cn(
-        "relative flex w-full flex-col justify-between overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full",
+        "relative grid w-full grid-cols-[1fr_auto] justify-between overflow-hidden rounded-md border-2 border-black p-4 md:w-1/2 lg:w-full",
         className,
       )}
     >
-      <h2 className=" font-serif text-2xl font-medium leading-tight">
-        Have you received this item?
-      </h2>
-      <p className="mb-4 text-balance font-sans leading-tight tracking-tight">
-        Mark this item as received to move it to{" "}
-        <span className="font-serif"> My Gifts </span>
-      </p>
-      <Modal
-        session={session}
-        product={product}
-        wishlistShares={wishlistShares}
-        wishlist={wishlist}
-      />
-      <AnimatedPackage />
+      <div>
+        <h2 className=" font-serif text-2xl font-medium leading-tight">
+          Received this item?
+        </h2>
+        <p className=" text-balance font-sans text-sm leading-tight tracking-tight">
+          Mark this item as received to move it to{" "}
+          <span className="font-serif"> My Gifts </span>
+        </p>
+      </div>
+      <div className="flex items-center">
+        <Modal
+          session={session}
+          product={product}
+          wishlistShares={wishlistShares}
+          wishlist={wishlist}
+        />
+      </div>
     </div>
   );
 };
