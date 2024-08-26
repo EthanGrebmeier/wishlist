@@ -86,8 +86,8 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button size="lg" className="w-fit">
-          Mark item as received
+        <Button icon={<PackageCheck size={25} />} className="h-fit w-fit">
+          {" "}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="mx-auto max-w-[480px] overflow-hidden">
