@@ -147,7 +147,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
             {!(isSecret && canUserEdit) && !productReceipts.data && (
               <div
                 className={cn(
-                  "flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4 md:w-1/2 lg:-mt-4 lg:w-full",
+                  "relative flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4  md:w-1/2 lg:w-full",
                   !canUserEdit ? "md:w-full" : "md:w-1/2",
                 )}
               >

@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { ShoppingBasket, Trash2, X } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
@@ -40,43 +40,49 @@ const Commit = ({
   if (productCommitments?.length) {
     if (hasUserCommitted) {
       return (
-        <div className="flex flex-col">
-          <h2 className="font-serif text-2xl font-medium">
-            Product Commitment
-          </h2>
-          <div className="flex flex-col justify-center  text-balance text-black">
-            <p className="mb-2 max-w-[340px] text-balance font-sans font-normal">
-              {" "}
-              <span className="font-serif text-lg"> You </span> are getting this
-              item!{" "}
-            </p>
-            <form action={() => executeUncommit({ productId: product.id })}>
-              <SubmitButton className="w-fit" size="lg" variant="destructive">
-                Cancel Commitment
-              </SubmitButton>
-            </form>
+        <div className="grid grid-cols-[1fr_auto] gap-2 ">
+          <div>
+            <h2 className="font-serif text-2xl font-medium">
+              Product Commitment
+            </h2>
+            <div className="flex flex-col justify-center  text-balance text-black">
+              <p className="max-w-[340px] text-balance text-sm font-normal">
+                {" "}
+                <span className="font-serif text-lg"> You </span> are getting
+                this item!{" "}
+              </p>
+            </div>
           </div>
+          <form
+            className="flex items-center"
+            action={() => executeUncommit({ productId: product.id })}
+          >
+            <SubmitButton
+              icon={<X size={25} />}
+              className="h-fit w-fit"
+              variant="destructive"
+            >
+              {" "}
+            </SubmitButton>
+          </form>
         </div>
       );
     }
 
     return (
       <div>
-        <h2 className="mb-2 font-serif text-2xl font-medium">
-          Product Commitment
-        </h2>
-        <ul className="flex w-full items-center text-balance font-serif  text-2xl font-medium text-black">
+        <ul className="flex w-full items-center font-serif text-xl font-medium text-black">
           {productCommitments.map((commitment) => (
             <li
               key={commitment.id}
-              className="flex items-center gap-4 overflow-hidden"
+              className="flex w-full items-center gap-4 overflow-hidden"
             >
-              <span className="w-fit flex-1 font-sans font-normal leading-tight">
+              <span className="w-fit flex-1 text-end font-sans font-normal leading-tight">
                 {" "}
                 <span className="flex items-center gap-2">
                   {" "}
                   {commitment.user.image && (
-                    <SharedUserThumbnail className="relative h-7 w-7">
+                    <SharedUserThumbnail className="relative size-10">
                       <Image
                         alt={commitment.user.name ?? ""}
                         fill
@@ -84,12 +90,10 @@ const Commit = ({
                       />
                     </SharedUserThumbnail>
                   )}
-                  <span className="translate-y-[2px] font-serif">
-                    {" "}
-                    {commitment.user.name}{" "}
-                  </span>
-                </span>{" "}
-                is getting this item!
+                  <p className="flex-1 translate-y-[2px]">
+                    {commitment.user.name} is getting this item!
+                  </p>
+                </span>
               </span>
             </li>
           ))}
@@ -106,14 +110,23 @@ const Commit = ({
         })
       }
       // className="rounded-md border-2 border-black bg-green-100 px-4 py-6 "
+      className="grid grid-cols-[1fr_auto] gap-2 "
     >
-      <h2 className="font-serif text-2xl font-medium">Product Commitment</h2>
-      <p className="mb-4 text-balance leading-tight tracking-tight">
-        Committing will let others know that you intend to purchase this item
-      </p>
-      <SubmitButton variant="default" size="lg" className="w-fit">
-        I will purchase this item
-      </SubmitButton>
+      <div className="-mt-1">
+        <h2 className="font-serif text-2xl font-medium">Commit to this item</h2>
+        <p className=" text-balance text-sm leading-tight tracking-tight">
+          Commit to let others know that you intend to purchase this item
+        </p>
+      </div>
+      <div className=" flex items-center">
+        <SubmitButton
+          icon={<ShoppingBasket size={25} />}
+          variant="default"
+          className="h-fit w-fit"
+        >
+          {" "}
+        </SubmitButton>
+      </div>
     </form>
   );
 };
