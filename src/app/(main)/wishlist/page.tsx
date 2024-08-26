@@ -5,6 +5,7 @@ import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
 import CreateWishlist from "~/components/wishlist/create-wishlist";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
+import ToggleGridDisplay from "~/components/wishlist/toggle-grid-display";
 import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
@@ -21,6 +22,9 @@ const WishlistPage = async () => {
 
           <div className="hidden md:block">
             <CreateWishlist />
+          </div>
+          <div className="sm:hidden">
+            <ToggleGridDisplay />
           </div>
         </TitleBar>
         <Suspense>

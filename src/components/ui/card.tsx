@@ -32,6 +32,7 @@ export const Card = ({
       transition={{
         delay: animationDelay,
       }}
+      className="transition-all"
     >
       <motion.div
         whileHover={{

@@ -11,6 +11,7 @@ import DueDate from "../../due-date";
 import MagicLink from "../../share-wishlist/magic-link/index";
 import type { UserTypeWithOwner } from "~/types/user";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
+import ToggleGridDisplay from "../../toggle-grid-display";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
@@ -52,7 +53,7 @@ const WishlistHeader = ({
               (share) => share.type !== "invitee",
             )}
           />
-          <div>
+          <div className="flex items-center gap-2">
             <ShareWishlist
               wishlistShares={wishlistShares}
               magicLink={
@@ -80,6 +81,9 @@ const WishlistHeader = ({
               userStatus={userStatus}
               userId={session.user.id}
             />
+            <div className="sm:hidden">
+              <ToggleGridDisplay />
+            </div>
           </div>
         </div>
       </div>

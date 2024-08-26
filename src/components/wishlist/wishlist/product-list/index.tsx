@@ -1,8 +1,12 @@
+"use client";
 import type { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 import Product from "./product";
 import { sortProductsByPriority } from "~/lib/wishlist/sortProductsByPriority";
 import type { z } from "zod";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
+import { cn } from "~/lib/utils";
+import { useAtom } from "jotai";
+import { gridDisplayAtom } from "~/store/grid-display";
 
 type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
@@ -17,8 +21,14 @@ const ProductList = ({
   wishlistColor,
   hideStatus = false,
 }: ProductListProps) => {
+  const [gridDisplay] = useAtom(gridDisplayAtom);
   return (
-    <ul className="grid grid-cols-2 gap-2 gap-y-6 sm:gap-4 md:grid-cols-3 md:gap-y-6 xl:grid-cols-4">
+    <ul
+      className={cn(
+        "grid grid-cols-2 gap-2 gap-y-6 sm:grid-cols-3 sm:gap-4 md:gap-y-6 xl:grid-cols-4",
+        gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
+      )}
+    >
       {products
         .sort(sortProductsByPriority)
         .sort((a) => (a.commitments.length ? 1 : -1))

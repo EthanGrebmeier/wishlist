@@ -1,31 +1,24 @@
-import type { WishlistWithProducts } from "~/types/wishlist";
-import type { Session } from "next-auth";
-import { Frown } from "lucide-react";
-import ListItemServerWrapper from "./item/server-wrapper";
+"use client";
+
+import { useAtom } from "jotai";
+import { gridDisplayAtom } from "~/store/grid-display";
+import { cn } from "~/lib/utils";
 
 type ListViewProps = {
-  wishlists: WishlistWithProducts[];
-  session: Session;
+  children?: React.ReactNode;
 };
 
-const ListView = async ({ wishlists, session }: ListViewProps) => {
+const ListView = ({ children }: ListViewProps) => {
+  const [gridDisplay] = useAtom(gridDisplayAtom);
+
   return (
-    <ul className="grid grid-cols-2 gap-4 px-2 py-4 md:px-6 lg:grid-cols-3 xl:grid-cols-4">
-      {wishlists.length ? (
-        wishlists.map((wishlist, index) => (
-          <ListItemServerWrapper
-            session={session}
-            wishlist={wishlist}
-            key={wishlist.id}
-            animationDelay={index * 0.1}
-          />
-        ))
-      ) : (
-        <div className="flex gap-4">
-          <p className="font-serif text-3xl"> No wishlists found </p>
-          <Frown size={30} />
-        </div>
+    <ul
+      className={cn(
+        "grid grid-cols-2 gap-4 px-2 py-4 sm:grid-cols-3 md:px-6 xl:grid-cols-4",
+        gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
       )}
+    >
+      {children}
     </ul>
   );
 };
