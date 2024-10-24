@@ -11,7 +11,7 @@ const PriceInput = React.forwardRef<
       <p className="absolute left-2 top-1/2 mt-[.5px] -translate-y-1/2 font-sans font-medium">
         $
       </p>
-      <Input type="text" className={cn("pl-[18px]", className)} {...props} />
+      <Input type="text" className={cn("pl-[22px]", className)} {...props} />
     </div>
   );
 });

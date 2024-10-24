@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import useMeasure from "react-use-measure";
+import { motion } from "framer-motion";
 
 import { AddProductForm } from "./form";
 import ScrapeInput from "./scrape-input";
@@ -41,7 +43,8 @@ export const AddProduct = ({
   >(undefined);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const innerContainerRef = useRef<HTMLDivElement>(null);
+  const [desktopRef, desktopDimensions] = useMeasure();
+  const [drawerRef, drawerDimensions] = useMeasure();
 
   useEffect(() => {
     if (!isOpen) {
@@ -73,22 +76,31 @@ export const AddProduct = ({
           <DialogHeader>
             <h1 className="font-serif text-4xl font-medium">Add Product </h1>
           </DialogHeader>
-          <div>
-            {view === "scrape" ? (
-              <ScrapeInput setView={setView} setScrapedData={setScrapedData} />
-            ) : (
-              <AddProductForm
-                method="create"
-                setView={setView}
-                defaultValues={scrapedData}
-                wishlistId={wishlistId}
-                onSuccess={() => {
-                  setIsOpen(false);
-                  setScrapedData(undefined);
-                }}
-              />
-            )}
-          </div>
+          <motion.div
+            animate={{
+              height: desktopDimensions?.height,
+            }}
+          >
+            <div ref={desktopRef}>
+              {view === "scrape" ? (
+                <ScrapeInput
+                  setView={setView}
+                  setScrapedData={setScrapedData}
+                />
+              ) : (
+                <AddProductForm
+                  method="create"
+                  setView={setView}
+                  defaultValues={scrapedData}
+                  wishlistId={wishlistId}
+                  onSuccess={() => {
+                    setIsOpen(false);
+                    setScrapedData(undefined);
+                  }}
+                />
+              )}
+            </div>
+          </motion.div>
         </DialogContent>
       </Dialog>
     );
@@ -109,11 +121,11 @@ export const AddProduct = ({
             Add Product
           </DrawerTitle>
         </DrawerHeader>
-        <div
-          className="max-h-[80svh] overflow-y-auto p-4 transition-all"
-          // style={{ height }}
+        <motion.div
+          className="max-h-[80svh] overflow-y-auto p-4"
+          animate={{ height: drawerDimensions?.height + 32 }}
         >
-          <div ref={innerContainerRef}>
+          <div ref={drawerRef}>
             {view === "scrape" ? (
               <ScrapeInput
                 setView={setView}
@@ -133,7 +145,7 @@ export const AddProduct = ({
               />
             )}
           </div>
-        </div>
+        </motion.div>
       </DrawerContent>
     </Drawer>
   );

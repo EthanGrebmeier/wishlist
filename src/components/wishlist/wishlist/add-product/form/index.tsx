@@ -248,7 +248,7 @@ export const AddProductForm = ({
                 <FormField
                   name="price"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-[180px]">
                       <FormLabel>Price</FormLabel>
                       <FormControl>
                         <PriceInput type="text" {...field} />
@@ -257,8 +257,8 @@ export const AddProductForm = ({
                     </FormItem>
                   )}
                 />
-                <div className="space-y-2">
-                  <label className="text-lg font-medium" htmlFor="quantity">
+                <div className="w-[180px] space-y-2">
+                  <label className=" text-lg font-medium" htmlFor="quantity">
                     Quantity
                   </label>
                   <Incrementor

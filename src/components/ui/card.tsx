@@ -25,15 +25,7 @@ export const Card = ({
   const shouldNotTranslate = useReducedMotion();
 
   return (
-    <motion.li
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{
-        delay: animationDelay,
-      }}
-      className="transition-all"
-    >
+    <motion.li className="transition-all">
       <motion.div
         whileHover={{
           translateY: shouldNotTranslate ? 0 : -4,
