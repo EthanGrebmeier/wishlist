@@ -23,9 +23,9 @@ const ResetLink = ({ wishlistId }: ResetLinkProps) => {
         <SubmitButton
           icon={<RefreshCcw size={20} />}
           variant="ghost"
-          className="p-2"
+          className="border-l-2 border-l-black  transition-colors  hover:bg-red-300"
         >
-          <></>
+          {" "}
         </SubmitButton>
       </Tooltip>
     </form>

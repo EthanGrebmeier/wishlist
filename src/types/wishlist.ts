@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import type { privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import type {
+  magicWishlistLinks,
   productCommitments,
   products,
   wishlistShares,
@@ -32,3 +33,5 @@ export interface WishlistSharesWithUser extends WishlistShares {
   users: User;
 }
 export type WishlistPrivacy = z.infer<typeof privacyTypeSchema>;
+
+export type WishlistMagicLink = typeof magicWishlistLinks.$inferSelect;

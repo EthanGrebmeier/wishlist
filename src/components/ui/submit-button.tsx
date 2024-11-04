@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { Button, type buttonVariants } from "./button";
 import { Loader } from "lucide-react";
-import type { ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
 
 type SubmitButtonProps = {
@@ -14,30 +14,40 @@ type SubmitButtonProps = {
   className?: string;
 };
 
-export const SubmitButton = ({
-  children,
-  icon,
-  variant = "default",
-  size = "default",
-  className,
-}: SubmitButtonProps) => {
-  const formStatus = useFormStatus();
-  return (
-    <Button
-      icon={
-        formStatus.pending ? (
-          <Loader width={20} height={20} className="animate-spin" />
-        ) : (
-          icon
-        )
-      }
-      type="submit"
-      variant={variant}
-      size={size}
-      className={className}
-      disabled={formStatus.pending}
-    >
-      {children ?? "Submit"}
-    </Button>
-  );
-};
+export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
+  (
+    {
+      children,
+      icon,
+      variant = "default",
+      size = "default",
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const formStatus = useFormStatus();
+    return (
+      <Button
+        icon={
+          formStatus.pending ? (
+            <Loader width={20} height={20} className="animate-spin" />
+          ) : (
+            icon
+          )
+        }
+        type="submit"
+        variant={variant}
+        size={size}
+        className={className}
+        disabled={formStatus.pending}
+        ref={ref}
+        {...props}
+      >
+        {children ?? "Submit"}
+      </Button>
+    );
+  },
+);
+
+SubmitButton.displayName = "SubmitButton";

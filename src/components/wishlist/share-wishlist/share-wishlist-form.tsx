@@ -17,14 +17,14 @@ const ShareWishlistForm = ({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div
-      className="relative"
+      className="[&>* data-lastpass-icon-root]:hidden relative flex flex-col gap-2"
       onFocus={() => setIsOpen(true)}
       onBlur={() => setIsOpen(false)}
     >
-      <div className="space-y-2">
+      <div className=" flex flex-col gap-2">
         <div className="flex flex-col">
           {" "}
-          <label className="text-lg font-medium" htmlFor="email">
+          <label className="text-lg font-medium" htmlFor="email-search">
             Find User By Email
           </label>
           <p className="text-sm tracking-tight">
@@ -33,8 +33,11 @@ const ShareWishlistForm = ({
           </p>
         </div>
         <Input
-          name="email"
-          type="text"
+          data-1p-ignore
+          data-lpignore
+          name="email-search"
+          id="email-search"
+          type="search"
           onChange={(e) => setEmailInput(e.target.value)}
           value={emailInput}
           autoComplete="off"

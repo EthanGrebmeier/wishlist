@@ -28,7 +28,7 @@ const buttonVariants = cva("relative", {
 });
 
 export const buttonInnerVariants = cva(
-  "inline-flex items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all gap-2 w-full",
+  "inline-flex items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all gap-2 w-full hover:disabled:-translate-y-1.5",
   {
     variants: {
       variant: {
@@ -40,7 +40,7 @@ export const buttonInnerVariants = cva(
           "bg-secondary hover:bg-secondary/90 -translate-y-1.5 hover:translate-y-[-2px] active:translate-y-[0px]",
         outline:
           "border-2 border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
-        ghost: "",
+        ghost: "border-none",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -63,11 +63,21 @@ export interface ButtonProps
     VariantProps<typeof buttonInnerVariants> {
   asChild?: boolean;
   icon?: React.ReactNode;
+  innerClassName?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, icon, children, ...props },
+    {
+      className,
+      innerClassName,
+      variant,
+      size,
+      asChild = false,
+      icon,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const Comp = asChild ? Slot : "button";
@@ -80,7 +90,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        <span className={cn(buttonInnerVariants({ variant, size }))}>
+        <span
+          className={cn(buttonInnerVariants({ variant, size }), innerClassName)}
+        >
           {icon}
           {children}
         </span>

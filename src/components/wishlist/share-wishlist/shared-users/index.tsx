@@ -33,11 +33,13 @@ const SharedUsers = ({
 
   return (
     <div className="space-y-2">
-      <h2 className="text-lg font-medium"> Currently Shared With </h2>
+      <div className="flex justify-between">
+        <h2 className="text-lg font-medium"> Currently Shared With </h2>
+      </div>
       <div
         className={cn(
-          "grid max-h-[260px] w-full gap-2 overflow-y-auto  pb-2",
-          canUserEdit && "border-b-2 border-b-black pb-6",
+          "grid max-h-[360px] w-full gap-2 overflow-y-auto  pb-2",
+          canUserEdit && " pb-6",
         )}
       >
         {wishlistShares.length ? (

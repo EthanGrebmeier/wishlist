@@ -339,10 +339,7 @@ export const getMagicLink = makeProtectedAction(
     });
 
     if (magicLink) {
-      return {
-        message: "success",
-        magicLink,
-      };
+      return magicLink;
     } else {
       const newLink = await generateMagicLink({
         wishlistId,
@@ -352,10 +349,7 @@ export const getMagicLink = makeProtectedAction(
         throw new Error("Couldn't generate magic link");
       }
 
-      return {
-        message: "success",
-        magicLink: newLink.data.magicLink,
-      };
+      return magicLink;
     }
   },
 );

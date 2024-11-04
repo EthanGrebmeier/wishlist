@@ -1,29 +1,16 @@
+"use client";
 import React from "react";
-import { getMagicLink } from "~/server/actions/wishlist";
 import ResetLink from "./reset-link";
-import CopyButton from "./copy-button";
-import { env } from "process";
+import { getMagicLinkUrl } from "~/lib/wishlist/getMagicLinkUrl";
 
 type MagicLinkProps = {
   wishlistId: string;
+  magicLinkId?: string;
 };
-const MagicLink = async ({ wishlistId }: MagicLinkProps) => {
-  const magicLinkQuery = await getMagicLink({ wishlistId });
-
-  const magicLink = magicLinkQuery.data?.magicLink;
-
-  if (!magicLink) {
-    return null;
-  }
-
-  const magicLinkBase = env.VERCEL_PROJECT_PRODUCTION_URL
-    ? "www.fillaneed.xyz"
-    : "localhost:3000";
-
-  const magicLinkUrl = `https://${magicLinkBase}/wishlist/join/${magicLink.id}`;
-
+const MagicLink = ({ wishlistId, magicLinkId }: MagicLinkProps) => {
+  const magicLinkUrl = magicLinkId ? getMagicLinkUrl(magicLinkId) : undefined;
   return (
-    <div className="border-b-2 border-b-black pb-6">
+    <div>
       <div className="flex flex-col">
         <h3 className="font-sans text-lg font-medium">Magic Link</h3>
         <p className="mb-2 text-balance font-sans text-sm tracking-tight">
@@ -33,13 +20,12 @@ const MagicLink = async ({ wishlistId }: MagicLinkProps) => {
           <div className="flex flex-initial flex-row items-center">
             <div className="w-full min-w-0">
               <div className="flex flex-col gap-2">
-                <div className="flex w-full min-w-0 flex-shrink items-center rounded-md border-2 border-black pl-2">
+                <div className="flex w-full min-w-0 flex-shrink items-center overflow-hidden rounded-md border-2 border-black pl-2">
                   <span className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm">
-                    {magicLinkUrl}
+                    {magicLinkUrl ? magicLinkUrl : "Loading..."}
                   </span>
                   <ResetLink wishlistId={wishlistId} />
                 </div>
-                <CopyButton textToCopy={magicLinkUrl} />
               </div>
             </div>
           </div>

@@ -56,27 +56,6 @@ const WishlistHeader = ({
           <div className="flex items-center gap-2">
             <ShareWishlist
               wishlistShares={wishlistShares}
-              magicLink={
-                <Suspense
-                  fallback={
-                    <div className="h-[206px] w-[324px] pb-6">
-                      <div className="flex flex-col">
-                        <h3 className="font-sans text-lg font-medium">
-                          Magic Link
-                        </h3>
-                        <p className="mb-2 text-balance font-sans text-sm tracking-tight">
-                          Share this link with anyone to grant access to this
-                          wishlist
-                        </p>
-                        <div className="skeleton h-12 w-full"></div>
-                        <div className="skeleton h-12 w-24"></div>
-                      </div>
-                    </div>
-                  }
-                >
-                  <MagicLink wishlistId={wishlist.id} />
-                </Suspense>
-              }
               wishlist={wishlist}
               userStatus={userStatus}
               userId={session.user.id}
