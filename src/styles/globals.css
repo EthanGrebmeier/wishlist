@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html body[data-scroll-locked] {
+    overflow: visible !important;
+    margin-right: 0 !important;
+  }
   :root {
     --background: 38 100% 98%;
     --foreground: 0 0% 3.9%;

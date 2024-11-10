@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import useMeasure from "react-use-measure";
 import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "~/lib/utils";
+import { motion } from "framer-motion";
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -38,22 +40,31 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DrawerPortal>
-    <DrawerOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border-l-2 border-r-2 border-t-2 border-black bg-background",
-        className,
-      )}
-      {...props}
-    >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-black/90" />
-      {children}
-    </DrawerPrimitive.Content>
-  </DrawerPortal>
-));
+>(({ className, children, ...props }, ref) => {
+  const [innerRef, dimensions] = useMeasure();
+  return (
+    <DrawerPortal>
+      <DrawerOverlay />
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border-l-2 border-r-2 border-t-2 border-black bg-background",
+          className,
+        )}
+        {...props}
+      >
+        <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-black/90" />
+        <motion.div
+          animate={{
+            height: dimensions.height,
+          }}
+        >
+          <div ref={innerRef}>{children}</div>
+        </motion.div>
+      </DrawerPrimitive.Content>
+    </DrawerPortal>
+  );
+});
 DrawerContent.displayName = "DrawerContent";
 
 const DrawerHeader = ({
@@ -61,7 +72,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    className={cn("grid gap-1.5 p-4 py-2 text-left", className)}
     {...props}
   />
 );

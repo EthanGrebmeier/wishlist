@@ -34,10 +34,14 @@ const Tooltip = ({
   children,
   delayMs = 100,
 }: {
-  text: string;
+  text?: string;
   children: React.ReactNode;
   delayMs?: number;
 }) => {
+  if (!text) {
+    return <>{children}</>;
+  }
+
   return (
     <TooltipProvider>
       <ShadTooltip delayDuration={delayMs}>

@@ -24,6 +24,7 @@ const ProductFormImagePreview = ({
       <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-black object-cover object-center">
         {debouncedUrl && isImageValid ? (
           <Image
+            className="object-cover"
             alt=""
             fill
             src={debouncedUrl}

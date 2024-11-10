@@ -82,7 +82,22 @@ const FormItem = React.forwardRef<
     </FormItemContext.Provider>
   );
 });
+
 FormItem.displayName = "FormItem";
+
+const HorizontalFormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId();
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn(className)} {...props} />
+    </FormItemContext.Provider>
+  );
+});
+
+HorizontalFormItem.displayName = "HorizontalFormItem";
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
@@ -169,6 +184,7 @@ export {
   useFormField,
   Form,
   FormItem,
+  HorizontalFormItem,
   FormLabel,
   FormControl,
   FormDescription,

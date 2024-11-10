@@ -28,7 +28,7 @@ const ProductImageInput = ({
     <div className="space-y-2">
       <div className="mb-8 ">
         <div className="relative grid w-full gap-6">
-          <div className="relative  mx-auto max-w-36 md:max-w-60">
+          <div className="relative  w-full md:max-w-60">
             <p className="font-sans text-lg font-medium"> Product Image </p>
             <ProductFormImagePreview imageUrl={imageUrl} />
           </div>
@@ -44,7 +44,6 @@ const ProductImageInput = ({
                 />
               </div>
             </div>
-            <p> Or </p>
             <UploadButton
               className=" ut-button:border ut-button:border-black ut-button:bg-transparent ut-button:text-black"
               endpoint="imageUploader"

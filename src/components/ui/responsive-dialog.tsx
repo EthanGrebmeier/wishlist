@@ -46,7 +46,7 @@ const ResponsiveDialog = ({
 
   if (isDesktop) {
     return (
-      <Dialog>
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className={bodyClassName}>
           <DialogHeader className={cn(headerClassName)}>
@@ -70,7 +70,14 @@ const ResponsiveDialog = ({
           <DrawerTitle className="text-xl font-semibold">{title}</DrawerTitle>
           {description && <DrawerDescription>{description}</DrawerDescription>}
         </DrawerHeader>
-        <div className={cn("p-4", bodyClassName)}>{children}</div>
+        <div
+          className={cn(
+            "max-h-[calc(100svh-200px)] overflow-y-auto p-4",
+            bodyClassName,
+          )}
+        >
+          {children}
+        </div>
         {footer && <DrawerFooter>{footer}</DrawerFooter>}
       </DrawerContent>
     </Drawer>

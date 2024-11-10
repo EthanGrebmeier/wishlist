@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -16,14 +16,8 @@ import { AddProductForm } from "./form";
 import ScrapeInput from "./scrape-input";
 import type { z } from "zod";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
-import { useMediaQuery } from "usehooks-ts";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer";
+import ResponsiveDialog from "~/components/ui/responsive-dialog";
+import { SubmitButton } from "~/components/ui/submit-button";
 
 type AddProduct = {
   wishlistId: string;
@@ -41,10 +35,8 @@ export const AddProduct = ({
   const [scrapedData, setScrapedData] = useState<
     undefined | z.infer<typeof partialCompiledProductDataSchema>
   >(undefined);
-
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [desktopRef, desktopDimensions] = useMeasure();
-  const [drawerRef, drawerDimensions] = useMeasure();
+  const addProductFrame = useState<"image" | "scrape" | "form">("scrape");
+  const [wrapperRef, dimensions] = useMeasure();
 
   useEffect(() => {
     if (!isOpen) {
@@ -62,92 +54,66 @@ export const AddProduct = ({
     }
   }, [view]);
 
-  if (isDesktop) {
-    return (
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          {trigger ?? (
-            <Button icon={<PlusIcon size={20} />}>
-              <span className=" hidden lg:block"> Add Product</span>
-            </Button>
-          )}
-        </DialogTrigger>
-        <DialogContent className="max-h-[80svh] overflow-y-auto">
-          <DialogHeader>
-            <h1 className="font-serif text-4xl font-medium">Add Product </h1>
-          </DialogHeader>
-          <motion.div
-            animate={{
-              height: desktopDimensions?.height,
-            }}
-          >
-            <div ref={desktopRef}>
-              {view === "scrape" ? (
-                <ScrapeInput
-                  setView={setView}
-                  setScrapedData={setScrapedData}
-                />
-              ) : (
-                <AddProductForm
-                  method="create"
-                  setView={setView}
-                  defaultValues={scrapedData}
-                  wishlistId={wishlistId}
-                  onSuccess={() => {
-                    setIsOpen(false);
-                    setScrapedData(undefined);
-                  }}
-                />
-              )}
-            </div>
-          </motion.div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  const footerContent = useMemo(() => {
+    if (view === "scrape") {
+      return (
+        <>
+          <Button onClick={() => setView("form")}>Back</Button>
+          <SubmitButton>Scrape</SubmitButton>
+        </>
+      );
+    }
+    if (view === "form") {
+      return (
+        <>
+          <SubmitButton>Add Product</SubmitButton>
+        </>
+      );
+    }
+    if (view === "image") {
+      return (
+        <>
+          <Button onClick={() => setView("form")}>Back</Button>
+        </>
+      );
+    }
+  }, [view]);
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger asChild>
-        {trigger ?? (
+    <ResponsiveDialog
+      title="Add Product"
+      trigger={
+        trigger ?? (
           <Button icon={<PlusIcon size={20} />}>
             <span className=" hidden lg:block"> Add Product</span>
           </Button>
-        )}
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="border-b-2 border-black md:border-none md:pb-0">
-          <DrawerTitle className=" font-serif text-4xl font-medium ">
-            Add Product
-          </DrawerTitle>
-        </DrawerHeader>
-        <motion.div
-          className="max-h-[80svh] overflow-y-auto p-4"
-          animate={{ height: drawerDimensions?.height + 32 }}
-        >
-          <div ref={drawerRef}>
-            {view === "scrape" ? (
-              <ScrapeInput
-                setView={setView}
-                setScrapedData={setScrapedData}
-                // onStatusChange={recalculateHeight}
-              />
-            ) : (
-              <AddProductForm
-                method="create"
-                setView={setView}
-                defaultValues={scrapedData}
-                wishlistId={wishlistId}
-                onSuccess={() => {
-                  setIsOpen(false);
-                  setScrapedData(undefined);
-                }}
-              />
-            )}
-          </div>
-        </motion.div>
-      </DrawerContent>
-    </Drawer>
+        )
+      }
+      footer={footerContent}
+    >
+      <motion.div
+        animate={{
+          height: dimensions?.height,
+        }}
+      >
+        <div ref={wrapperRef}>
+          {view === "scrape" ? (
+            <ScrapeInput setView={setView} setScrapedData={setScrapedData} />
+          ) : (
+            <AddProductForm
+              method="create"
+              setView={setView}
+              defaultValues={scrapedData}
+              wishlistId={wishlistId}
+              onSuccess={() => {
+                setIsOpen(false);
+                setScrapedData(undefined);
+              }}
+            />
+          )}
+        </div>
+      </motion.div>
+    </ResponsiveDialog>
   );
 };
 

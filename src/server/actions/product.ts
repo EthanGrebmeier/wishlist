@@ -20,24 +20,27 @@ import { getProduct } from "~/lib/wishlist/product/getProduct";
 import { revalidatePath } from "next/cache";
 import { generateId } from "~/lib/utils";
 import { deleteFile } from "../uploadthing";
-import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 export const updateProduct = makeProtectedAction(
   productSchema,
   async (product, { session }) => {
-    // confirm user can perform this action
-    const dbProduct = await getProduct({ productId: product.id });
-
-    if (!dbProduct) {
-      throw new Error("Product not found");
-    }
     // ensure user is an editor of the wishlist
     await checkUserIsWishlistEditor({
-      wishlistId: dbProduct.wishlistId,
+      wishlistId: product.wishlistId,
       session,
     });
 
-    await db.update(products).set(product).where(eq(products.id, product.id));
+    await db
+      .insert(products)
+      .values({
+        ...product,
+        createdById: session.user.id,
+        updatedById: session.user.id,
+      })
+      .onConflictDoUpdate({
+        target: products.id,
+        set: product,
+      });
 
     await db
       .update(wishlists)
@@ -46,6 +49,7 @@ export const updateProduct = makeProtectedAction(
       })
       .where(eq(wishlists.id, product.wishlistId));
 
+    console.log("success", product);
     return {
       message: "success",
     };
