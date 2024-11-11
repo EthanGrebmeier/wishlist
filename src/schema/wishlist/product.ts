@@ -13,12 +13,12 @@ export const productInputSchema = z.object({
       message: "Product Name is required",
     })
     .max(255),
-  description: z.string().max(2000).optional(),
-  brand: z.string().max(255).optional(),
-  imageUrl: z.string().max(255).optional(),
-  price: z.string().max(15).optional(),
-  quantity: z.string().optional(),
-  url: z.string().max(255).optional(),
+  description: z.string().max(2000).optional().nullable().default(""),
+  brand: z.string().max(255).optional().nullable().default(""),
+  imageUrl: z.string().max(255).optional().nullable().default(""),
+  price: z.string().max(15).optional().nullable().default(""),
+  quantity: z.string().optional().nullable().default(""),
+  url: z.string().max(255).optional().nullable().default(""),
   priority: productPrioritySchema.default("normal"),
 });
 

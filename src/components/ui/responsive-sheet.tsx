@@ -25,6 +25,8 @@ type ResponsiveSheetProps = {
   footer?: React.ReactNode;
   header?: React.ReactNode;
   onClose?: () => void;
+  isOpen?: boolean;
+  setIsOpen?: (open: boolean) => void;
 };
 
 const ResponsiveSheet = ({
@@ -34,22 +36,23 @@ const ResponsiveSheet = ({
   header,
   footer,
   onClose,
+  isOpen,
+  setIsOpen,
 }: ResponsiveSheetProps) => {
-  const formRef = useRef();
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
 
   const onOpenChange = (open: boolean) => {
     if (!open && onClose) {
       onClose();
     }
-    setIsOpen(open);
+    setIsOpen ? setIsOpen(open) : setInternalIsOpen(open);
   };
 
   if (isDesktop) {
     return (
-      <Sheet open={isOpen} onOpenChange={onOpenChange}>
-        <SheetTrigger>{trigger}</SheetTrigger>
+      <Sheet open={isOpen ?? internalIsOpen} onOpenChange={onOpenChange}>
+        {trigger && <SheetTrigger>{trigger}</SheetTrigger>}
 
         <SheetContent
           side="right"
@@ -69,8 +72,8 @@ const ResponsiveSheet = ({
   }
 
   return (
-    <Drawer open={isOpen} onOpenChange={onOpenChange}>
-      <DrawerTrigger>{trigger}</DrawerTrigger>
+    <Drawer open={internalIsOpen} onOpenChange={onOpenChange}>
+      {trigger && <DrawerTrigger>{trigger}</DrawerTrigger>}
       <DrawerContent className="mx-auto max-w-[440px] overflow-hidden">
         <DrawerHeader className="flex h-14 flex-row items-center justify-between border-b border-black">
           <DrawerTitle className="font-serif text-2xl font-medium">

@@ -119,11 +119,7 @@ const Commit = ({
         </p>
       </div>
       <div className=" flex items-center">
-        <SubmitButton
-          icon={<ShoppingBasket size={25} />}
-          variant="default"
-          className="h-fit w-fit"
-        >
+        <SubmitButton icon={<ShoppingBasket size={25} />} variant="default">
           {" "}
         </SubmitButton>
       </div>

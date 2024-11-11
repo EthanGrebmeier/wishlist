@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Product from "~/components/wishlist/product";
 import ProductLoading from "~/components/wishlist/product/loading";
+import AddProduct from "~/components/wishlist/wishlist/add-product";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
 import { getProduct } from "~/lib/wishlist/product/getProduct";
 
@@ -27,6 +28,7 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
         wishlist={wishlist}
         product={product}
       />
+      <AddProduct wishlistId={wishlist.id} />
     </Suspense>
   );
 };

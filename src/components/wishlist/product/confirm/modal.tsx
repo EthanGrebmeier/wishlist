@@ -61,9 +61,7 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button icon={<PackageCheck size={25} />} className="h-fit w-fit">
-            {" "}
-          </Button>
+          <Button icon={<PackageCheck size={25} />}> </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[480px] overflow-y-auto">
           <DialogHeader>

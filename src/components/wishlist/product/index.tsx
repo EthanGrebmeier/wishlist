@@ -19,6 +19,7 @@ import { cn } from "~/lib/utils";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
+import EditProductButton from "./edit-product-button";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -86,15 +87,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
               <span className="sr-only"> Back to {wishlist.name} </span>
             </ButtonLink>
             <div className="absolute right-2 top-2 flex gap-4">
-              {canUserEdit && (
-                <EditProduct
-                  product={product}
-                  wishlistId={wishlist.id}
-                  trigger={
-                    <Button size={"circle"} icon={<Pencil size={20} />} />
-                  }
-                />
-              )}
+              {canUserEdit && <EditProductButton product={product} />}
               {product.url && (
                 <ButtonLink
                   variant="secondary"

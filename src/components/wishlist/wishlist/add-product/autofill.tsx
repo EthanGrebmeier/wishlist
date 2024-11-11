@@ -30,7 +30,7 @@ import { ProductInputFrame, useProductForm } from "./form";
 import InputButton from "~/components/ui/input-button";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
-  const { form, execute, formError } = useAutofillState();
+  const { form, execute, formError } = useAutofillForm();
 
   return (
     <Form {...form}>
@@ -106,7 +106,7 @@ export const AutofillFooter = ({
   setFrame,
   handleSubmit,
 }: AutofillFooterProps) => {
-  const { status } = useAutofillState();
+  const { status } = useAutofillForm();
   // Todo: ensure this works after we upgrade to safe action v7
   return (
     <div className="flex w-full items-center justify-between">
@@ -159,8 +159,18 @@ export const AutofillProvider = ({
 
   const { execute, result, status } = useAction(actionWithData, {
     onSuccess: (data) => {
-      setFormValues(data);
+      setFormValues({
+        description: data.description ?? "",
+        quantity: "1",
+        brand: "",
+        name: data.name ?? "",
+        price: data.price ?? "",
+        url: data.url,
+        imageUrl: data.images?.[0] ?? "",
+        priority: "normal",
+      });
       setFrame("form");
+      form.reset();
       if (onSuccess) {
         onSuccess();
       }
@@ -182,7 +192,7 @@ export const AutofillProvider = ({
   );
 };
 
-const useAutofillState = () => {
+export const useAutofillForm = () => {
   const context = useContext(AutofillContext);
   if (!context) {
     throw new Error("useAutofillState must be used within a AutofillProvider");

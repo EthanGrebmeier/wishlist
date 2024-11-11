@@ -1,5 +1,5 @@
-import { CameraIcon, ImageIcon, UploadIcon } from "lucide-react";
-import React from "react";
+import { CameraIcon, UploadIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import InputButton from "~/components/ui/input-button";
 import { useProductForm } from "../form";
@@ -9,14 +9,15 @@ import { Label } from "~/components/ui/label";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 const ProductImageUpload = () => {
-  const { setImageUrl, setFrame } = useProductForm();
+  const { setImageUrl, setFrame, form } = useProductForm();
+  const [importImageUrl, setImportImageUrl] = useState("");
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div className="flex w-full items-center gap-2">
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col ">
           <h3 className="font-serif text-xl font-medium">Image</h3>
-          <p className="text-sm tracking-tight">
+          <p className="text-sm leading-none tracking-tight">
             Select an image for your product
           </p>
         </div>
@@ -52,9 +53,16 @@ const ProductImageUpload = () => {
         <Label htmlFor="imageUrl"> Import from URL </Label>
         <InputButton
           name="imageUrl"
+          value={importImageUrl}
+          onChange={(e) => setImportImageUrl(e.target.value)}
           button={{
             children: "Upload",
             icon: <UploadIcon size={15} />,
+            onClick: () => {
+              setImageUrl(importImageUrl);
+              setImportImageUrl("");
+              setFrame("form");
+            },
           }}
         />
       </section>

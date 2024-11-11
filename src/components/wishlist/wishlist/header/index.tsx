@@ -9,7 +9,7 @@ import { SharedUserThumbnailView } from "../../share-wishlist/shared-users/share
 import type { UserTypeWithOwner } from "~/types/user";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 import ToggleGridDisplay from "../../toggle-grid-display";
-import AddProductSheet from "../add-product-new";
+import AddProductSheet, { AddProductSheetTrigger } from "../add-product";
 import { Button } from "~/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import DueDate from "../../due-date";
@@ -78,12 +78,7 @@ const WishlistHeader = ({
           {canUserEdit && (
             <div className="flex flex-nowrap space-x-1 xs:w-fit md:space-x-4 md:px-0 ">
               <div className="hidden md:block">
-                <AddProductSheet
-                  wishlistId={wishlist.id}
-                  trigger={
-                    <Button icon={<PlusIcon size={15} />}>Add Product</Button>
-                  }
-                />
+                <AddProductSheetTrigger />
               </div>
 
               <WishlistSettings

@@ -1,6 +1,5 @@
 import { getWishlist } from "~/lib/wishlist/getWishlist";
 import ProductList from "./product-list";
-import { AddProduct } from "./add-product";
 import { getServerAuthSession } from "~/server/auth";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import { Button } from "~/components/ui/button";
@@ -9,6 +8,7 @@ import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
+import { AddProductSheetTrigger } from "./add-product";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -61,10 +61,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
                     {" "}
                     Let&apos;s add your first product!
                   </p>
-                  <AddProduct
-                    shouldDefaultOpen={true}
-                    wishlistId={wishlistId}
-                  />
+                  <AddProductSheetTrigger />
                 </div>
               ) : (
                 <div>
@@ -78,18 +75,7 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
           )}
         </section>
       </div>
-      {canUserEdit && (
-        <AddProduct
-          wishlistId={wishlistId}
-          trigger={
-            <Button
-              icon={<PlusIcon size={25} />}
-              size="circle"
-              className="fixed bottom-4 left-1 z-10 md:hidden"
-            />
-          }
-        />
-      )}
+      {canUserEdit && <AddProductSheetTrigger />}
     </>
   );
 };

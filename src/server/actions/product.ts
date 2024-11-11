@@ -35,7 +35,6 @@ export const updateProduct = makeProtectedAction(
       .values({
         ...product,
         createdById: session.user.id,
-        updatedById: session.user.id,
       })
       .onConflictDoUpdate({
         target: products.id,
@@ -49,7 +48,6 @@ export const updateProduct = makeProtectedAction(
       })
       .where(eq(wishlists.id, product.wishlistId));
 
-    console.log("success", product);
     return {
       message: "success",
     };

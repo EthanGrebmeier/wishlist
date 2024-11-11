@@ -1,33 +1,35 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Pencil, Sparkles } from "lucide-react";
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { addProduct } from "~/server/actions/product";
-import { Button } from "~/components/ui/button";
 import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import { SubmitButton } from "~/components/ui/submit-button";
+  BanknoteIcon,
+  CalculatorIcon,
+  ChartColumnIncreasing,
+  ClipboardIcon,
+  FilePlus,
+  SquarePenIcon,
+  StoreIcon,
+} from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+import React, {
+  createContext,
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useForm, type UseFormReturn } from "react-hook-form";
+import { z } from "zod";
+import { Form, FormField } from "~/components/ui/form";
+import { generateId } from "~/lib/utils";
 import { productInputSchema } from "~/schema/wishlist/product";
 import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
 import { updateProduct } from "~/server/actions/product";
-import { useAction } from "next-safe-action/hooks";
-import type { WishlistProduct } from "~/types/wishlist";
-import { cn } from "~/lib/utils";
-import Incrementor from "~/components/ui/incrementor";
-import { Textarea } from "~/components/ui/textarea";
-import ProductImageInput from "./image";
-import PriceInput from "./price";
-import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import {
+  HorizontalInputWrapper,
+  HorizontalTextInput,
+  VerticalInputWrapper,
+} from "./product-input";
 import {
   Select,
   SelectContent,
@@ -35,310 +37,254 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import ProductFormImagePreview from "./image/image-preview";
-import { AnimatePresence, motion } from "framer-motion";
-import useMeasure from "react-use-measure";
+import { Textarea } from "~/components/ui/textarea";
+import { Button } from "~/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 
-type AddProductFormProps = {
+const ProductForm = () => {
+  const { form, handleSubmit } = useProductForm();
+
+  return (
+    <Form {...form}>
+      <form
+        className="flex h-full flex-col gap-2"
+        action={handleSubmit}
+        onSubmit={() => form.trigger()}
+      >
+        <FormField
+          name="name"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              required
+              Icon={SquarePenIcon}
+              label="Name"
+              input={<HorizontalTextInput placeholder="Cool Mug" {...field} />}
+            />
+          )}
+        />
+        <FormField
+          name="brand"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              Icon={StoreIcon}
+              label="Brand"
+              input={<HorizontalTextInput placeholder="Acme Inc" {...field} />}
+            />
+          )}
+        />
+        <FormField
+          name="price"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              Icon={BanknoteIcon}
+              label="Price"
+              input={<HorizontalTextInput placeholder="$20" {...field} />}
+            />
+          )}
+        />
+        <FormField
+          name="quantity"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              Icon={CalculatorIcon}
+              required
+              label="Quantity"
+              input={<HorizontalTextInput placeholder="1" {...field} />}
+            />
+          )}
+        />
+        <FormField
+          name="priority"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              Icon={ChartColumnIncreasing}
+              label="Priority"
+              input={
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={z.string().parse(field.value)}
+                >
+                  <SelectTrigger className="h-8 border-none p-1">
+                    <SelectValue placeholder="Normal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem className="focus:bg-red-200" value="low">
+                      Low
+                    </SelectItem>
+                    <SelectItem value="normal">Normal</SelectItem>
+                    <SelectItem className="focus:bg-yellow-200" value="high">
+                      High
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              }
+            />
+          )}
+        />
+        <FormField
+          name="description"
+          render={({ field }) => (
+            <VerticalInputWrapper
+              Icon={ClipboardIcon}
+              label="Description"
+              input={
+                <Textarea {...field} className="w-full flex-1 resize-none" />
+              }
+            />
+          )}
+        />
+      </form>
+    </Form>
+  );
+};
+
+export const ProductFormFooter = () => {
+  const { handleSubmit, isEditing } = useProductForm();
+
+  return (
+    <div className="flex w-full justify-end">
+      <Button onClick={handleSubmit} icon={<FilePlus size={15} />}>
+        {isEditing ? "Update Product" : "Add Product"}
+      </Button>
+    </div>
+  );
+};
+
+type ProductFormContextType = {
+  form: UseFormReturn<z.infer<typeof productInputSchema>>;
+  formError: string;
+  isEditing: boolean;
+  setFormError: Dispatch<SetStateAction<string>>;
+  handleSubmit: () => void;
+  setFormValues: (values: z.infer<typeof productInputSchema>) => void;
+  setImageUrl: (imageUrl: string) => void;
+  frame: ProductInputFrame;
+  setFrame: Dispatch<SetStateAction<ProductInputFrame>>;
+  resetProductForm: () => void;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const ProductFormContext = createContext<ProductFormContextType | null>(null);
+
+type ProductFormProviderProps = {
+  children: React.ReactNode;
   wishlistId: string;
   onSuccess?: () => void;
-  defaultValues?: z.infer<typeof partialCompiledProductDataSchema>;
-  setView?: Dispatch<SetStateAction<"scrape" | "form">>;
-  product?: WishlistProduct;
-} & (
-  | {
-      method: "create";
-    }
-  | {
-      method: "update";
-      product: WishlistProduct;
-    }
-);
-export const AddProductForm = ({
+};
+
+export type ProductInputFrame = "form" | "autofill" | "image";
+
+export const ProductFormProvider = ({
+  children,
   wishlistId,
   onSuccess,
-  defaultValues,
-  setView,
-  method = "create",
-  product,
-}: AddProductFormProps) => {
-  const [formView, setFormView] = useState<"form" | "image">("form");
-  const [imageUrl, setImageUrl] = useState(
-    defaultValues?.images?.[0] ?? product?.imageUrl ?? undefined,
-  );
-  const [innerRef, dimensions] = useMeasure();
+}: ProductFormProviderProps) => {
+  const [isOpen, setIsOpen] = useAtom(isProductFormOpenAtom);
+  const [productToEdit, setProductToEdit] = useAtom(productToEditAtom);
+  const [internalProductId, setInternalProductId] = useState<string>();
+  const [frame, setFrame] = useState<ProductInputFrame>("form");
+  const [formError, setFormError] = useState("");
+  const router = useRouter();
 
-  // Two separate useActions due to useAction not liking being provided an action based on a condition
-  const { execute: executeAdd, result: addResult } = useAction(addProduct);
-  const { execute: executeUpdate, result: updateResult } =
-    useAction(updateProduct);
+  const isEditing = Boolean(productToEdit);
 
   const form = useForm<z.infer<typeof productInputSchema>>({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
-      name: defaultValues?.name ?? product?.name ?? "",
-      description: defaultValues?.description ?? product?.description ?? "",
-      brand: defaultValues?.brand ?? product?.brand ?? "",
-      quantity: defaultValues?.quantity ?? product?.quantity ?? "1",
-      price: defaultValues?.price ?? product?.price ?? "",
-      url: defaultValues?.url ?? product?.url ?? "",
-      priority: product?.priority ?? "normal",
+      name: productToEdit?.name ?? "",
+      description: productToEdit?.description ?? "",
+      brand: productToEdit?.brand ?? "",
+      quantity: productToEdit?.quantity ?? "1",
+      price: productToEdit?.price ?? "",
+      url: productToEdit?.url ?? "",
+      priority: productToEdit?.priority ?? "normal",
     },
   });
 
-  const fields = form.watch();
+  const { execute: executeUpdate } = useAction(updateProduct, {
+    onError: (error) => {
+      setFormError("Error updating product");
+    },
+    onSuccess: () => {
+      if (onSuccess) {
+        onSuccess();
+      }
+      resetProductForm();
+      router.refresh();
+    },
+  });
 
-  const executeServerAction = () => {
-    if (method === "create") {
-      executeAdd({
-        ...fields,
-        imageUrl,
-        wishlistId,
-      });
-    } else if (product) {
-      executeUpdate({
-        ...fields,
-        wishlistId,
-        id: product.id,
-        imageUrl,
-      });
-    }
+  const handleSubmit = () => {
+    const values = form.getValues();
+    executeUpdate({
+      ...values,
+      id: productToEdit?.id ?? generateId(),
+      wishlistId,
+    });
   };
 
+  const setFormValues = useCallback(
+    (values: z.infer<typeof productInputSchema>) => {
+      form.setValue("name", values.name ?? "");
+      form.setValue("description", values.description ?? "");
+      form.setValue("brand", values.brand ?? "");
+      form.setValue("quantity", values.quantity ?? "1");
+      form.setValue("price", values.price ?? "");
+      form.setValue("url", values.url ?? "");
+      form.setValue("imageUrl", values.imageUrl ?? "");
+      form.setValue("priority", values.priority ?? "");
+    },
+    [form],
+  );
+
   useEffect(() => {
-    if (
-      method === "create" &&
-      addResult.data?.message === "success" &&
-      onSuccess
-    ) {
-      onSuccess();
+    if (productToEdit && internalProductId !== productToEdit.id) {
+      setFormValues(productToEdit);
     }
-    if (
-      method === "update" &&
-      updateResult.data?.message === "success" &&
-      onSuccess
-    ) {
-      onSuccess();
-    }
-  }, [onSuccess, addResult, updateResult, method]);
+  }, [productToEdit, setFormValues, internalProductId]);
+
+  const setImageUrl = (imageUrl: string) => {
+    form.setValue("imageUrl", imageUrl);
+  };
+
+  const resetProductForm = () => {
+    form.reset();
+    setFrame("form");
+    setIsOpen(false);
+    setProductToEdit(undefined);
+  };
 
   return (
-    <motion.div
-      animate={{
-        height: dimensions?.height,
+    <ProductFormContext.Provider
+      value={{
+        form,
+        handleSubmit,
+        formError,
+        setFormError,
+        setFormValues,
+        frame,
+        setFrame,
+        isEditing,
+        setImageUrl,
+        resetProductForm,
+        isOpen,
+        setIsOpen,
       }}
     >
-      <div ref={innerRef}>
-        <AnimatePresence initial={false} mode="popLayout">
-          {formView === "image" ? (
-            <motion.div
-              key="image"
-              initial={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
-              transition={{ duration: 0.3, type: "spring", bounce: 0 }}
-              className="flex h-full flex-col gap-4  "
-            >
-              <ProductImageInput
-                setFormView={setFormView}
-                setImageUrl={setImageUrl}
-                imageUrl={imageUrl}
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, x: "-110%", filter: "blur(4px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: "-110%", filter: "blur(4px)" }}
-              transition={{ duration: 0.3, type: "spring", bounce: 0 }}
-              className="flex h-full flex-col gap-4  "
-            >
-              {defaultValues && (
-                <div className="mb-4 flex items-center justify-between text-sm tracking-tight">
-                  <div>
-                    <p className="text-lg font-medium">
-                      {" "}
-                      Product Information Autofilled{" "}
-                    </p>
-                    <p>We&apos;ve gathered the following product information</p>
-                    <p>Please ensure that it is correct</p>
-                  </div>
-                  <ColoredIconWrapper className="bg-purple-300">
-                    <Sparkles size={30} />
-                  </ColoredIconWrapper>
-                </div>
-              )}
-
-              <Form {...form}>
-                <form
-                  className=" flex h-full flex-col gap-4"
-                  action={executeServerAction}
-                  onSubmit={() => form.trigger()}
-                >
-                  <div className="grid gap-4">
-                    <FormField
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Name<sup> * </sup>
-                          </FormLabel>
-                          <FormControl>
-                            <Input autoComplete="off" type="text" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 ">
-                    <FormField
-                      name="brand"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Brand</FormLabel>
-                          <FormControl>
-                            <Input type="text" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      name="priority"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Priority</FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={z.string().parse(field.value)}
-                            >
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem
-                                  className="focus:bg-yellow-200"
-                                  value="high"
-                                >
-                                  High
-                                </SelectItem>
-                                <SelectItem value="normal">Normal</SelectItem>
-                                <SelectItem
-                                  className="focus:bg-red-200"
-                                  value="low"
-                                >
-                                  Low
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <FormField
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea className="resize-none" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 gap-4 xs:grid-cols-[200px_auto] xs:gap-4">
-                    <div className="">
-                      <p className="mb-2 text-lg font-medium"> Image </p>
-                      <div className="relative">
-                        <ProductFormImagePreview imageUrl={imageUrl} />
-                        <Button
-                          type="button"
-                          size="circle"
-                          onClick={() => setFormView("image")}
-                          className="absolute right-2 top-2"
-                        >
-                          <Pencil size={20} />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-between gap-4 pb-2 xs:gap-0 ">
-                      <div className="flex flex-row gap-4 xs:flex-col xs:gap-0 ">
-                        <FormField
-                          name="price"
-                          render={({ field }) => (
-                            <FormItem className="w-[180px]">
-                              <FormLabel>Price</FormLabel>
-                              <FormControl>
-                                <PriceInput type="text" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <div className="w-[180px] space-y-2">
-                          <label
-                            className=" text-lg font-medium"
-                            htmlFor="quantity"
-                          >
-                            Quantity
-                          </label>
-                          <Incrementor
-                            onQuantityChange={(value) =>
-                              form.setValue("quantity", value.toString())
-                            }
-                            value={parseInt(fields.quantity ?? "1")}
-                          />
-                        </div>
-                      </div>
-                      <FormField
-                        name="url"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Link </FormLabel>
-                            <FormControl>
-                              <Input type="text" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  <div
-                    className={cn(
-                      "flex ",
-                      setView ? "justify-between" : "justify-end",
-                    )}
-                  >
-                    {setView && (
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => setView("scrape")}
-                        icon={<ArrowLeft width={20} height={20} />}
-                      >
-                        Back
-                      </Button>
-                    )}
-                    <SubmitButton>
-                      {setView ? "Add Product" : "Update Product"}
-                    </SubmitButton>
-                  </div>
-                </form>
-              </Form>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
+      {children}
+    </ProductFormContext.Provider>
   );
 };
+
+export const useProductForm = () => {
+  const context = useContext(ProductFormContext);
+  if (!context) {
+    throw new Error("useProductForm must be used within a ProductFormProvider");
+  }
+  return context;
+};
+
+export default ProductForm;

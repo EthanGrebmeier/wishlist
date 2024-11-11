@@ -7,6 +7,7 @@ import type { colorSchema } from "~/schema/wishlist/wishlist";
 import { cn } from "~/lib/utils";
 import { useAtom } from "jotai";
 import { gridDisplayAtom } from "~/store/grid-display";
+import { motion } from "framer-motion";
 
 type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
@@ -23,7 +24,8 @@ const ProductList = ({
 }: ProductListProps) => {
   const [gridDisplay] = useAtom(gridDisplayAtom);
   return (
-    <ul
+    <motion.ul
+      layout
       className={cn(
         "grid grid-cols-2 gap-2 gap-y-6 sm:grid-cols-3 sm:gap-4 md:gap-y-6 xl:grid-cols-4",
         gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
@@ -31,6 +33,10 @@ const ProductList = ({
     >
       {products
         .sort(sortProductsByPriority)
+        .sort(
+          (a, b) =>
+            (a.updatedAt?.getTime() || 0) - (b.updatedAt?.getTime() || 0),
+        )
         .sort((a) => (a.commitments.length ? 1 : -1))
         .map((product, index) => (
           <Product
@@ -42,7 +48,7 @@ const ProductList = ({
             animationDelay={0.1 * index}
           />
         ))}
-    </ul>
+    </motion.ul>
   );
 };
 

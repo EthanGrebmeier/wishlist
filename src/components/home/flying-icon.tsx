@@ -13,29 +13,17 @@ type FlyingIconProps = {
 };
 
 const FlyingIcon = ({ children, animate }: FlyingIconProps) => {
-  const shouldNotAnimate = useReducedMotion();
-
-  const initialValues = shouldNotAnimate
-    ? {
-        ...animate,
-        opacity: 0,
-      }
-    : {
-        opacity: 0,
-      };
-
   return (
     <motion.div
-      //@ts-expect-error Framer doesn't expose types ahhhhhhh
-      initial={initialValues}
+      initial={{
+        opacity: 0,
+      }}
       animate={animate}
       transition={{
         duration: 0.55,
         delay: 0.05,
       }}
-      whileHover={{
-        ...(!shouldNotAnimate && { rotate: -12 }),
-      }}
+      whileHover={{ rotate: -12 }}
       className="absolute"
     >
       {children}
