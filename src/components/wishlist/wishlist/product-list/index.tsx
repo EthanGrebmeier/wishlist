@@ -35,7 +35,7 @@ const ProductList = ({
         .sort(sortProductsByPriority)
         .sort(
           (a, b) =>
-            (a.updatedAt?.getTime() || 0) - (b.updatedAt?.getTime() || 0),
+            (a.updatedAt?.getTime() ?? 0) - (b.updatedAt?.getTime() ?? 0),
         )
         .sort((a) => (a.commitments.length ? 1 : -1))
         .map((product, index) => (
