@@ -72,7 +72,7 @@ const ResponsiveSheet = ({
   }
 
   return (
-    <Drawer open={internalIsOpen} onOpenChange={onOpenChange}>
+    <Drawer open={isOpen ?? internalIsOpen} onOpenChange={onOpenChange}>
       {trigger && <DrawerTrigger>{trigger}</DrawerTrigger>}
       <DrawerContent className="mx-auto max-w-[440px] overflow-hidden">
         <DrawerHeader className="flex h-14 flex-row items-center justify-between border-b border-black">
@@ -85,7 +85,7 @@ const ResponsiveSheet = ({
           style={{
             scrollbarGutter: "stable",
           }}
-          className="max-h-[74svh] overflow-y-auto p-4 pb-[72px] "
+          className="max-h-[74svh] overflow-y-auto px-4 pb-[64px] "
         >
           {children}
         </div>

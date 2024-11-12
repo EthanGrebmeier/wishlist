@@ -3,7 +3,7 @@
 import { z } from "zod";
 import {
   checkUserIsWishlistEditor,
-  makeProtectedAction,
+  protectedAction,
   makeSafeAction,
 } from "~/lib/actions/protectedAction";
 import { colorSchema, privacyTypeSchema } from "~/schema/wishlist/wishlist";
@@ -28,11 +28,13 @@ import InviteEmail from "~/email/invite";
 import { generateId } from "~/lib/utils";
 import { users } from "~/server/db/schema/users";
 
-export const deleteWishlist = makeProtectedAction(
-  z.object({
-    wishlistId: z.string(),
-  }),
-  async ({ wishlistId }, { session }) => {
+export const deleteWishlist = protectedAction
+  .schema(
+    z.object({
+      wishlistId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { wishlistId }, ctx: { session } }) => {
     try {
       const wishlist = await getWishlist({
         wishlistId,
@@ -91,94 +93,102 @@ export const deleteWishlist = makeProtectedAction(
         message: "Unable to delete wishlist",
       };
     }
-  },
-);
+  });
 
-export const createWishlist = makeProtectedAction(
-  z.object({
-    wishlistName: z.string().min(1),
-    date: z.date().optional(),
-    imageUrl: z.string().optional(),
-    isSecret: z.boolean(),
-    color: colorSchema,
-  }),
-  async ({ wishlistName, date, color, isSecret, imageUrl }, { session }) => {
-    const wishlistValues = {
-      createdById: session.user.id,
-      name: wishlistName,
-      id: generateId(),
-      dueDate: date?.toDateString(),
-      color,
-      isSecret,
-      imageUrl,
-    };
-    try {
-      await db.insert(wishlists).values(wishlistValues);
-
-      await db.insert(wishlistShares).values({
+export const createWishlist = protectedAction
+  .schema(
+    z.object({
+      wishlistName: z.string().min(1),
+      date: z.date().optional(),
+      imageUrl: z.string().optional(),
+      isSecret: z.boolean(),
+      color: colorSchema,
+    }),
+  )
+  .action(
+    async ({
+      parsedInput: { wishlistName, date, color, isSecret, imageUrl },
+      ctx: { session },
+    }) => {
+      const wishlistValues = {
         createdById: session.user.id,
-        wishlistId: wishlistValues.id,
-        sharedWithUserId: session.user.id,
-        type: "editor",
+        name: wishlistName,
         id: generateId(),
-      });
-    } catch (e) {
-      console.error(e);
-      return {
-        message: "Could not insert wishlist",
+        dueDate: date?.toDateString(),
+        color,
+        isSecret,
+        imageUrl,
       };
-    }
+      try {
+        await db.insert(wishlists).values(wishlistValues);
 
-    redirect(`/wishlist/${wishlistValues.id}`);
-  },
-);
+        await db.insert(wishlistShares).values({
+          createdById: session.user.id,
+          wishlistId: wishlistValues.id,
+          sharedWithUserId: session.user.id,
+          type: "editor",
+          id: generateId(),
+        });
+      } catch (e) {
+        console.error(e);
+        return {
+          message: "Could not insert wishlist",
+        };
+      }
 
-export const updateWishlist = makeProtectedAction(
-  z.object({
-    id: z.string(),
-    wishlistName: z.string().min(1),
-    date: z.date().optional(),
-    color: colorSchema,
-    isSecret: z.boolean(),
-    imageUrl: z.string().optional(),
-  }),
-  async (
-    { wishlistName, date, color, isSecret, id, imageUrl },
-    { session },
-  ) => {
-    // ensure user is an editor of the wishlist
-    await checkUserIsWishlistEditor({
-      wishlistId: id,
-      session,
-    });
+      redirect(`/wishlist/${wishlistValues.id}`);
+    },
+  );
 
-    const wishlistValues = {
-      name: wishlistName,
-      dueDate: date?.toDateString() ?? null,
-      color,
-      isSecret,
-      imageUrl,
-    };
-    try {
-      await db
-        .update(wishlists)
-        .set(wishlistValues)
-        .where(eq(wishlists.id, id));
-    } catch (e) {
-      console.error(e);
-      throw new Error("Could not update wishlist");
-    }
-  },
-);
+export const updateWishlist = protectedAction
+  .schema(
+    z.object({
+      id: z.string(),
+      wishlistName: z.string().min(1),
+      date: z.date().optional(),
+      color: colorSchema,
+      isSecret: z.boolean(),
+      imageUrl: z.string().optional(),
+    }),
+  )
+  .action(
+    async ({
+      parsedInput: { wishlistName, date, color, isSecret, id, imageUrl },
+      ctx: { session },
+    }) => {
+      // ensure user is an editor of the wishlist
+      await checkUserIsWishlistEditor({
+        wishlistId: id,
+        session,
+      });
+
+      const wishlistValues = {
+        name: wishlistName,
+        dueDate: date?.toDateString() ?? null,
+        color,
+        isSecret,
+        imageUrl,
+      };
+      try {
+        await db
+          .update(wishlists)
+          .set(wishlistValues)
+          .where(eq(wishlists.id, id));
+      } catch (e) {
+        console.error(e);
+        throw new Error("Could not update wishlist");
+      }
+    },
+  );
 
 const inputSchema = z.object({
   wishlistId: z.string(),
   privacyType: privacyTypeSchema,
 });
 
-export const setPrivacyType = makeProtectedAction(
-  inputSchema,
-  async (formData, { session }) => {
+export const setPrivacyType = protectedAction
+  .schema(inputSchema)
+  .action(async ({ parsedInput: formData, ctx: { session } }) => {
     const wishlist = await db.query.wishlists.findFirst({
       where: eq(wishlists.id, formData.wishlistId),
     });
@@ -206,15 +216,15 @@ export const setPrivacyType = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });
 
-export const joinWishlistViaMagicLink = makeSafeAction(
-  z.object({
-    magicLinkId: z.string(),
-  }),
-  async ({ magicLinkId }) => {
-    console.log("JOINING", magicLinkId);
+export const joinWishlistViaMagicLink = makeSafeAction
+  .schema(
+    z.object({
+      magicLinkId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { magicLinkId } }) => {
     const session = await getServerAuthSession();
 
     if (!session) {
@@ -287,14 +297,15 @@ export const joinWishlistViaMagicLink = makeSafeAction(
 
     console.log("JUST CREATED");
     redirect(`/wishlist/${wishlist.id}`);
-  },
-);
+  });
 
-export const generateMagicLink = makeProtectedAction(
-  z.object({
-    wishlistId: z.string(),
-  }),
-  async ({ wishlistId }, { session }) => {
+export const generateMagicLink = protectedAction
+  .schema(
+    z.object({
+      wishlistId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { wishlistId }, ctx: { session } }) => {
     // ensure user is an editor of the wishlist
     await checkUserIsWishlistEditor({
       wishlistId,
@@ -320,14 +331,15 @@ export const generateMagicLink = makeProtectedAction(
       message: "success",
       magicLink: newLink[0],
     };
-  },
-);
+  });
 
-export const getMagicLink = makeProtectedAction(
-  z.object({
-    wishlistId: z.string(),
-  }),
-  async ({ wishlistId }, { session }) => {
+export const getMagicLink = protectedAction
+  .schema(
+    z.object({
+      wishlistId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { wishlistId }, ctx: { session } }) => {
     // ensure user is an editor of the wishlist
     await checkUserIsWishlistEditor({
       wishlistId: wishlistId,
@@ -345,18 +357,17 @@ export const getMagicLink = makeProtectedAction(
         wishlistId,
       });
 
-      if (!newLink.data?.magicLink) {
+      if (!newLink?.data?.magicLink) {
         throw new Error("Couldn't generate magic link");
       }
 
       return magicLink;
     }
-  },
-);
+  });
 
-export const shareWishlistEmail = makeProtectedAction(
-  shareWishlistInputSchema,
-  async (input, { session }) => {
+export const shareWishlistEmail = protectedAction
+  .schema(shareWishlistInputSchema)
+  .action(async ({ parsedInput: input, ctx: { session } }) => {
     const { wishlistId } = input;
 
     // ensure user is an editor of the wishlist
@@ -423,66 +434,75 @@ export const shareWishlistEmail = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });
 
-export const setSharedUserType = makeProtectedAction(
-  z.object({
-    wishlistId: z.string(),
-    sharedUserId: z.string(),
-    shareType: z.union([z.literal("viewer"), z.literal("editor")]),
-  }),
-  async ({ shareType, sharedUserId, wishlistId }, { session }) => {
-    const wishlist = await checkUserIsWishlistEditor({
-      session,
-      wishlistId,
-    });
+export const setSharedUserType = protectedAction
+  .schema(
+    z.object({
+      wishlistId: z.string(),
+      sharedUserId: z.string(),
+      shareType: z.union([z.literal("viewer"), z.literal("editor")]),
+    }),
+  )
+  .action(
+    async ({
+      parsedInput: { shareType, sharedUserId, wishlistId },
+      ctx: { session },
+    }) => {
+      const wishlist = await checkUserIsWishlistEditor({
+        session,
+        wishlistId,
+      });
 
-    // We actually only want to allow the wishlist owner to adjust permissions.
-    // Throw error if the user is not the owner
-    if (wishlist.createdById !== session.user.id) {
-      throw new Error("Access Denied");
-    }
+      // We actually only want to allow the wishlist owner to adjust permissions.
+      // Throw error if the user is not the owner
+      if (wishlist.createdById !== session.user.id) {
+        throw new Error("Access Denied");
+      }
 
-    const updatedShare = await db
-      .update(wishlistShares)
-      .set({
-        type: shareType,
-      })
-      .where(
-        and(
-          eq(wishlistShares.wishlistId, wishlist.id),
-          eq(wishlistShares.sharedWithUserId, sharedUserId),
-        ),
-      );
-
-    console.log(updatedShare);
-  },
-);
-
-export const unshareWishlist = makeProtectedAction(
-  shareWishlistInputSchema,
-  async ({ sharedWithUserId, wishlistId }, { session }) => {
-    try {
-      await checkUserIsWishlistEditor({ wishlistId, session });
-      await db
-        .delete(wishlistShares)
+      const updatedShare = await db
+        .update(wishlistShares)
+        .set({
+          type: shareType,
+        })
         .where(
           and(
-            eq(wishlistShares.createdById, session.user.id),
-            eq(wishlistShares.sharedWithUserId, sharedWithUserId),
-            eq(wishlistShares.wishlistId, wishlistId),
+            eq(wishlistShares.wishlistId, wishlist.id),
+            eq(wishlistShares.sharedWithUserId, sharedUserId),
           ),
         );
-    } catch (e) {
-      console.log("Error unsharing wishlist ", e);
-      return {
-        message: "Internal Server Error",
-      };
-    }
 
-    return {
-      message: "success",
-    };
-  },
-);
+      console.log(updatedShare);
+    },
+  );
+
+export const unshareWishlist = protectedAction
+  .schema(shareWishlistInputSchema)
+  .action(
+    async ({
+      parsedInput: { sharedWithUserId, wishlistId },
+      ctx: { session },
+    }) => {
+      try {
+        await checkUserIsWishlistEditor({ wishlistId, session });
+        await db
+          .delete(wishlistShares)
+          .where(
+            and(
+              eq(wishlistShares.createdById, session.user.id),
+              eq(wishlistShares.sharedWithUserId, sharedWithUserId),
+              eq(wishlistShares.wishlistId, wishlistId),
+            ),
+          );
+      } catch (e) {
+        console.log("Error unsharing wishlist ", e);
+        return {
+          message: "Internal Server Error",
+        };
+      }
+
+      return {
+        message: "success",
+      };
+    },
+  );

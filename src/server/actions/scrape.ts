@@ -2,14 +2,16 @@
 
 import { load } from "cheerio";
 import { z } from "zod";
-import { makeProtectedAction } from "~/lib/actions/protectedAction";
+import { protectedAction } from "~/lib/actions/protectedAction";
 import { getMatchingScraper } from "~/lib/scrape/site-specs";
 
-export const scrapeProductData = makeProtectedAction(
-  z.object({
-    pageToScrape: z.string(),
-  }),
-  async ({ pageToScrape }) => {
+export const scrapeProductData = protectedAction
+  .schema(
+    z.object({
+      pageToScrape: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { pageToScrape } }) => {
     try {
       // check for https for safety!
       if (!pageToScrape?.includes("https://")) {
@@ -137,5 +139,4 @@ export const scrapeProductData = makeProtectedAction(
       console.log("Error", e);
       throw e;
     }
-  },
-);
+  });

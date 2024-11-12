@@ -23,7 +23,6 @@ import { z } from "zod";
 import { Form, FormField } from "~/components/ui/form";
 import { generateId } from "~/lib/utils";
 import { productInputSchema } from "~/schema/wishlist/product";
-import type { partialCompiledProductDataSchema } from "~/schema/wishlist/scrape";
 import { updateProduct } from "~/server/actions/product";
 import {
   HorizontalInputWrapper,
@@ -51,7 +50,10 @@ const ProductForm = () => {
       <form
         className="flex h-full flex-col gap-2"
         action={handleSubmit}
-        onSubmit={() => form.trigger()}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          await form.trigger();
+        }}
       >
         <FormField
           name="name"
@@ -172,7 +174,6 @@ const ProductFormContext = createContext<ProductFormContextType | null>(null);
 type ProductFormProviderProps = {
   children: React.ReactNode;
   wishlistId: string;
-  onSuccess?: () => void;
 };
 
 export type ProductInputFrame = "form" | "autofill" | "image";
@@ -180,11 +181,9 @@ export type ProductInputFrame = "form" | "autofill" | "image";
 export const ProductFormProvider = ({
   children,
   wishlistId,
-  onSuccess,
 }: ProductFormProviderProps) => {
   const [isOpen, setIsOpen] = useAtom(isProductFormOpenAtom);
   const [productToEdit, setProductToEdit] = useAtom(productToEditAtom);
-  const [internalProductId, setInternalProductId] = useState<string>();
   const [frame, setFrame] = useState<ProductInputFrame>("form");
   const [formError, setFormError] = useState("");
   const router = useRouter();
@@ -209,9 +208,6 @@ export const ProductFormProvider = ({
       setFormError("Error updating product");
     },
     onSuccess: () => {
-      if (onSuccess) {
-        onSuccess();
-      }
       resetProductForm();
       router.refresh();
     },
@@ -241,10 +237,10 @@ export const ProductFormProvider = ({
   );
 
   useEffect(() => {
-    if (productToEdit && internalProductId !== productToEdit.id) {
+    if (productToEdit) {
       setFormValues(productToEdit);
     }
-  }, [productToEdit, setFormValues, internalProductId]);
+  }, [productToEdit, setFormValues]);
 
   const setImageUrl = (imageUrl: string) => {
     form.setValue("imageUrl", imageUrl);

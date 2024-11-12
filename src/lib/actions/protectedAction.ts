@@ -10,16 +10,18 @@ export type ServerActionResponse = {
   message: string;
 } | null;
 
-export const makeProtectedAction = createSafeActionClient({
-  middleware: async () => {
-    const session = await getServerAuthSession();
+export const makeSafeAction = createSafeActionClient();
 
-    if (!session) {
-      redirect("/");
-    }
+export const protectedAction = makeSafeAction.use(async ({ next }) => {
+  const session = await getServerAuthSession();
 
-    return { session };
-  },
+  if (!session) {
+    redirect("/");
+  }
+
+  return next({
+    ctx: { session },
+  });
 });
 
 export const checkUserIsWishlistEditor = async ({
@@ -45,5 +47,3 @@ export const checkUserIsWishlistEditor = async ({
 
   return wishlist;
 };
-
-export const makeSafeAction = createSafeActionClient();

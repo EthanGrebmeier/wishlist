@@ -47,7 +47,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
   }
 
   const hasUserCommitted = Boolean(
-    productCommitments.data?.find(
+    productCommitments?.data?.find(
       (commitment) => commitment.createdById === session.user.id,
     ),
   );
@@ -79,7 +79,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
               variant="secondary"
               size="circle"
               href={
-                productReceipts.data ? "/my-gifts" : getWishlistSlug(wishlist)
+                productReceipts?.data ? "/my-gifts" : getWishlistSlug(wishlist)
               }
               icon={<ArrowLeft size={20} />}
               className="absolute left-2 top-2"
@@ -137,7 +137,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
           </div>
 
           <div className="flex flex-col gap-2  md:flex-row lg:flex-col">
-            {!(isSecret && canUserEdit) && !productReceipts.data && (
+            {!(isSecret && canUserEdit) && !productReceipts?.data && (
               <div
                 className={cn(
                   "relative flex w-full flex-col justify-center gap-6 rounded-md border-2 border-black p-4  md:w-1/2 lg:w-full",
@@ -148,14 +148,14 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                   {/** Only hide commitments for the owner of the wishlist */}
                   <Commit
                     hasUserCommitted={hasUserCommitted}
-                    productCommitments={productCommitments.data}
+                    productCommitments={productCommitments?.data}
                     product={product}
                   />
                 </div>
               </div>
             )}
             {canUserEdit &&
-              (!productReceipts.data ? (
+              (!productReceipts?.data ? (
                 <Suspense
                   fallback={
                     <div className="skeleton h-24 w-full md:w-1/2 lg:w-full"></div>
@@ -163,7 +163,7 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
                 >
                   <ConfirmReceipt
                     className={
-                      !(isSecret && canUserEdit) && !productReceipts.data
+                      !(isSecret && canUserEdit) && !productReceipts?.data
                         ? "md:w-1/2"
                         : "md:w-full"
                     }

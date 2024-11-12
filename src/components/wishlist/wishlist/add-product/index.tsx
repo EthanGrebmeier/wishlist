@@ -1,12 +1,11 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import ProductForm, {
   ProductFormFooter,
   ProductFormProvider,
   useProductForm,
 } from "./form";
-import type { WishlistProduct } from "~/types/wishlist";
 import { Button } from "~/components/ui/button";
 import { PlusIcon, SparklesIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -17,8 +16,8 @@ import ScrapeInput, {
 } from "./autofill";
 import ProductImageDisplay from "./image/display";
 import ProductImageUpload, { ProductImageUploadFooter } from "./image/upload";
-import { useAtom, useSetAtom } from "jotai";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import { useSetAtom } from "jotai";
+import { isProductFormOpenAtom } from "~/store/product-form";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -169,6 +168,18 @@ export const AddProductSheetTrigger = () => {
     <Button icon={<PlusIcon size={15} />} onClick={() => setIsOpen(true)}>
       Add Product
     </Button>
+  );
+};
+
+export const AddProductSheetTriggerMobile = () => {
+  const setIsOpen = useSetAtom(isProductFormOpenAtom);
+  return (
+    <Button
+      onClick={() => setIsOpen(true)}
+      className="fixed bottom-4 left-4 hidden md:block"
+      size="circle"
+      icon={<PlusIcon size={20} />}
+    ></Button>
   );
 };
 

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import {
   checkUserIsWishlistEditor,
-  makeProtectedAction,
+  protectedAction,
 } from "~/lib/actions/protectedAction";
 
 import { productInputSchema, productSchema } from "~/schema/wishlist/product";
@@ -21,9 +21,9 @@ import { revalidatePath } from "next/cache";
 import { generateId } from "~/lib/utils";
 import { deleteFile } from "../uploadthing";
 
-export const updateProduct = makeProtectedAction(
-  productSchema,
-  async (product, { session }) => {
+export const updateProduct = protectedAction
+  .schema(productSchema)
+  .action(async ({ parsedInput: product, ctx: { session } }) => {
     // ensure user is an editor of the wishlist
     await checkUserIsWishlistEditor({
       wishlistId: product.wishlistId,
@@ -51,14 +51,15 @@ export const updateProduct = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });
 
-export const commitToProduct = makeProtectedAction(
-  z.object({
-    productId: z.string(),
-  }),
-  async ({ productId }, { session }) => {
+export const commitToProduct = protectedAction
+  .schema(
+    z.object({
+      productId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { productId }, ctx: { session } }) => {
     const dbProduct = await getProduct({ productId });
 
     if (!dbProduct) {
@@ -101,14 +102,15 @@ export const commitToProduct = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });
 
-export const uncommitToProduct = makeProtectedAction(
-  z.object({
-    productId: z.string(),
-  }),
-  async ({ productId }, { session }) => {
+export const uncommitToProduct = protectedAction
+  .schema(
+    z.object({
+      productId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { productId }, ctx: { session } }) => {
     const matchingProductReceipt = await db.query.productReceipts.findFirst({
       where: eq(productReceipts.productId, productId),
     });
@@ -130,14 +132,15 @@ export const uncommitToProduct = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });
 
-export const getProductCommitments = makeProtectedAction(
-  z.object({
-    productId: z.string(),
-  }),
-  async ({ productId }) => {
+export const getProductCommitments = protectedAction
+  .schema(
+    z.object({
+      productId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput: { productId } }) => {
     const dbCommitments = await db.query.productCommitments.findMany({
       where: and(
         eq(productCommitments.productId, productId),
@@ -149,55 +152,60 @@ export const getProductCommitments = makeProtectedAction(
     });
 
     return dbCommitments;
-  },
-);
+  });
 
-export const markProductReceived = makeProtectedAction(
-  z.object({
-    productId: z.string(),
-    wishlistId: z.string(),
-    purchasedByUserId: z.string().optional(),
-  }),
-  async ({ productId, wishlistId, purchasedByUserId }, { session }) => {
-    // confirm user can perform this action
-    const dbProduct = await getProduct({ productId });
+export const markProductReceived = protectedAction
+  .schema(
+    z.object({
+      productId: z.string(),
+      wishlistId: z.string(),
+      purchasedByUserId: z.string().optional(),
+    }),
+  )
+  .action(
+    async ({
+      parsedInput: { productId, wishlistId, purchasedByUserId },
+      ctx: { session },
+    }) => {
+      // confirm user can perform this action
+      const dbProduct = await getProduct({ productId });
 
-    if (!dbProduct) {
-      throw new Error("Product not found");
-    }
-    // ensure user is an editor of the wishlist
-    await checkUserIsWishlistEditor({
-      wishlistId: dbProduct.wishlistId,
-      session,
-    });
+      if (!dbProduct) {
+        throw new Error("Product not found");
+      }
+      // ensure user is an editor of the wishlist
+      await checkUserIsWishlistEditor({
+        wishlistId: dbProduct.wishlistId,
+        session,
+      });
 
-    // Make sure there aren't any receipts yet
-    const matchingProductReceipt = await db.query.productReceipts.findFirst({
-      where: eq(productReceipts.productId, productId),
-    });
+      // Make sure there aren't any receipts yet
+      const matchingProductReceipt = await db.query.productReceipts.findFirst({
+        where: eq(productReceipts.productId, productId),
+      });
 
-    if (matchingProductReceipt) {
-      // We want to refresh the user's page since they are seeing stale data
-      return revalidatePath(`/product/${productId}`);
-    }
+      if (matchingProductReceipt) {
+        // We want to refresh the user's page since they are seeing stale data
+        return revalidatePath(`/product/${productId}`);
+      }
 
-    await db.insert(productReceipts).values({
-      createdById: session.user.id,
-      productId: productId,
-      wishlistId,
-      purchasedByUserId,
-      id: generateId(),
-    });
+      await db.insert(productReceipts).values({
+        createdById: session.user.id,
+        productId: productId,
+        wishlistId,
+        purchasedByUserId,
+        id: generateId(),
+      });
 
-    await db
-      .delete(productCommitments)
-      .where(eq(productCommitments.productId, productId));
-  },
-);
+      await db
+        .delete(productCommitments)
+        .where(eq(productCommitments.productId, productId));
+    },
+  );
 
-export const getProductReceipts = makeProtectedAction(
-  z.object({ productId: z.string() }),
-  async ({ productId }, { session }) => {
+export const getProductReceipts = protectedAction
+  .schema(z.object({ productId: z.string() }))
+  .action(async ({ parsedInput: { productId }, ctx: { session } }) => {
     // confirm user can perform this action
     const dbProduct = await getProduct({ productId });
 
@@ -213,55 +221,55 @@ export const getProductReceipts = makeProtectedAction(
     return db.query.productReceipts.findFirst({
       where: eq(productReceipts.productId, productId),
     });
-  },
-);
-export const deleteProduct = makeProtectedAction(
-  z.object({ productId: z.string(), wishlistId: z.string() }),
-  async ({ productId, wishlistId }, { session }) => {
-    try {
-      const dbProduct = await getProduct({
-        productId,
-      });
+  });
+export const deleteProduct = protectedAction
+  .schema(z.object({ productId: z.string(), wishlistId: z.string() }))
+  .action(
+    async ({ parsedInput: { productId, wishlistId }, ctx: { session } }) => {
+      try {
+        const dbProduct = await getProduct({
+          productId,
+        });
 
-      if (!dbProduct) {
-        throw new Error("Product not found");
+        if (!dbProduct) {
+          throw new Error("Product not found");
+        }
+        // ensure user is an editor of the wishlist
+        await checkUserIsWishlistEditor({
+          wishlistId: dbProduct.wishlistId,
+          session,
+        });
+
+        // 1. Delete Product Image
+        await deleteFile(dbProduct.imageUrl);
+
+        // 2. Delete Product
+        await db.delete(products).where(eq(products.id, productId));
+
+        await db
+          .update(wishlists)
+          .set({
+            updatedAt: new Date(),
+          })
+          .where(eq(wishlists.id, dbProduct.wishlistId));
+
+        revalidatePath(`/wishlist/${wishlistId}`);
+
+        return {
+          message: "success",
+        };
+      } catch (e) {
+        console.error("Error deleting product", e);
+        return {
+          message: "Unable to delete product",
+        };
       }
-      // ensure user is an editor of the wishlist
-      await checkUserIsWishlistEditor({
-        wishlistId: dbProduct.wishlistId,
-        session,
-      });
+    },
+  );
 
-      // 1. Delete Product Image
-      await deleteFile(dbProduct.imageUrl);
-
-      // 2. Delete Product
-      await db.delete(products).where(eq(products.id, productId));
-
-      await db
-        .update(wishlists)
-        .set({
-          updatedAt: new Date(),
-        })
-        .where(eq(wishlists.id, dbProduct.wishlistId));
-
-      revalidatePath(`/wishlist/${wishlistId}`);
-
-      return {
-        message: "success",
-      };
-    } catch (e) {
-      console.error("Error deleting product", e);
-      return {
-        message: "Unable to delete product",
-      };
-    }
-  },
-);
-
-export const addProduct = makeProtectedAction(
-  productInputSchema.extend({ wishlistId: z.string() }),
-  async (product, { session }) => {
+export const addProduct = protectedAction
+  .schema(productInputSchema.extend({ wishlistId: z.string() }))
+  .action(async ({ parsedInput: product, ctx: { session } }) => {
     const productValues = {
       ...product,
       id: generateId(),
@@ -294,5 +302,4 @@ export const addProduct = makeProtectedAction(
     return {
       message: "success",
     };
-  },
-);
+  });

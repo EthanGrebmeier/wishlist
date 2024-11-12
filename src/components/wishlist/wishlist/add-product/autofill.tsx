@@ -23,10 +23,9 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Tooltip } from "~/components/ui/tooltip";
 import { scrapeInputSchema } from "~/schema/wishlist/scrape";
 import { scrapeProductData } from "~/server/actions/scrape";
-import { ProductInputFrame, useProductForm } from "./form";
+import { type ProductInputFrame, useProductForm } from "./form";
 import InputButton from "~/components/ui/input-button";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
@@ -37,7 +36,7 @@ const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
       <form
         ref={ref}
         className="space-y-8"
-        action={execute}
+        action={() => execute({ pageToScrape: form.getValues().url })}
         onSubmit={() => form.trigger()}
       >
         <FormField
@@ -126,7 +125,7 @@ type AutofillContextType = {
   formError: string;
   setFormError: Dispatch<SetStateAction<string>>;
   form: UseFormReturn<z.infer<typeof scrapeInputSchema>>;
-  execute: (arg0: unknown) => void;
+  execute: (formData: { pageToScrape: string }) => void;
   status: HookActionStatus;
 };
 
@@ -151,22 +150,16 @@ export const AutofillProvider = ({
     },
   });
 
-  const input = form.watch();
-
-  const actionWithData = scrapeProductData.bind(null, {
-    pageToScrape: input.url,
-  });
-
-  const { execute, result, status } = useAction(actionWithData, {
-    onSuccess: (data) => {
+  const { execute, result, status } = useAction(scrapeProductData, {
+    onSuccess: ({ data }) => {
       setFormValues({
-        description: data.description ?? "",
+        description: data?.description ?? "",
         quantity: "1",
         brand: "",
-        name: data.name ?? "",
-        price: data.price ?? "",
-        url: data.url,
-        imageUrl: data.images?.[0] ?? "",
+        name: data?.name ?? "",
+        price: data?.price ?? "",
+        url: data?.url ?? "",
+        imageUrl: data?.images?.[0] ?? "",
         priority: "normal",
       });
       setFrame("form");

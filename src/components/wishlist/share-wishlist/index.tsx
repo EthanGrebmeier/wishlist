@@ -43,7 +43,7 @@ const ShareWishlist = ({
   useEffect(() => {
     const getMagicLinkViaAction = async () => {
       const magicLink = await getMagicLink({ wishlistId: wishlist.id });
-      setMagicLink(magicLink.data);
+      setMagicLink(magicLink?.data);
     };
 
     void getMagicLinkViaAction();
