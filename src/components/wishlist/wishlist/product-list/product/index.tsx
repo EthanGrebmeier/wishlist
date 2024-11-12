@@ -37,7 +37,7 @@ const Product = ({
           <div className="relative aspect-square w-full  bg-background  ">
             {!hideStatus &&
               (!!product.commitments.length ? (
-                <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
+                <div className="absolute left-2 top-2 z-10 rounded-md border border-black bg-green-300 px-1 py-[2px] font-medium ">
                   <p className="-mb-[1px] text-sm font-medium text-black">
                     {" "}
                     Purchased{" "}
@@ -45,7 +45,7 @@ const Product = ({
                 </div>
               ) : (
                 <Priority
-                  className="absolute left-2 top-2"
+                  className="absolute left-2 top-2 z-[5]"
                   priorityLevel={product.priority}
                 />
               ))}

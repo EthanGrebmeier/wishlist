@@ -1,7 +1,11 @@
 "use client";
 
 import { default as NextLink } from "next/link";
-import { buttonInnerVariants, buttonVariants } from "./button";
+import {
+  buttonBackgroundVariants,
+  buttonInnerVariants,
+  buttonVariants,
+} from "./button";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
 import type { VariantProps } from "class-variance-authority";
@@ -40,6 +44,7 @@ const ButtonLink = ({
         {icon}
         {children}
       </span>
+      <div className={cn(buttonBackgroundVariants({ variant, size }))}></div>
     </NextLink>
   );
 };

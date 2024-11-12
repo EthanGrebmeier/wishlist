@@ -59,14 +59,14 @@ export const buttonInnerVariants = cva(
 );
 
 export const buttonBackgroundVariants = cva(
-  "absolute bottom-0 left-0 right-0 h-10 rounded-md bg-black",
+  "absolute bottom-0 left-0 right-0 h-10 rounded-md ",
   {
     variants: {
       variant: {
         default: "bg-black",
         destructive: "bg-black",
         secondary: "bg-black",
-        outline: "bg-black",
+        outline: "",
         ghost: "",
         link: "bg-black",
       },
@@ -77,6 +77,10 @@ export const buttonBackgroundVariants = cva(
         icon: "h-10 w-10",
         circle: "h-10 w-10 rounded-full",
       },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
     },
   },
 );

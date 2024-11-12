@@ -57,11 +57,7 @@ const Commit = ({
             className="flex items-center"
             action={() => executeUncommit({ productId: product.id })}
           >
-            <SubmitButton
-              icon={<X size={25} />}
-              className="h-fit w-fit"
-              variant="destructive"
-            >
+            <SubmitButton icon={<X size={25} />} variant="destructive">
               {" "}
             </SubmitButton>
           </form>

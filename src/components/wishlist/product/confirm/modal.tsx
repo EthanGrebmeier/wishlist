@@ -84,9 +84,7 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button icon={<PackageCheck size={25} />} className="h-fit w-fit">
-          {" "}
-        </Button>
+        <Button icon={<PackageCheck size={25} />}> </Button>
       </DrawerTrigger>
       <DrawerContent className="mx-auto max-w-[480px] overflow-hidden">
         <DrawerHeader className="text-start">
