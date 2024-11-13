@@ -22,7 +22,7 @@ export const HorizontalInputWrapper = ({
 }: HorizontalInputProps) => {
   return (
     <HorizontalFormItem className="flex w-full items-center">
-      <div className="flex flex-1 items-center gap-2 capitalize">
+      <div className="flex w-[120px] items-center gap-2 capitalize">
         <Icon size={15} />
         <FormLabel>
           {label}
