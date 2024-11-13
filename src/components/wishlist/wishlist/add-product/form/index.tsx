@@ -5,10 +5,11 @@ import {
   ChartColumnIncreasing,
   ClipboardIcon,
   FilePlus,
+  LoaderCircleIcon,
   SquarePenIcon,
   StoreIcon,
 } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
+import { type HookActionStatus, useAction } from "next-safe-action/hooks";
 import React, {
   createContext,
   type Dispatch,
@@ -37,10 +38,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import StatusButton from "~/components/ui/status-button";
 
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
@@ -143,13 +144,27 @@ const ProductForm = () => {
 };
 
 export const ProductFormFooter = () => {
-  const { handleSubmit, isEditing } = useProductForm();
+  const { handleSubmit, isEditing, status } = useProductForm();
 
   return (
     <div className="flex w-full justify-end">
-      <Button onClick={handleSubmit} icon={<FilePlus size={15} />}>
-        {isEditing ? "Update Product" : "Add Product"}
-      </Button>
+      <StatusButton
+        onClick={handleSubmit}
+        status={status}
+        content={{
+          text: isEditing ? "Update Product" : "Add Product",
+          Icon: FilePlus,
+        }}
+        loadingContent={{
+          text: "Adding Product...",
+          Icon: LoaderCircleIcon,
+          shouldSpin: true,
+        }}
+        hasSucceededContent={{
+          text: "Success!",
+          Icon: FilePlus,
+        }}
+      />
     </div>
   );
 };
@@ -167,6 +182,7 @@ type ProductFormContextType = {
   resetProductForm: () => void;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  status: HookActionStatus;
 };
 
 const ProductFormContext = createContext<ProductFormContextType | null>(null);
@@ -203,7 +219,7 @@ export const ProductFormProvider = ({
     },
   });
 
-  const { execute: executeUpdate } = useAction(updateProduct, {
+  const { execute: executeUpdate, status } = useAction(updateProduct, {
     onError: (error) => {
       setFormError("Error updating product");
     },
@@ -268,6 +284,7 @@ export const ProductFormProvider = ({
         resetProductForm,
         isOpen,
         setIsOpen,
+        status,
       }}
     >
       {children}

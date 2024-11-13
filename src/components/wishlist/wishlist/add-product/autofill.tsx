@@ -1,7 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ClipboardPaste, Sparkles } from "lucide-react";
+import {
+  ClipboardPaste,
+  LoaderCircleIcon,
+  Sparkles,
+  SparklesIcon,
+} from "lucide-react";
 import { type HookActionStatus, useAction } from "next-safe-action/hooks";
 import {
   createContext,
@@ -27,6 +32,7 @@ import { scrapeInputSchema } from "~/schema/wishlist/scrape";
 import { scrapeProductData } from "~/server/actions/scrape";
 import { type ProductInputFrame, useProductForm } from "./form";
 import InputButton from "~/components/ui/input-button";
+import StatusButton from "~/components/ui/status-button";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
   const { form, execute, formError } = useAutofillForm();
@@ -35,9 +41,11 @@ const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
     <Form {...form}>
       <form
         ref={ref}
-        className="space-y-8"
+        className="space-y-8 "
         action={() => execute({ pageToScrape: form.getValues().url })}
-        onSubmit={() => form.trigger()}
+        onSubmit={async () => {
+          await form.trigger();
+        }}
       >
         <FormField
           name="url"
@@ -62,8 +70,13 @@ const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
-              {formError && <p className="text-sm text-red-400">{formError}</p>}
+
+              <div className="flex min-h-5 items-center">
+                <FormMessage />
+                {formError && (
+                  <p className="text-sm text-red-400">{formError}</p>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -110,13 +123,25 @@ export const AutofillFooter = ({
   return (
     <div className="flex w-full items-center justify-between">
       <Button onClick={() => setFrame("form")}>Back</Button>
-      <Button
+      <StatusButton
+        className="w-32"
+        status={status}
         variant={"secondary"}
         onClick={handleSubmit}
-        icon={<Sparkles size={15} />}
-      >
-        {status === "executing" ? "Submitting..." : "Autofill"}
-      </Button>
+        content={{
+          Icon: SparklesIcon,
+          text: "Autofill",
+        }}
+        loadingContent={{
+          Icon: LoaderCircleIcon,
+          text: "Autofilling...",
+          shouldSpin: true,
+        }}
+        hasSucceededContent={{
+          Icon: SparklesIcon,
+          text: "Success!",
+        }}
+      />
     </div>
   );
 };
@@ -150,7 +175,7 @@ export const AutofillProvider = ({
     },
   });
 
-  const { execute, result, status } = useAction(scrapeProductData, {
+  const { execute, result, status, reset } = useAction(scrapeProductData, {
     onSuccess: ({ data }) => {
       setFormValues({
         description: data?.description ?? "",
@@ -167,6 +192,8 @@ export const AutofillProvider = ({
       if (onSuccess) {
         onSuccess();
       }
+
+      reset();
     },
   });
 

@@ -42,7 +42,7 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
         <Button
           variant="default"
           size="circle"
-          className="fixed bottom-4 right-1 z-20 lg:hidden"
+          className="fixed bottom-4 right-4 z-20 lg:hidden"
         >
           <Menu size={25} />
         </Button>
