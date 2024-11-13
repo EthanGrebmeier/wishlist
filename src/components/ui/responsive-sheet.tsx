@@ -72,7 +72,11 @@ const ResponsiveSheet = ({
   }
 
   return (
-    <Drawer open={isOpen ?? internalIsOpen} onOpenChange={onOpenChange}>
+    <Drawer
+      repositionInputs={false}
+      open={isOpen ?? internalIsOpen}
+      onOpenChange={onOpenChange}
+    >
       {trigger && <DrawerTrigger>{trigger}</DrawerTrigger>}
       <DrawerContent className="mx-auto max-w-[440px] overflow-hidden">
         <DrawerHeader className="flex h-14 flex-row items-center justify-between border-b border-black">

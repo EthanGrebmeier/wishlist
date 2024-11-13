@@ -63,7 +63,13 @@ const ProductForm = () => {
               required
               Icon={SquarePenIcon}
               label="Name"
-              input={<HorizontalTextInput placeholder="Cool Mug" {...field} />}
+              input={
+                <HorizontalTextInput
+                  autoFocus
+                  placeholder="Cool Mug"
+                  {...field}
+                />
+              }
             />
           )}
         />

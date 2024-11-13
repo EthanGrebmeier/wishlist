@@ -21,6 +21,7 @@ const ProductImageDisplay = () => {
           <h3 className=" text-lg font-medium">Image</h3>
         </div>
         <button
+          type="button"
           onClick={() => setFrame("image")}
           className="font-medium underline"
         >
