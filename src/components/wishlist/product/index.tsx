@@ -1,6 +1,10 @@
 import { ArrowLeft, ExternalLink, Pencil } from "lucide-react";
 import { getWishlistSlug } from "~/lib/wishlist/getWishlistSlug";
-import type { Wishlist, WishlistProduct } from "~/types/wishlist";
+import type {
+  Wishlist,
+  WishlistProduct,
+  WishlistWithProducts,
+} from "~/types/wishlist";
 import Commit from "./commit";
 import {
   getProductCommitments,
@@ -20,10 +24,11 @@ import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistE
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import EditProductButton from "./edit-product-button";
+import ProductNew from "./product-new";
 
 type ProductProps = {
   product: WishlistProduct;
-  wishlist: Wishlist;
+  wishlist: WishlistWithProducts;
   isSecret: boolean;
 };
 
@@ -45,19 +50,29 @@ const Product = async ({ product, wishlist, isSecret }: ProductProps) => {
   if (!session) {
     return null;
   }
-
-  const hasUserCommitted = Boolean(
-    productCommitments?.data?.find(
-      (commitment) => commitment.createdById === session.user.id,
-    ),
-  );
-
   const userStatus = getUserShareType({
     wishlist,
     wishlistShares,
     session,
   });
   const canUserEdit = verifyUserIsWishlistEditor(userStatus);
+
+  return (
+    <ProductNew
+      canUserEdit={canUserEdit}
+      session={session}
+      wishlist={wishlist}
+      product={product}
+      productCommitments={productCommitments?.data}
+      sharedUsers={wishlistShares}
+    />
+  );
+
+  const hasUserCommitted = Boolean(
+    productCommitments?.data?.find(
+      (commitment) => commitment.createdById === session.user.id,
+    ),
+  );
 
   return (
     <div className=" mx-auto flex w-full max-w-[600px] grid-cols-1 flex-col gap-4 px-2 pb-4 md:mt-4 md:max-w-[800px] md:px-6 lg:mx-6 lg:mt-8 lg:grid  lg:w-auto lg:max-w-none lg:flex-1 lg:grid-rows-[1fr] lg:gap-14 lg:px-0">

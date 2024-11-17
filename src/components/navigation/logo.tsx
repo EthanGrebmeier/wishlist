@@ -17,7 +17,7 @@ const Logo = ({
   ariaHidden = false,
 }: LogoProps) => {
   return (
-    <div className={cn("relative flex items-center gap-4", className)}>
+    <div className={cn("relative flex items-center gap-4 mr-8", className)}>
       <p
         className={cn(
           "font-serif  tracking-tight ",

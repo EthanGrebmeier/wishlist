@@ -17,6 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./drawer";
+import { cn } from "~/lib/utils";
 
 type ResponsiveSheetProps = {
   children: React.ReactNode;
@@ -89,7 +90,10 @@ const ResponsiveSheet = ({
           style={{
             scrollbarGutter: "stable",
           }}
-          className="max-h-[74svh] overflow-y-auto px-4 pb-[64px] "
+          className={cn(
+            "max-h-[74svh] overflow-y-auto px-4 ",
+            footer ? "pb-[64px]" : "pb-4",
+          )}
         >
           {children}
         </div>

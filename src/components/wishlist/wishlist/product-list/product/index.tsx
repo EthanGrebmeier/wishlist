@@ -11,6 +11,8 @@ import type { z } from "zod";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
 import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
 import Card from "~/components/ui/card";
+import { useSetAtom } from "jotai";
+import { isProductViewOpenAtom, productToViewAtom } from "~/store/product-view";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -27,9 +29,16 @@ const Product = ({
   hideStatus,
   animationDelay = 0,
 }: ProductProps) => {
+  const setProductToView = useSetAtom(productToViewAtom);
+  const setIsProductViewOpen = useSetAtom(isProductViewOpenAtom);
+  const handleClick = () => {
+    setProductToView(product);
+    setIsProductViewOpen(true);
+  };
   return (
     <Card
-      href={getProductSlug(product)}
+      // onClick={handleClick}
+      href={`/product/${product.id}`}
       animationDelay={animationDelay}
       backgroundColor={getBackgroundColor(wishlistColor)}
       topContent={
@@ -37,7 +46,7 @@ const Product = ({
           <div className="relative aspect-square w-full  bg-background  ">
             {!hideStatus &&
               (!!product.commitments.length ? (
-                <div className="absolute left-2 top-2 z-10 rounded-md border border-black bg-green-300 px-1 py-[2px] font-medium ">
+                <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
                   <p className="-mb-[1px] text-sm font-medium text-black">
                     {" "}
                     Purchased{" "}

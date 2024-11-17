@@ -12,7 +12,7 @@ const WishlistList = ({ wishlists }: WishlistListProps) => {
     <div className="flex flex-col gap-1 pl-2">
       {wishlists.map((wishlist) => (
         <NavLink
-          className="flex h-auto  w-full items-center justify-start gap-2 rounded-md border-0 px-2 py-0 text-lg font-medium data-[selected=active]:bg-green-200"
+          className="flex h-auto  w-full items-center justify-start gap-2 rounded-md border-0 px-2 font-normal py-0 text-lg data-[selected=active]:bg-green-200"
           key={wishlist.id}
           href={`/wishlist/${wishlist.id}`}
           shallowSelected

@@ -2,7 +2,7 @@ import TitleBar from "~/components/ui/title-bar";
 
 const Loading = () => {
   return (
-    <div>
+    <div className="w-full h-full" >
       <TitleBar className="h-[134px] flex-col items-start justify-center gap-8">
         <div className="h-10 w-44 animate-pulse rounded-md bg-slate-200 py-1"></div>
         <div className="h-8 w-44 animate-pulse rounded-md bg-slate-200 py-1"></div>

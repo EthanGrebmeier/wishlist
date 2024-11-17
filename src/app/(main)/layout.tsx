@@ -9,7 +9,7 @@ export default function RootLayout({
     <div className="mx-auto grid grid-cols-1 pb-16 md:pb-0 lg:grid-cols-[auto_1fr]">
       <Sidebar />
       <Provider>
-        <main id="main" tabIndex={-1} className="relative">
+        <main id="main" tabIndex={-1} className="relative flex flex-1">
           {children}
         </main>
       </Provider>

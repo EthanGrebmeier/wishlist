@@ -22,7 +22,7 @@ const Priority = ({ priorityLevel, className }: PriorityProps) => {
   return (
     <div
       className={cn(
-        "flex w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black px-1 py-[2px] text-sm capitalize ",
+        "flex w-fit h-fit font-medium items-center gap-2 overflow-hidden rounded-md border-2 border-black px-1 py-[2px] text-sm capitalize ",
         priorityLevel === "high" ? "bg-yellow-400" : "bg-red-300",
         className,
       )}

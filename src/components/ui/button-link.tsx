@@ -30,7 +30,7 @@ const ButtonLink = ({
   return (
     <NextLink
       className={cn(
-        "flex gap-4 text-xl font-medium",
+        "flex gap-4 text-xl",
         buttonVariants({
           variant,
           className,
