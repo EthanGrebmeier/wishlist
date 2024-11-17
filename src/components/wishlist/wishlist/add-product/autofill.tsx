@@ -165,7 +165,7 @@ export const AutofillProvider = ({
   children,
   onSuccess,
 }: AutofillProviderProps) => {
-  const { setFormValues, setFrame } = useProductForm();
+  const { setFormValues, setFrame, form: productForm } = useProductForm();
   const [formError, setFormError] = useState("");
 
   const form = useForm<z.infer<typeof scrapeInputSchema>>({
@@ -186,6 +186,8 @@ export const AutofillProvider = ({
         url: data?.url ?? "",
         imageUrl: data?.images?.[0] ?? "",
         priority: "normal",
+        wishlistId: productForm.getValues().wishlistId,
+        id: productForm.getValues().id,
       });
       setFrame("form");
       form.reset();
