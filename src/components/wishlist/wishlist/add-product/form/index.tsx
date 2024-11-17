@@ -187,7 +187,7 @@ type ProductFormContextType = {
   formError: string;
   isEditing: boolean;
   setFormError: Dispatch<SetStateAction<string>>;
-  handleSubmit: (e?: React.BaseSyntheticEvent) => void;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   setFormValues: (values: z.infer<typeof productSchema>) => void;
   setImageUrl: (imageUrl: string) => void;
   frame: ProductInputFrame;
