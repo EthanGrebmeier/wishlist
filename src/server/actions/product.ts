@@ -24,11 +24,14 @@ import { deleteFile } from "../uploadthing";
 export const updateProduct = protectedAction
   .schema(productSchema)
   .action(async ({ parsedInput: product, ctx: { session } }) => {
-    // ensure user is an editor of the wishlist
-    await checkUserIsWishlistEditor({
-      wishlistId: product.wishlistId,
-      session,
-    });
+    console.log("product", product);
+    if (product.wishlistId) {
+      // ensure user is an editor of the wishlist
+      await checkUserIsWishlistEditor({
+        wishlistId: product.wishlistId,
+        session,
+      });
+    }
 
     await db
       .insert(products)
@@ -47,6 +50,8 @@ export const updateProduct = protectedAction
         updatedAt: new Date(),
       })
       .where(eq(wishlists.id, product.wishlistId));
+
+    console.log("Success");
 
     return {
       message: "success",

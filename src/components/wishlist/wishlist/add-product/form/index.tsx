@@ -5,6 +5,7 @@ import {
   ChartColumnIncreasing,
   ClipboardIcon,
   FilePlus,
+  LinkIcon,
   LoaderCircleIcon,
   SquarePenIcon,
   StoreIcon,
@@ -19,11 +20,11 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useForm, type UseFormReturn } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField } from "~/components/ui/form";
 import { generateId } from "~/lib/utils";
-import { productInputSchema } from "~/schema/wishlist/product";
+import { productSchema } from "~/schema/wishlist/product";
 import { updateProduct } from "~/server/actions/product";
 import {
   HorizontalInputWrapper,
@@ -42,20 +43,16 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import StatusButton from "~/components/ui/status-button";
+import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
 
+  console.log(form.formState.errors);
+
   return (
     <Form {...form}>
-      <form
-        className="flex h-full flex-col gap-2"
-        action={handleSubmit}
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await form.trigger();
-        }}
-      >
+      <form className="flex h-full flex-col gap-2" onSubmit={handleSubmit}>
         <FormField
           name="name"
           render={({ field }) => (
@@ -64,6 +61,22 @@ const ProductForm = () => {
               Icon={SquarePenIcon}
               label="Name"
               input={<HorizontalTextInput placeholder="Cool Mug" {...field} />}
+            />
+          )}
+        />
+        <FormField
+          name="url"
+          render={({ field }) => (
+            <HorizontalInputWrapper
+              Icon={LinkIcon}
+              label="URL"
+              input={
+                <HorizontalTextInput
+                  placeholder="https://example.com"
+                  {...field}
+                />
+              }
+              error={form.formState.errors.url?.message}
             />
           )}
         />
@@ -170,12 +183,12 @@ export const ProductFormFooter = () => {
 };
 
 type ProductFormContextType = {
-  form: UseFormReturn<z.infer<typeof productInputSchema>>;
+  form: UseFormReturn<z.infer<typeof productSchema>>;
   formError: string;
   isEditing: boolean;
   setFormError: Dispatch<SetStateAction<string>>;
-  handleSubmit: () => void;
-  setFormValues: (values: z.infer<typeof productInputSchema>) => void;
+  handleSubmit: (e?: React.BaseSyntheticEvent) => void;
+  setFormValues: (values: z.infer<typeof productSchema>) => void;
   setImageUrl: (imageUrl: string) => void;
   frame: ProductInputFrame;
   setFrame: Dispatch<SetStateAction<ProductInputFrame>>;
@@ -206,40 +219,36 @@ export const ProductFormProvider = ({
 
   const isEditing = Boolean(productToEdit);
 
-  const form = useForm<z.infer<typeof productInputSchema>>({
-    resolver: zodResolver(productInputSchema),
-    defaultValues: {
-      name: productToEdit?.name ?? "",
-      description: productToEdit?.description ?? "",
-      brand: productToEdit?.brand ?? "",
-      quantity: productToEdit?.quantity ?? "1",
-      price: productToEdit?.price ?? "",
-      url: productToEdit?.url ?? "",
-      priority: productToEdit?.priority ?? "normal",
-    },
-  });
-
-  const { execute: executeUpdate, status } = useAction(updateProduct, {
-    onError: (error) => {
-      setFormError("Error updating product");
-    },
-    onSuccess: () => {
-      resetProductForm();
-      router.refresh();
-    },
-  });
-
-  const handleSubmit = () => {
-    const values = form.getValues();
-    executeUpdate({
-      ...values,
-      id: productToEdit?.id ?? generateId(),
-      wishlistId,
+  const { form, handleSubmitWithAction, action, resetFormAndAction } =
+    useHookFormAction(updateProduct, zodResolver(productSchema), {
+      formProps: {
+        mode: "onSubmit",
+        defaultValues: {
+          name: productToEdit?.name ?? "",
+          description: productToEdit?.description ?? "",
+          brand: productToEdit?.brand ?? "",
+          quantity: productToEdit?.quantity ?? "1",
+          price: productToEdit?.price ?? "",
+          url: productToEdit?.url ?? "",
+          priority: productToEdit?.priority ?? "normal",
+          imageUrl: productToEdit?.imageUrl ?? "",
+          id: productToEdit?.id ?? "",
+          wishlistId: productToEdit?.wishlistId ?? wishlistId,
+        },
+      },
+      actionProps: {
+        onError: (error) => {
+          setFormError("Error updating product");
+        },
+        onSuccess: () => {
+          resetProductForm();
+          router.refresh();
+        },
+      },
     });
-  };
 
   const setFormValues = useCallback(
-    (values: z.infer<typeof productInputSchema>) => {
+    (values: z.infer<typeof productSchema>) => {
       form.setValue("name", values.name ?? "");
       form.setValue("description", values.description ?? "");
       form.setValue("brand", values.brand ?? "");
@@ -263,7 +272,7 @@ export const ProductFormProvider = ({
   };
 
   const resetProductForm = () => {
-    form.reset();
+    resetFormAndAction();
     setFrame("form");
     setIsOpen(false);
     setProductToEdit(undefined);
@@ -273,7 +282,7 @@ export const ProductFormProvider = ({
     <ProductFormContext.Provider
       value={{
         form,
-        handleSubmit,
+        handleSubmit: handleSubmitWithAction,
         formError,
         setFormError,
         setFormValues,
@@ -284,7 +293,7 @@ export const ProductFormProvider = ({
         resetProductForm,
         isOpen,
         setIsOpen,
-        status,
+        status: action.status,
       }}
     >
       {children}
