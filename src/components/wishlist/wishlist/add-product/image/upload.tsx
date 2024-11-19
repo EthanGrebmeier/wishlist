@@ -7,9 +7,11 @@ import { UploadButton } from "~/lib/upload-thing";
 import { z } from "zod";
 import { Label } from "~/components/ui/label";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import { useProductSheetNavigation } from "..";
 
 const ProductImageUpload = () => {
-  const { setImageUrl, setFrame, form } = useProductForm();
+  const { setImageUrl } = useProductForm();
+  const { setFrame } = useProductSheetNavigation();
   const [importImageUrl, setImportImageUrl] = useState("");
 
   return (
@@ -71,7 +73,7 @@ const ProductImageUpload = () => {
 };
 
 export const ProductImageUploadFooter = () => {
-  const { setFrame } = useProductForm();
+  const { setFrame } = useProductSheetNavigation();
   return (
     <div className="flex w-full ">
       <Button onClick={() => setFrame("form")}>Back</Button>

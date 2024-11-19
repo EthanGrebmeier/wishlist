@@ -23,11 +23,11 @@ type ResponsiveSheetProps = {
   children: React.ReactNode;
   trigger?: React.ReactNode;
   title: React.ReactNode;
-  footer?: React.ReactNode;
   header?: React.ReactNode;
   onClose?: () => void;
   isOpen?: boolean;
   setIsOpen?: (open: boolean) => void;
+  shouldPadBottomMobile?: boolean;
 };
 
 const ResponsiveSheet = ({
@@ -35,10 +35,10 @@ const ResponsiveSheet = ({
   trigger,
   title,
   header,
-  footer,
   onClose,
   isOpen,
   setIsOpen,
+  shouldPadBottomMobile = false,
 }: ResponsiveSheetProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -57,7 +57,7 @@ const ResponsiveSheet = ({
 
         <SheetContent
           side="right"
-          className="right-6 top-8 flex flex-col overflow-hidden rounded-lg border-2 border-black"
+          className="right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black"
         >
           <SheetHeader className="flex h-14 flex-row items-center justify-between overflow-hidden border-b border-black">
             <SheetTitle className="font-serif text-2xl font-medium">
@@ -66,7 +66,6 @@ const ResponsiveSheet = ({
             {header}
           </SheetHeader>
           <div className="flex-1">{children}</div>
-          <SheetFooter>{footer}</SheetFooter>
         </SheetContent>
       </Sheet>
     );
@@ -91,23 +90,12 @@ const ResponsiveSheet = ({
             scrollbarGutter: "stable",
           }}
           className={cn(
-            "max-h-[74svh] overflow-y-auto px-4 ",
-            footer ? "pb-[64px]" : "pb-4",
+            "max-h-[74svh] overflow-y-auto px-4",
+            shouldPadBottomMobile && "pb-[68px]",
           )}
         >
           {children}
         </div>
-        {footer && (
-          <DrawerFooter
-            style={{
-              WebkitBackdropFilter:
-                "var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
-            }}
-            className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent backdrop-blur-lg"
-          >
-            {footer}
-          </DrawerFooter>
-        )}
       </DrawerContent>
     </Drawer>
   );

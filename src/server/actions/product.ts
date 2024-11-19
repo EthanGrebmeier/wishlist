@@ -24,17 +24,19 @@ import { deleteFile } from "../uploadthing";
 export const updateProduct = protectedAction
   .schema(productSchema)
   .action(async ({ parsedInput: product, ctx: { session } }) => {
-    // ensure user is an editor of the wishlist
-    await checkUserIsWishlistEditor({
-      wishlistId: product.wishlistId,
-      session,
-    });
-
+    if (product.wishlistId) {
+      // ensure user is an editor of the wishlist
+      await checkUserIsWishlistEditor({
+        wishlistId: product.wishlistId,
+        session,
+      });
+    }
     await db
       .insert(products)
       .values({
         ...product,
         createdById: session.user.id,
+        id: product.id ?? generateId(),
       })
       .onConflictDoUpdate({
         target: products.id,
@@ -47,6 +49,8 @@ export const updateProduct = protectedAction
         updatedAt: new Date(),
       })
       .where(eq(wishlists.id, product.wishlistId));
+
+    console.log("Success");
 
     return {
       message: "success",

@@ -3,6 +3,7 @@ import React, { forwardRef, type ReactNode } from "react";
 import {
   FormControl,
   FormLabel,
+  FormMessage,
   HorizontalFormItem,
 } from "~/components/ui/form";
 import { cn } from "~/lib/utils";
@@ -12,6 +13,7 @@ type HorizontalInputProps = {
   label: string;
   input: ReactNode;
   required?: boolean;
+  error?: string;
 };
 
 export const HorizontalInputWrapper = ({
@@ -19,20 +21,24 @@ export const HorizontalInputWrapper = ({
   label,
   required,
   input,
+  error,
 }: HorizontalInputProps) => {
   return (
-    <HorizontalFormItem className="flex w-full items-center">
-      <div className="flex w-[120px] items-center gap-2 capitalize">
-        <Icon size={15} />
-        <FormLabel>
-          {label}
-          {required && <sup className="text-xs">*</sup>}
-        </FormLabel>
-      </div>
-      <div className="flex flex-1 items-center gap-2">
-        <FormControl>{input}</FormControl>
-      </div>
-    </HorizontalFormItem>
+    <>
+      <HorizontalFormItem className="flex w-full items-center">
+        <div className="flex w-[120px] items-center gap-2 capitalize">
+          <Icon size={15} />
+          <FormLabel>
+            {label}
+            {required && <sup className="text-xs">*</sup>}
+          </FormLabel>
+        </div>
+        <div className="flex flex-1 items-center gap-2">
+          <FormControl>{input}</FormControl>
+        </div>
+      </HorizontalFormItem>
+      <FormMessage>{error}</FormMessage>
+    </>
   );
 };
 

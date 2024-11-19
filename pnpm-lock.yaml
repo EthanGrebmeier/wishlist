@@ -14,6 +14,9 @@ dependencies:
   '@neondatabase/serverless':
     specifier: ^0.9.1
     version: 0.9.1
+  '@next-safe-action/adapter-react-hook-form':
+    specifier: ^1.0.13
+    version: 1.0.13(@hookform/resolvers@3.3.4)(next-safe-action@7.9.9)(next@14.2.3)(react-dom@18.2.0)(react-hook-form@7.50.1)(react@18.2.0)
   '@planetscale/database':
     specifier: ^1.16.0
     version: 1.16.0
@@ -1057,6 +1060,24 @@ packages:
     resolution: {integrity: sha512-Xi+tVIXuaeB24BHzhr0W/4vcbb9WwIaB6yK0RsMIteLtzNB86+am6EDFovd3rYCYM1ea7rWcwte2dLOrzW7eqA==}
     dependencies:
       '@types/pg': 8.6.6
+    dev: false
+
+  /@next-safe-action/adapter-react-hook-form@1.0.13(@hookform/resolvers@3.3.4)(next-safe-action@7.9.9)(next@14.2.3)(react-dom@18.2.0)(react-hook-form@7.50.1)(react@18.2.0):
+    resolution: {integrity: sha512-J1zfdiVWcs6w388fKwdm0V/2UojU3KkqSQb4dx428HMujuF23UKaZ7v+R10I+AQrkR3yH7RIMIhYOdNwZN33DA==}
+    peerDependencies:
+      '@hookform/resolvers': '>= 3.0.0'
+      next: '>= 14.0.0'
+      next-safe-action: '>= 7.6.0'
+      react: '>= 18.2.0'
+      react-dom: '>= 18.2.0'
+      react-hook-form: '>= 7.0.0'
+    dependencies:
+      '@hookform/resolvers': 3.3.4(react-hook-form@7.50.1)
+      next: 14.2.3(react-dom@18.2.0)(react@18.2.0)
+      next-safe-action: 7.9.9(next@14.2.3)(react-dom@18.2.0)(react@18.2.0)(zod@3.22.4)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-hook-form: 7.50.1(react@18.2.0)
     dev: false
 
   /@next/env@14.1.0:
