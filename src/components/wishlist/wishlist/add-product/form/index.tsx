@@ -40,10 +40,11 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import StatusButton from "~/components/ui/status-button";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { useProductSheetNavigation } from "..";
 
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
@@ -190,11 +191,6 @@ type ProductFormContextType = {
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   setFormValues: (values: z.infer<typeof productSchema>) => void;
   setImageUrl: (imageUrl: string) => void;
-  frame: ProductInputFrame;
-  setFrame: Dispatch<SetStateAction<ProductInputFrame>>;
-  resetProductForm: () => void;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
   status: HookActionStatus;
 };
 
@@ -211,9 +207,8 @@ export const ProductFormProvider = ({
   children,
   wishlistId,
 }: ProductFormProviderProps) => {
-  const [isOpen, setIsOpen] = useAtom(isProductFormOpenAtom);
+  const setIsOpen = useSetAtom(isProductFormOpenAtom);
   const [productToEdit, setProductToEdit] = useAtom(productToEditAtom);
-  const [frame, setFrame] = useState<ProductInputFrame>("form");
   const [formError, setFormError] = useState("");
   const router = useRouter();
 
@@ -232,7 +227,7 @@ export const ProductFormProvider = ({
           url: productToEdit?.url ?? "",
           priority: productToEdit?.priority ?? "normal",
           imageUrl: productToEdit?.imageUrl ?? "",
-          id: productToEdit?.id ?? "",
+          id: productToEdit?.id,
           wishlistId: productToEdit?.wishlistId ?? wishlistId,
         },
       },
@@ -241,7 +236,7 @@ export const ProductFormProvider = ({
           setFormError("Error updating product");
         },
         onSuccess: () => {
-          resetProductForm();
+          setIsOpen(false);
           router.refresh();
         },
       },
@@ -257,6 +252,7 @@ export const ProductFormProvider = ({
       form.setValue("url", values.url ?? "");
       form.setValue("imageUrl", values.imageUrl ?? "");
       form.setValue("priority", values.priority ?? "");
+      form.setValue("wishlistId", values.wishlistId ?? wishlistId);
     },
     [form],
   );
@@ -270,14 +266,6 @@ export const ProductFormProvider = ({
   const setImageUrl = (imageUrl: string) => {
     form.setValue("imageUrl", imageUrl);
   };
-
-  const resetProductForm = () => {
-    resetFormAndAction();
-    setFrame("form");
-    setIsOpen(false);
-    setProductToEdit(undefined);
-  };
-
   return (
     <ProductFormContext.Provider
       value={{
@@ -286,13 +274,8 @@ export const ProductFormProvider = ({
         formError,
         setFormError,
         setFormValues,
-        frame,
-        setFrame,
         isEditing,
         setImageUrl,
-        resetProductForm,
-        isOpen,
-        setIsOpen,
         status: action.status,
       }}
     >

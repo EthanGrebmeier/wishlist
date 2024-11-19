@@ -7,9 +7,11 @@ import PlaceholderImage from "../../../product/placeholder-image";
 import { Button } from "~/components/ui/button";
 import { ImageIcon, Trash2Icon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useProductSheetNavigation } from "..";
 
 const ProductImageDisplay = () => {
-  const { form, setFrame, setImageUrl } = useProductForm();
+  const { setFrame } = useProductSheetNavigation();
+  const { form, setImageUrl } = useProductForm();
 
   const image = form.watch("imageUrl");
 

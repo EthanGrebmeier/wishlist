@@ -23,6 +23,6 @@ export const productInputSchema = z.object({
 });
 
 export const productSchema = productInputSchema.extend({
-  id: z.string(),
+  id: z.string().optional(),
   wishlistId: z.string(),
 });

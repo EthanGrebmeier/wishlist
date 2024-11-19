@@ -24,7 +24,6 @@ import { deleteFile } from "../uploadthing";
 export const updateProduct = protectedAction
   .schema(productSchema)
   .action(async ({ parsedInput: product, ctx: { session } }) => {
-    console.log("product", product);
     if (product.wishlistId) {
       // ensure user is an editor of the wishlist
       await checkUserIsWishlistEditor({
@@ -32,12 +31,12 @@ export const updateProduct = protectedAction
         session,
       });
     }
-
     await db
       .insert(products)
       .values({
         ...product,
         createdById: session.user.id,
+        id: product.id ?? generateId(),
       })
       .onConflictDoUpdate({
         target: products.id,

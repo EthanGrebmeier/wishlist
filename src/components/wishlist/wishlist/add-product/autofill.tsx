@@ -33,6 +33,7 @@ import { scrapeProductData } from "~/server/actions/scrape";
 import { type ProductInputFrame, useProductForm } from "./form";
 import InputButton from "~/components/ui/input-button";
 import StatusButton from "~/components/ui/status-button";
+import { useProductSheetNavigation } from ".";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
   const { form, execute, formError } = useAutofillForm();
@@ -165,7 +166,8 @@ export const AutofillProvider = ({
   children,
   onSuccess,
 }: AutofillProviderProps) => {
-  const { setFormValues, setFrame, form: productForm } = useProductForm();
+  const { setFrame } = useProductSheetNavigation();
+  const { setFormValues, form: productForm } = useProductForm();
   const [formError, setFormError] = useState("");
 
   const form = useForm<z.infer<typeof scrapeInputSchema>>({
@@ -187,7 +189,6 @@ export const AutofillProvider = ({
         imageUrl: data?.images?.[0] ?? "",
         priority: "normal",
         wishlistId: productForm.getValues().wishlistId,
-        id: productForm.getValues().id,
       });
       setFrame("form");
       form.reset();
