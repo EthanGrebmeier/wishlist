@@ -28,7 +28,7 @@ const ProductList = ({
       layout
       className={cn(
         "grid grid-cols-2 gap-2 gap-y-6 sm:grid-cols-3 sm:gap-4 md:gap-y-6 xl:grid-cols-4",
-        gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
+        gridDisplay === "grid" ? "grid-cols-2" : " grid-cols-1",
       )}
     >
       {products
@@ -37,7 +37,7 @@ const ProductList = ({
           (a, b) =>
             (a.updatedAt?.getTime() ?? 0) - (b.updatedAt?.getTime() ?? 0),
         )
-        .sort((a) => (a.commitments.length ? 1 : -1))
+        .sort((a) => (a.commitments?.length ? 1 : -1))
         .map((product, index) => (
           <Product
             wishlistColor={wishlistColor}

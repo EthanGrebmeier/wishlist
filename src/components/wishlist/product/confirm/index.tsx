@@ -12,6 +12,7 @@ import AnimatedPackage from "./animated-package";
 import { cn } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
+import { PackageCheck } from "lucide-react";
 
 type ConfirmReceiptProps = {
   wishlist: Wishlist;
@@ -31,12 +32,15 @@ const ConfirmReceipt = ({
   return (
     <div
       className={cn(
-        "relative grid w-full  grid-cols-[1fr_auto] justify-between gap-4 overflow-hidden text-balance ",
+        "relative flex w-full flex-col justify-between gap-4 overflow-hidden text-balance rounded-lg border-2 border-black p-4 ",
         className,
       )}
     >
+      <div className="absolute right-4 top-4">
+        <PackageCheck size={20} />
+      </div>
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">Received this item?</h2>
+        <h2 className="text-2xl font-medium">Received this item?</h2>
         <p className=" text-pretty leading-tight">
           Mark this item as received to move it to{" "}
           <span className="font-serif"> My Gifts </span>

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import Product from "~/components/wishlist/product";
+import ProductServer from "~/components/wishlist/product";
 import ProductLoading from "~/components/wishlist/product/loading";
 import AddProduct from "~/components/wishlist/wishlist/add-product";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
@@ -24,7 +24,7 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
   return (
     <Suspense fallback={<ProductLoading />}>
       <div className="flex w-full flex-1 justify-center xl:pt-8">
-        <Product
+        <ProductServer
           isSecret={wishlist.isSecret}
           wishlist={wishlist}
           product={product}

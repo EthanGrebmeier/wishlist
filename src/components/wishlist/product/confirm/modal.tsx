@@ -56,7 +56,7 @@ type ModalProps = {
 const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
   return (
     <ResponsiveSheet
-      trigger={<Button icon={<PackageCheck size={20} />}> </Button>}
+      trigger={<Button>Mark as received</Button>}
       title="Received this item?"
     >
       <ModalContent

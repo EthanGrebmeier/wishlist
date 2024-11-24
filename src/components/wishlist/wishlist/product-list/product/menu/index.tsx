@@ -15,9 +15,9 @@ const ProductMenu = () => {
   return (
     <DropdownMenu key={product.id} modal={false}>
       <DropdownMenuTrigger onClick={(e) => e.preventDefault()} asChild>
-        <button className="group w-full justify-between rounded-md border-2 border-black bg-background p-1 text-xl font-medium transition-all hover:bg-green-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <button className="group w-full justify-between rounded-md border-2 border-black bg-background px-1 py-0.5 text-xl font-medium transition-all hover:bg-green-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           {" "}
-          <MoreHorizontal size={15} />{" "}
+          <MoreHorizontal size={24} />{" "}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

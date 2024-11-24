@@ -32,8 +32,8 @@ export default function PurchaseProduct({
     ),
   );
   return (
-    <div className="relative flex flex-col gap-2">
-      <div className="absolute right-0.5 top-0">
+    <div className="relative flex w-full flex-col gap-2 rounded-lg border-2 border-black p-4">
+      {/* <div className="absolute right-4 top-4">
         <div className="flex text-xl ">
           <span className="-translate-x-0.5 -translate-y-1 font-medium">
             {productCommitments?.length || 0}
@@ -43,9 +43,8 @@ export default function PurchaseProduct({
             {product.quantity}
           </span>
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <p className="text-lg font-medium">Commit to this item</p>
+      </div> */}
+      <div className="absolute right-4 top-5">
         <Tooltip
           text={
             isWishlistSecret
@@ -53,18 +52,13 @@ export default function PurchaseProduct({
               : "The wishlist owner will be able to see your commitment."
           }
         >
-          {isWishlistSecret ? (
-            <div className="rounded-sm border border-black bg-yellow-400 p-1">
-              <LockIcon size={12} />
-            </div>
-          ) : (
-            <div className="rounded-sm border border-black bg-blue-300 p-1">
-              <InfoIcon size={12} />
-            </div>
-          )}
+          {isWishlistSecret ? <LockIcon size={20} /> : <InfoIcon size={20} />}
         </Tooltip>
       </div>
-      <p className="max-w-[300px] text-pretty">
+      <div className="flex items-center gap-2">
+        <h2 className="text-2xl font-medium">Commit to this item</h2>
+      </div>
+      <p className="max-w-[300px] text-pretty leading-tight">
         Selecting this will let other people on this wishlist know you are
         providing this item.
       </p>

@@ -12,7 +12,7 @@ export default function ProductImage({
   return (
     <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border-2 border-black">
       <Link
-        className="group absolute left-2 top-2 z-10 flex items-center gap-2 overflow-hidden rounded-md border-2 border-black bg-background px-2 py-1 transition-all duration-150 ease-out hover:bg-green-300"
+        className="group absolute left-2 top-2 z-10 flex items-center gap-2 overflow-hidden rounded-md border-2 border-black bg-background px-2 py-1 transition-all duration-150 ease-out hover:bg-yellow-400"
         href={`/wishlist/${product.wishlistId}`}
       >
         <ArrowLeftIcon

@@ -13,6 +13,7 @@ import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
 import Card from "~/components/ui/card";
 import { useSetAtom } from "jotai";
 import { isProductViewOpenAtom, productToViewAtom } from "~/store/product-view";
+import { CheckIcon } from "lucide-react";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -44,20 +45,23 @@ const Product = ({
       topContent={
         <>
           <div className="relative aspect-square w-full  bg-background  ">
-            {!hideStatus &&
-              (!!product.commitments.length ? (
-                <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                  <p className="-mb-[1px] text-sm font-medium text-black">
-                    {" "}
-                    Purchased{" "}
+            <div className="absolute left-2 right-2 top-2 z-[5] flex gap-1">
+              {product.price && (
+                <div className=" w-fit rounded-md border-2 border-black bg-white px-1 py-0.5">
+                  <p className="text-md text-base font-medium">
+                    ${product.price}
                   </p>
                 </div>
-              ) : (
-                <Priority
-                  className="absolute left-2 top-2 z-[5]"
-                  priorityLevel={product.priority}
-                />
-              ))}
+              )}
+              {!hideStatus &&
+                (!!product.commitments?.length ? (
+                  <div className="rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
+                    <CheckIcon size={24} />
+                  </div>
+                ) : (
+                  <Priority priorityLevel={product.priority} />
+                ))}
+            </div>
             {product.imageUrl ? (
               <ProductImage imageUrl={product.imageUrl} />
             ) : (
@@ -67,18 +71,10 @@ const Product = ({
         </>
       }
       bottomContent={
-        <>
-          <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md font-serif text-base group-hover:underline xs:text-xl sm:text-2xl">
-            {" "}
-            {product.name}{" "}
-          </p>
-          {product.price && (
-            <p className="text-sm font-medium sm:text-base">
-              {" "}
-              ${product.price}{" "}
-            </p>
-          )}
-        </>
+        <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md pr-4 font-serif text-base group-hover:underline xs:text-xl sm:text-2xl">
+          {" "}
+          {product.name}{" "}
+        </p>
       }
     >
       {canUserEdit && (

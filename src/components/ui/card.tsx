@@ -29,13 +29,13 @@ export const Card = ({
   const content = (
     <div
       className={cn(
-        "group w-full overflow-hidden rounded-md border-2 border-black",
+        "group w-full overflow-hidden rounded-md border-2 border-black ",
       )}
     >
       {topContent}
       <div
         className={cn(
-          "flex items-center justify-between gap-2 border-t-2 border-black px-2 py-2 sm:px-4",
+          "flex items-center justify-between gap-2 border-t-2 border-black px-2 py-2 sm:px-3",
           backgroundColor,
         )}
       >
@@ -58,7 +58,10 @@ export const Card = ({
             {content}
           </Link>
         ) : onClick ? (
-          <button className="text-xl font-medium w-full text-start p-0" onClick={onClick}>
+          <button
+            className="w-full p-0 text-start text-xl font-medium"
+            onClick={onClick}
+          >
             {content}
           </button>
         ) : (
