@@ -46,7 +46,7 @@ export const SharedUserThumbnailView = ({
         </Tooltip>
       ))}
       {wishlistShares.length > numThumbnails && (
-        <SharedUserThumbnail className="[&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
+        <SharedUserThumbnail className="z-10 [&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">
           <div className="flex h-full w-full items-center justify-center bg-green-300">
             <p className=""> +{wishlistShares.length - numThumbnails} </p>
           </div>

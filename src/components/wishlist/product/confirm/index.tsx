@@ -31,7 +31,7 @@ const ConfirmReceipt = ({
   return (
     <div
       className={cn(
-        "relative grid w-full  grid-cols-[1fr_auto] justify-between gap-4 overflow-hidden text-balance rounded-md border-2 border-black p-4",
+        "relative grid w-full  grid-cols-[1fr_auto] justify-between gap-4 overflow-hidden text-balance ",
         className,
       )}
     >

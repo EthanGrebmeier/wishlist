@@ -23,7 +23,7 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
 
   return (
     <Suspense fallback={<ProductLoading />}>
-      <div className="flex flex-1 justify-center pt-8">
+      <div className="flex w-full flex-1 justify-center xl:pt-8">
         <Product
           isSecret={wishlist.isSecret}
           wishlist={wishlist}

@@ -197,7 +197,7 @@ export const AddProductSheetTriggerMobile = () => {
   return (
     <Button
       onClick={openSheet}
-      className="fixed bottom-4 left-4 hidden md:block"
+      className="fixed bottom-4 left-4 flex md:hidden"
       size="circle"
       icon={<PlusIcon size={20} />}
     ></Button>
