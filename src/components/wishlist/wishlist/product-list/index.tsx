@@ -7,7 +7,7 @@ import type { colorSchema } from "~/schema/wishlist/wishlist";
 import { cn } from "~/lib/utils";
 import { useAtom } from "jotai";
 import { gridDisplayAtom } from "~/store/grid-display";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 type ProductListProps = {
   products: WishlistProductWithCommitmentsWithUser[];
@@ -31,23 +31,33 @@ const ProductList = ({
         gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
       )}
     >
-      {products
-        .sort(sortProductsByPriority)
-        .sort(
-          (a, b) =>
-            (a.updatedAt?.getTime() ?? 0) - (b.updatedAt?.getTime() ?? 0),
-        )
-        .sort((a) => (a.commitments.length ? 1 : -1))
-        .map((product, index) => (
-          <Product
-            wishlistColor={wishlistColor}
-            canUserEdit={canUserEdit}
-            product={product}
-            hideStatus={hideStatus}
-            key={product.id}
-            animationDelay={0.1 * index}
-          />
-        ))}
+      <AnimatePresence initial={false} mode="popLayout">
+        {products
+          .sort(sortProductsByPriority)
+          .sort(
+            (a, b) =>
+              (a.updatedAt?.getTime() ?? 0) - (b.updatedAt?.getTime() ?? 0),
+          )
+          .sort((a) => (a.commitments.length ? 1 : -1))
+          .map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3, type: "spring", bounce: 0 }}
+            >
+              <Product
+                wishlistColor={wishlistColor}
+                canUserEdit={canUserEdit}
+                product={product}
+                hideStatus={hideStatus}
+                key={product.id}
+                animationDelay={0.1 * index}
+              />
+            </motion.div>
+          ))}
+      </AnimatePresence>
     </motion.ul>
   );
 };
