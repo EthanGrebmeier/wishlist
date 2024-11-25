@@ -22,16 +22,16 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
   const wishlist = await getWishlist({ wishlistId: product?.wishlistId });
 
   return (
-    <Suspense fallback={<ProductLoading />}>
-      <div className="flex w-full flex-1 justify-center xl:pt-8">
+    <div className="flex w-full flex-1 justify-center xl:pt-8">
+      <Suspense fallback={<ProductLoading />}>
         <ProductServer
           isSecret={wishlist.isSecret}
           wishlist={wishlist}
           product={product}
         />
-      </div>
-      <AddProduct wishlistId={wishlist.id} />
-    </Suspense>
+        <AddProduct wishlistId={wishlist.id} />
+      </Suspense>
+    </div>
   );
 };
 
