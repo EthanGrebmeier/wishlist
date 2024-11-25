@@ -105,7 +105,7 @@ export default function Product({
                 setProductToEdit(product);
                 setIsProductFormOpen(true);
               }}
-              className="flex items-center gap-1 self-end text-sm font-medium underline"
+              className="flex items-center gap-1 text-sm font-medium underline"
             >
               Edit Product
               <PencilIcon size={15} />
