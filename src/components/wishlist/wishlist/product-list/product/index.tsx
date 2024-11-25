@@ -13,7 +13,8 @@ import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
 import Card from "~/components/ui/card";
 import { useSetAtom } from "jotai";
 import { isProductViewOpenAtom, productToViewAtom } from "~/store/product-view";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, PackageCheckIcon } from "lucide-react";
+import { Tooltip } from "~/components/ui/tooltip";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -55,9 +56,11 @@ const Product = ({
               )}
               {!hideStatus &&
                 (!!product.commitments?.length ? (
-                  <div className="rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                    <CheckIcon size={24} />
-                  </div>
+                  <Tooltip text="This item has been purchased!">
+                    <div className="rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
+                      <PackageCheckIcon size={24} />
+                    </div>
+                  </Tooltip>
                 ) : (
                   <Priority priorityLevel={product.priority} />
                 ))}
