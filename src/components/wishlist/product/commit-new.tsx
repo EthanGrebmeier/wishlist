@@ -51,7 +51,7 @@ export default function CommitNew({
 
   const isFullyPurchased =
     product.quantity &&
-    parseInt(product.quantity) <= (productCommitments?.length || 0);
+    parseInt(product.quantity) <= (productCommitments?.length ?? 0);
 
   if (isFullyPurchased && !hasUserCommitted) {
     return null;
