@@ -31,7 +31,7 @@ export default function PurchaseProduct({
 
   const Content = useMemo(() => {
     if (
-      (productCommitments?.length && hasUserCommitted) ||
+      (productCommitments?.length && hasUserCommitted) ??
       !productCommitments?.length
     ) {
       return (
