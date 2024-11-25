@@ -132,13 +132,15 @@ export default function Product({
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <PurchaseProduct
-          session={session}
-          isWishlistSecret={wishlist.isSecret}
-          product={product}
-          productCommitments={productCommitments}
-          url={product.url}
-        />{" "}
+        {!canUserEdit && !wishlist.isSecret && (
+          <PurchaseProduct
+            session={session}
+            isWishlistSecret={wishlist.isSecret}
+            product={product}
+            productCommitments={productCommitments}
+            url={product.url}
+          />
+        )}
         {product.url && (
           <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
             <div className="absolute right-4 top-4">
@@ -168,43 +170,45 @@ export default function Product({
           </>
         )}
       </div>
-      <div className="flex w-full flex-col gap-4 overflow-visible">
-        <div className="flex justify-between gap-2">
-          <div>
-            <h2 className="text-xl font-medium sm:text-3xl">
-              Other items in this wishlist{" "}
-            </h2>
-            <span>({wishlist.products.length} items) </span>
+      {wishlist.products.length > 1 && (
+        <div className="flex w-full flex-col gap-4 overflow-visible">
+          <div className="flex justify-between gap-2">
+            <div>
+              <h2 className="text-xl font-medium sm:text-3xl">
+                Other items in this wishlist{" "}
+              </h2>
+              <span>({wishlist.products.length} items) </span>
+            </div>
+            <div className="shrink-0 text-end">
+              <Link
+                className="group flex items-center gap-2 text-xl font-medium underline"
+                href={`/wishlist/${wishlist.id}`}
+              >
+                View all{" "}
+                <ChevronsRight
+                  className="transition-transform group-hover:translate-x-1"
+                  size={25}
+                />
+              </Link>
+            </div>
           </div>
-          <div className="shrink-0 text-end">
-            <Link
-              className="group flex items-center gap-2 text-xl font-medium underline"
-              href={`/wishlist/${wishlist.id}`}
-            >
-              View all{" "}
-              <ChevronsRight
-                className="transition-transform group-hover:translate-x-1"
-                size={25}
-              />
-            </Link>
-          </div>
+          <ul className="grid gap-4 xs:grid-cols-2 sm:grid-cols-3">
+            {wishlist.products
+              .filter((p) => p.id !== product.id)
+              .slice(0, 3)
+              .map((product, index) => (
+                <ProductCard
+                  product={product}
+                  canUserEdit={canUserEdit}
+                  wishlistColor={wishlist.color}
+                  hideStatus={true}
+                  key={product.id}
+                  animationDelay={0.1 * index}
+                />
+              ))}
+          </ul>
         </div>
-        <ul className="grid gap-4 xs:grid-cols-2 sm:grid-cols-3">
-          {wishlist.products
-            .filter((p) => p.id !== product.id)
-            .slice(0, 3)
-            .map((product, index) => (
-              <ProductCard
-                product={product}
-                canUserEdit={canUserEdit}
-                wishlistColor={wishlist.color}
-                hideStatus={true}
-                key={product.id}
-                animationDelay={0.1 * index}
-              />
-            ))}
-        </ul>
-      </div>
+      )}
     </div>
   );
 }
