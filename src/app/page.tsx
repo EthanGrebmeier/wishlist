@@ -6,7 +6,7 @@ import {
   Heart,
   Lock,
   School,
-  UserCircle,
+  ScrollText,
 } from "lucide-react";
 import { redirect } from "next/navigation";
 import Hero from "~/components/home/hero";
@@ -31,11 +31,11 @@ export default async function HomePage() {
         <div className="relative flex w-full max-w-[800px] flex-col">
           <h2 className="mb-2 text-balance text-center font-serif text-4xl">
             {" "}
-            Create your dream wishlist!
+            Perfect for any occasion
           </h2>
-          <p className="text-center text-xl">
+          <p className="text-center text-xl text-pretty font-serif">
             {" "}
-            Fillaneed is perfect for birthdays, holidays, events, and registries
+            Make lists for birthdays, holidays, events, registries and anything you can imagine!
           </p>
           <div className="grid w-full  grid-cols-2 gap-4 py-8 md:grid-cols-3">
             <MockCard title="21st Birthday!" color="bg-green-400">
@@ -71,18 +71,18 @@ export default async function HomePage() {
           <ColoredIconWrapper className="absolute -right-8 -top-8 rotate-[7deg] bg-red-400 md:-right-48">
             <Lock size={65} />
           </ColoredIconWrapper>
-          <h2 className="mb-2 max-w-[280px] text-balance text-center font-serif text-4xl">
+          <h2 className="mb-2 max-w-[280px] text-balance text-center font-serif text-4xl leading-none">
             {" "}
             Don&apos;t want to spoil the surprise?{" "}
           </h2>
-          <p className="max-w-[500px] text-balance text-center text-xl">
+          <p className="max-w-[500px] text-pretty font-serif text-center text-xl leading-tight">
             {" "}
             Turn on &quot;Keep it a secret&quot; mode to keep what&apos;s
-            already been purchased a secret to yourself
+            already been purchased a secret to yourself.
           </p>
           <div className="grid w-full max-w-[550px] grid-cols-2 gap-8 py-8 sm:gap-4">
             <div className="flex w-full  flex-col items-center gap-2">
-              <p className="text-xl xs:text-2xl"> What you see </p>
+              <p className="text-xl xs:text-2xl font-serif"> What you see </p>
               <MockCard title="Dream Gift" price={"$25"} color="bg-green-200">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Gift size={50} />
@@ -90,7 +90,7 @@ export default async function HomePage() {
               </MockCard>
             </div>
             <div className="flex w-full flex-col items-center gap-2">
-              <p className="text-xl xs:text-2xl"> What they see </p>
+              <p className="text-xl xs:text-2xl font-serif"> What they see </p>
               <MockCard title="Dream Gift" price={"$25"} color="bg-green-200">
                 <div className="absolute left-2 top-2 z-10 rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
                   <p className="-mb-[1px] text-sm font-medium text-black">
@@ -106,17 +106,17 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
-      <div className="mx-2 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-black p-4">
+      <div className="mx-2 flex flex-col items-center justify-center gap-4 ">
         <p className="text-center font-serif text-4xl">Ready to get started?</p>
         <ButtonLink
-          icon={<UserCircle size={20} />}
+          icon={<ScrollText size={20} />}
           href="/auth/sign-in"
           className="w-fit"
         >
-          Sign In
+          Create your wishlist
         </ButtonLink>
       </div>
-      <div className="flex w-full flex-col items-center justify-center gap-2">
+      <div className="flex w-full flex-col md:flex-row items-center justify-center gap-2 md:gap-6">
         <Link className="hover:font-bold" href="/privacy">
           Privacy Policy
         </Link>

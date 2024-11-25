@@ -6,7 +6,7 @@ import SkipToContent from "./skip-to-content";
 const Sidebar = () => {
   return (
     <>
-      <section className="top-0 z-10 grid grid-cols-1 grid-rows-[auto_1fr] bg-background py-4 md:sticky md:top-0 lg:h-screen">
+      <section className="top-0 z-10 grid grid-cols-1 grid-rows-[auto_1fr] bg-background  py-4  lg:sticky lg:h-screen">
         <SkipToContent />
         <div className="mt-6 flex w-full items-center justify-center px-2 lg:mb-8 lg:w-fit lg:justify-between lg:px-6">
           <Logo />

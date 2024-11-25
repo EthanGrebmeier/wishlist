@@ -1,5 +1,5 @@
 "use client";
-import { Gift, BookUser, UserCircle, Package } from "lucide-react";
+import { Gift, BookUser, UserCircle, Package, ScrollText } from "lucide-react";
 
 import React from "react";
 import Logo from "../navigation/logo";
@@ -9,12 +9,12 @@ import FlyingIcon from "./flying-icon";
 
 const Hero = () => {
   return (
-    <div className=" flex min-h-[calc(100svh-240px)] w-full flex-col items-center justify-center pt-24">
-      <div className="relative flex h-fit w-fit flex-col items-center justify-center ">
+    <div className="relative flex min-h-[calc(100svh-340px)] w-full flex-col items-center justify-center pt-24 ">
+      <div className=" flex h-fit w-fit flex-col items-center justify-center ">
         <FlyingIcon
           animate={{
-            top: "-136px",
-            left: "-24px",
+            top: "23%",
+            left: "22%",
             rotate: -382,
             opacity: 1,
           }}
@@ -25,8 +25,8 @@ const Hero = () => {
         </FlyingIcon>
         <FlyingIcon
           animate={{
-            right: "-28px",
-            bottom: "-128px",
+            right: "22%",
+            bottom: "30%",
             rotate: 372,
             opacity: 1,
           }}
@@ -37,8 +37,8 @@ const Hero = () => {
         </FlyingIcon>
         <FlyingIcon
           animate={{
-            left: "-20px",
-            bottom: "-98px",
+            left: "25%",
+            bottom: "14%",
             rotate: 352,
             opacity: 1,
           }}
@@ -49,20 +49,20 @@ const Hero = () => {
         </FlyingIcon>
         <div className="z-10 flex flex-col items-center gap-2 md:flex-row md:gap-4">
           <h1 className="font-serif text-5xl md:text-7xl">
-            Welcome to<span className="sr-only">fillaneed</span>
+            <span className="sr-only">fillaneed</span>
           </h1>
           <Logo ariaHidden={true} className="pt-0" size="large" />
         </div>
-        <div className="mt-4 flex flex-col items-center gap-6 px-4">
-          <p className="text-balance text-center text-xl md:text-2xl">
-            A place for you to build and share wishlists!
+        <div className="flex flex-col items-center gap-6 px-4">
+          <p className="text-balance text-center text-xl md:text-2xl font-serif">
+            Create your dream wishlist
           </p>
           <ButtonLink
-            icon={<UserCircle size={20} />}
+            icon={<ScrollText size={20} />}
             href="/auth/sign-in"
             className="w-fit"
           >
-            Sign In
+            Get Started
           </ButtonLink>
         </div>
       </div>

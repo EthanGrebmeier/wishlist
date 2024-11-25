@@ -1,6 +1,6 @@
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Afacad, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
@@ -11,7 +11,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { MotionConfig } from "framer-motion";
 
-const orbiter = localFont({
+// const serif = Afacad({
+//   weight: ["400", "500", "600", "700"],
+//   subsets: ["latin"],
+//   variable: "--font-sans",
+// });
+
+const serif = localFont({
   src: [
     {
       path: "../../public/fonts/TASAOrbiterVF.woff2",
@@ -50,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${orbiter.variable} ${junicode.variable}  mx-auto max-w-[2200px] bg-background`}
+        className={`font-sans ${serif.variable} ${junicode.variable}  mx-auto max-w-[2200px] bg-background`}
       >
         <MotionConfig reducedMotion="user">
           <NextSSRPlugin

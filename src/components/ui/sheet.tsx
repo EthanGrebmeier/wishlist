@@ -72,6 +72,11 @@ const SheetContent = React.forwardRef<
           animate={{
             height: dimensions.height,
           }}
+          transition={{
+            duration: 0.3,
+            type: "spring",
+            bounce: 0,
+          }}
         >
           <div ref={innerRef}>{children}</div>
         </motion.div>

@@ -22,6 +22,8 @@ const FlyingIcon = ({ children, animate }: FlyingIconProps) => {
       transition={{
         duration: 0.55,
         delay: 0.05,
+        type: "spring",
+        bounce: 0.5,
       }}
       whileHover={{ rotate: -12 }}
       className="absolute"

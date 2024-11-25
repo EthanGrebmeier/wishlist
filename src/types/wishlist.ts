@@ -19,7 +19,7 @@ export type WishlistProduct = typeof products.$inferSelect;
 
 export interface WishlistProductWithCommitmentsWithUser
   extends WishlistProduct {
-  commitments: WishlistProductCommitmentsWithUser[];
+  commitments?: WishlistProductCommitmentsWithUser[];
 }
 
 export type WishlistProductCommitments = typeof productCommitments.$inferSelect;

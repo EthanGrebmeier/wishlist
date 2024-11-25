@@ -1,3 +1,5 @@
+"use server";
+
 import { and, eq } from "drizzle-orm";
 import { Session } from "next-auth";
 import { db } from "~/server/db";

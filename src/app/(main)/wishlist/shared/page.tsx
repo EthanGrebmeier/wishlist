@@ -6,7 +6,7 @@ import { getSharedWishlists } from "~/lib/wishlist/getWishlist";
 
 const SharedWishlistPage = async () => {
   return (
-    <div>
+    <div className="w-full h-full">
       <TitleBar>
         <span className="flex items-center gap-4 pl-2">
           <ColoredIconWrapper className="bg-yellow-300">

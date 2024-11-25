@@ -106,17 +106,17 @@ const Commit = ({
         })
       }
       // className="rounded-md border-2 border-black bg-green-100 px-4 py-6 "
-      className="grid grid-cols-[1fr_auto] gap-2 "
+      className="flex flex-col gap-2 "
     >
       <div className="-mt-1">
-        <h2 className="font-serif text-2xl font-medium">Commit to this item</h2>
+        <h2 className="font-serif text-2xl font-medium text-balance">Already purchased this item?</h2>
         <p className=" text-balance text-sm leading-tight tracking-tight">
-          Commit to let others know that you intend to purchase this item
+          Let others know by committing to this item
         </p>
       </div>
       <div className=" flex items-center">
-        <SubmitButton icon={<ShoppingBasket size={25} />} variant="default">
-          {" "}
+        <SubmitButton icon={<ShoppingBasket size={15} />} variant="default">
+          Commit
         </SubmitButton>
       </div>
     </form>
