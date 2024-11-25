@@ -24,6 +24,7 @@ import {
 import { useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import ProductCard from "../wishlist/product-list/product";
+import Breadcrumbs from "./breadcrumbs";
 
 type ProductPageProps = {
   wishlist: WishlistWithProducts;
@@ -55,26 +56,7 @@ export default function Product({
           <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4 ">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col items-start justify-normal gap-2 xs:flex-row xs:items-center xs:justify-between ">
-                <div className="col-span-full flex items-center gap-1 text-base font-medium leading-none [&_p]:mt-[2px]">
-                  <Link className="hover:underline" href="/wishlist">
-                    <p>My Wishlists</p>
-                  </Link>{" "}
-                  <p className="text-gray-400" aria-hidden="true">
-                    /
-                  </p>{" "}
-                  <Link
-                    href={`/wishlist/${wishlist.id}`}
-                    className="flex items-center justify-center gap-1"
-                  >
-                    <p className="hover:underline">{wishlist.name}</p>{" "}
-                    <div
-                      className={cn(
-                        "size-4 rounded-full border border-black",
-                        getBackgroundColor(wishlist.color),
-                      )}
-                    ></div>
-                  </Link>
-                </div>
+                <Breadcrumbs wishlist={wishlist} session={session} />
                 {product.priority !== "normal" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
