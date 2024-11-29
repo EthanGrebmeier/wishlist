@@ -44,8 +44,6 @@ import { useAtom, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import StatusButton from "~/components/ui/status-button";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { useProductSheetNavigation } from "..";
-
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
 
@@ -152,6 +150,9 @@ const ProductForm = () => {
             />
           )}
         />
+        <button className="hidden" aria-hidden>
+          Submit
+        </button>
       </form>
     </Form>
   );
@@ -236,8 +237,10 @@ export const ProductFormProvider = ({
           setFormError("Error updating product");
         },
         onSuccess: () => {
-          setIsOpen(false);
-          router.refresh();
+          setTimeout(() => {
+            setIsOpen(false);
+            router.refresh();
+          }, 800);
         },
       },
     });
