@@ -15,30 +15,11 @@ import { Calendar } from "~/components/ui/calendar";
 
 type DatePickerProps = {
   date?: Date;
-  setDate: Dispatch<SetStateAction<Date | undefined>>;
+  setDate: (date: Date | undefined) => void;
 };
 
 const DatePicker = ({ date, setDate }: DatePickerProps) => {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          id="date-picker"
-          variant={"outline"}
-          className={cn(
-            "flex w-full items-center justify-center border text-left font-normal",
-            !date && "text-muted-foreground",
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={setDate} />
-      </PopoverContent>
-    </Popover>
-  );
+  return <Calendar mode="single" selected={date} onSelect={setDate} />;
 };
 
 export default DatePicker;

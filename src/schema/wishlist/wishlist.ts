@@ -24,3 +24,13 @@ export const shareWishlistInputSchema = z.object({
 export const shareWishlistEmailInputSchema = z.object({
   email: z.string(),
 });
+
+export const wishlistSettingsSchema = z.object({
+  wishlistName: z.string().min(1),
+  imageUrl: z.string().optional(),
+  id: z.string(),
+  createdById: z.string(),
+  date: z.date().optional(),
+  color: colorSchema,
+  isSecret: z.boolean(),
+});

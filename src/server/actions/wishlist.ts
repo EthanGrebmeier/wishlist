@@ -6,7 +6,11 @@ import {
   protectedAction,
   makeSafeAction,
 } from "~/lib/actions/protectedAction";
-import { colorSchema, privacyTypeSchema } from "~/schema/wishlist/wishlist";
+import {
+  colorSchema,
+  privacyTypeSchema,
+  wishlistSettingsSchema,
+} from "~/schema/wishlist/wishlist";
 import { db } from "../db";
 import {
   magicWishlistLinks,
@@ -141,39 +145,42 @@ export const createWishlist = protectedAction
   );
 
 export const updateWishlist = protectedAction
-  .schema(
-    z.object({
-      id: z.string(),
-      wishlistName: z.string().min(1),
-      date: z.date().optional(),
-      color: colorSchema,
-      isSecret: z.boolean(),
-      imageUrl: z.string().optional(),
-    }),
-  )
+  .schema(wishlistSettingsSchema)
   .action(
     async ({
-      parsedInput: { wishlistName, date, color, isSecret, id, imageUrl },
+      parsedInput: {
+        wishlistName,
+        date,
+        color,
+        isSecret,
+        id,
+        createdById,
+        imageUrl,
+      },
       ctx: { session },
     }) => {
-      // ensure user is an editor of the wishlist
-      await checkUserIsWishlistEditor({
-        wishlistId: id,
-        session,
-      });
+      if (id) {
+        // ensure user is an editor of the wishlist
+        await checkUserIsWishlistEditor({
+          wishlistId: id,
+          session,
+        });
+      }
 
       const wishlistValues = {
+        createdById: createdById ?? session.user.id,
         name: wishlistName,
         dueDate: date?.toDateString() ?? null,
         color,
         isSecret,
         imageUrl,
+        id: id ?? generateId(),
       };
       try {
-        await db
-          .update(wishlists)
-          .set(wishlistValues)
-          .where(eq(wishlists.id, id));
+        await db.insert(wishlists).values(wishlistValues).onConflictDoUpdate({
+          target: wishlists.id,
+          set: wishlistValues,
+        });
       } catch (e) {
         console.error(e);
         throw new Error("Could not update wishlist");

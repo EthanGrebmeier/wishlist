@@ -6,6 +6,7 @@ import TitleBar from "~/components/ui/title-bar";
 import CreateWishlist from "~/components/wishlist/create-wishlist";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
 import ToggleGridDisplay from "~/components/wishlist/toggle-grid-display";
+import WishlistSettings from "~/components/wishlist/wishlist/settings";
 import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
@@ -21,7 +22,7 @@ const WishlistPage = async () => {
           </span>
 
           <div className="hidden md:block">
-            <CreateWishlist />
+            <WishlistSettings />
           </div>
           <div className="sm:hidden">
             <ToggleGridDisplay />
