@@ -6,7 +6,4 @@ export const gridDisplayAtom = atomWithStorage<"grid" | "list">(
   "gridDisplay",
   "grid",
   storage,
-  {
-    getOnInit: true,
-  },
 );
