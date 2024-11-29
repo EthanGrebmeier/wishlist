@@ -34,6 +34,7 @@ import { type ProductInputFrame, useProductForm } from "./form";
 import InputButton from "~/components/ui/input-button";
 import StatusButton from "~/components/ui/status-button";
 import { useProductSheetNavigation } from ".";
+import { useAutofillForm } from "./autofill-context";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
   const { form, execute, formError } = useAutofillForm();
@@ -98,6 +99,9 @@ const Autofill = forwardRef<HTMLFormElement>((props, ref) => {
             {" "}
             Input a link to a product to autofill information
           </p>
+          <p className="text-sm tracking-tight">
+            Some websites may not be supported
+          </p>
         </div>
         <ColoredIconWrapper className="bg-purple-300">
           <Sparkles size={30} />
@@ -146,81 +150,4 @@ export const AutofillFooter = ({
     </div>
   );
 };
-
-type AutofillContextType = {
-  formError: string;
-  setFormError: Dispatch<SetStateAction<string>>;
-  form: UseFormReturn<z.infer<typeof scrapeInputSchema>>;
-  execute: (formData: { pageToScrape: string }) => void;
-  status: HookActionStatus;
-};
-
-const AutofillContext = createContext<AutofillContextType | null>(null);
-
-type AutofillProviderProps = {
-  children: React.ReactNode;
-  onSuccess?: () => void;
-};
-
-export const AutofillProvider = ({
-  children,
-  onSuccess,
-}: AutofillProviderProps) => {
-  const { setFrame } = useProductSheetNavigation();
-  const { setFormValues, form: productForm } = useProductForm();
-  const [formError, setFormError] = useState("");
-
-  const form = useForm<z.infer<typeof scrapeInputSchema>>({
-    resolver: zodResolver(scrapeInputSchema),
-    defaultValues: {
-      url: "",
-    },
-  });
-
-  const { execute, result, status, reset } = useAction(scrapeProductData, {
-    onSuccess: ({ data }) => {
-      setFormValues({
-        description: data?.description ?? "",
-        quantity: "1",
-        brand: "",
-        name: data?.name ?? "",
-        price: data?.price ?? "",
-        url: data?.url ?? "",
-        imageUrl: data?.images?.[0] ?? "",
-        priority: "normal",
-        wishlistId: productForm.getValues().wishlistId,
-      });
-      setFrame("form");
-      form.reset();
-      if (onSuccess) {
-        onSuccess();
-      }
-
-      reset();
-    },
-  });
-
-  return (
-    <AutofillContext.Provider
-      value={{
-        formError,
-        setFormError,
-        form,
-        execute,
-        status,
-      }}
-    >
-      {children}
-    </AutofillContext.Provider>
-  );
-};
-
-export const useAutofillForm = () => {
-  const context = useContext(AutofillContext);
-  if (!context) {
-    throw new Error("useAutofillState must be used within a AutofillProvider");
-  }
-  return context;
-};
-
 export default Autofill;
