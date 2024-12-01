@@ -13,7 +13,12 @@ import { SubmitButton } from "../ui/submit-button";
 export const DeleteWishlist = () => {
   const [isOpen, setIsOpen] = useAtom(isWishlistDeleteOpenAtom);
   const [wishlistToDelete, setWishlistToDelete] = useAtom(wishlistToDeleteAtom);
-  const { execute } = useAction(deleteWishlist);
+  const { execute } = useAction(deleteWishlist, {
+    onSuccess: () => {
+      setIsOpen(false);
+      setWishlistToDelete(null);
+    },
+  });
 
   const onOpenChange = (open: boolean) => {
     if (!open) {

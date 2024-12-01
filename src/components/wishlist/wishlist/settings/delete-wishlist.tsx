@@ -1,5 +1,6 @@
 "use client";
 
+import { useSetAtom } from "jotai";
 import { Loader, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
@@ -7,6 +8,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "~/components/ui/button";
 import { deleteWishlist } from "~/server/actions/wishlist";
+import { isWishlistSettingsOpenAtom } from "~/store/wishlist-settings";
 
 type DeleteWishListProps = {
   wishlistId: string;
@@ -14,9 +16,11 @@ type DeleteWishListProps = {
 
 const DeleteWishlist = ({ wishlistId }: DeleteWishListProps) => {
   const router = useRouter();
+  const setIsWishlistSettingsOpen = useSetAtom(isWishlistSettingsOpenAtom);
 
   const { execute, status } = useAction(deleteWishlist, {
     onSuccess: () => {
+      setIsWishlistSettingsOpen(false);
       router.push("/wishlist");
     },
   });

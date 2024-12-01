@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/lib/utils";
 
 const buttonVariants = cva(
-  "relative group flex items-start justify-start focus:ring-2 focus:ring-primary focus:ring-offset-2",
+  "relative group flex items-start justify-start focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4 rounded-md",
   {
     variants: {
       variant: {
@@ -31,7 +31,7 @@ const buttonVariants = cva(
 );
 
 export const buttonInnerVariants = cva(
-  "inline-flex z-10 items-center   text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all gap-2 w-full group-hover:disabled:-translate-y-1.5",
+  "inline-flex z-10 items-center text-black justify-center whitespace-nowrap rounded-md border-2 border-black text-sm font-bold ring-offset-background disabled:pointer-events-none disabled:opacity-50 transition-all gap-2 w-full group-hover:disabled:-translate-y-1.5",
   {
     variants: {
       variant: {

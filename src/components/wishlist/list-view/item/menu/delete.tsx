@@ -13,16 +13,14 @@ const Delete = () => {
   const setIsWishlistDeleteOpen = useSetAtom(isWishlistDeleteOpenAtom);
 
   return (
-    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-      <button
-        onClick={() => {
-          setWishlistToDelete(wishlist ?? null);
-          setIsWishlistDeleteOpen(true);
-        }}
-        className="w-full text-left text-red-500"
-      >
-        Delete Wishlist
-      </button>
+    <DropdownMenuItem
+      onSelect={() => {
+        setWishlistToDelete(wishlist ?? null);
+        setIsWishlistDeleteOpen(true);
+      }}
+      className="text-left text-red-500"
+    >
+      Delete Wishlist
     </DropdownMenuItem>
   );
 };
