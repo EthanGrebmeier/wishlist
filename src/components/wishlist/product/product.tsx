@@ -47,7 +47,7 @@ export default function Product({
   const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
 
   return (
-    <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-none xl:pr-8 xl:pt-4 ">
+    <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">
       <div className="flex flex-col gap-2">
         <div className="grid gap-4 xl:grid-cols-[1fr_440px]">
           <div className="hidden h-full w-full xl:flex">
@@ -100,21 +100,23 @@ export default function Product({
                 </div>
               )}
             </div>
-            <button
-              onClick={() => {
-                setProductToEdit(product);
-                setIsProductFormOpen(true);
-              }}
-              className="flex items-center gap-1 text-sm font-medium underline"
-            >
-              Edit Product
-              <PencilIcon size={15} />
-            </button>
+            {canUserEdit && (
+              <button
+                onClick={() => {
+                  setProductToEdit(product);
+                  setIsProductFormOpen(true);
+                }}
+                className="flex items-center gap-1 text-sm font-medium underline"
+              >
+                Edit Product
+                <PencilIcon size={15} />
+              </button>
+            )}
           </div>
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {!canUserEdit && !wishlist.isSecret && (
+        {((!wishlist.isSecret && canUserEdit) || !canUserEdit) && (
           <PurchaseProduct
             session={session}
             isWishlistSecret={wishlist.isSecret}

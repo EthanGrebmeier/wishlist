@@ -30,8 +30,9 @@ export default function PurchaseProduct({
   );
 
   const Content = useMemo(() => {
+    console.log("NO COMMITMENTS?", !productCommitments?.length);
     if (
-      (productCommitments?.length && hasUserCommitted) ??
+      (productCommitments?.length && hasUserCommitted) ||
       !productCommitments?.length
     ) {
       return (
@@ -81,6 +82,8 @@ export default function PurchaseProduct({
         </>
       );
     }
+
+    return "YOU SHOULD NOT SEE THIS";
   }, [productCommitments, hasUserCommitted]);
   return (
     <div className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
