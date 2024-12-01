@@ -307,7 +307,7 @@ const ModalContent = ({
 
   return (
     <AnimatePresence initial={false} mode="popLayout">
-      {content}
+      <div className="relative pb-4">{content}</div>
     </AnimatePresence>
   );
 };

@@ -18,6 +18,7 @@ import {
   DrawerTrigger,
 } from "./drawer";
 import { cn } from "~/lib/utils";
+import { XIcon } from "lucide-react";
 
 type ResponsiveSheetProps = {
   children: React.ReactNode;
@@ -57,8 +58,14 @@ const ResponsiveSheet = ({
 
         <SheetContent
           side="right"
-          className="right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black"
+          className=" right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black"
         >
+          <button
+            onClick={() => onOpenChange(false)}
+            className="absolute right-2 top-2"
+          >
+            <XIcon size={24} />
+          </button>
           <SheetHeader className="flex h-14 flex-row items-center justify-between overflow-hidden border-b border-black">
             <SheetTitle className="font-serif text-2xl font-medium">
               {title}

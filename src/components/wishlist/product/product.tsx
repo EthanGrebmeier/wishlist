@@ -47,10 +47,10 @@ export default function Product({
   const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
 
   return (
-    <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-none xl:pr-8 xl:pt-4 ">
+    <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">
       <div className="flex flex-col gap-2">
-        <div className="grid gap-4 xl:grid-cols-[1fr_440px]">
-          <div className="hidden h-full w-full xl:flex">
+        <div className="grid  gap-4 xl:grid-cols-[1fr_440px]">
+          <div className="hidden h-full max-h-[80svh] w-full xl:flex">
             <ProductImage product={product} />
           </div>
           <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4 ">
@@ -92,29 +92,31 @@ export default function Product({
               </div>
 
               {product.description && (
-                <div className="flex  flex-col">
+                <div className="flex w-full flex-col overflow-hidden">
                   <p className="w-full  text-lg font-medium">About</p>
-                  <p className="flex-1  text-lg leading-tight xl:max-w-[480px]">
+                  <p className="flex-1 break-words text-lg leading-tight xl:max-w-[480px]">
                     {product.description}
                   </p>
                 </div>
               )}
             </div>
-            <button
-              onClick={() => {
-                setProductToEdit(product);
-                setIsProductFormOpen(true);
-              }}
-              className="flex items-center gap-1 text-sm font-medium underline"
-            >
-              Edit Product
-              <PencilIcon size={15} />
-            </button>
+            {canUserEdit && (
+              <button
+                onClick={() => {
+                  setProductToEdit(product);
+                  setIsProductFormOpen(true);
+                }}
+                className="flex items-center gap-1 text-sm font-medium underline"
+              >
+                Edit Product
+                <PencilIcon size={15} />
+              </button>
+            )}
           </div>
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {!canUserEdit && !wishlist.isSecret && (
+        {((!wishlist.isSecret && canUserEdit) || !canUserEdit) && (
           <PurchaseProduct
             session={session}
             isWishlistSecret={wishlist.isSecret}

@@ -16,11 +16,7 @@ import ProductForm, {
 import { Button } from "~/components/ui/button";
 import { PlusIcon, SparklesIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import ScrapeInput, {
-  AutofillFooter,
-  AutofillProvider,
-  useAutofillForm,
-} from "./autofill";
+import ScrapeInput, { AutofillFooter } from "./autofill";
 import ImageDisplay from "../../../ui/image/display";
 import ImageUpload, {
   ProductImageUploadFooter,
@@ -29,6 +25,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import { ProductImageDisplay } from "./image/display";
 import { ProductImageUpload } from "./image/upload";
+import { AutofillProvider } from "./autofill-context";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -99,6 +96,8 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   <ScrapeInput ref={autofillRef} />
                 </motion.div>
               )}
+            </AnimatePresence>
+            <AnimatePresence initial={false} mode="popLayout">
               {frame === "image" && (
                 <motion.div
                   key="image"
@@ -110,25 +109,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   <ProductImageUpload />
                 </motion.div>
               )}
-            </AnimatePresence>
-            <AnimatePresence initial={false} mode="popLayout">
-              {frame === "autofill" && (
-                <motion.div
-                  initial={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
-                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
-                  transition={{ duration: 0.3, type: "spring", bounce: 0 }}
-                  className="w-full"
-                  key="submenufooter"
-                >
-                  <AutofillFooter
-                    setFrame={setFrame}
-                    handleSubmit={() => {
-                      autofillRef.current?.requestSubmit();
-                    }}
-                  />
-                </motion.div>
-              )}
+
               <div
                 style={{
                   WebkitBackdropFilter:
@@ -136,6 +117,23 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                 }}
                 className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-6 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
               >
+                {frame === "autofill" && (
+                  <motion.div
+                    initial={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
+                    animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: "110%", filter: "blur(4px)" }}
+                    transition={{ duration: 0.3, type: "spring", bounce: 0 }}
+                    className="w-full"
+                    key="submenufooter"
+                  >
+                    <AutofillFooter
+                      setFrame={setFrame}
+                      handleSubmit={() => {
+                        autofillRef.current?.requestSubmit();
+                      }}
+                    />
+                  </motion.div>
+                )}
                 {frame === "form" && (
                   <motion.div
                     key="formfooter"
