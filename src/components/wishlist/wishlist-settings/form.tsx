@@ -206,33 +206,55 @@ export const WishlistSettingsFooter = () => {
   const wishlistToEdit = useAtomValue(wishlistToEditAtom);
   const isEditing = !!wishlistToEdit;
 
-  if (frame === "image" || frame === "date") {
+  const content = useMemo(() => {
+    if (frame === "image" || frame === "date") {
+      return (
+        <motion.div
+          key="subsetting"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="flex w-full justify-between"
+        >
+          <Button onClick={() => setFrame("form")}>Back</Button>
+        </motion.div>
+      );
+    }
     return (
-      <div className="flex w-full justify-between">
-        <Button onClick={() => setFrame("form")}>Back</Button>
-      </div>
+      <motion.div
+        key="form"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="flex w-full justify-end"
+      >
+        <StatusButton
+          onClick={handleSubmit}
+          status={status}
+          content={{
+            text: isEditing ? "Save Changes" : "Create Wishlist",
+            Icon: SaveIcon,
+          }}
+          loadingContent={{
+            text: isEditing ? "Saving..." : "Creating...",
+            Icon: LoaderCircleIcon,
+            shouldSpin: true,
+          }}
+          hasSucceededContent={{
+            text: isEditing ? "Saved!" : "Created!",
+            Icon: SaveIcon,
+          }}
+        />
+      </motion.div>
     );
-  }
+  }, [frame, handleSubmit, status, isEditing]);
+
   return (
-    <div className="flex w-full justify-end">
-      <StatusButton
-        onClick={handleSubmit}
-        status={status}
-        content={{
-          text: isEditing ? "Save Changes" : "Create Wishlist",
-          Icon: SaveIcon,
-        }}
-        loadingContent={{
-          text: isEditing ? "Saving..." : "Creating...",
-          Icon: LoaderCircleIcon,
-          shouldSpin: true,
-        }}
-        hasSucceededContent={{
-          text: isEditing ? "Saved!" : "Created!",
-          Icon: SaveIcon,
-        }}
-      />
-    </div>
+    <AnimatePresence mode="popLayout" initial={false}>
+      {content}
+    </AnimatePresence>
   );
 };
 
