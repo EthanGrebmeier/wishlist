@@ -49,8 +49,8 @@ export default function Product({
   return (
     <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">
       <div className="flex flex-col gap-2">
-        <div className="grid gap-4 xl:grid-cols-[1fr_440px]">
-          <div className="hidden h-full w-full xl:flex">
+        <div className="grid  gap-4 xl:grid-cols-[1fr_440px]">
+          <div className="hidden h-full max-h-[80svh] w-full xl:flex">
             <ProductImage product={product} />
           </div>
           <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4 ">
