@@ -40,7 +40,10 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useAtomValue, useSetAtom } from "jotai";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import {
+  isProductFormOpenAtom,
+  productToEditAtom,
+} from "~/store/product-settings";
 import StatusButton from "~/components/ui/status-button";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 const ProductForm = () => {

@@ -22,6 +22,7 @@ export const CreateWishlist = ({ triggerClassName }: CreateWishlistProps) => {
         <Button
           className={triggerClassName}
           onClick={() => setIsWishlistSettingsOpen(true)}
+          icon={<PlusIcon size={15} />}
         >
           Create Wishlist
         </Button>

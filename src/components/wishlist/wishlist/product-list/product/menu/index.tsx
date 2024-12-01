@@ -5,9 +5,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import Delete from "./delete";
 import EditProduct from "./edit";
 import { useProductMenu } from "./menuProvider";
+import { ProductDeleteMenuItem } from "./delete-product";
 
 const ProductMenu = () => {
   const { product } = useProductMenu();
@@ -21,7 +21,7 @@ const ProductMenu = () => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Delete />
+        <ProductDeleteMenuItem />
         <EditProduct />
       </DropdownMenuContent>
     </DropdownMenu>

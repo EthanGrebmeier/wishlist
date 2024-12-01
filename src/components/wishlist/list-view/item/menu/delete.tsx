@@ -4,7 +4,7 @@ import { useSetAtom } from "jotai";
 import {
   isWishlistDeleteOpenAtom,
   wishlistToDeleteAtom,
-} from "~/store/wishlist-form";
+} from "~/store/wishlist-settings";
 import { useWishlistMenu } from "./menuProvider";
 
 const Delete = () => {

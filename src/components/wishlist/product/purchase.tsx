@@ -30,7 +30,7 @@ export default function PurchaseProduct({
   );
 
   const Content = useMemo(() => {
-    if (productCommitments?.length) {
+    if (productCommitments?.length && !hasUserCommitted) {
       return (
         <>
           <div className="flex flex-col gap-2">

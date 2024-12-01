@@ -3,7 +3,10 @@ import { useSetAtom } from "jotai";
 import { PencilIcon } from "lucide-react";
 import React from "react";
 import { Button } from "~/components/ui/button";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import {
+  isProductFormOpenAtom,
+  productToEditAtom,
+} from "~/store/product-settings";
 import { WishlistProduct } from "~/types/wishlist";
 
 type EditProductButtonProps = {

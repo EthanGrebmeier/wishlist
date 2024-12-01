@@ -44,12 +44,14 @@ const ImageDisplay = ({
           <PlaceholderImage />
         )}
         <div className="absolute bottom-2 right-2">
-          <Button
-            onClick={removeImage}
-            variant={"destructive"}
-            icon={<Trash2Icon size={15} />}
-            size="icon"
-          ></Button>
+          {imageUrl && (
+            <Button
+              onClick={removeImage}
+              variant={"destructive"}
+              icon={<Trash2Icon size={15} />}
+              size="icon"
+            ></Button>
+          )}
         </div>
       </div>
     </div>

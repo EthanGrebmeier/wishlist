@@ -4,7 +4,10 @@ import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
 import type { WishlistProduct } from "~/types/wishlist";
 import { useSetAtom } from "jotai";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import {
+  isProductFormOpenAtom,
+  productToEditAtom,
+} from "~/store/product-settings";
 
 type EditProductProps = {
   wishlistId?: string;

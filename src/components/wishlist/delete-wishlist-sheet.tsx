@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import {
   isWishlistDeleteOpenAtom,
   wishlistToDeleteAtom,
-} from "~/store/wishlist-form";
+} from "~/store/wishlist-settings";
 import { Button } from "../ui/button";
 import { SubmitButton } from "../ui/submit-button";
 import { Trash2Icon } from "lucide-react";

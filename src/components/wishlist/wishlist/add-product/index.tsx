@@ -9,7 +9,10 @@ import ScrapeInput, { AutofillFooter } from "./autofill";
 
 import { ProductImageUploadFooter } from "../../../ui/image/upload";
 import { useAtom, useSetAtom } from "jotai";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import {
+  isProductFormOpenAtom,
+  productToEditAtom,
+} from "~/store/product-settings";
 import { ProductImageDisplay } from "./image/display";
 import { ProductImageUpload } from "./image/upload";
 import { AutofillProvider } from "./autofill-context";

@@ -1,4 +1,5 @@
 import Navigation from ".";
+import DeleteProductSheet from "../wishlist/product/delete-product-sheet";
 import WishlistSettingsSheet from "../wishlist/wishlist-settings";
 import Logo from "./logo";
 import MobileSidebar from "./mobile-nav";
@@ -18,6 +19,7 @@ const Sidebar = () => {
       </section>
       <MobileSidebar navigation={<Navigation />} />
       <WishlistSettingsSheet />
+      <DeleteProductSheet />
     </>
   );
 };

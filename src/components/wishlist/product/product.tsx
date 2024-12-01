@@ -1,28 +1,25 @@
 "use client";
 
-import { cn, getBackgroundColor } from "~/lib/utils";
-import {
+import type {
   WishlistProduct,
   WishlistProductCommitmentsWithUser,
   WishlistWithProducts,
 } from "~/types/wishlist";
-import { WishlistSharesWithUser } from "~/types/wishlist";
+import type { WishlistSharesWithUser } from "~/types/wishlist";
 import Priority from "../wishlist/product-list/product/priority";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ConfirmReceipt from "./confirm";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import PurchaseProduct from "./purchase";
 import ProductImage from "./product-image";
 import ButtonLink from "~/components/ui/button-link";
-import {
-  ChevronsRight,
-  EditIcon,
-  ExternalLinkIcon,
-  PencilIcon,
-} from "lucide-react";
+import { ChevronsRight, ExternalLinkIcon, PencilIcon } from "lucide-react";
 import { useSetAtom } from "jotai";
-import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import {
+  isProductFormOpenAtom,
+  productToEditAtom,
+} from "~/store/product-settings";
 import ProductCard from "../wishlist/product-list/product";
 import Breadcrumbs from "./breadcrumbs";
 
