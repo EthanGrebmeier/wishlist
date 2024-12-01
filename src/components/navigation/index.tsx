@@ -4,8 +4,6 @@ import SignOutButton from "./sign-out";
 import { BookUser, Gift, Plus, Scroll, ShieldQuestion } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import SharedWishlists from "./wishlist-list/shared-wishlists";
-import CreateWishlist from "../wishlist/create-wishlist";
-import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import Link from "~/components/ui/link";
+import CreateWishlist from "./create-wishlist";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
-
-  // const wishlists = await getUserWishlists()
 
   return (
     <nav className="flex h-full w-full flex-col justify-between gap-8 lg:w-[220px]">
@@ -30,14 +27,7 @@ const Navigation = async () => {
               </NavLink>
               <MyWishlists />
               <div className="w-full pl-2">
-                <CreateWishlist
-                  trigger={
-                    <button className="group flex w-full items-center gap-1 rounded-md px-1 text-lg font-medium transition-all hover:bg-green-300">
-                      <Plus className="group-hover:animate-shake " size={20} />
-                      Create Wishlist{" "}
-                    </button>
-                  }
-                />
+                <CreateWishlist />
               </div>
             </div>
             <div>

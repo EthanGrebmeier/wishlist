@@ -92,7 +92,7 @@ export default function Product({
               </div>
 
               {product.description && (
-                <div className="flex w-full flex-col overflow-hidden">
+                <div className="flex w-full flex-col">
                   <p className="w-full  text-lg font-medium">About</p>
                   <p className="flex-1 break-words text-lg leading-tight xl:max-w-[480px]">
                     {product.description}
