@@ -1,4 +1,5 @@
 import Navigation from ".";
+import WishlistSettingsSheet from "../wishlist/wishlist-settings";
 import Logo from "./logo";
 import MobileSidebar from "./mobile-nav";
 import SkipToContent from "./skip-to-content";
@@ -16,6 +17,7 @@ const Sidebar = () => {
         </div>
       </section>
       <MobileSidebar navigation={<Navigation />} />
+      <WishlistSettingsSheet />
     </>
   );
 };

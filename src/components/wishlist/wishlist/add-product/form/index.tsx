@@ -10,7 +10,7 @@ import {
   SquarePenIcon,
   StoreIcon,
 } from "lucide-react";
-import { type HookActionStatus, useAction } from "next-safe-action/hooks";
+import { type HookActionStatus } from "next-safe-action/hooks";
 import React, {
   createContext,
   type Dispatch,
@@ -20,10 +20,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField } from "~/components/ui/form";
-import { generateId } from "~/lib/utils";
 import { productSchema } from "~/schema/wishlist/product";
 import { updateProduct } from "~/server/actions/product";
 import {
@@ -40,7 +39,7 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useRouter } from "next/navigation";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import StatusButton from "~/components/ui/status-button";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
@@ -209,7 +208,7 @@ export const ProductFormProvider = ({
   wishlistId,
 }: ProductFormProviderProps) => {
   const setIsOpen = useSetAtom(isProductFormOpenAtom);
-  const [productToEdit, setProductToEdit] = useAtom(productToEditAtom);
+  const productToEdit = useAtomValue(productToEditAtom);
   const [formError, setFormError] = useState("");
   const router = useRouter();
 
@@ -233,7 +232,7 @@ export const ProductFormProvider = ({
         },
       },
       actionProps: {
-        onError: (error) => {
+        onError: () => {
           setFormError("Error updating product");
         },
         onSuccess: () => {
@@ -257,14 +256,14 @@ export const ProductFormProvider = ({
       form.setValue("priority", values.priority ?? "");
       form.setValue("wishlistId", values.wishlistId ?? wishlistId);
     },
-    [form],
+    [form, wishlistId],
   );
 
   useEffect(() => {
     return () => {
       resetFormAndAction();
     };
-  }, []);
+  }, [resetFormAndAction]);
 
   useEffect(() => {
     if (productToEdit) {

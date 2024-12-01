@@ -1,14 +1,13 @@
 "use client";
 
 import { Button } from "~/components/ui/button";
-import WishlistSettingsSheet from "../../wishlist-settings";
 import {
   isWishlistSettingsOpenAtom,
   wishlistToEditAtom,
 } from "~/store/wishlist-settings";
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { Settings } from "lucide-react";
-import { Wishlist } from "~/types/wishlist";
+import type { Wishlist } from "~/types/wishlist";
 
 type CreateWishlistProps = {
   triggerClassName?: string;
@@ -25,7 +24,6 @@ export const CreateWishlist = ({ triggerClassName }: CreateWishlistProps) => {
       >
         Create Wishlist
       </Button>
-      <WishlistSettingsSheet />
     </>
   );
 };
@@ -56,7 +54,6 @@ export const EditWishlist = ({ wishlist }: EditWishlistProps) => {
       >
         Edit Wishlist
       </Button>
-      <WishlistSettingsSheet />
     </>
   );
 };
