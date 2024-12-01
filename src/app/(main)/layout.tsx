@@ -1,5 +1,7 @@
 import Sidebar from "~/components/navigation/sidebar";
 import { Provider } from "jotai";
+import SessionProvider from "~/components/auth/session-provider";
+
 export default function RootLayout({
   children,
 }: {
@@ -8,11 +10,13 @@ export default function RootLayout({
   return (
     <div className="mx-auto grid grid-cols-1 pb-16 md:pb-0 lg:grid-cols-[auto_1fr]">
       <Sidebar />
-      <Provider>
-        <main id="main" tabIndex={-1} className="relative flex flex-1">
-          {children}
-        </main>
-      </Provider>
+      <SessionProvider>
+        <Provider>
+          <main id="main" tabIndex={-1} className="relative flex flex-1">
+            {children}
+          </main>
+        </Provider>
+      </SessionProvider>
     </div>
   );
 }

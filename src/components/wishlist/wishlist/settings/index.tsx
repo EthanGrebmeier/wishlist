@@ -1,33 +1,28 @@
 "use client";
 
-import { Dialog, DialogTrigger } from "~/components/ui/dialog";
-import type { Wishlist } from "~/types/wishlist";
-import WishlistSettingsContent from "./edit-wishlist-content";
 import { Button } from "~/components/ui/button";
-import { Settings } from "lucide-react";
-import { useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer";
-import { useRouter } from "next/navigation";
-import { CreateWishlistForm } from "../../create-wishlist";
 import WishlistSettingsSheet from "../../wishlist-settings";
-import { isWishlistSettingsOpenAtom } from "~/store/wishlist-settings";
-import { useAtom } from "jotai";
+import {
+  isWishlistSettingsOpenAtom,
+  wishlistToEditAtom,
+} from "~/store/wishlist-settings";
+import { useAtom, useSetAtom } from "jotai";
+import { Settings } from "lucide-react";
+import { Wishlist } from "~/types/wishlist";
 
-const WishlistSettings = () => {
-  const [isWishlistSettingsOpen, setIsWishlistSettingsOpen] = useAtom(
-    isWishlistSettingsOpenAtom,
-  );
+type CreateWishlistProps = {
+  triggerClassName?: string;
+};
+
+export const CreateWishlist = ({ triggerClassName }: CreateWishlistProps) => {
+  const setIsWishlistSettingsOpen = useSetAtom(isWishlistSettingsOpenAtom);
 
   return (
     <>
-      <Button variant="outline" onClick={() => setIsWishlistSettingsOpen(true)}>
+      <Button
+        className={triggerClassName}
+        onClick={() => setIsWishlistSettingsOpen(true)}
+      >
         Create Wishlist
       </Button>
       <WishlistSettingsSheet />
@@ -35,4 +30,35 @@ const WishlistSettings = () => {
   );
 };
 
-export default WishlistSettings;
+type EditWishlistProps = {
+  wishlist: Wishlist;
+};
+export const EditWishlist = ({ wishlist }: EditWishlistProps) => {
+  const setIsWishlistSettingsOpen = useSetAtom(isWishlistSettingsOpenAtom);
+  const setWishlistToEdit = useSetAtom(wishlistToEditAtom);
+  return (
+    <>
+      <Button
+        icon={<Settings size={15} />}
+        variant="outline"
+        onClick={() => {
+          setWishlistToEdit({
+            wishlistName: wishlist.name,
+            isSecret: wishlist.isSecret,
+            color: wishlist.color,
+            createdById: wishlist.createdById,
+            date: wishlist.dueDate ? new Date(wishlist.dueDate) : undefined,
+            id: wishlist.id,
+            imageUrl: wishlist.imageUrl ?? undefined,
+          });
+          setIsWishlistSettingsOpen(true);
+        }}
+      >
+        Edit Wishlist
+      </Button>
+      <WishlistSettingsSheet />
+    </>
+  );
+};
+
+export default CreateWishlist;

@@ -2,7 +2,7 @@ import React from "react";
 import TitleBar from "~/components/ui/title-bar";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import ShareWishlist from "../../share-wishlist";
-import WishlistSettings from "../settings";
+import { EditWishlist } from "../settings";
 import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 import type { Session } from "next-auth";
 import { SharedUserThumbnailView } from "../../share-wishlist/shared-users/shared-user-thumbnail";
@@ -10,8 +10,6 @@ import type { UserTypeWithOwner } from "~/types/user";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 import ToggleGridDisplay from "../../toggle-grid-display";
 import AddProductSheet, { AddProductSheetTrigger } from "../add-product";
-import { Button } from "~/components/ui/button";
-import { PlusIcon } from "lucide-react";
 import DueDate from "../../due-date";
 
 type WishlistHeaderProps = {
@@ -81,10 +79,7 @@ const WishlistHeader = ({
                 <AddProductSheetTrigger />
               </div>
 
-              <WishlistSettings
-                isOwner={userStatus === "owner"}
-                wishlist={wishlist}
-              />
+              <EditWishlist wishlist={wishlist} />
             </div>
           )}
         </div>

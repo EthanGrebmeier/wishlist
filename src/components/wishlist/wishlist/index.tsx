@@ -2,8 +2,6 @@ import { getWishlist } from "~/lib/wishlist/getWishlist";
 import ProductList from "./product-list";
 import { getServerAuthSession } from "~/server/auth";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
-import { Button } from "~/components/ui/button";
-import { PlusIcon } from "lucide-react";
 import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";

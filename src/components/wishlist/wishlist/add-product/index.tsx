@@ -21,10 +21,14 @@ import ScrapeInput, {
   AutofillProvider,
   useAutofillForm,
 } from "./autofill";
-import ProductImageDisplay from "./image/display";
-import ProductImageUpload, { ProductImageUploadFooter } from "./image/upload";
+import ImageDisplay from "../../../ui/image/display";
+import ImageUpload, {
+  ProductImageUploadFooter,
+} from "../../../ui/image/upload";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
+import { ProductImageDisplay } from "./image/display";
+import { ProductImageUpload } from "./image/upload";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -153,7 +157,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                     transition={{ duration: 0.3, type: "spring", bounce: 0 }}
                     className="w-full"
                   >
-                    <ProductImageUploadFooter />
+                    <ProductImageUploadFooter onBack={() => setFrame("form")} />
                   </motion.div>
                 )}
               </div>

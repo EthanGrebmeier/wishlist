@@ -159,6 +159,7 @@ export const updateWishlist = protectedAction
       },
       ctx: { session },
     }) => {
+      console.log("updating wishlist");
       if (id) {
         // ensure user is an editor of the wishlist
         await checkUserIsWishlistEditor({
@@ -181,6 +182,24 @@ export const updateWishlist = protectedAction
           target: wishlists.id,
           set: wishlistValues,
         });
+
+        // Check if the user is already a share for this wishlist
+        const existingShare = await db.query.wishlistShares.findFirst({
+          where: and(
+            eq(wishlistShares.wishlistId, wishlistValues.id),
+            eq(wishlistShares.sharedWithUserId, session.user.id),
+          ),
+        });
+
+        if (!existingShare) {
+          await db.insert(wishlistShares).values({
+            createdById: session.user.id,
+            wishlistId: wishlistValues.id,
+            sharedWithUserId: session.user.id,
+            type: "editor",
+            id: generateId(),
+          });
+        }
       } catch (e) {
         console.error(e);
         throw new Error("Could not update wishlist");

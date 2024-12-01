@@ -28,7 +28,7 @@ export const shareWishlistEmailInputSchema = z.object({
 export const wishlistSettingsSchema = z.object({
   wishlistName: z.string().min(1),
   imageUrl: z.string().optional(),
-  id: z.string(),
+  id: z.string().optional(),
   createdById: z.string(),
   date: z.date().optional(),
   color: colorSchema,

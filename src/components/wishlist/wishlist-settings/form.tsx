@@ -1,242 +1,239 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
 import {
   CalendarIcon,
   LoaderCircleIcon,
   PaletteIcon,
   SaveIcon,
   SquarePenIcon,
-  EyeOffIcon,
-  ImageIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import React, { useMemo } from "react";
 import { Form, FormField } from "~/components/ui/form";
-import { updateWishlist } from "~/server/actions/wishlist";
 import {
   HorizontalInputWrapper,
   HorizontalTextInput,
 } from "~/components/wishlist/wishlist/add-product/form/product-input";
 import { Switch } from "~/components/ui/switch";
 import StatusButton from "~/components/ui/status-button";
-import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import DatePicker from "../create-wishlist/date-picker";
 import ColorPicker from "../create-wishlist/color-picker";
-import { wishlistSettingsSchema } from "~/schema/wishlist/wishlist";
-import { HookActionStatus } from "next-safe-action/hooks";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { wishlistToEditAtom } from "~/store/wishlist-settings";
 import { format } from "date-fns";
-
-type WishlistSettingsFormFrame = "form" | "color" | "date";
+import { useWishlistSettingsForm } from "./context";
+import { Button } from "~/components/ui/button";
+import ImageUpload from "~/components/ui/image/upload";
+import ImageDisplay from "~/components/ui/image/display";
+import { AnimatePresence, motion } from "framer-motion";
+import { Lock, Unlock } from "lucide-react";
+import DeleteWishlist from "../wishlist/settings/delete-wishlist";
 
 const WishlistSettingsForm = () => {
-  const [frame, setFrame] = useState<WishlistSettingsFormFrame>("form");
-  const { form, handleSubmit } = useWishlistSettingsForm();
+  const {
+    form,
+    handleSubmit,
+    frame,
+    setFrame,
+    isEditing,
+    isOwner,
+    setFormValues,
+  } = useWishlistSettingsForm();
+  const wishlistToEdit = useAtomValue(wishlistToEditAtom);
+  const isSecret = form.watch("isSecret");
+  const values = form.getValues();
 
-  if (frame === "date") {
+  const content = useMemo(() => {
+    if (frame === "image") {
+      return (
+        <motion.div
+          key="image-upload"
+          initial={{ opacity: 0, x: "100%", filter: "blur(4px)" }}
+          animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, x: "100%", filter: "blur(4px)" }}
+          transition={{ duration: 0.2 }}
+        >
+          <ImageUpload
+            onImageSelect={(url) => {
+              setFormValues({ imageUrl: url });
+              setFrame("form");
+            }}
+            onBack={() => setFrame("form")}
+            subtitle="Select an image for your wishlist"
+          />
+        </motion.div>
+      );
+    }
+    if (frame === "date") {
+      return (
+        <motion.div
+          key="date-picker"
+          initial={{ opacity: 0, x: "100%", filter: "blur(4px)" }}
+          animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, x: "100%", filter: "blur(4px)" }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+            <DatePicker
+              date={values.date}
+              setDate={(date) => {
+                setFormValues({ date });
+              }}
+            />
+          </div>
+        </motion.div>
+      );
+    }
+
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-        <DatePicker
-          date={form.getValues("date")}
-          setDate={(date) => {
-            console.log(date);
-            form.setValue("date", date);
-          }}
-        />
-      </div>
+      <motion.div
+        key="form"
+        initial={{ opacity: 0, x: "-100%", filter: "blur(4px)" }}
+        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        exit={{ opacity: 0, x: "-100%", filter: "blur(4px)" }}
+        transition={{ duration: 0.2 }}
+      >
+        <Form {...form}>
+          <form
+            id="wishlist-settings-form"
+            className="flex h-full flex-col gap-2"
+            onSubmit={handleSubmit}
+          >
+            <ImageDisplay
+              imageUrl={values.imageUrl}
+              openImageEditor={() => setFrame("image")}
+              removeImage={() => setFormValues({ imageUrl: undefined })}
+            />
+            <FormField
+              name="wishlistName"
+              render={({ field }) => (
+                <HorizontalInputWrapper
+                  required
+                  Icon={SquarePenIcon}
+                  label="Name"
+                  input={
+                    <HorizontalTextInput
+                      placeholder="Birthday Wishlist"
+                      {...field}
+                    />
+                  }
+                />
+              )}
+            />
+
+            <HorizontalInputWrapper
+              Icon={CalendarIcon}
+              label="Date"
+              input={(() => {
+                const date = values.date;
+                return (
+                  <button
+                    type="button"
+                    onClick={() => setFrame("date")}
+                    className="font-medium underline"
+                  >
+                    {date ? format(date, "PPP") : "Pick a date"}
+                  </button>
+                );
+              })()}
+            />
+
+            <FormField
+              name="color"
+              render={({ field }) => (
+                <HorizontalInputWrapper
+                  Icon={PaletteIcon}
+                  label="Color"
+                  input={
+                    <ColorPicker
+                      selectedColor={field.value}
+                      setSelectedColor={(color) => setFormValues({ color })}
+                    />
+                  }
+                />
+              )}
+            />
+
+            <div className="mr-2 flex w-full items-center justify-between gap-2 rounded-md border-2 border-black px-4 py-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  {" "}
+                  <p className=" text-lg font-medium">
+                    {" "}
+                    Keep it a secret?{" "}
+                  </p>{" "}
+                  {isSecret ? <Lock size={20} /> : <Unlock size={20} />}
+                </div>
+                <p className="max-w-[300px] text-balance text-sm leading-tight">
+                  {" "}
+                  Enable this if you would like to keep purchased items from
+                  being spoiled for yourself!
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={values.isSecret}
+                  onCheckedChange={(value) => {
+                    setFormValues({ isSecret: value });
+                  }}
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="hidden"
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              Submit
+            </button>
+          </form>
+        </Form>
+        {isEditing && isOwner && wishlistToEdit?.id && (
+          <DeleteWishlist wishlistId={wishlistToEdit.id} />
+        )}
+      </motion.div>
     );
-  }
+  }, [frame, values, handleSubmit, setFormValues, setFrame]);
 
   return (
-    <Form {...form}>
-      <form className="flex h-full flex-col gap-2" onSubmit={handleSubmit}>
-        <FormField
-          name="wishlistName"
-          render={({ field }) => (
-            <HorizontalInputWrapper
-              required
-              Icon={SquarePenIcon}
-              label="Name"
-              input={
-                <HorizontalTextInput
-                  placeholder="Birthday Wishlist"
-                  {...field}
-                />
-              }
-            />
-          )}
-        />
-
-        <FormField
-          name="imageUrl"
-          render={({ field }) => (
-            <HorizontalInputWrapper
-              Icon={ImageIcon}
-              label="Image URL"
-              input={
-                <HorizontalTextInput
-                  placeholder="https://example.com/image.jpg"
-                  {...field}
-                />
-              }
-            />
-          )}
-        />
-
-        <HorizontalInputWrapper
-          Icon={CalendarIcon}
-          label="Due Date"
-          input={(() => {
-            const date = form.getValues("date");
-            return (
-              <button onClick={() => setFrame("date")}>
-                {date ? format(date, "PPP") : "Pick a date"}
-              </button>
-            );
-          })()}
-        />
-
-        <FormField
-          name="color"
-          render={({ field }) => (
-            <HorizontalInputWrapper
-              Icon={PaletteIcon}
-              label="Theme Color"
-              input={
-                <ColorPicker
-                  selectedColor={field.value}
-                  setSelectedColor={(color) => field.onChange(color)}
-                />
-              }
-            />
-          )}
-        />
-
-        <FormField
-          name="isSecret"
-          render={({ field }) => (
-            <HorizontalInputWrapper
-              Icon={EyeOffIcon}
-              label="Secret Wishlist"
-              input={
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              }
-            />
-          )}
-        />
-      </form>
-    </Form>
+    <AnimatePresence mode="popLayout" initial={false}>
+      {content}
+    </AnimatePresence>
   );
 };
 
 export const WishlistSettingsFooter = () => {
-  const { handleSubmit, status } = useWishlistSettingsForm();
+  const { handleSubmit, status, frame, setFrame } = useWishlistSettingsForm();
+  const wishlistToEdit = useAtomValue(wishlistToEditAtom);
+  const isEditing = !!wishlistToEdit;
 
+  if (frame === "image" || frame === "date") {
+    return (
+      <div className="flex w-full justify-between">
+        <Button onClick={() => setFrame("form")}>Back</Button>
+      </div>
+    );
+  }
   return (
     <div className="flex w-full justify-end">
       <StatusButton
         onClick={handleSubmit}
         status={status}
         content={{
-          text: "Save Changes",
+          text: isEditing ? "Save Changes" : "Create Wishlist",
           Icon: SaveIcon,
         }}
         loadingContent={{
-          text: "Saving...",
+          text: isEditing ? "Saving..." : "Creating...",
           Icon: LoaderCircleIcon,
           shouldSpin: true,
         }}
         hasSucceededContent={{
-          text: "Saved!",
+          text: isEditing ? "Saved!" : "Created!",
           Icon: SaveIcon,
         }}
       />
     </div>
   );
-};
-
-type WishlistSettingsFormContextType = {
-  form: UseFormReturn<z.infer<typeof wishlistSettingsSchema>>;
-  formError: string;
-  setFormError: React.Dispatch<React.SetStateAction<string>>;
-  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
-  status: HookActionStatus;
-};
-
-const WishlistSettingsFormContext =
-  createContext<WishlistSettingsFormContextType | null>(null);
-
-type WishlistSettingsFormProviderProps = {
-  children: React.ReactNode;
-  initialValues?: z.infer<typeof wishlistSettingsSchema>;
-};
-
-export const WishlistSettingsFormProvider = ({
-  children,
-  initialValues,
-}: WishlistSettingsFormProviderProps) => {
-  const [formError, setFormError] = useState("");
-  const router = useRouter();
-  const [wishlistToEdit, setWishlistToEdit] = useAtom(wishlistToEditAtom);
-
-  const { form, handleSubmitWithAction, action, resetFormAndAction } =
-    useHookFormAction(updateWishlist, zodResolver(wishlistSettingsSchema), {
-      formProps: {
-        mode: "onSubmit",
-        defaultValues: {
-          wishlistName:
-            wishlistToEdit?.wishlistName ?? initialValues?.wishlistName ?? "",
-          imageUrl: wishlistToEdit?.imageUrl ?? initialValues?.imageUrl ?? "",
-          date: wishlistToEdit?.date ?? initialValues?.date ?? new Date(),
-          color: wishlistToEdit?.color ?? initialValues?.color ?? "white",
-          isSecret:
-            wishlistToEdit?.isSecret ?? initialValues?.isSecret ?? false,
-        },
-      },
-      actionProps: {
-        onError: (error) => {
-          setFormError("Error updating wishlist");
-        },
-        onSuccess: () => {
-          router.refresh();
-        },
-      },
-    });
-
-  useEffect(() => {
-    return () => {
-      resetFormAndAction();
-    };
-  }, []);
-
-  return (
-    <WishlistSettingsFormContext.Provider
-      value={{
-        form,
-        handleSubmit: handleSubmitWithAction,
-        formError,
-        setFormError,
-        status: action.status,
-      }}
-    >
-      {children}
-    </WishlistSettingsFormContext.Provider>
-  );
-};
-
-export const useWishlistSettingsForm = () => {
-  const context = useContext(WishlistSettingsFormContext);
-  if (!context) {
-    throw new Error(
-      "useWishlistSettingsForm must be used within a WishlistSettingsFormProvider",
-    );
-  }
-  return context;
 };
 
 export default WishlistSettingsForm;

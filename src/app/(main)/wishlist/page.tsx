@@ -3,10 +3,10 @@ import { Suspense } from "react";
 import { Button } from "~/components/ui/button";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
-import CreateWishlist from "~/components/wishlist/create-wishlist";
+import { DeleteWishlist } from "~/components/wishlist/delete";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
 import ToggleGridDisplay from "~/components/wishlist/toggle-grid-display";
-import WishlistSettings from "~/components/wishlist/wishlist/settings";
+import CreateWishlist from "~/components/wishlist/wishlist/settings";
 import { getUserWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
@@ -22,7 +22,7 @@ const WishlistPage = async () => {
           </span>
 
           <div className="hidden md:block">
-            <WishlistSettings />
+            <CreateWishlist />
           </div>
           <div className="sm:hidden">
             <ToggleGridDisplay />
@@ -32,17 +32,8 @@ const WishlistPage = async () => {
           <WishlistGrid getWishlists={getUserWishlists} />
         </Suspense>
       </div>
-      <CreateWishlist
-        trigger={
-          <Button
-            size="circle"
-            className="fixed bottom-4 left-1 z-10  md:hidden"
-            icon={<PlusIcon size={25} />}
-          >
-            {/* <span> Create Wishlist </span> */}
-          </Button>
-        }
-      />
+      <CreateWishlist triggerClassName="fixed bottom-4 left-1 z-10  md:hidden" />
+      <DeleteWishlist />
     </>
   );
 };

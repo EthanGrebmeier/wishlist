@@ -7,30 +7,40 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
-import { isWishlistSettingsOpenAtom } from "~/store/wishlist-settings";
-import WishlistSettingsForm, {
-  WishlistSettingsFooter,
-  WishlistSettingsFormProvider,
-} from "./form";
+import {
+  isWishlistSettingsOpenAtom,
+  wishlistToEditAtom,
+} from "~/store/wishlist-settings";
+import WishlistSettingsForm, { WishlistSettingsFooter } from "./form";
+import { WishlistSettingsFormProvider } from "./context";
 
 const WishlistSettingsSheet = () => {
   const [isOpen, setIsOpen] = useAtom(isWishlistSettingsOpenAtom);
-
+  const wishlistToEdit = useAtomValue(wishlistToEditAtom);
+  const isEditing = !!wishlistToEdit;
   return (
     <ResponsiveSheet
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="Wishlist Settings"
+      title={isEditing ? "Edit Wishlist" : "Create Wishlist"}
       shouldPadBottomMobile
     >
       <WishlistSettingsFormProvider>
-        <div className="flex flex-col pt-4">
+        <div className="flex flex-col gap-4 pt-4">
           <WishlistSettingsForm />
+          <div
+            style={{
+              WebkitBackdropFilter:
+                "var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
+            }}
+            className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-6 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
+          >
+            <WishlistSettingsFooter />
+          </div>
         </div>
-        <WishlistSettingsFooter />
       </WishlistSettingsFormProvider>
     </ResponsiveSheet>
   );
