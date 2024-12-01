@@ -42,7 +42,7 @@ export const buttonInnerVariants = cva(
         secondary:
           "relative bg-secondary group-hover:bg-secondary/90 translate-y-0 group-hover:translate-y-[2px] group-active:translate-y-[4px]",
         outline:
-          "relative border-2 border-input bg-transparent group-hover:bg-accent group-hover:text-accent-foreground",
+          "relative border-2 border-input bg-transparent group-hover:bg-secondary group-hover:text-accent-foreground",
         ghost: "border-none",
         link: "text-primary underline-offset-4 group-hover:underline",
       },

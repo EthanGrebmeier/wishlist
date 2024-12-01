@@ -1,31 +1,23 @@
 "use client";
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import React, { useRef } from "react";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
-import ProductForm, {
-  ProductFormFooter,
-  ProductFormProvider,
-  useProductForm,
-} from "./form";
+import ProductForm, { ProductFormFooter, ProductFormProvider } from "./form";
 import { Button } from "~/components/ui/button";
-import { PlusIcon, SparklesIcon } from "lucide-react";
+import { PackagePlusIcon, PlusIcon, SparklesIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ScrapeInput, { AutofillFooter } from "./autofill";
-import ImageDisplay from "../../../ui/image/display";
-import ImageUpload, {
-  ProductImageUploadFooter,
-} from "../../../ui/image/upload";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+
+import { ProductImageUploadFooter } from "../../../ui/image/upload";
+import { useAtom, useSetAtom } from "jotai";
 import { isProductFormOpenAtom, productToEditAtom } from "~/store/product-form";
 import { ProductImageDisplay } from "./image/display";
 import { ProductImageUpload } from "./image/upload";
 import { AutofillProvider } from "./autofill-context";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import {
+  ProductSheetNavigationProvider,
+  useProductSheetNavigation,
+} from "./navigation-context";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -43,6 +35,11 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
     <ResponsiveSheet
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      titleIcon={
+        <ColoredIconWrapper>
+          <PackagePlusIcon size={20} />
+        </ColoredIconWrapper>
+      }
       onClose={() => setProductToEdit(undefined)}
       header={
         <AnimatePresence mode="wait" initial={false}>
@@ -54,13 +51,13 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
               exit={{ opacity: 0, y: 40 }}
               transition={{ duration: 0.3, type: "spring", bounce: 0 }}
             >
-              <Button
+              <button
                 onClick={() => setFrame("autofill")}
-                variant="secondary"
-                icon={<SparklesIcon size={15} />}
+                className="flex items-center gap-2 text-base font-medium text-black underline"
               >
+                <SparklesIcon className="text-purple-500" size={15} />
                 Autofill
-              </Button>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -204,41 +201,6 @@ export const AddProductSheetTriggerMobile = () => {
       icon={<PlusIcon size={20} />}
     ></Button>
   );
-};
-
-type ProductInputFrame = "form" | "autofill" | "image";
-
-type ProductSheetNavigationContextType = {
-  frame: ProductInputFrame;
-  setFrame: Dispatch<SetStateAction<ProductInputFrame>>;
-};
-
-const ProductSheetNavigationContext =
-  createContext<ProductSheetNavigationContextType | null>(null);
-
-type ProductSheetNavigationProviderProps = {
-  children: React.ReactNode;
-};
-
-export const ProductSheetNavigationProvider = ({
-  children,
-}: ProductSheetNavigationProviderProps) => {
-  const [frame, setFrame] = useState<ProductInputFrame>("form");
-  return (
-    <ProductSheetNavigationContext.Provider value={{ frame, setFrame }}>
-      {children}
-    </ProductSheetNavigationContext.Provider>
-  );
-};
-
-export const useProductSheetNavigation = () => {
-  const context = useContext(ProductSheetNavigationContext);
-  if (!context) {
-    throw new Error(
-      "useProductSheetNavigation must be used within a ProductSheetNavigationProvider",
-    );
-  }
-  return context;
 };
 
 export default AddProduct;

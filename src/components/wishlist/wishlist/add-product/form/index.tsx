@@ -260,12 +260,6 @@ export const ProductFormProvider = ({
   );
 
   useEffect(() => {
-    return () => {
-      resetFormAndAction();
-    };
-  }, [resetFormAndAction]);
-
-  useEffect(() => {
     if (productToEdit) {
       setFormValues(productToEdit);
     }

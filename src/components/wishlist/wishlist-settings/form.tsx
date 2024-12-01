@@ -3,7 +3,7 @@ import {
   CalendarIcon,
   LoaderCircleIcon,
   PaletteIcon,
-  SaveIcon,
+  PlusIcon,
   SquarePenIcon,
 } from "lucide-react";
 import React, { useMemo } from "react";
@@ -223,7 +223,7 @@ export const WishlistSettingsFooter = () => {
           status={status}
           content={{
             text: isEditing ? "Save Changes" : "Create Wishlist",
-            Icon: SaveIcon,
+            Icon: PlusIcon,
           }}
           loadingContent={{
             text: isEditing ? "Saving..." : "Creating...",
@@ -232,7 +232,7 @@ export const WishlistSettingsFooter = () => {
           }}
           hasSucceededContent={{
             text: isEditing ? "Saved!" : "Created!",
-            Icon: SaveIcon,
+            Icon: PlusIcon,
           }}
         />
       </motion.div>

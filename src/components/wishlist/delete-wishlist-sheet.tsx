@@ -2,15 +2,17 @@
 import { deleteWishlist } from "~/server/actions/wishlist";
 import { useAction } from "next-safe-action/hooks";
 import ResponsiveSheet from "../ui/responsive-sheet";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import {
   isWishlistDeleteOpenAtom,
   wishlistToDeleteAtom,
 } from "~/store/wishlist-form";
 import { Button } from "../ui/button";
 import { SubmitButton } from "../ui/submit-button";
+import { Trash2Icon } from "lucide-react";
+import ColoredIconWrapper from "../ui/colored-icon-wrapper";
 
-export const DeleteWishlist = () => {
+export const DeleteWishlistSheet = () => {
   const [isOpen, setIsOpen] = useAtom(isWishlistDeleteOpenAtom);
   const [wishlistToDelete, setWishlistToDelete] = useAtom(wishlistToDeleteAtom);
   const { execute } = useAction(deleteWishlist, {
@@ -32,6 +34,11 @@ export const DeleteWishlist = () => {
       isOpen={isOpen}
       setIsOpen={onOpenChange}
       title="Delete Wishlist"
+      titleIcon={
+        <ColoredIconWrapper className="bg-red-500">
+          <Trash2Icon size={20} />
+        </ColoredIconWrapper>
+      }
     >
       <div className="flex flex-col gap-2 pt-4">
         <p className="text-lg font-medium">

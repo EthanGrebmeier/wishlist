@@ -1,13 +1,6 @@
 "use client";
 
-import React, {
-  useState,
-  createContext,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-} from "react";
+import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
@@ -17,6 +10,8 @@ import {
 } from "~/store/wishlist-settings";
 import WishlistSettingsForm, { WishlistSettingsFooter } from "./form";
 import { WishlistSettingsFormProvider } from "./context";
+import { ScrollIcon } from "lucide-react";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 const WishlistSettingsSheet = () => {
   const [isOpen, setIsOpen] = useAtom(isWishlistSettingsOpenAtom);
@@ -27,12 +22,17 @@ const WishlistSettingsSheet = () => {
     if (!isOpen) {
       setWishlistToEdit(null);
     }
-  }, [isOpen]);
+  }, [isOpen, setWishlistToEdit]);
 
   return (
     <ResponsiveSheet
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      titleIcon={
+        <ColoredIconWrapper>
+          <ScrollIcon size={20} />
+        </ColoredIconWrapper>
+      }
       title={isEditing ? "Edit Wishlist" : "Create Wishlist"}
       shouldPadBottomMobile
     >
@@ -54,37 +54,6 @@ const WishlistSettingsSheet = () => {
       </WishlistSettingsFormProvider>
     </ResponsiveSheet>
   );
-};
-
-type WishlistSettingsNavigationContextType = {
-  frame: string;
-  setFrame: Dispatch<SetStateAction<string>>;
-};
-
-const WishlistSettingsNavigationContext =
-  createContext<WishlistSettingsNavigationContextType | null>(null);
-
-export const WishlistSettingsProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [frame, setFrame] = useState("form");
-  return (
-    <WishlistSettingsNavigationContext.Provider value={{ frame, setFrame }}>
-      {children}
-    </WishlistSettingsNavigationContext.Provider>
-  );
-};
-
-export const useWishlistSettingsNavigation = () => {
-  const context = useContext(WishlistSettingsNavigationContext);
-  if (!context) {
-    throw new Error(
-      "useWishlistSettingsNavigation must be used within a WishlistSettingsProvider",
-    );
-  }
-  return context;
 };
 
 export default WishlistSettingsSheet;

@@ -11,7 +11,6 @@ import {
 import {
   Drawer,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -28,6 +27,7 @@ type ResponsiveSheetProps = {
   isOpen?: boolean;
   setIsOpen?: (open: boolean) => void;
   shouldPadBottomMobile?: boolean;
+  titleIcon?: React.ReactNode;
 };
 
 const ResponsiveSheet = ({
@@ -38,6 +38,7 @@ const ResponsiveSheet = ({
   onClose,
   isOpen,
   setIsOpen,
+  titleIcon,
   shouldPadBottomMobile = false,
 }: ResponsiveSheetProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -66,9 +67,12 @@ const ResponsiveSheet = ({
             <XIcon size={24} />
           </button>
           <SheetHeader className="flex h-14 flex-row items-center justify-between overflow-hidden border-b border-black">
-            <SheetTitle className="font-serif text-2xl font-medium">
-              {title}
-            </SheetTitle>
+            <div className="flex items-center gap-2">
+              {titleIcon}
+              <SheetTitle className=" -mb-1 font-serif text-2xl font-medium">
+                {title}
+              </SheetTitle>
+            </div>
             {header}
           </SheetHeader>
           <div className="flex-1">{children}</div>
@@ -86,9 +90,12 @@ const ResponsiveSheet = ({
       {trigger && <DrawerTrigger>{trigger}</DrawerTrigger>}
       <DrawerContent className="mx-auto max-w-[440px] overflow-hidden">
         <DrawerHeader className="flex h-14 flex-row items-center justify-between border-b border-black">
-          <DrawerTitle className="font-serif text-2xl font-medium">
-            {title}
-          </DrawerTitle>
+          <div className="flex items-center gap-2">
+            {titleIcon}
+            <DrawerTitle className="-mb-1 font-serif text-2xl font-medium">
+              {title}
+            </DrawerTitle>
+          </div>
           {header}
         </DrawerHeader>
         <div

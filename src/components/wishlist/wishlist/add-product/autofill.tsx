@@ -1,23 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ClipboardPaste,
   LoaderCircleIcon,
   Sparkles,
   SparklesIcon,
 } from "lucide-react";
-import { type HookActionStatus, useAction } from "next-safe-action/hooks";
-import {
-  createContext,
-  forwardRef,
-  useContext,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
-import { useForm, type UseFormReturn } from "react-hook-form";
-import type { z } from "zod";
+import { forwardRef, type Dispatch, type SetStateAction } from "react";
 import { Button } from "~/components/ui/button";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import {
@@ -28,12 +17,9 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { scrapeInputSchema } from "~/schema/wishlist/scrape";
-import { scrapeProductData } from "~/server/actions/scrape";
-import { type ProductInputFrame, useProductForm } from "./form";
+import { type ProductInputFrame } from "./form";
 import InputButton from "~/components/ui/input-button";
 import StatusButton from "~/components/ui/status-button";
-import { useProductSheetNavigation } from ".";
 import { useAutofillForm } from "./autofill-context";
 
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {

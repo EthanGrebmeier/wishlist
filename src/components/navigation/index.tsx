@@ -1,7 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
 import SignOutButton from "./sign-out";
-import { BookUser, Gift, Plus, Scroll, ShieldQuestion } from "lucide-react";
+import { BookUser, Gift, Scroll, ShieldQuestion } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import SharedWishlists from "./wishlist-list/shared-wishlists";
 import {

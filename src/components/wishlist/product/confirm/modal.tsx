@@ -1,40 +1,18 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
+
 import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+
 import type {
   Wishlist,
   WishlistProduct,
-  WishlistShares,
   WishlistSharesWithUser,
 } from "~/types/wishlist";
 import { AnimatePresence, motion } from "framer-motion";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
-import {
-  ArrowRight,
-  Check,
-  Gift,
-  PackageCheck,
-  PackageOpen,
-  Scroll,
-} from "lucide-react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer";
+import { ArrowRight, Check, Gift, PackageOpen, Scroll } from "lucide-react";
+
 import { useAction } from "next-safe-action/hooks";
 import { markProductReceived } from "~/server/actions/product";
 import SharedUserThumbnail from "../../share-wishlist/shared-users/shared-user-thumbnail";
@@ -59,12 +37,14 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
       trigger={<Button>Mark as received</Button>}
       title="Received this item?"
     >
-      <ModalContent
-        session={session}
-        wishlistShares={wishlistShares}
-        wishlist={wishlist}
-        product={product}
-      />
+      <div className="w-full gap-4 pb-4 sm:pb-0">
+        <ModalContent
+          session={session}
+          wishlistShares={wishlistShares}
+          wishlist={wishlist}
+          product={product}
+        />
+      </div>
     </ResponsiveSheet>
   );
 };
@@ -303,11 +283,20 @@ const ModalContent = ({
         </motion.div>
       );
     }
-  }, [frame, selectedUserId, wishlistShares, session]);
+  }, [
+    frame,
+    selectedUserId,
+    wishlistShares,
+    session,
+    product,
+    wishlist,
+    animationDelaySeconds,
+    execute,
+  ]);
 
   return (
     <AnimatePresence initial={false} mode="popLayout">
-      <div className="relative pb-4">{content}</div>
+      {content}
     </AnimatePresence>
   );
 };

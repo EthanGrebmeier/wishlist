@@ -1,9 +1,8 @@
-import { PlusIcon, Scroll } from "lucide-react";
+import { Scroll } from "lucide-react";
 import { Suspense } from "react";
-import { Button } from "~/components/ui/button";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
-import { DeleteWishlist } from "~/components/wishlist/delete";
+import { DeleteWishlistSheet } from "~/components/wishlist/delete-wishlist-sheet";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
 import ToggleGridDisplay from "~/components/wishlist/toggle-grid-display";
 import CreateWishlist from "~/components/wishlist/wishlist/settings";
@@ -33,7 +32,7 @@ const WishlistPage = async () => {
         </Suspense>
       </div>
       <CreateWishlist triggerClassName="fixed bottom-4 left-1 z-10  md:hidden" />
-      <DeleteWishlist />
+      <DeleteWishlistSheet />
     </>
   );
 };

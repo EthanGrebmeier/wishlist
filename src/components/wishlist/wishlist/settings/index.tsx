@@ -6,7 +6,7 @@ import {
   wishlistToEditAtom,
 } from "~/store/wishlist-settings";
 import { useSetAtom } from "jotai";
-import { Settings } from "lucide-react";
+import { PlusIcon, Settings } from "lucide-react";
 import type { Wishlist } from "~/types/wishlist";
 
 type CreateWishlistProps = {
@@ -18,12 +18,23 @@ export const CreateWishlist = ({ triggerClassName }: CreateWishlistProps) => {
 
   return (
     <>
-      <Button
-        className={triggerClassName}
-        onClick={() => setIsWishlistSettingsOpen(true)}
-      >
-        Create Wishlist
-      </Button>
+      <div className="hidden md:block">
+        <Button
+          className={triggerClassName}
+          onClick={() => setIsWishlistSettingsOpen(true)}
+        >
+          Create Wishlist
+        </Button>
+      </div>
+      <div className="sm:hidden">
+        <Button
+          className={triggerClassName}
+          onClick={() => setIsWishlistSettingsOpen(true)}
+          size="circle"
+        >
+          <PlusIcon size={20} />
+        </Button>
+      </div>
     </>
   );
 };

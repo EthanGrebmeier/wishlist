@@ -1,6 +1,7 @@
 import { useProductForm } from "../form";
-import { useProductSheetNavigation } from "..";
+
 import ImageUpload from "~/components/ui/image/upload";
+import { useProductSheetNavigation } from "../navigation-context";
 
 export const ProductImageUpload = () => {
   const { setImageUrl } = useProductForm();

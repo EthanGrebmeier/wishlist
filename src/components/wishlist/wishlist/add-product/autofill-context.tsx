@@ -1,20 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HookActionStatus, useAction } from "next-safe-action/hooks";
+import { type HookActionStatus, useAction } from "next-safe-action/hooks";
 import {
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
   useState,
   useContext,
   createContext,
 } from "react";
-import { UseFormReturn, useForm } from "react-hook-form";
+import { type UseFormReturn, useForm } from "react-hook-form";
 
-import { z } from "zod";
+import type { z } from "zod";
 import { scrapeInputSchema } from "~/schema/wishlist/scrape";
 import { scrapeProductData } from "~/server/actions/scrape";
-import { useProductSheetNavigation } from ".";
-import { useProductForm } from "./form";
 
+import { useProductForm } from "./form";
+import { useProductSheetNavigation } from "./navigation-context";
 type AutofillContextType = {
   formError: string;
   setFormError: Dispatch<SetStateAction<string>>;
@@ -45,7 +45,7 @@ export const AutofillProvider = ({
     },
   });
 
-  const { execute, result, status, reset } = useAction(scrapeProductData, {
+  const { execute, status, reset } = useAction(scrapeProductData, {
     onSuccess: ({ data }) => {
       setFormValues({
         description: data?.description ?? "",

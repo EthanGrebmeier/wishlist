@@ -7,7 +7,6 @@ import {
   makeSafeAction,
 } from "~/lib/actions/protectedAction";
 import {
-  colorSchema,
   privacyTypeSchema,
   wishlistSettingsSchema,
 } from "~/schema/wishlist/wishlist";

@@ -1,6 +1,6 @@
 import ImageDisplay from "~/components/ui/image/display";
 import { useProductForm } from "../form";
-import { useProductSheetNavigation } from "..";
+import { useProductSheetNavigation } from "../navigation-context";
 
 export const ProductImageDisplay = () => {
   const { setFrame } = useProductSheetNavigation();
