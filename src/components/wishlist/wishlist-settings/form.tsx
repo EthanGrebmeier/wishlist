@@ -26,6 +26,7 @@ import ImageDisplay from "~/components/ui/image/display";
 import { AnimatePresence, motion } from "framer-motion";
 import { Lock, Unlock } from "lucide-react";
 import DeleteWishlist from "../wishlist/settings/delete-wishlist";
+import Calendar from "./calendar";
 
 const WishlistSettingsForm = () => {
   const {
@@ -71,14 +72,7 @@ const WishlistSettingsForm = () => {
           exit={{ opacity: 0, x: "100%", filter: "blur(4px)" }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-            <DatePicker
-              date={values.date}
-              setDate={(date) => {
-                setFormValues({ date });
-              }}
-            />
-          </div>
+          <Calendar />
         </motion.div>
       );
     }
@@ -155,12 +149,8 @@ const WishlistSettingsForm = () => {
             <div className="mr-2 flex w-full items-center justify-between gap-2 rounded-md border-2 border-black px-4 py-2">
               <div>
                 <div className="flex items-center gap-2">
-                  {" "}
-                  <p className=" text-lg font-medium">
-                    {" "}
-                    Keep it a secret?{" "}
-                  </p>{" "}
                   {isSecret ? <Lock size={20} /> : <Unlock size={20} />}
+                  <p className=" text-lg font-medium">Keep it a secret</p>
                 </div>
                 <p className="max-w-[300px] text-balance text-sm leading-tight">
                   {" "}
@@ -188,7 +178,9 @@ const WishlistSettingsForm = () => {
           </form>
         </Form>
         {isEditing && isOwner && wishlistToEdit?.id && (
-          <DeleteWishlist wishlistId={wishlistToEdit.id} />
+          <div className="mt-4 flex w-full ">
+            <DeleteWishlist wishlistId={wishlistToEdit.id} />
+          </div>
         )}
       </motion.div>
     );

@@ -1,10 +1,9 @@
 "use client";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -93,9 +92,6 @@ const ResponsiveSheet = ({
           {header}
         </DrawerHeader>
         <div
-          style={{
-            scrollbarGutter: "stable",
-          }}
           className={cn(
             "max-h-[74svh] overflow-y-auto px-4",
             shouldPadBottomMobile && "pb-[68px]",

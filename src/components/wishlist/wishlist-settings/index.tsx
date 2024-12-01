@@ -6,8 +6,9 @@ import React, {
   useContext,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import {
@@ -19,8 +20,15 @@ import { WishlistSettingsFormProvider } from "./context";
 
 const WishlistSettingsSheet = () => {
   const [isOpen, setIsOpen] = useAtom(isWishlistSettingsOpenAtom);
-  const wishlistToEdit = useAtomValue(wishlistToEditAtom);
+  const [wishlistToEdit, setWishlistToEdit] = useAtom(wishlistToEditAtom);
   const isEditing = !!wishlistToEdit;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setWishlistToEdit(null);
+    }
+  }, [isOpen]);
+
   return (
     <ResponsiveSheet
       isOpen={isOpen}
@@ -29,14 +37,16 @@ const WishlistSettingsSheet = () => {
       shouldPadBottomMobile
     >
       <WishlistSettingsFormProvider>
-        <div className="flex flex-col gap-4 pt-4">
-          <WishlistSettingsForm />
+        <div className="flex flex-col ">
+          <div className="flex flex-col py-4">
+            <WishlistSettingsForm />
+          </div>
           <div
             style={{
               WebkitBackdropFilter:
                 "var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
             }}
-            className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-6 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
+            className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-6 backdrop-blur-lg md:relative md:h-auto md:px-0  md:pt-4"
           >
             <WishlistSettingsFooter />
           </div>

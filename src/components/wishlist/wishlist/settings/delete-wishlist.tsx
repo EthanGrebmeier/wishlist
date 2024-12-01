@@ -22,11 +22,11 @@ const DeleteWishlist = ({ wishlistId }: DeleteWishListProps) => {
   });
 
   return (
-    <div className="flex justify-between rounded-md border-2 border-black px-4 py-2">
+    <div className="flex w-full justify-between rounded-md border-2 border-black px-4 py-2">
       <div>
         <div className="flex items-center gap-2">
-          <h3 className="font-sans text-lg font-medium"> Delete Wishlist</h3>
           <Trash2 size={20} />
+          <h3 className="font-sans text-lg font-medium"> Delete Wishlist</h3>
         </div>
         <p className="text-sm font-medium leading-tight text-red-500">
           Warning, this action is irreversible
