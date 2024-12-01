@@ -84,10 +84,13 @@ const ShareWishlist = ({
   ]);
 
   const Footer = useMemo(() => {
-    if (frame === "search" && canUserEdit) {
+    if (!canUserEdit) {
+      return null;
+    }
+    if (frame === "search") {
       return <Button onClick={() => setFrame("userList")}>Back</Button>;
     }
-    if (frame === "magicLink" && canUserEdit) {
+    if (frame === "magicLink") {
       return (
         <>
           <Button onClick={() => setFrame("userList")}>Back</Button>
