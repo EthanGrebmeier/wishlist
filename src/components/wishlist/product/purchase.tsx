@@ -30,44 +30,6 @@ export default function PurchaseProduct({
   );
 
   const Content = useMemo(() => {
-    console.log("NO COMMITMENTS?", !productCommitments?.length);
-    if (
-      (productCommitments?.length && hasUserCommitted) ||
-      !productCommitments?.length
-    ) {
-      return (
-        <>
-          <div className="absolute right-4 top-5">
-            <Tooltip
-              text={
-                isWishlistSecret
-                  ? "This wishlist is secret, the owner will not see your commitment."
-                  : "The wishlist owner will be able to see your commitment."
-              }
-            >
-              {isWishlistSecret ? (
-                <LockIcon size={20} />
-              ) : (
-                <InfoIcon size={20} />
-              )}
-            </Tooltip>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-medium">Commit to this item</h2>
-            <p className="max-w-[300px] text-pretty leading-tight">
-              Selecting this will let other people on this wishlist know you are
-              providing this item.
-            </p>
-          </div>
-          <CommitNew
-            product={product}
-            productCommitments={productCommitments}
-            hasUserCommitted={hasUserCommitted}
-          />
-        </>
-      );
-    }
-
     if (productCommitments?.length) {
       return (
         <>
@@ -82,8 +44,33 @@ export default function PurchaseProduct({
         </>
       );
     }
-
-    return "YOU SHOULD NOT SEE THIS";
+    return (
+      <>
+        <div className="absolute right-4 top-5">
+          <Tooltip
+            text={
+              isWishlistSecret
+                ? "This wishlist is secret, the owner will not see your commitment."
+                : "The wishlist owner will be able to see your commitment."
+            }
+          >
+            {isWishlistSecret ? <LockIcon size={20} /> : <InfoIcon size={20} />}
+          </Tooltip>
+        </div>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-medium">Commit to this item</h2>
+          <p className="max-w-[300px] text-pretty leading-tight">
+            Selecting this will let other people on this wishlist know you are
+            providing this item.
+          </p>
+        </div>
+        <CommitNew
+          product={product}
+          productCommitments={productCommitments}
+          hasUserCommitted={hasUserCommitted}
+        />
+      </>
+    );
   }, [productCommitments, hasUserCommitted]);
   return (
     <div className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
