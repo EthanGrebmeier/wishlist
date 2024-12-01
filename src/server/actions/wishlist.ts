@@ -99,51 +99,6 @@ export const deleteWishlist = protectedAction
     }
   });
 
-export const createWishlist = protectedAction
-  .schema(
-    z.object({
-      wishlistName: z.string().min(1),
-      date: z.date().optional(),
-      imageUrl: z.string().optional(),
-      isSecret: z.boolean(),
-      color: colorSchema,
-    }),
-  )
-  .action(
-    async ({
-      parsedInput: { wishlistName, date, color, isSecret, imageUrl },
-      ctx: { session },
-    }) => {
-      const wishlistValues = {
-        createdById: session.user.id,
-        name: wishlistName,
-        id: generateId(),
-        dueDate: date?.toDateString(),
-        color,
-        isSecret,
-        imageUrl,
-      };
-      try {
-        await db.insert(wishlists).values(wishlistValues);
-
-        await db.insert(wishlistShares).values({
-          createdById: session.user.id,
-          wishlistId: wishlistValues.id,
-          sharedWithUserId: session.user.id,
-          type: "editor",
-          id: generateId(),
-        });
-      } catch (e) {
-        console.error(e);
-        return {
-          message: "Could not insert wishlist",
-        };
-      }
-
-      redirect(`/wishlist/${wishlistValues.id}`);
-    },
-  );
-
 export const updateWishlist = protectedAction
   .schema(wishlistSettingsSchema)
   .action(
