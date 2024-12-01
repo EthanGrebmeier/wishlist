@@ -158,6 +158,7 @@ const ModalContent = ({
               </div>
               <div className="flex w-full items-start justify-between">
                 <Button
+                  type="button"
                   variant="secondary"
                   onClick={() => setFrame("attribute")}
                 >
