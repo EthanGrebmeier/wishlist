@@ -37,8 +37,8 @@ const WishlistSettingsSheet = () => {
       shouldPadBottomMobile
     >
       <WishlistSettingsFormProvider>
-        <div className="flex flex-col ">
-          <div className="flex flex-col py-4">
+        <div className="flex w-full flex-col ">
+          <div className="flex w-full flex-col py-4">
             <WishlistSettingsForm />
           </div>
           <div
