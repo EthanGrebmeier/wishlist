@@ -1,13 +1,10 @@
 "use client";
 
 import React from "react";
-import { useProductForm } from "../../wishlist/wishlist/add-product/form";
 import Image from "next/image";
 import PlaceholderImage from "../../wishlist/product/placeholder-image";
 import { Button } from "~/components/ui/button";
 import { ImageIcon, Trash2Icon } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useProductSheetNavigation } from "../../wishlist/wishlist/add-product";
 
 type ImageDisplayProps = {
   openImageEditor: () => void;
