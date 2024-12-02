@@ -16,18 +16,20 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="flex flex-col gap-8 px-8 py-8">
+    <main className="flex flex-col gap-8 px-2 py-8 md:px-8">
       <div className="flex w-full items-center justify-between gap-4 leading-3">
         <Logo />
         <div className="flex gap-4">
           <ButtonLink href="/auth/sign-in">Sign In</ButtonLink>
         </div>
       </div>
-      <div className=" flex flex-col gap-16 rounded-xl border-2 border-black px-8 py-16">
+      <div className=" flex flex-col gap-16 rounded-xl border-2 border-black px-4 py-16 sm:px-8">
         <div className="flex h-full w-full flex-col items-center gap-12">
-          <div className="flex max-w-[460px] flex-1 flex-col items-center justify-center gap-4 text-center">
-            <h1 className=" font-serif text-7xl">build your dream wishlist.</h1>
-            <p className="font-serif text-3xl">
+          <div className="flex max-w-[430px] flex-1 flex-col items-center justify-center gap-4 text-center">
+            <h1 className=" font-serif text-5xl sm:text-7xl">
+              build your dream wishlist.
+            </h1>
+            <p className=" font-serif text-2xl leading-tight sm:text-3xl">
               fillaneed is perfect for birthdays, back-to-school and anything
               inbetween!{" "}
             </p>
@@ -72,7 +74,7 @@ export default async function HomePage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4 border-t-2 border-black pt-16">
-          <h2 className="text-balance text-center font-serif text-6xl">
+          <h2 className="text-balance text-center font-serif text-5xl sm:text-7xl">
             Create your wishlist today!
           </h2>
           <ButtonLink
