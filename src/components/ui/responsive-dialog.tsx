@@ -50,7 +50,7 @@ const ResponsiveDialog = ({
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className={bodyClassName}>
           <DialogHeader className={cn(headerClassName)}>
-            <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+            <DialogTitle className="font-serif text-2xl">{title}</DialogTitle>
             {description && (
               <DialogDescription>{description}</DialogDescription>
             )}
