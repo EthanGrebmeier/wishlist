@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
-import SignOutButton from "./sign-out";
+import SignInOutButton from "./sign-out";
 import { BookUser, Gift, Scroll, ShieldQuestion } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import SharedWishlists from "./wishlist-list/shared-wishlists";
@@ -45,7 +45,7 @@ const Navigation = async () => {
         )}
       </div>
       <div className="flex items-center justify-between">
-        <SignOutButton />
+        <SignInOutButton isSignedIn={isSignedIn} />
         <DropdownMenu>
           <DropdownMenuTrigger className="rounded-md p-1 transition-colors hover:bg-secondary">
             <ShieldQuestion size={20} />

@@ -1,24 +1,18 @@
 "use client";
 
-import {
-  useReducedMotion,
-  motion,
-  type TargetAndTransition,
-} from "framer-motion";
+import { motion, type MotionStyle } from "framer-motion";
+
 import React from "react";
 
 type FlyingIconProps = {
   children: JSX.Element;
-  animate: TargetAndTransition;
+  style: MotionStyle;
 };
 
-const FlyingIcon = ({ children, animate }: FlyingIconProps) => {
+const FlyingIcon = ({ children, style }: FlyingIconProps) => {
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={animate}
+      style={style}
       transition={{
         duration: 0.55,
         delay: 0.05,
@@ -26,7 +20,7 @@ const FlyingIcon = ({ children, animate }: FlyingIconProps) => {
         bounce: 0.5,
       }}
       whileHover={{ rotate: -12 }}
-      className="absolute"
+      className="absolute z-10"
     >
       {children}
     </motion.div>
