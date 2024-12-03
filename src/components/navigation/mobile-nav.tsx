@@ -1,17 +1,10 @@
 "use client";
 
-import { Menu } from "lucide-react";
-import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import Logo from "./logo";
+import { ContextBar } from "./context-bar";
 
 type MobileSidebarProps = {
   navigation: JSX.Element;
@@ -38,15 +31,7 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="default"
-          size="circle"
-          className="fixed bottom-4 right-4 z-20 lg:hidden"
-        >
-          <Menu size={25} />
-        </Button>
-      </DrawerTrigger>
+      <ContextBar />
       <DrawerContent className="mx-auto max-w-[440px] ">
         <DrawerHeader>
           <DrawerTitle className="sr-only">Navigation</DrawerTitle>

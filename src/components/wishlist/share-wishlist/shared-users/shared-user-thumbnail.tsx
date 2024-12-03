@@ -33,7 +33,7 @@ export const SharedUserThumbnailView = ({
   const numThumbnails = wishlistShares.length > 4 ? 3 : 4;
 
   return (
-    <div className="hidden xs:flex">
+    <div className="hidden sm:flex">
       {wishlistShares.slice(0, numThumbnails).map(({ users: user }) => (
         <Tooltip text={user.name ?? user.email} key={user.id}>
           <SharedUserThumbnail className="relative [&:not(:first-child)]:-ml-4 md:[&:not(:first-child)]:-ml-2">

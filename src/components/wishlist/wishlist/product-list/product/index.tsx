@@ -4,7 +4,6 @@ import type { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 import ProductMenu from "./menu";
 import MenuProvider from "./menu/menuProvider";
 import ProductImage from "./image";
-import { getProductSlug } from "~/lib/wishlist/product/getProductSlug";
 import Priority from "./priority";
 import { getBackgroundColor } from "~/lib/utils";
 import type { z } from "zod";
@@ -12,9 +11,10 @@ import type { colorSchema } from "~/schema/wishlist/wishlist";
 import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
 import Card from "~/components/ui/card";
 import { useSetAtom } from "jotai";
-import { isProductViewOpenAtom, productToViewAtom } from "~/store/product-view";
-import { CheckIcon, PackageCheckIcon } from "lucide-react";
+
+import { PackageCheckIcon } from "lucide-react";
 import { Tooltip } from "~/components/ui/tooltip";
+import { viewedProductAtom } from "~/store/product-settings";
 
 type ProductProps = {
   product: WishlistProductWithCommitmentsWithUser;
@@ -31,15 +31,13 @@ const Product = ({
   hideStatus,
   animationDelay = 0,
 }: ProductProps) => {
-  const setProductToView = useSetAtom(productToViewAtom);
-  const setIsProductViewOpen = useSetAtom(isProductViewOpenAtom);
+  const setViewedProduct = useSetAtom(viewedProductAtom);
   const handleClick = () => {
-    setProductToView(product);
-    setIsProductViewOpen(true);
+    setViewedProduct(product);
   };
   return (
     <Card
-      // onClick={handleClick}
+      onClick={handleClick}
       href={`/product/${product.id}`}
       animationDelay={animationDelay}
       backgroundColor={getBackgroundColor(wishlistColor)}

@@ -26,8 +26,8 @@ export const shareWishlistEmailInputSchema = z.object({
 });
 
 export const wishlistSettingsSchema = z.object({
-  wishlistName: z.string().min(1, { message: "Name is required" }),
-  imageUrl: z.string().optional(),
+  name: z.string().min(1, { message: "Name is required" }),
+  imageUrl: z.string().nullable(),
   id: z.string().optional(),
   createdById: z.string(),
   date: z.date().optional(),

@@ -98,7 +98,7 @@ const WishlistSettingsForm = () => {
                 />
               </div>
               <FormField
-                name="wishlistName"
+                name="name"
                 render={({ field }) => (
                   <HorizontalInputWrapper
                     required

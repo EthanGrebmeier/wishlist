@@ -53,13 +53,13 @@ export const EditWishlist = ({ wishlist }: EditWishlistProps) => {
         variant="outline"
         onClick={() => {
           setWishlistToEdit({
-            wishlistName: wishlist.name,
+            name: wishlist.name,
             isSecret: wishlist.isSecret,
             color: wishlist.color,
             createdById: wishlist.createdById,
             date: wishlist.dueDate ? new Date(wishlist.dueDate) : undefined,
             id: wishlist.id,
-            imageUrl: wishlist.imageUrl ?? undefined,
+            imageUrl: wishlist.imageUrl,
           });
           setIsWishlistSettingsOpen(true);
         }}

@@ -1,5 +1,5 @@
 "use client";
-import { Mail, Sparkles, UsersRound } from "lucide-react";
+import { Mail, Sparkles } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import ShareWishlistForm from "./share-wishlist-form";
 import SharedUsers from "./shared-users";
@@ -12,13 +12,14 @@ import type {
 } from "~/types/wishlist";
 import type { UserTypeWithOwner } from "~/types/user";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
-import ResponsiveDialog from "~/components/ui/responsive-dialog";
-import useMeasure from "react-use-measure";
 import { AnimatePresence, motion } from "framer-motion";
 import CopyButton from "./magic-link/copy-button";
 import MagicLinkSection from "./magic-link/section";
 import { getMagicLink } from "~/server/actions/wishlist";
 import { getMagicLinkUrl } from "~/lib/wishlist/getMagicLinkUrl";
+import ResponsiveSheet from "~/components/ui/responsive-sheet";
+import { isWishlistShareOpenAtom } from "~/store/wishlist-settings";
+import { useAtom } from "jotai";
 
 type ShareWishlistProps = {
   wishlist: Wishlist;
@@ -33,10 +34,10 @@ const ShareWishlist = ({
   wishlistShares,
   userStatus,
 }: ShareWishlistProps) => {
+  const [isOpen, setIsOpen] = useAtom(isWishlistShareOpenAtom);
   const [frame, setFrame] = useState<"userList" | "magicLink" | "search">(
     "userList",
   );
-  const [ref, dimensions] = useMeasure();
   const canUserEdit = verifyUserIsWishlistEditor(userStatus);
   const [magicLink, setMagicLink] = useState<WishlistMagicLink>();
 
@@ -124,41 +125,26 @@ const ShareWishlist = ({
   }, [frame, canUserEdit, magicLink]);
 
   return (
-    <ResponsiveDialog
-      title="Sharing"
-      trigger={<Button icon={<UsersRound size={20} />}></Button>}
-      footer={<div className="flex w-full justify-between">{Footer}</div>}
-    >
-      <motion.div
-        animate={{
-          height: dimensions?.height,
-        }}
-        transition={{
-          duration: 0.2,
-          type: "spring",
-          bounce: 0,
-        }}
-        className="flex min-w-0 flex-col gap-2"
-      >
-        <div className="z-10 flex min-w-0 flex-col gap-4 pt-2" ref={ref}>
-          <AnimatePresence mode="popLayout">
-            <motion.div
-              key={frame}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{
-                duration: 0.2,
-                type: "spring",
-                bounce: 0,
-              }}
-            >
-              {content}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </motion.div>
-    </ResponsiveDialog>
+    <ResponsiveSheet isOpen={isOpen} setIsOpen={setIsOpen} title="Sharing">
+      <div className="z-10 flex min-w-0 flex-col gap-4 pt-2">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={frame}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{
+              duration: 0.2,
+              type: "spring",
+              bounce: 0,
+            }}
+          >
+            {content}
+          </motion.div>
+        </AnimatePresence>
+        <div className="flex w-full justify-between pb-4 md:pb-0">{Footer}</div>
+      </div>
+    </ResponsiveSheet>
   );
 };
 

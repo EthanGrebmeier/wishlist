@@ -8,3 +8,9 @@ export const wishlistToEditAtom = atom<z.infer<
 > | null>(null);
 export const wishlistToDeleteAtom = atom<Wishlist | null>(null);
 export const isWishlistDeleteOpenAtom = atom(false);
+export const canUserEditAtom = atom(false);
+export const viewedWishlistAtom = atom<z.infer<
+  typeof wishlistSettingsSchema
+> | null>(null);
+
+export const isWishlistShareOpenAtom = atom(false);

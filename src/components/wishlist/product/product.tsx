@@ -19,9 +19,12 @@ import { useSetAtom } from "jotai";
 import {
   isProductFormOpenAtom,
   productToEditAtom,
+  viewedProductAtom,
 } from "~/store/product-settings";
+import { canUserEditAtom } from "~/store/wishlist-settings";
 import ProductCard from "../wishlist/product-list/product";
 import Breadcrumbs from "./breadcrumbs";
+import { useEffect } from "react";
 
 type ProductPageProps = {
   wishlist: WishlistWithProducts;
@@ -42,6 +45,19 @@ export default function Product({
 }: ProductPageProps) {
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
+  const setViewedProduct = useSetAtom(viewedProductAtom);
+  const setCanUserEdit = useSetAtom(canUserEditAtom);
+
+  useEffect(() => {
+    setCanUserEdit(canUserEdit);
+  }, [canUserEdit, setCanUserEdit]);
+
+  useEffect(() => {
+    setViewedProduct(product);
+    return () => {
+      setViewedProduct(null);
+    };
+  }, [product, setViewedProduct]);
 
   return (
     <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">

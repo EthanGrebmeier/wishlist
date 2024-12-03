@@ -8,7 +8,7 @@ import { ImageIcon, Trash2Icon } from "lucide-react";
 
 type ImageDisplayProps = {
   openImageEditor: () => void;
-  imageUrl?: string;
+  imageUrl?: string | null;
   removeImage: () => void;
 };
 

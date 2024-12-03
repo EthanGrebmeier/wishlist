@@ -10,7 +10,7 @@ type ListItemProps = {
   bottomContent: ReactNode;
   children?: ReactNode;
   backgroundColor?: string;
-  href?: string;
+  href: string;
   onClick?: () => void;
   animationDelay?: number;
 };
@@ -22,7 +22,6 @@ export const Card = ({
   backgroundColor,
   href,
   onClick,
-  animationDelay,
 }: ListItemProps) => {
   const shouldNotTranslate = useReducedMotion();
 

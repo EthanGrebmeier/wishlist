@@ -8,11 +8,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto grid grid-cols-1 pb-16 md:pb-0 lg:grid-cols-[auto_1fr]">
+    <div className="mx-auto grid grid-cols-1   lg:grid-cols-[auto_1fr]">
       <SessionProvider>
         <Provider>
           <Sidebar />
-          <main id="main" tabIndex={-1} className="relative flex flex-1">
+          <main id="main" tabIndex={-1} className="relative flex flex-1 pb-16">
             {children}
           </main>
         </Provider>

@@ -189,21 +189,4 @@ export const AddProductSheetTrigger = () => {
   );
 };
 
-export const AddProductSheetTriggerMobile = () => {
-  const setIsOpen = useSetAtom(isProductFormOpenAtom);
-  const setProductToEdit = useSetAtom(productToEditAtom);
-  const openSheet = () => {
-    setIsOpen(true);
-    setProductToEdit(undefined);
-  };
-  return (
-    <Button
-      onClick={openSheet}
-      className="fixed bottom-4 left-4 flex md:hidden"
-      size="circle"
-      icon={<PlusIcon size={20} />}
-    ></Button>
-  );
-};
-
 export default AddProduct;

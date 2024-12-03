@@ -67,8 +67,7 @@ export const WishlistSettingsFormProvider = ({
         defaultValues: {
           id: wishlistToEdit?.id ?? undefined,
           createdById: wishlistToEdit?.createdById ?? session.data?.user.id,
-          wishlistName:
-            wishlistToEdit?.wishlistName ?? initialValues?.wishlistName ?? "",
+          name: wishlistToEdit?.name ?? initialValues?.name ?? "",
           imageUrl: wishlistToEdit?.imageUrl ?? initialValues?.imageUrl ?? "",
           date: wishlistToEdit?.date ?? initialValues?.date ?? undefined,
           color: wishlistToEdit?.color ?? initialValues?.color ?? "white",

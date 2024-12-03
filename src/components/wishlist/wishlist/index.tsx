@@ -6,10 +6,7 @@ import WishlistHeader from "./header";
 import { redirect } from "next/navigation";
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
-import {
-  AddProductSheetTrigger,
-  AddProductSheetTriggerMobile,
-} from "./add-product";
+import { AddProductSheetTrigger } from "./add-product";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -76,7 +73,6 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
           )}
         </section>
       </div>
-      {canUserEdit && <AddProductSheetTriggerMobile />}
     </>
   );
 };
