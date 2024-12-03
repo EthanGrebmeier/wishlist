@@ -123,7 +123,7 @@ const WishlistSettingsForm = () => {
                     <button
                       type="button"
                       onClick={() => setFrame("date")}
-                      className="font-medium underline"
+                      className="px-1 font-medium underline"
                     >
                       {date ? format(date, "PPP") : "Pick a date"}
                     </button>

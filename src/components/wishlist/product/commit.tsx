@@ -1,12 +1,13 @@
 "use client";
 
-import CommitNew from "./commit-new";
-import { WishlistProductCommitmentsWithUser } from "~/types/wishlist";
-import { WishlistProduct } from "~/types/wishlist";
-import { InfoIcon, LockIcon } from "lucide-react";
+import CommitNew from "./commit-input";
+import type { WishlistProductCommitmentsWithUser } from "~/types/wishlist";
+import type { WishlistProduct } from "~/types/wishlist";
+import { BookUserIcon, InfoIcon, LockIcon } from "lucide-react";
 import { Tooltip } from "~/components/ui/tooltip";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { useMemo } from "react";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 type PurchaseProps = {
   url: string | null;
@@ -17,7 +18,7 @@ type PurchaseProps = {
   session: Session;
 };
 
-export default function PurchaseProduct({
+export default function CommitProduct({
   product,
   productCommitments,
   isWishlistSecret,
@@ -46,19 +47,30 @@ export default function PurchaseProduct({
     }
     return (
       <>
-        <div className="absolute right-4 top-5">
-          <Tooltip
-            text={
-              isWishlistSecret
-                ? "This wishlist is secret, the owner will not see your commitment."
-                : "The wishlist owner will be able to see your commitment."
-            }
-          >
-            {isWishlistSecret ? <LockIcon size={20} /> : <InfoIcon size={20} />}
-          </Tooltip>
-        </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">Commit to this item</h2>
+          <div className="absolute right-4 top-4">
+            <ColoredIconWrapper className="bg-blue-200">
+              <BookUserIcon size={20} />
+            </ColoredIconWrapper>
+          </div>
+          <div>
+            <h2 className="text-balance pr-6 text-2xl font-medium sm:text-wrap">
+              Commit to this item
+              <Tooltip
+                text={
+                  isWishlistSecret
+                    ? "This wishlist is secret, the owner will not see your commitment."
+                    : "The wishlist owner will be able to see your commitment."
+                }
+              >
+                {isWishlistSecret ? (
+                  <LockIcon className="ml-1 inline " size={15} />
+                ) : (
+                  <InfoIcon className="ml-1 inline" size={15} />
+                )}
+              </Tooltip>
+            </h2>
+          </div>
           <p className="max-w-[300px] text-pretty leading-tight">
             Selecting this will let other people on this wishlist know you are
             providing this item.
@@ -71,9 +83,12 @@ export default function PurchaseProduct({
         />
       </>
     );
-  }, [productCommitments, hasUserCommitted]);
+  }, [productCommitments, hasUserCommitted, product, isWishlistSecret]);
   return (
-    <div className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
+    <div
+      id="commit-product-container"
+      className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black  p-4"
+    >
       {/* <div className="absolute right-4 top-4">
         <div className="flex text-xl ">
           <span className="-translate-x-0.5 -translate-y-1 font-medium">

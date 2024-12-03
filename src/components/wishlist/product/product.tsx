@@ -11,20 +11,27 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ConfirmReceipt from "./confirm";
 import type { Session } from "next-auth";
-import PurchaseProduct from "./purchase";
+import CommitProduct from "./commit";
 import ProductImage from "./product-image";
 import ButtonLink from "~/components/ui/button-link";
-import { ChevronsRight, ExternalLinkIcon, PencilIcon } from "lucide-react";
+import {
+  ChevronsRight,
+  ExternalLinkIcon,
+  PencilIcon,
+  ShoppingBasketIcon,
+  ShoppingCartIcon,
+} from "lucide-react";
 import { useSetAtom } from "jotai";
 import {
   isProductFormOpenAtom,
   productToEditAtom,
   viewedProductAtom,
 } from "~/store/product-settings";
-import { canUserEditAtom } from "~/store/wishlist-settings";
+import { canUserEditAtom, viewedWishlistAtom } from "~/store/wishlist-settings";
 import ProductCard from "../wishlist/product-list/product";
 import Breadcrumbs from "./breadcrumbs";
 import { useEffect } from "react";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 type ProductPageProps = {
   wishlist: WishlistWithProducts;
@@ -46,6 +53,7 @@ export default function Product({
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
   const setViewedProduct = useSetAtom(viewedProductAtom);
+  const setViewedWishlist = useSetAtom(viewedWishlistAtom);
   const setCanUserEdit = useSetAtom(canUserEditAtom);
 
   useEffect(() => {
@@ -54,10 +62,11 @@ export default function Product({
 
   useEffect(() => {
     setViewedProduct(product);
+    setViewedWishlist(wishlist);
     return () => {
       setViewedProduct(null);
     };
-  }, [product, setViewedProduct]);
+  }, [product, setViewedProduct, wishlist, setViewedWishlist]);
 
   return (
     <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">
@@ -130,7 +139,7 @@ export default function Product({
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {((!wishlist.isSecret && canUserEdit) || !canUserEdit) && (
-          <PurchaseProduct
+          <CommitProduct
             session={session}
             isWishlistSecret={wishlist.isSecret}
             product={product}
@@ -139,20 +148,22 @@ export default function Product({
           />
         )}
         {product.url && (
-          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
+          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black   p-4">
             <div className="absolute right-4 top-4">
-              <ExternalLinkIcon size={20} />
+              <ColoredIconWrapper className="bg-orange-300">
+                <ShoppingBasketIcon size={20} />
+              </ColoredIconWrapper>
             </div>
             <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-medium">Interested?</h2>
-              <p>View product on {product.url.split("//")[1]?.split("/")[0]}</p>
+              <h2 className="text-2xl font-medium ">Interested?</h2>
+              <p>View item on {product.url.split("//")[1]?.split("/")[0]}</p>
             </div>
             <ButtonLink
               href={product.url}
               target="_blank"
               className="mt-2 w-fit gap-0"
             >
-              Purchase product
+              Purchase item
             </ButtonLink>
           </div>
         )}

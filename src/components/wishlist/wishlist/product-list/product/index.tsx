@@ -12,7 +12,7 @@ import PlaceholderImage from "~/components/wishlist/product/placeholder-image";
 import Card from "~/components/ui/card";
 import { useSetAtom } from "jotai";
 
-import { PackageCheckIcon } from "lucide-react";
+import { BookUserIcon } from "lucide-react";
 import { Tooltip } from "~/components/ui/tooltip";
 import { viewedProductAtom } from "~/store/product-settings";
 
@@ -56,7 +56,7 @@ const Product = ({
                 (!!product.commitments?.length ? (
                   <Tooltip text="This item has been purchased!">
                     <div className="rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
-                      <PackageCheckIcon size={24} />
+                      <BookUserIcon size={24} />
                     </div>
                   </Tooltip>
                 ) : (
@@ -72,7 +72,7 @@ const Product = ({
         </>
       }
       bottomContent={
-        <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md pr-4 font-serif text-base group-hover:underline xs:text-xl sm:text-2xl">
+        <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md pr-4 font-serif text-base font-normal group-hover:underline xs:text-xl sm:text-2xl">
           {" "}
           {product.name}{" "}
         </p>

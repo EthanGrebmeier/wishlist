@@ -10,7 +10,7 @@ import {
 } from "~/store/wishlist-settings";
 import WishlistSettingsForm, { WishlistSettingsFooter } from "./form";
 import { WishlistSettingsFormProvider } from "./context";
-import { ScrollIcon } from "lucide-react";
+import { PencilIcon, ScrollIcon, SettingsIcon } from "lucide-react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 const WishlistSettingsSheet = () => {
@@ -29,9 +29,15 @@ const WishlistSettingsSheet = () => {
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       titleIcon={
-        <ColoredIconWrapper>
-          <ScrollIcon size={20} />
-        </ColoredIconWrapper>
+        isEditing ? (
+          <ColoredIconWrapper className="bg-purple-200">
+            <SettingsIcon size={20} />
+          </ColoredIconWrapper>
+        ) : (
+          <ColoredIconWrapper>
+            <ScrollIcon size={20} />
+          </ColoredIconWrapper>
+        )
       }
       title={isEditing ? "Edit Wishlist" : "Create Wishlist"}
       shouldPadBottomMobile

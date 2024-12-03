@@ -3,7 +3,12 @@ import React, { useRef } from "react";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import ProductForm, { ProductFormFooter, ProductFormProvider } from "./form";
 import { Button } from "~/components/ui/button";
-import { PackagePlusIcon, PlusIcon, SparklesIcon } from "lucide-react";
+import {
+  PackagePlusIcon,
+  PencilIcon,
+  PlusIcon,
+  SparklesIcon,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ScrapeInput, { AutofillFooter } from "./autofill";
 
@@ -39,9 +44,15 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       titleIcon={
-        <ColoredIconWrapper>
-          <PackagePlusIcon size={20} />
-        </ColoredIconWrapper>
+        isEditing ? (
+          <ColoredIconWrapper className="bg-yellow-400">
+            <PencilIcon size={20} />
+          </ColoredIconWrapper>
+        ) : (
+          <ColoredIconWrapper className="bg-green-400">
+            <PackagePlusIcon size={20} />
+          </ColoredIconWrapper>
+        )
       }
       onClose={() => setProductToEdit(undefined)}
       header={
@@ -56,9 +67,12 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
             >
               <button
                 onClick={() => setFrame("autofill")}
-                className="flex items-center gap-2 text-base font-medium text-black underline"
+                className="group flex items-center gap-2 rounded-md px-2 py-1 text-base font-medium text-black transition-colors hover:bg-gray-100"
               >
-                <SparklesIcon className="text-purple-500" size={15} />
+                <SparklesIcon
+                  className="group-hover:animate-shake text-purple-500"
+                  size={15}
+                />
                 Autofill
               </button>
             </motion.div>

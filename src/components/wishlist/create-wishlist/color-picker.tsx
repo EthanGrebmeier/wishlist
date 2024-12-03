@@ -25,7 +25,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex w-full items-center gap-2 capitalize"
+          className="flex w-full items-center gap-2 px-1 capitalize"
         >
           <div
             className={cn(

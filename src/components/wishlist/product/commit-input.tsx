@@ -1,6 +1,6 @@
 "use client";
 
-import {
+import type {
   WishlistProduct,
   WishlistProductCommitmentsWithUser,
 } from "~/types/wishlist";

@@ -1,5 +1,5 @@
 "use client";
-import { Mail, Sparkles } from "lucide-react";
+import { Mail, ShareIcon, Sparkles } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import ShareWishlistForm from "./share-wishlist-form";
 import SharedUsers from "./shared-users";
@@ -20,6 +20,7 @@ import { getMagicLinkUrl } from "~/lib/wishlist/getMagicLinkUrl";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import { isWishlistShareOpenAtom } from "~/store/wishlist-settings";
 import { useAtom } from "jotai";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 type ShareWishlistProps = {
   wishlist: Wishlist;
@@ -125,7 +126,16 @@ const ShareWishlist = ({
   }, [frame, canUserEdit, magicLink]);
 
   return (
-    <ResponsiveSheet isOpen={isOpen} setIsOpen={setIsOpen} title="Sharing">
+    <ResponsiveSheet
+      titleIcon={
+        <ColoredIconWrapper className="bg-pink-300">
+          <ShareIcon size={20} />
+        </ColoredIconWrapper>
+      }
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      title="Sharing"
+    >
       <div className="z-10 flex min-w-0 flex-col gap-4 pt-2">
         <AnimatePresence mode="popLayout">
           <motion.div

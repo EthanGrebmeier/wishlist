@@ -217,8 +217,10 @@ export const ProductFormProvider = ({
 
   const isEditing = Boolean(productToEdit);
 
-  const { form, handleSubmitWithAction, action, resetFormAndAction } =
-    useHookFormAction(updateProduct, zodResolver(productSchema), {
+  const { form, handleSubmitWithAction, action } = useHookFormAction(
+    updateProduct,
+    zodResolver(productSchema),
+    {
       formProps: {
         mode: "onSubmit",
         defaultValues: {
@@ -245,7 +247,8 @@ export const ProductFormProvider = ({
           }, 800);
         },
       },
-    });
+    },
+  );
 
   const setFormValues = useCallback(
     (values: z.infer<typeof productSchema>) => {

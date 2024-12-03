@@ -2,14 +2,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
+  BookUserIcon,
   Grid,
   Menu,
+  PackageCheckIcon,
   PackagePlusIcon,
   PencilIcon,
   Rows3,
   ScrollIcon,
   SettingsIcon,
   ShareIcon,
+  ShoppingBasketIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
@@ -117,11 +120,37 @@ export const ContextBar = () => {
           shouldShow: canUserEdit,
           backgroundColor: "#facc15",
           icon: <PencilIcon size={25} />,
-          text: "Edit Product",
+          text: "Edit",
           hideTextOnMobile: false,
           onClick: () => {
             if (viewedProduct) setProductToEdit(viewedProduct);
             setIsAddProductModalOpen(true);
+          },
+        },
+        {
+          shouldShow: viewedProduct?.url,
+          backgroundColor: "#fdba74",
+          icon: <ShoppingBasketIcon size={25} />,
+          text: "Purchase",
+          hideTextOnMobile: false,
+          onClick: () => {
+            if (viewedProduct?.url) window.open(viewedProduct.url, "_blank");
+          },
+        },
+        {
+          shouldShow:
+            viewedWishlist && (viewedWishlist.isSecret ? !canUserEdit : true),
+          backgroundColor: "#E7DBFA",
+          icon: <BookUserIcon size={25} />,
+          text: "Commit",
+          hideTextOnMobile: false,
+          onClick: () => {
+            const commitProductContainer = document.getElementById(
+              "commit-product-container",
+            );
+            commitProductContainer?.scrollIntoView({
+              behavior: "smooth",
+            });
           },
         },
       ],

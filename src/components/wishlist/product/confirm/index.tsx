@@ -13,6 +13,7 @@ import { cn } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { PackageCheck } from "lucide-react";
+import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 type ConfirmReceiptProps = {
   wishlist: Wishlist;
@@ -37,7 +38,9 @@ const ConfirmReceipt = ({
       )}
     >
       <div className="absolute right-4 top-4">
-        <PackageCheck size={20} />
+        <ColoredIconWrapper className="bg-green-300">
+          <PackageCheck size={20} />
+        </ColoredIconWrapper>
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-medium">Received this item?</h2>
