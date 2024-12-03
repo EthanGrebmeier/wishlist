@@ -32,7 +32,7 @@ const ContextButton = ({
       className={cn(
         " bg-black",
         isLeftmost ? "rounded-l-full" : "rounded-l-none",
-        isRightmost ? "md:rounded-r-full" : "rounded-r-none",
+        isRightmost ? "lg:rounded-r-full" : "rounded-r-none",
         className,
       )}
     >
@@ -54,7 +54,7 @@ const ContextButton = ({
         className={cn(
           "flex items-center gap-2 overflow-hidden border-2 border-black  bg-background font-bold focus-visible:outline-none focus-visible:ring-2  focus-visible:ring-blue-500 focus-visible:ring-offset-1",
           isLeftmost ? "rounded-l-full" : "rounded-l-none",
-          isRightmost ? "md:rounded-r-full " : "rounded-r-none",
+          isRightmost ? "lg:rounded-r-full " : "rounded-r-none",
         )}
       >
         <AnimatePresence mode="wait">

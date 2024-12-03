@@ -154,8 +154,8 @@ export const ContextBar = () => {
   );
 
   return (
-    <div className="fixed bottom-4 right-4 z-20 flex h-14 items-end overflow-hidden md:bottom-4 md:right-6">
-      <div className="flex h-14 items-end overflow-hidden">
+    <div className="fixed bottom-4 right-1/2 z-20 flex h-14 translate-x-1/2 items-end overflow-hidden ">
+      <div className="flex h-14 w-fit items-end overflow-hidden">
         <AnimatePresence mode="wait">
           {visibleActions.map((action, index) => (
             <ContextButton
@@ -169,7 +169,7 @@ export const ContextBar = () => {
       </div>
       <div
         className={cn(
-          "rounded-r-full bg-black md:hidden",
+          "rounded-r-full bg-black lg:hidden",
           visibleActions.length === 0 ? "rounded-full " : "rounded-r-full",
         )}
       >
