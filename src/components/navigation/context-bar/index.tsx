@@ -79,7 +79,7 @@ export const ContextBar = () => {
           },
         },
         {
-          shouldShow: canUserEdit,
+          shouldShow: true,
           backgroundColor: "#f9a8d4",
           icon: <ShareIcon size={25} />,
           text: "Share List",
