@@ -62,14 +62,14 @@ const ConfirmReceipt = ({
           <p className=" text-pretty leading-tight">
             You have already received this item.
           </p>
-          <button
-            onClick={() => execute({ productId: product.id })}
-            disabled={isPending}
-            className="w-fit -translate-x-1.5 rounded-md px-2 py-1 font-bold transition-colors hover:bg-red-600/20"
-          >
-            {isPending ? "Removing..." : "Cancel Receipt"}
-          </button>
         </div>
+        <button
+          onClick={() => execute({ productId: product.id })}
+          disabled={isPending}
+          className="w-fit -translate-x-2 translate-y-1.5 rounded-md px-2 py-1 font-bold transition-colors hover:bg-red-600/20"
+        >
+          {isPending ? "Removing..." : "Cancel Receipt"}
+        </button>
       </div>
     );
 
