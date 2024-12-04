@@ -20,7 +20,7 @@ const MagicLink = ({ wishlistId, magicLinkId }: MagicLinkProps) => {
           <div className="flex flex-initial flex-row items-center">
             <div className="w-full min-w-0">
               <div className="flex flex-col gap-2">
-                <div className="flex w-full min-w-0 flex-shrink items-center overflow-hidden rounded-md border-2 border-black pl-2">
+                <div className="flex h-10 w-full min-w-0 flex-shrink items-center overflow-hidden rounded-md border border-black p-2">
                   <span className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-sm">
                     {magicLinkUrl ? magicLinkUrl : "Loading..."}
                   </span>
