@@ -8,7 +8,7 @@ const Loading = () => {
         <div className="h-10 w-44 animate-pulse rounded-md bg-slate-200 py-1"></div>
       </TitleBar>
       <ListView>
-        {[...Array(10)].map((_, index) => (
+        {Array.from({ length: 4 }, (_, i) => i + 1).map((index) => (
           <div
             key={index}
             className="skeleton relative flex w-full animate-pulse flex-col overflow-hidden rounded-md border-2 border-black bg-white"
