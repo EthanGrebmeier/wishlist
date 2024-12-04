@@ -12,10 +12,9 @@ import Product from "./product";
 type ProductProps = {
   product: WishlistProduct;
   wishlist: WishlistWithProducts;
-  isSecret: boolean;
 };
 
-const ProductServer = async ({ product, wishlist, isSecret }: ProductProps) => {
+const ProductServer = async ({ product, wishlist }: ProductProps) => {
   const [productCommitments, productReceipts, wishlistShares, session] =
     await Promise.all([
       getProductCommitments({
@@ -47,6 +46,7 @@ const ProductServer = async ({ product, wishlist, isSecret }: ProductProps) => {
       wishlist={wishlist}
       product={product}
       productCommitments={productCommitments?.data}
+      productReceipts={productReceipts?.data}
       sharedUsers={wishlistShares}
     />
   );

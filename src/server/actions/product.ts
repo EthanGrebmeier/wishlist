@@ -222,10 +222,29 @@ export const getProductReceipts = protectedAction
       session,
     });
 
-    return db.query.productReceipts.findFirst({
+    return db.query.productReceipts.findMany({
       where: eq(productReceipts.productId, productId),
     });
   });
+
+export const removeProductReceipt = protectedAction
+  .schema(z.object({ productId: z.string() }))
+  .action(async ({ parsedInput: { productId }, ctx: { session } }) => {
+    // ensure user is an editor of the wishlist
+    const dbProduct = await getProduct({ productId });
+
+    if (!dbProduct) {
+      throw new Error("Product not found");
+    }
+    await checkUserIsWishlistEditor({
+      wishlistId: dbProduct.wishlistId,
+      session,
+    });
+    await db
+      .delete(productReceipts)
+      .where(eq(productReceipts.productId, productId));
+  });
+
 export const deleteProduct = protectedAction
   .schema(z.object({ productId: z.string(), wishlistId: z.string() }))
   .action(

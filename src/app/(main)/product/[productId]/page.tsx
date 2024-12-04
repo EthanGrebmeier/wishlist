@@ -25,7 +25,6 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
     <div className="flex w-full flex-1 justify-center xl:pt-8">
       <Suspense fallback={<ProductLoading />}>
         <ProductServer
-          isSecret={wishlist.isSecret}
           wishlist={wishlist}
           product={product}
         />

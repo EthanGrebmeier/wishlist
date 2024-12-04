@@ -3,6 +3,7 @@ import type { privacyTypeSchema } from "~/schema/wishlist/wishlist";
 import type {
   magicWishlistLinks,
   productCommitments,
+  productReceipts,
   products,
   wishlistShares,
   wishlists,
@@ -21,6 +22,8 @@ export interface WishlistProductWithCommitmentsWithUser
   extends WishlistProduct {
   commitments?: WishlistProductCommitmentsWithUser[];
 }
+
+export type WishlistProductReceipts = typeof productReceipts.$inferSelect;
 
 export type WishlistProductCommitments = typeof productCommitments.$inferSelect;
 export interface WishlistProductCommitmentsWithUser

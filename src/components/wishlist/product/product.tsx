@@ -3,6 +3,7 @@
 import type {
   WishlistProduct,
   WishlistProductCommitmentsWithUser,
+  WishlistProductReceipts,
   WishlistWithProducts,
 } from "~/types/wishlist";
 import type { WishlistSharesWithUser } from "~/types/wishlist";
@@ -14,13 +15,7 @@ import type { Session } from "next-auth";
 import CommitProduct from "./commit";
 import ProductImage from "./product-image";
 import ButtonLink from "~/components/ui/button-link";
-import {
-  ChevronsRight,
-  ExternalLinkIcon,
-  PencilIcon,
-  ShoppingBasketIcon,
-  ShoppingCartIcon,
-} from "lucide-react";
+import { ChevronsRight, PencilIcon, ShoppingBasketIcon } from "lucide-react";
 import { useSetAtom } from "jotai";
 import {
   isProductFormOpenAtom,
@@ -40,6 +35,7 @@ type ProductPageProps = {
   sharedUsers: WishlistSharesWithUser[];
   session: Session;
   canUserEdit: boolean;
+  productReceipts?: WishlistProductReceipts[];
 };
 
 export default function Product({
@@ -49,6 +45,7 @@ export default function Product({
   sharedUsers,
   session,
   canUserEdit,
+  productReceipts,
 }: ProductPageProps) {
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
@@ -170,6 +167,7 @@ export default function Product({
         {canUserEdit && (
           <>
             <ConfirmReceipt
+              productReceipts={productReceipts}
               wishlistShares={sharedUsers}
               session={session}
               wishlist={wishlist}
