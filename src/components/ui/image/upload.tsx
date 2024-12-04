@@ -15,6 +15,17 @@ type ImageUploadProps = {
 
 const ImageUpload = ({ onImageSelect, onBack, subtitle }: ImageUploadProps) => {
   const [importImageUrl, setImportImageUrl] = useState("");
+  const [isImportValid, setIsImportValid] = useState(true);
+
+  const handleSubmit = () => {
+    if (!importImageUrl ?? !importImageUrl.match(/^https?:\/\/.+/)) {
+      setIsImportValid(false);
+      return;
+    }
+    onImageSelect(importImageUrl);
+    setImportImageUrl("");
+    onBack();
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,18 +66,18 @@ const ImageUpload = ({ onImageSelect, onBack, subtitle }: ImageUploadProps) => {
         <Label htmlFor="imageUrl"> Import from URL </Label>
         <InputButton
           name="imageUrl"
+          id="imageUrl"
           value={importImageUrl}
           onChange={(e) => setImportImageUrl(e.target.value)}
           button={{
             children: "Upload",
             icon: <UploadIcon size={15} />,
-            onClick: () => {
-              onImageSelect(importImageUrl);
-              setImportImageUrl("");
-              onBack();
-            },
+            onClick: handleSubmit,
           }}
         />
+        <p className="h-4 text-sm text-red-500">
+          {!isImportValid && "Invalid URL"}
+        </p>
       </section>
     </div>
   );

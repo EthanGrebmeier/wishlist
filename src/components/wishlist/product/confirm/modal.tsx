@@ -11,7 +11,7 @@ import type {
 } from "~/types/wishlist";
 import { AnimatePresence, motion } from "framer-motion";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
-import { ArrowRight, Check, Gift, PackageOpen, Scroll } from "lucide-react";
+import { ArrowRight, Check, Gift, PackageCheck, Scroll } from "lucide-react";
 
 import { useAction } from "next-safe-action/hooks";
 import { markProductReceived } from "~/server/actions/product";
@@ -36,6 +36,11 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
     <ResponsiveSheet
       trigger={<Button>Mark as received</Button>}
       title="Received this item?"
+      titleIcon={
+        <ColoredIconWrapper className="bg-green-300">
+          <PackageCheck size={20} />
+        </ColoredIconWrapper>
+      }
     >
       <div className="w-full gap-4 pb-4 sm:pb-0">
         <ModalContent
@@ -59,7 +64,6 @@ type ModalContentProps = {
 
 const ModalContent = ({
   session,
-  animationDelaySeconds,
   wishlist,
   product,
   wishlistShares,
@@ -159,7 +163,7 @@ const ModalContent = ({
               <div className="flex w-full items-start justify-between">
                 <Button
                   type="button"
-                  variant="secondary"
+                  variant="tertiary"
                   onClick={() => setFrame("attribute")}
                 >
                   Back
@@ -198,35 +202,12 @@ const ModalContent = ({
           }}
           className="flex w-full flex-col "
         >
-          <motion.div
-            key="received"
-            initial={{
-              translateY: 100,
-              rotate: 0,
-            }}
-            animate={{
-              translateY: 0,
-              rotate: 9,
-            }}
-            exit={{
-              translateY: 100,
-              rotate: 0,
-            }}
-            transition={{
-              delay: animationDelaySeconds,
-            }}
-            className="absolute bottom-0 left-0"
-          >
-            <ColoredIconWrapper className="border-dashed  ">
-              <PackageOpen strokeWidth={2} size={50} color="black" />
-            </ColoredIconWrapper>
-          </motion.div>
           <div className="pt-4">
             <h3 className="text-lg font-medium">Who got this for you?</h3>
             <p className="mb-4 text-balance text-sm tracking-tight">
               Select a user from the list below to credit them for the item
             </p>
-            <ul className="mb-6 flex max-h-[210px] flex-col gap-1 overflow-y-auto rounded-md border-2 border-black p-2">
+            <ul className="mb-6 flex max-h-[210px] flex-col gap-1 overflow-y-auto rounded-md border border-black p-2">
               {wishlistShares.map(({ users: sharedUser }) => (
                 <li key={sharedUser.id}>
                   <button
@@ -240,7 +221,7 @@ const ModalContent = ({
                       }
                     }}
                     className={cn(
-                      "flex w-full flex-row items-center justify-between gap-2 rounded-md p-1 transition-all ",
+                      "flex w-fit flex-row items-center justify-between gap-2 rounded-md px-2 py-1 transition-all ",
                       selectedUserId === sharedUser.id
                         ? "bg-green-200 font-medium"
                         : "hover:bg-blue-200",
@@ -291,7 +272,6 @@ const ModalContent = ({
     session,
     product,
     wishlist,
-    animationDelaySeconds,
     execute,
   ]);
 

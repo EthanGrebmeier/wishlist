@@ -27,6 +27,7 @@ import ProductCard from "../wishlist/product-list/product";
 import Breadcrumbs from "./breadcrumbs";
 import { useEffect } from "react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import { Button } from "~/components/ui/button";
 
 type ProductPageProps = {
   wishlist: WishlistWithProducts;
@@ -120,16 +121,17 @@ export default function Product({
               )}
             </div>
             {canUserEdit && (
-              <button
+              <Button
+                variant="tertiary"
                 onClick={() => {
                   setProductToEdit(product);
                   setIsProductFormOpen(true);
                 }}
-                className="flex items-center gap-1 text-sm font-medium underline"
+                className="w-fit"
+                icon={<PencilIcon size={15} />}
               >
                 Edit Product
-                <PencilIcon size={15} />
-              </button>
+              </Button>
             )}
           </div>
         </div>

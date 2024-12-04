@@ -10,7 +10,7 @@ type InputButtonProps = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const InputButton = React.forwardRef<HTMLInputElement, InputButtonProps>(
-  ({ className, type, button, ...props }, ref) => {
+  ({ className, button, ...props }, ref) => {
     const {
       tooltip,
       className: buttonClassName,
@@ -21,19 +21,19 @@ const InputButton = React.forwardRef<HTMLInputElement, InputButtonProps>(
     return (
       <div
         className={cn(
-          "flex h-10 w-full  rounded-l-md rounded-r-lg border border-black border-r-transparent  focus-within:ring-2 focus-within:ring-ring",
+          "flex h-full w-full overflow-ellipsis rounded-l-md rounded-r-lg border border-black  focus-within:ring-2 focus-within:ring-ring",
           className,
         )}
       >
         <input
           ref={ref}
-          className="flex-1 overflow-ellipsis rounded-md rounded-r-none bg-transparent  p-2 focus-visible:outline-none"
+          className="flex-1 overflow-ellipsis rounded-md rounded-r-none bg-transparent p-2  pr-4 focus-visible:outline-none"
           type="text"
           {...props}
         />
         <Tooltip text={tooltip}>
           <Button
-            className={cn(" -mr-0.5 -mt-1 self-end", buttonClassName)}
+            className={cn("-translate-x-1 self-center ", buttonClassName)}
             variant={buttonVariant}
             type="button"
             {...buttonProps}

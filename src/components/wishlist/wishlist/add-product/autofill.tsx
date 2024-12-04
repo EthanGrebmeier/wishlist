@@ -113,7 +113,9 @@ export const AutofillFooter = ({
   // Todo: ensure this works after we upgrade to safe action v7
   return (
     <div className="flex w-full items-center justify-between">
-      <Button onClick={() => setFrame("form")}>Back</Button>
+      <Button variant="tertiary" onClick={() => setFrame("form")}>
+        Back
+      </Button>
       <StatusButton
         className="w-32"
         status={status}

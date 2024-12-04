@@ -25,13 +25,11 @@ function Calendar({
         caption:
           "flex justify-center pt-1 w-full justify-between relative items-center",
         caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
+        nav: "gap-2 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 items-center justify-center",
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 items-center justify-center relative",
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:

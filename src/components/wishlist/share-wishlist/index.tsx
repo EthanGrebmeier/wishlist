@@ -90,12 +90,18 @@ const ShareWishlist = ({
       return null;
     }
     if (frame === "search") {
-      return <Button onClick={() => setFrame("userList")}>Back</Button>;
+      return (
+        <Button variant="tertiary" onClick={() => setFrame("userList")}>
+          Back
+        </Button>
+      );
     }
     if (frame === "magicLink") {
       return (
         <>
-          <Button onClick={() => setFrame("userList")}>Back</Button>
+          <Button variant="tertiary" onClick={() => setFrame("userList")}>
+            Back
+          </Button>
           {magicLink ? (
             <CopyButton textToCopy={getMagicLinkUrl(magicLink.id)} />
           ) : (

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import PlaceholderImage from "./placeholder-image";
-import { WishlistProduct } from "~/types/wishlist";
+import type { WishlistProduct } from "~/types/wishlist";
 import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
+import ButtonLink from "~/components/ui/button-link";
 
 export default function ProductImage({
   product,
@@ -11,16 +11,19 @@ export default function ProductImage({
 }) {
   return (
     <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border-2 border-black">
-      <Link
-        className="group absolute left-2 top-2 z-10 flex items-center gap-2 overflow-hidden rounded-md border-2 border-black bg-background px-2 py-1 transition-all duration-150 ease-out hover:bg-yellow-400"
+      <ButtonLink
+        className="group absolute left-2 top-2 z-10 "
         href={`/wishlist/${product.wishlistId}`}
+        icon={
+          <ArrowLeftIcon
+            className="transition-all duration-150 ease-in group-hover:-translate-x-0.5"
+            size={15}
+          />
+        }
+        variant="tertiary"
       >
-        <ArrowLeftIcon
-          className="transition-all duration-150 ease-in group-hover:-translate-x-0.5"
-          size={15}
-        />{" "}
         Back
-      </Link>
+      </ButtonLink>
       {product.imageUrl ? (
         <Image
           src={product.imageUrl}

@@ -26,7 +26,7 @@ const DeleteWishlist = ({ wishlistId }: DeleteWishListProps) => {
   });
 
   return (
-    <div className="flex w-full justify-between rounded-md border-2 border-black px-4 py-2">
+    <div className="flex w-full justify-between rounded-md border border-black px-4 py-2">
       <div>
         <div className="flex items-center gap-2">
           <Trash2 size={20} />

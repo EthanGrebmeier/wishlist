@@ -149,7 +149,7 @@ const WishlistSettingsForm = () => {
                 )}
               />
 
-              <div className="mr-2 mt-6 flex w-full items-center justify-between gap-2 rounded-md border-2 border-black px-4 py-2">
+              <div className="mr-2 mt-6 flex w-full items-center justify-between gap-2 rounded-md border border-black px-4 py-2">
                 <div>
                   <div className="flex items-center gap-2">
                     {isSecret ? <Lock size={20} /> : <Unlock size={20} />}

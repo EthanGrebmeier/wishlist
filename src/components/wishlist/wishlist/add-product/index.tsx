@@ -65,16 +65,19 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
               exit={{ opacity: 0, y: 40 }}
               transition={{ duration: 0.3, type: "spring", bounce: 0 }}
             >
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setFrame("autofill")}
-                className="group flex items-center gap-2 rounded-md px-2 py-1 text-base font-medium text-black transition-colors hover:bg-gray-100"
+                className="group"
+                icon={
+                  <SparklesIcon
+                    size={15}
+                    className="group-hover:animate-shake"
+                  />
+                }
               >
-                <SparklesIcon
-                  className="group-hover:animate-shake text-purple-500"
-                  size={15}
-                />
                 Autofill
-              </button>
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -129,7 +132,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   WebkitBackdropFilter:
                     "var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
                 }}
-                className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-6 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
+                className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-4 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
               >
                 {frame === "autofill" && (
                   <motion.div
