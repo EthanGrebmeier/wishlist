@@ -26,9 +26,9 @@ const ContextButton = ({
 }: ContextButtonProps) => {
   return (
     <motion.div
-      initial={{ width: 0 }}
-      animate={{ width: "fit-content" }}
-      exit={{ width: 0 }}
+      initial={{ width: 0, opacity: 0 }}
+      animate={{ width: "fit-content", opacity: 1 }}
+      exit={{ width: 0, opacity: 0 }}
       className={cn(
         " bg-black",
         isLeftmost ? "rounded-l-full" : "rounded-l-none",

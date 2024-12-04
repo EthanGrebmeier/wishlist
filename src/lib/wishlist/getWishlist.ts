@@ -77,6 +77,12 @@ type getWishlistsArgs = {
   limit?: number;
 };
 
+export const getAllWishlists = async (config?: getWishlistsArgs) => {
+  const myWishlists = await getUserWishlists(config);
+  const sharedWishlists = await getSharedWishlists(config);
+  return [...myWishlists, ...sharedWishlists];
+};
+
 export const getUserWishlists = async (config?: getWishlistsArgs) => {
   const userSession = await getServerAuthSession();
 

@@ -2,7 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import type { WishlistWithProducts } from "~/types/wishlist";
 import ListView from ".";
 import ListItemServerWrapper from "./item/server-wrapper";
-import { Frown } from "lucide-react";
+import { CreateWishlistButton } from "./create-wishlist-button";
 
 type WishlistGridProps = {
   getWishlists: () => Promise<WishlistWithProducts[]>;
@@ -18,24 +18,27 @@ const WishlistGrid = async ({ getWishlists }: WishlistGridProps) => {
     return null;
   }
 
-  return (
+  return wishlists.length ? (
     <ListView>
-      {wishlists.length ? (
-        wishlists.map((wishlist, index) => (
-          <ListItemServerWrapper
-            session={session}
-            wishlist={wishlist}
-            key={wishlist.id}
-            animationDelay={index * 0.1}
-          />
-        ))
-      ) : (
-        <div className="flex gap-4">
-          <p className="font-serif text-3xl"> No wishlists found </p>
-          <Frown size={30} />
-        </div>
-      )}
+      {wishlists.map((wishlist, index) => (
+        <ListItemServerWrapper
+          session={session}
+          wishlist={wishlist}
+          key={wishlist.id}
+          animationDelay={index * 0.1}
+        />
+      ))}
     </ListView>
+  ) : (
+    <div className="mt-24 flex w-full flex-col items-center justify-center gap-4">
+      <p className="font-serif text-3xl"> No wishlists found </p>
+      <div className="flex flex-col gap-2">
+        <p className="text-center text-lg">
+          Let&apos;s create your first wishlist!
+        </p>
+        <CreateWishlistButton />
+      </div>
+    </div>
   );
 };
 

@@ -153,6 +153,23 @@ export const updateWishlist = protectedAction
     },
   );
 
+export const updateWishlistViewedAt = protectedAction
+  .schema(z.object({ wishlistId: z.string() }))
+  .action(async ({ parsedInput: { wishlistId }, ctx: { session } }) => {
+    const wishlist = await getWishlist({ wishlistId });
+
+    if (wishlist.createdById !== session.user.id) {
+      return {
+        message: "Access Denied",
+      };
+    }
+
+    await db
+      .update(wishlists)
+      .set({ viewedAt: new Date() })
+      .where(eq(wishlists.id, wishlistId));
+  });
+
 const inputSchema = z.object({
   wishlistId: z.string(),
   privacyType: privacyTypeSchema,

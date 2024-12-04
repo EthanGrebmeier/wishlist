@@ -33,7 +33,10 @@ const InputButton = React.forwardRef<HTMLInputElement, InputButtonProps>(
         />
         <Tooltip text={tooltip}>
           <Button
-            className={cn("-translate-x-1 self-center ", buttonClassName)}
+            className={cn(
+              "h-8 -translate-x-1 self-center rounded-md",
+              buttonClassName,
+            )}
             variant={buttonVariant}
             type="button"
             {...buttonProps}

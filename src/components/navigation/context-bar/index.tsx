@@ -185,7 +185,7 @@ export const ContextBar = () => {
   return (
     <div className="fixed bottom-4 right-1/2 z-20 flex h-14 translate-x-1/2 items-end overflow-hidden ">
       <div className="flex h-14 w-fit items-end overflow-hidden">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           {visibleActions.map((action, index) => (
             <ContextButton
               key={action.text}

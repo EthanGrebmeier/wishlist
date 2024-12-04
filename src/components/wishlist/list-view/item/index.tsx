@@ -3,7 +3,7 @@ import type { WishlistWithProducts } from "~/types/wishlist";
 import WishlistMenu from "./menu";
 import { getBackgroundColor } from "~/lib/utils";
 import DueDate from "../../due-date";
-import { Scroll } from "lucide-react";
+import { ContactRoundIcon, Scroll } from "lucide-react";
 import type { UserTypeWithOwner } from "~/types/user";
 import Card from "~/components/ui/card";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
       animationDelay={animationDelay}
       topContent={
         <>
-          <div className="relative aspect-square w-full overflow-hidden object-cover object-center">
+          <div className="relative aspect-[12/14] w-full overflow-hidden object-cover object-center">
             {wishlist.imageUrl ? (
               <Image
                 alt={wishlist.name}
@@ -52,9 +52,14 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
       {wishlist.dueDate && (
         <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />
       )}
-      {canUserEdit && (
+      {canUserEdit ? (
         <div className="absolute right-2 top-2 z-10">
           <WishlistMenu wishlist={wishlist} />
+        </div>
+      ) : (
+        <div className="absolute right-2 top-2 z-10 flex items-center justify-center gap-1 rounded-md border-2 border-black bg-purple-300 px-1 py-0.5">
+          <ContactRoundIcon size={24} />
+          <p className="text-sm font-bold">Shared</p>
         </div>
       )}
     </Card>

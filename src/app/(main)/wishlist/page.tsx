@@ -4,7 +4,7 @@ import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
 import { DeleteWishlistSheet } from "~/components/wishlist/delete-wishlist-sheet";
 import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
-import { getUserWishlists } from "~/lib/wishlist/getWishlist";
+import { getAllWishlists } from "~/lib/wishlist/getWishlist";
 
 const WishlistPage = async () => {
   return (
@@ -19,7 +19,7 @@ const WishlistPage = async () => {
           </span>
         </TitleBar>
         <Suspense>
-          <WishlistGrid getWishlists={getUserWishlists} />
+          <WishlistGrid getWishlists={getAllWishlists} />
         </Suspense>
       </div>
       <DeleteWishlistSheet />

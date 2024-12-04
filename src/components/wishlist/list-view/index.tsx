@@ -14,7 +14,7 @@ const ListView = ({ children }: ListViewProps) => {
   return (
     <ul
       className={cn(
-        "grid grid-cols-2 gap-4 px-2 py-4 sm:grid-cols-3 md:px-6 xl:grid-cols-4",
+        "grid grid-cols-2 gap-4 px-2 py-4 sm:grid-cols-3 md:px-6 xl:grid-cols-3",
         gridDisplay === "grid" ? " grid-cols-2" : " grid-cols-1",
       )}
     >

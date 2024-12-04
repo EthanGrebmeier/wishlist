@@ -20,7 +20,7 @@ export default function ProductImage({
             size={15}
           />
         }
-        variant="tertiary"
+        variant="outline"
       >
         Back
       </ButtonLink>

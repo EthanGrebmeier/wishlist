@@ -43,7 +43,7 @@ const Product = ({
       backgroundColor={getBackgroundColor(wishlistColor)}
       topContent={
         <>
-          <div className="relative aspect-square w-full  bg-background  ">
+          <div className="relative aspect-[12/14] w-full  bg-background  ">
             <div className="absolute left-2 right-2 top-2 z-[5] flex gap-1">
               {product.price && (
                 <div className=" w-fit rounded-md border-2 border-black bg-white px-1 py-0.5">
@@ -72,7 +72,7 @@ const Product = ({
         </>
       }
       bottomContent={
-        <p className="-mb-[2px] line-clamp-1 overflow-ellipsis rounded-b-md pr-4 font-serif text-base font-normal group-hover:underline xs:text-xl sm:text-2xl">
+        <p className="-mb-[2px] line-clamp-1 rounded-b-md pr-4 font-serif text-xl font-normal group-hover:underline xs:text-xl sm:text-2xl">
           {" "}
           {product.name}{" "}
         </p>

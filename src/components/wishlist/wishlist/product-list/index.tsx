@@ -27,7 +27,7 @@ const ProductList = ({
     <motion.ul
       layout
       className={cn(
-        "grid grid-cols-2 gap-2 gap-y-6 sm:grid-cols-3 sm:gap-4 md:gap-y-6 xl:grid-cols-4",
+        "grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3",
         gridDisplay === "grid" ? "grid-cols-2" : " grid-cols-1",
       )}
     >

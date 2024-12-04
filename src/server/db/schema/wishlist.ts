@@ -127,6 +127,10 @@ export const wishlists = createTable(
     })
       .defaultNow()
       .$onUpdate(() => new Date()),
+    viewedAt: timestamp("viewedAt", {
+      mode: "date",
+      precision: 3,
+    }),
   },
   (example) => ({
     createdByIdIdx: index("wishlists_createdById_idx").on(example.createdById),

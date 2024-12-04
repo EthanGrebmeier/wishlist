@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TitleBar from "~/components/ui/title-bar";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import ShareWishlist from "../../share-wishlist";
@@ -11,6 +11,8 @@ import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistE
 import DueDate from "../../due-date";
 import { canUserEditAtom, viewedWishlistAtom } from "~/store/wishlist-settings";
 import { useSetAtom } from "jotai";
+import { useAction } from "next-safe-action/hooks";
+import { updateWishlistViewedAt } from "~/server/actions/wishlist";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
@@ -25,8 +27,11 @@ const WishlistHeader = ({
   session,
   userStatus,
 }: WishlistHeaderProps) => {
+  const [didMount, setDidMount] = useState(false);
+
   const setCanUserEdit = useSetAtom(canUserEditAtom);
   const setViewedWishlist = useSetAtom(viewedWishlistAtom);
+  const { execute } = useAction(updateWishlistViewedAt);
 
   useEffect(() => {
     setCanUserEdit(verifyUserIsWishlistEditor(userStatus));
@@ -35,6 +40,14 @@ const WishlistHeader = ({
   useEffect(() => {
     setViewedWishlist(wishlist);
   }, [wishlist, setViewedWishlist]);
+
+  useEffect(() => {
+    if (!didMount) {
+      execute({ wishlistId: wishlist.id });
+      console.log("executed");
+      setDidMount(true);
+    }
+  }, [execute, wishlist.id, didMount]);
 
   return (
     <TitleBar

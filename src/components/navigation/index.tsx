@@ -1,9 +1,8 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
 import SignInOutButton from "./sign-out";
-import { BookUser, Gift, Scroll, ShieldQuestion } from "lucide-react";
+import { ArrowRight, Gift, Scroll, ShieldQuestion } from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
-import SharedWishlists from "./wishlist-list/shared-wishlists";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import Link from "~/components/ui/link";
-import CreateWishlist from "./create-wishlist";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
@@ -20,28 +18,25 @@ const Navigation = async () => {
     <nav className="flex h-full w-full flex-col justify-between gap-8 lg:w-[220px]">
       <div className="flex flex-col gap-2">
         {isSignedIn && (
-          <>
-            <div>
-              <NavLink href="/wishlist" Icon={Scroll}>
-                My Wishlists{" "}
-              </NavLink>
-              <MyWishlists />
-              <div className="w-full pl-2">
-                <CreateWishlist />
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col">
+              <div className="flex w-full justify-between">
+                <div className="flex items-center gap-2">
+                  <Scroll size={16} />
+                  <p className="text-lg font-semibold">My Wishlists</p>
+                </div>
+                <NavLink className="w-fit text-sm" href="/wishlist">
+                  View All <ArrowRight size={12} />
+                </NavLink>
               </div>
-            </div>
-            <div>
-              <NavLink href="/wishlist/shared" Icon={BookUser}>
-                Shared Wishlists
-              </NavLink>
-              <SharedWishlists />
+              <MyWishlists />
             </div>
             <div>
               <NavLink href="/my-gifts" Icon={Gift}>
                 My Gifts
               </NavLink>
             </div>
-          </>
+          </div>
         )}
       </div>
       <div className="flex items-center justify-between">

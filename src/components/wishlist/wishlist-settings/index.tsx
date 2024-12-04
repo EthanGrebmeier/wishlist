@@ -10,7 +10,7 @@ import {
 } from "~/store/wishlist-settings";
 import WishlistSettingsForm, { WishlistSettingsFooter } from "./form";
 import { WishlistSettingsFormProvider } from "./context";
-import { PencilIcon, ScrollIcon, SettingsIcon } from "lucide-react";
+import { ScrollIcon, SettingsIcon } from "lucide-react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 
 const WishlistSettingsSheet = () => {
