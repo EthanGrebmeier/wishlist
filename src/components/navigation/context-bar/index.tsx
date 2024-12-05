@@ -206,6 +206,9 @@ export const ContextBar = () => {
           style={{
             translateY: "-4px",
           }}
+          whileHover={{
+            translateY: "-3px",
+          }}
           whileTap={{
             translateY: "0px",
           }}

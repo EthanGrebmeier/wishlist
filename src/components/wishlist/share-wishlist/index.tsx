@@ -113,7 +113,7 @@ const ShareWishlist = ({
     return (
       <div className="flex w-full flex-col gap-2 sm:flex-row">
         <Button
-          className="flex-1"
+          className="sm:flex-1"
           variant="secondary"
           icon={<Sparkles size={20} />}
           onClick={() => setFrame("magicLink")}
@@ -121,7 +121,7 @@ const ShareWishlist = ({
           Share Via Link
         </Button>
         <Button
-          className="flex-1"
+          className="sm:flex-1"
           icon={<Mail size={20} />}
           onClick={() => setFrame("search")}
         >
@@ -133,6 +133,7 @@ const ShareWishlist = ({
 
   return (
     <ResponsiveSheet
+      contentClassName="sm:max-w-md"
       titleIcon={
         <ColoredIconWrapper className="bg-pink-300">
           <ShareIcon size={20} />

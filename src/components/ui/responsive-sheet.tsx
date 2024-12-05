@@ -28,6 +28,7 @@ type ResponsiveSheetProps = {
   setIsOpen?: (open: boolean) => void;
   shouldPadBottomMobile?: boolean;
   titleIcon?: React.ReactNode;
+  contentClassName?: string;
 };
 
 const ResponsiveSheet = ({
@@ -39,6 +40,7 @@ const ResponsiveSheet = ({
   isOpen,
   setIsOpen,
   titleIcon,
+  contentClassName,
   shouldPadBottomMobile = false,
 }: ResponsiveSheetProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -58,7 +60,10 @@ const ResponsiveSheet = ({
 
         <SheetContent
           side="right"
-          className=" right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black"
+          className={cn(
+            " right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black",
+            contentClassName,
+          )}
         >
           <button
             onClick={() => onOpenChange(false)}

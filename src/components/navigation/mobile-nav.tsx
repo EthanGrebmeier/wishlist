@@ -35,7 +35,6 @@ const MobileSidebar = ({ navigation }: MobileSidebarProps) => {
       <DrawerContent className="mx-auto max-w-[440px] ">
         <DrawerHeader>
           <DrawerTitle className="sr-only">Navigation</DrawerTitle>
-          <Logo className="mx-auto w-fit" />
         </DrawerHeader>
         <div className=" max-h-[80svh] w-full overflow-y-auto p-4 text-black">
           {navigation}
