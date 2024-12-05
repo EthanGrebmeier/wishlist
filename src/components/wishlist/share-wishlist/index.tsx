@@ -111,7 +111,7 @@ const ShareWishlist = ({
       );
     }
     return (
-      <div className="flex w-full  gap-2">
+      <div className="flex w-full flex-col gap-2 sm:flex-row">
         <Button
           className="flex-1"
           variant="secondary"
