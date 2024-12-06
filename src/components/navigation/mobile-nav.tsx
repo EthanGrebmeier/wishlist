@@ -68,17 +68,17 @@ const MobileNavigation = async () => {
             href="/wishlist"
           >
             <ScrollIcon size={24} />
-            <p className="font-medium">My Lists</p>
+            <p className="font-bold">My Lists</p>
           </Link>
           <Link
             className="flex flex-col items-center border-r-2 border-black bg-pink-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             href="/my-gifts"
           >
             <GiftIcon size={24} />
-            <p className="font-medium">My Gifts</p>
+            <p className="font-bold">My Gifts</p>
           </Link>
           <SignInOutButton
-            className="flex flex-col items-center bg-blue-300 pb-1 pt-2 font-medium focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="flex flex-col items-center bg-blue-300 pb-1 pt-2 font-bold focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             isSignedIn={!!session}
           />
         </div>
