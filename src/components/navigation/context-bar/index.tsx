@@ -50,7 +50,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsWishlistShareOpen = useSetAtom(isWishlistShareOpenAtom);
   const [isGridDisplay, setGridDisplay] = useAtom(gridDisplayAtom);
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   const actions = useMemo(() => {
     return {
       wishlistView: [
@@ -201,13 +201,11 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
     isDisabled: !isMobileNavOpen,
   });
 
-  const isLargeScreen = useMediaQuery("(min-width: 1024px)");
-
   useEffect(() => {
-    if (isLargeScreen) {
+    if (!isMobile) {
       setIsMobileNavOpen(false);
     }
-  }, [isLargeScreen]);
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMobileNavOpen) {
@@ -279,7 +277,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
               animate={{ opacity: 1, height: 340 }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, type: "spring" }}
-              className="z-30 flex w-screen max-w-[min(calc(100svw-64px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background "
+              className="z-30 flex w-screen min-w-full max-w-[min(calc(100svw-32px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background "
             >
               <div className="flex h-full w-full overflow-hidden">
                 {navigation}
