@@ -65,10 +65,7 @@ const ContextButton = ({
           <motion.div className="flex flex-nowrap items-center gap-2 overflow-hidden text-nowrap px-4 py-2">
             {icon}{" "}
             <span
-              className={cn(
-                "hidden xs:block",
-                hideTextOnMobile && "hidden xs:hidden md:block ",
-              )}
+              className={cn(hideTextOnMobile && "hidden xs:hidden md:block ")}
             >
               {text}
             </span>

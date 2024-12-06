@@ -5,7 +5,6 @@ import {
   BookUserIcon,
   Grid,
   Menu,
-  PackageCheckIcon,
   PackagePlusIcon,
   PencilIcon,
   Rows3,
@@ -13,9 +12,10 @@ import {
   SettingsIcon,
   ShareIcon,
   ShoppingBasketIcon,
+  X,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DrawerTrigger } from "~/components/ui/drawer";
 import { cn } from "~/lib/utils";
 import {
@@ -32,9 +32,14 @@ import {
 import { isWishlistSettingsOpenAtom } from "~/store/wishlist-settings";
 import ContextButton from "./context-button";
 import { gridDisplayAtom } from "~/store/grid-display";
-import { useMediaQuery } from "usehooks-ts";
+import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
+import { usePreventScroll } from "@react-aria/overlays";
 
-export const ContextBar = () => {
+type ContextBarProps = {
+  navigation: React.ReactNode;
+};
+export const ContextBar = ({ navigation }: ContextBarProps) => {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const currentPath = usePathname();
   const setIsAddProductModalOpen = useSetAtom(isProductFormOpenAtom);
   const setIsAddWishlistModalOpen = useSetAtom(isWishlistSettingsOpenAtom);
@@ -54,7 +59,7 @@ export const ContextBar = () => {
           backgroundColor: "#4ade80",
           icon: <PackagePlusIcon size={25} />,
           text: "Add Product",
-          hideTextOnMobile: false,
+          hideTextOnMobile: true,
           onClick: () => {
             setIsAddProductModalOpen(true);
           },
@@ -181,49 +186,168 @@ export const ContextBar = () => {
   const visibleActions = actions[currentAction].filter(
     (action) => action.shouldShow,
   );
+  const ref = useRef<HTMLDivElement>(null);
+  const openNavButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setIsMobileNavOpen(false);
+  }, [currentPath]);
+
+  useOnClickOutside(ref, () => {
+    setIsMobileNavOpen(false);
+  });
+
+  usePreventScroll({
+    isDisabled: !isMobileNavOpen,
+  });
+
+  const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    if (isLargeScreen) {
+      setIsMobileNavOpen(false);
+    }
+  }, [isLargeScreen]);
+
+  useEffect(() => {
+    if (isMobileNavOpen) {
+      const dialogElement = ref.current;
+      const openNavButton = openNavButtonRef.current;
+      if (dialogElement && openNavButton) {
+        const focusableElements = dialogElement.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const firstFocusableElement = focusableElements[0] as HTMLElement;
+        const lastFocusableElement = openNavButton;
+        firstFocusableElement.focus();
+
+        const handleTabKeyPress = (event: KeyboardEvent) => {
+          if (event.key === "Tab") {
+            if (
+              event.shiftKey &&
+              document.activeElement === firstFocusableElement
+            ) {
+              event.preventDefault();
+              lastFocusableElement.focus();
+            } else if (
+              !event.shiftKey &&
+              document.activeElement === lastFocusableElement
+            ) {
+              event.preventDefault();
+              firstFocusableElement.focus();
+            }
+          }
+        };
+
+        const handleEscapeKeyPress = (event: KeyboardEvent) => {
+          if (event.key === "Escape") {
+            setIsMobileNavOpen(false);
+          }
+        };
+
+        document.addEventListener("keydown", handleTabKeyPress);
+        document.addEventListener("keydown", handleEscapeKeyPress);
+
+        return () => {
+          document.removeEventListener("keydown", handleTabKeyPress);
+          document.removeEventListener("keydown", handleEscapeKeyPress);
+        };
+      }
+    }
+  }, [isMobileNavOpen]);
 
   return (
-    <div className="fixed bottom-4 right-1/2 z-20 flex h-14 translate-x-1/2 items-end overflow-hidden ">
-      <div className="flex h-14 w-fit items-end overflow-hidden">
-        <AnimatePresence mode="popLayout">
-          {visibleActions.map((action, index) => (
-            <ContextButton
-              key={action.text}
-              isLeftmost={index === 0}
-              isRightmost={index === visibleActions.length - 1}
-              {...action}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-      <div
-        className={cn(
-          "rounded-r-full bg-black lg:hidden",
-          visibleActions.length === 0 ? "rounded-full " : "rounded-r-full",
+    <>
+      <AnimatePresence>
+        {isMobile && isMobileNavOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm"
+          />
         )}
-      >
-        <motion.div
-          style={{
-            translateY: "-4px",
-          }}
-          whileHover={{
-            translateY: "-3px",
-          }}
-          whileTap={{
-            translateY: "0px",
-          }}
-          className={cn(
-            " border-2 border-black bg-background py-2 ",
-            visibleActions.length === 0
-              ? "rounded-full px-4"
-              : "rounded-r-full pl-3 pr-4",
+      </AnimatePresence>
+
+      <div className="fixed bottom-4 right-1/2 z-20 flex translate-x-1/2 flex-col items-center overflow-hidden ">
+        <AnimatePresence>
+          {isMobile && isMobileNavOpen && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 340 }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, type: "spring" }}
+              className="z-30 flex w-screen max-w-[min(calc(100svw-64px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background "
+            >
+              <div className="flex h-full w-full overflow-hidden">
+                {navigation}
+              </div>
+            </motion.div>
           )}
-        >
-          <DrawerTrigger className="flex items-center gap-2 font-bold">
-            <Menu size={25} />
-          </DrawerTrigger>
-        </motion.div>
+        </AnimatePresence>
+        <div className="flex ">
+          <div className="flex h-14 w-fit items-end overflow-hidden">
+            <AnimatePresence mode="popLayout">
+              {visibleActions.map((action, index) => (
+                <ContextButton
+                  key={action.text}
+                  isLeftmost={index === 0}
+                  isRightmost={index === visibleActions.length - 1}
+                  hideTextOnMobile={
+                    visibleActions.length > 2 ? action.hideTextOnMobile : false
+                  }
+                  onClick={action.onClick}
+                  icon={action.icon}
+                  text={action.text}
+                  backgroundColor={action.backgroundColor}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+          <div className={cn("flex h-14 items-end  lg:hidden")}>
+            <div
+              className={cn(
+                "flex  bg-black",
+                visibleActions.length === 0
+                  ? "rounded-full "
+                  : "rounded-r-full",
+              )}
+            >
+              <motion.button
+                ref={openNavButtonRef}
+                style={{
+                  translateY: "-4px",
+                }}
+                whileFocus={{
+                  translateY: "-3px",
+                }}
+                whileHover={{
+                  translateY: "-3px",
+                }}
+                whileTap={{
+                  translateY: "0px",
+                }}
+                className={cn(
+                  " flex items-center gap-2 border-2 border-black bg-background py-2 font-bold",
+                  visibleActions.length === 0
+                    ? "rounded-full px-4"
+                    : "rounded-r-full pl-3 pr-4",
+                )}
+                aria-label={
+                  isMobileNavOpen
+                    ? "Close Navigation Menu"
+                    : "Open Navigation Menu"
+                }
+                onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+              >
+                {isMobileNavOpen ? <X size={25} /> : <Menu size={25} />}
+              </motion.button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

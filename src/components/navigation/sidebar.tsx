@@ -1,8 +1,9 @@
 import Navigation from ".";
 import DeleteProductSheet from "../wishlist/product/delete-product-sheet";
 import WishlistSettingsSheet from "../wishlist/wishlist-settings";
+import { ContextBar } from "./context-bar";
 import Logo from "./logo";
-import MobileSidebar from "./mobile-nav";
+import MobileNavigation from "./mobile-nav";
 import SkipToContent from "./skip-to-content";
 
 const Sidebar = () => {
@@ -17,7 +18,7 @@ const Sidebar = () => {
           <Navigation />
         </div>
       </section>
-      <MobileSidebar navigation={<Navigation />} />
+      <ContextBar navigation={<MobileNavigation />} />
       <WishlistSettingsSheet />
       <DeleteProductSheet />
     </>
