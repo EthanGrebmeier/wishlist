@@ -53,16 +53,20 @@ export default function CommitProduct({
             block: "center",
           });
 
-          await animate(scope.current, {
-            scale: 1.05,
-            backgroundColor: "#E7DBFA",
-            transition: { duration: 0.2, type: "spring", delay: 0.35 },
-          });
-          await animate(scope.current, {
-            scale: 1,
-            backgroundColor: "#FFFBF5",
-            transition: { duration: 0.2, type: "spring" },
-          });
+          await animate(
+            scope.current,
+            {
+              scale: 1.05,
+              backgroundColor: "#E7DBFA",
+            },
+            {
+              repeatType: "reverse",
+              repeat: 1,
+              duration: 0.2,
+              bounce: 0.3,
+              delay: 0.2,
+            },
+          );
         },
       },
     ]);
