@@ -1,5 +1,5 @@
 import { CameraIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { UploadButton } from "~/lib/upload-thing";
 import { z } from "zod";
