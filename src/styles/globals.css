@@ -8,7 +8,7 @@
     margin-right: 0 !important;
   }
   :root {
-    --background: 38 100% 98%;
+    --background: 38 100% 98%; /* #FFFBF2 - A very light warm beige color */
     --foreground: 0 0% 3.9%;
 
     --card: 0 0% 100%;

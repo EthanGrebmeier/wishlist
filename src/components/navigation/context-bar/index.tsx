@@ -33,6 +33,7 @@ import ContextButton from "./context-button";
 import { gridDisplayAtom } from "~/store/grid-display";
 import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
 import { usePreventScroll } from "@react-aria/overlays";
+import { useContextBar } from "~/context/context-bar-context";
 
 type ContextBarProps = {
   navigation: React.ReactNode;
@@ -49,6 +50,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsWishlistShareOpen = useSetAtom(isWishlistShareOpenAtom);
   const [isGridDisplay, setGridDisplay] = useAtom(gridDisplayAtom);
+  const { buttons: childrenActions } = useContextBar();
   const isMobile = useMediaQuery("(max-width: 1280px)");
   const actions = useMemo(() => {
     return {
@@ -141,22 +143,6 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
             if (viewedProduct?.url) window.open(viewedProduct.url, "_blank");
           },
         },
-        {
-          shouldShow:
-            viewedWishlist && (viewedWishlist.isSecret ? !canUserEdit : true),
-          backgroundColor: "#E7DBFA",
-          icon: <BookUserIcon size={25} />,
-          text: "Commit",
-          hideTextOnMobile: true,
-          onClick: () => {
-            const commitProductContainer = document.getElementById(
-              "commit-product-container",
-            );
-            commitProductContainer?.scrollIntoView({
-              behavior: "smooth",
-            });
-          },
-        },
       ],
       none: [],
     };
@@ -182,7 +168,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
     return "none";
   }, [currentPath]);
 
-  const visibleActions = actions[currentAction].filter(
+  const visibleActions = [...actions[currentAction], ...childrenActions].filter(
     (action) => action.shouldShow,
   );
   const ref = useRef<HTMLDivElement>(null);

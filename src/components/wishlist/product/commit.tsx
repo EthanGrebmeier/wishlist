@@ -6,8 +6,10 @@ import type { WishlistProduct } from "~/types/wishlist";
 import { BookUserIcon, InfoIcon, LockIcon } from "lucide-react";
 import { Tooltip } from "~/components/ui/tooltip";
 import type { Session } from "next-auth";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import { useContextBar } from "~/context/context-bar-context";
+import { motion, useAnimate } from "framer-motion";
 
 type PurchaseProps = {
   url: string | null;
@@ -24,11 +26,51 @@ export default function CommitProduct({
   isWishlistSecret,
   session,
 }: PurchaseProps) {
+  const { setButtons } = useContextBar();
   const hasUserCommitted = Boolean(
     productCommitments?.find(
       (commitment) => commitment.createdById === session.user.id,
     ),
   );
+  const [scope, animate] = useAnimate();
+
+  useEffect(() => {
+    if (productCommitments?.length && !hasUserCommitted) return;
+
+    setButtons([
+      {
+        shouldShow: true,
+        backgroundColor: "#E7DBFA",
+        icon: <BookUserIcon size={25} />,
+        text: "Commit",
+        onClick: async () => {
+          const commitProductContainer = document.getElementById(
+            "commit-product-container",
+          );
+
+          commitProductContainer?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+
+          await animate(scope.current, {
+            scale: 1.05,
+            backgroundColor: "#E7DBFA",
+            transition: { duration: 0.2, type: "spring", delay: 0.35 },
+          });
+          await animate(scope.current, {
+            scale: 1,
+            backgroundColor: "#FFFBF5",
+            transition: { duration: 0.2, type: "spring" },
+          });
+        },
+      },
+    ]);
+
+    return () => {
+      setButtons([]);
+    };
+  }, [setButtons, productCommitments, hasUserCommitted, scope, animate]);
 
   const Content = useMemo(() => {
     if (productCommitments?.length && !hasUserCommitted) {
@@ -73,7 +115,8 @@ export default function CommitProduct({
           </div>
           <p className="max-w-[300px] text-pretty leading-tight">
             Selecting this will let other people on this wishlist know you are
-            providing this item.
+            providing this item
+            {isWishlistSecret ? ", but not the wishlist owner." : "."}
           </p>
         </div>
         <CommitNew
@@ -86,6 +129,7 @@ export default function CommitProduct({
   }, [productCommitments, hasUserCommitted, product, isWishlistSecret]);
   return (
     <div
+      ref={scope}
       id="commit-product-container"
       className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black  p-4"
     >

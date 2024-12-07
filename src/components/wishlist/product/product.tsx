@@ -146,7 +146,7 @@ export default function Product({
           />
         )}
         {product.url && (
-          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
+          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black bg-background p-4">
             <div className="absolute right-4 top-4">
               <ColoredIconWrapper className="bg-orange-300">
                 <ShoppingBasketIcon size={20} />
