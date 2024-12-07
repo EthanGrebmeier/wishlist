@@ -6,6 +6,7 @@ import { UploadButton } from "~/lib/upload-thing";
 import { z } from "zod";
 import { Label } from "~/components/ui/label";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
+import { Input } from "../input";
 
 type ImageUploadProps = {
   onImageSelect: (url: string) => void;
@@ -64,21 +65,17 @@ const ImageUpload = ({ onImageSelect, onBack, subtitle }: ImageUploadProps) => {
       </div>
       <section className="flex flex-col gap-2">
         <Label htmlFor="imageUrl"> Import from URL </Label>
-        <InputButton
+        <Input
           name="imageUrl"
           id="imageUrl"
           value={importImageUrl}
           onChange={(e) => setImportImageUrl(e.target.value)}
-          button={{
-            children: "Upload",
-            icon: <UploadIcon size={15} />,
-            onClick: handleSubmit,
-          }}
         />
-        <p className="h-4 text-sm text-red-500">
-          {!isImportValid && "Invalid URL"}
-        </p>
+        {!isImportValid && (
+          <p className="h-4 text-sm text-red-500">Invalid URL</p>
+        )}
       </section>
+      <Button onClick={handleSubmit}>Upload</Button>
     </div>
   );
 };

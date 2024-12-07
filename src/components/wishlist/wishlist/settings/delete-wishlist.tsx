@@ -33,7 +33,7 @@ const DeleteWishlist = ({ wishlistId }: DeleteWishListProps) => {
           <h3 className="font-sans text-lg font-medium"> Delete Wishlist</h3>
         </div>
         <p className="text-sm font-medium leading-tight text-red-500">
-          Warning, this action is irreversible
+          This action is irreversible
         </p>
       </div>
       <Button
