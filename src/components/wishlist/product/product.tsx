@@ -76,22 +76,19 @@ export default function Product({
           <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col gap-2 ">
-                <div className="flex flex-row flex-wrap items-center justify-between gap-2">
-                  <Breadcrumbs wishlist={wishlist} />
-                  {product.priority !== "normal" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="inline-block font-sans"
-                    >
-                      <Priority
-                        showText={true}
-                        priorityLevel={product.priority}
-                      />
-                    </motion.div>
-                  )}
-                </div>
+                {product.priority !== "normal" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-block font-sans"
+                  >
+                    <Priority
+                      showText={true}
+                      priorityLevel={product.priority}
+                    />
+                  </motion.div>
+                )}
 
                 <div className="col-span-full flex items-center justify-between">
                   <div>
