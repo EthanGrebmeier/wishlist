@@ -13,12 +13,14 @@ import { canUserEditAtom, viewedWishlistAtom } from "~/store/wishlist-settings";
 import { useSetAtom } from "jotai";
 import { useAction } from "next-safe-action/hooks";
 import { updateWishlistViewedAt } from "~/server/actions/wishlist";
+import Link from "next/link";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
   userStatus: UserTypeWithOwner;
   wishlistShares: WishlistSharesWithUser[];
   session: Session;
+  shouldLink?: boolean;
 };
 
 const WishlistHeader = ({
@@ -26,6 +28,7 @@ const WishlistHeader = ({
   wishlistShares,
   session,
   userStatus,
+  shouldLink,
 }: WishlistHeaderProps) => {
   const [didMount, setDidMount] = useState(false);
 
@@ -60,11 +63,17 @@ const WishlistHeader = ({
         <div className="flex flex-row items-center gap-2">
           <div
             className={cn(
-              "hidden h-6 w-6 flex-shrink-0 rounded-full border-2 border-black md:flex",
+              "h-6 w-6 flex-shrink-0 rounded-full border-2 border-black ",
               getBackgroundColor(wishlist.color),
             )}
           ></div>
-          <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+          {shouldLink ? (
+            <Link className="underline" href={`/wishlist/${wishlist.id}`}>
+              <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+            </Link>
+          ) : (
+            <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+          )}
         </div>
         <div className="flex items-center gap-2 ">
           <div className="flex flex-col items-end gap-2  md:flex-row">

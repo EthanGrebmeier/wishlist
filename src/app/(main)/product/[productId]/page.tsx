@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import ProductServer from "~/components/wishlist/product";
+import ProductServer from "~/components/wishlist/product/product-server";
 import ProductLoading from "~/components/wishlist/product/loading";
 import AddProduct from "~/components/wishlist/wishlist/add-product";
 import { getWishlist } from "~/lib/wishlist/getWishlist";
@@ -22,15 +22,10 @@ const ProductViewPage = async ({ params }: ProductViewPageProps) => {
   const wishlist = await getWishlist({ wishlistId: product?.wishlistId });
 
   return (
-    <div className="flex w-full flex-1 justify-center xl:pt-8">
-      <Suspense fallback={<ProductLoading />}>
-        <ProductServer
-          wishlist={wishlist}
-          product={product}
-        />
-        <AddProduct wishlistId={wishlist.id} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<ProductLoading />}>
+      <ProductServer wishlist={wishlist} product={product} />
+      <AddProduct wishlistId={wishlist.id} />
+    </Suspense>
   );
 };
 

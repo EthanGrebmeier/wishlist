@@ -3,7 +3,7 @@ import ListView from "../list-view";
 
 const Loading = () => {
   return (
-    <div className="h-full w-full">
+    <>
       <TitleBar className=" flex-col items-start justify-center gap-8">
         <div className="h-10 w-44 animate-pulse rounded-md bg-slate-200 py-1"></div>
       </TitleBar>
@@ -18,7 +18,7 @@ const Loading = () => {
           </div>
         ))}
       </ListView>
-    </div>
+    </>
   );
 };
 

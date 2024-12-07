@@ -11,19 +11,6 @@ export default function ProductImage({
 }) {
   return (
     <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border-2 border-black">
-      <ButtonLink
-        className="group absolute left-2 top-2 z-10 "
-        href={`/wishlist/${product.wishlistId}`}
-        icon={
-          <ArrowLeftIcon
-            className="transition-all duration-150 ease-in group-hover:-translate-x-0.5"
-            size={15}
-          />
-        }
-        variant="outline"
-      >
-        Back
-      </ButtonLink>
       {product.imageUrl ? (
         <Image
           src={product.imageUrl}

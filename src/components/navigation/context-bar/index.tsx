@@ -14,9 +14,8 @@ import {
   ShoppingBasketIcon,
   X,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { DrawerTrigger } from "~/components/ui/drawer";
 import { cn } from "~/lib/utils";
 import {
   isProductFormOpenAtom,
@@ -50,7 +49,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
   const setProductToEdit = useSetAtom(productToEditAtom);
   const setIsWishlistShareOpen = useSetAtom(isWishlistShareOpenAtom);
   const [isGridDisplay, setGridDisplay] = useAtom(gridDisplayAtom);
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const isMobile = useMediaQuery("(max-width: 1280px)");
   const actions = useMemo(() => {
     return {
       wishlistView: [
@@ -137,7 +136,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
           backgroundColor: "#fdba74",
           icon: <ShoppingBasketIcon size={25} />,
           text: "Purchase",
-          hideTextOnMobile: false,
+          hideTextOnMobile: true,
           onClick: () => {
             if (viewedProduct?.url) window.open(viewedProduct.url, "_blank");
           },
@@ -148,7 +147,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
           backgroundColor: "#E7DBFA",
           icon: <BookUserIcon size={25} />,
           text: "Commit",
-          hideTextOnMobile: false,
+          hideTextOnMobile: true,
           onClick: () => {
             const commitProductContainer = document.getElementById(
               "commit-product-container",

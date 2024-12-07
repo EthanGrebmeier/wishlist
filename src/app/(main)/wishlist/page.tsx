@@ -9,19 +9,17 @@ import { getAllWishlists } from "~/lib/wishlist/getWishlist";
 const WishlistPage = async () => {
   return (
     <>
-      <div className="h-full w-full">
-        <TitleBar wrapperClassName="sticky top-[72px] md:top-0 md:relative">
-          <span className="flex items-center justify-center gap-4 pl-2">
-            <ColoredIconWrapper>
-              <Scroll size="25" />
-            </ColoredIconWrapper>
-            <TitleBar.Title>My Wishlists</TitleBar.Title>{" "}
-          </span>
-        </TitleBar>
-        <Suspense>
-          <WishlistGrid getWishlists={getAllWishlists} />
-        </Suspense>
-      </div>
+      <TitleBar wrapperClassName="sticky top-[72px] md:top-0 md:relative">
+        <span className="flex items-center justify-center gap-4 pl-2">
+          <ColoredIconWrapper>
+            <Scroll size="25" />
+          </ColoredIconWrapper>
+          <TitleBar.Title>My Wishlists</TitleBar.Title>{" "}
+        </span>
+      </TitleBar>
+      <Suspense>
+        <WishlistGrid getWishlists={getAllWishlists} />
+      </Suspense>
       <DeleteWishlistSheet />
     </>
   );

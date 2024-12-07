@@ -1,26 +1,17 @@
-import { Session } from "next-auth";
 import Link from "next/link";
 import { cn, getBackgroundColor } from "~/lib/utils";
-import { Wishlist } from "~/types/wishlist";
+import type { Wishlist } from "~/types/wishlist";
 
 type BreadcrumbsProps = {
   wishlist: Wishlist;
-  session: Session;
 };
 
-export default function Breadcrumbs({ wishlist, session }: BreadcrumbsProps) {
-  const isWishlistOwner = wishlist.createdById === session?.user.id;
+export default function Breadcrumbs({ wishlist }: BreadcrumbsProps) {
   return (
     <div className="col-span-full flex items-center gap-1 text-base font-medium leading-none [&_p]:mt-[2px]">
-      {isWishlistOwner ? (
-        <Link className="hover:underline" href="/wishlist">
-          <p>My Wishlists</p>
-        </Link>
-      ) : (
-        <Link href="/wishlist/shared" className="hover:underline">
-          Shared Wishlists
-        </Link>
-      )}
+      <Link className="hover:underline" href="/wishlist">
+        <p>My Wishlists</p>
+      </Link>
       <p className="text-gray-400" aria-hidden="true">
         /
       </p>

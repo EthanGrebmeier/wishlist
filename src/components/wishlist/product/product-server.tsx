@@ -8,6 +8,7 @@ import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistE
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import Product from "./product";
+import WishlistHeader from "../wishlist/header";
 
 type ProductProps = {
   product: WishlistProduct;
@@ -40,15 +41,24 @@ const ProductServer = async ({ product, wishlist }: ProductProps) => {
   const canUserEdit = verifyUserIsWishlistEditor(userStatus);
 
   return (
-    <Product
-      canUserEdit={canUserEdit}
-      session={session}
-      wishlist={wishlist}
-      product={product}
-      productCommitments={productCommitments?.data}
-      productReceipts={productReceipts?.data}
-      sharedUsers={wishlistShares}
-    />
+    <div className="flex w-full flex-col gap-4 ">
+      <WishlistHeader
+        session={session}
+        userStatus={userStatus}
+        wishlist={wishlist}
+        wishlistShares={wishlistShares}
+        shouldLink={true}
+      />
+      <Product
+        canUserEdit={canUserEdit}
+        session={session}
+        wishlist={wishlist}
+        product={product}
+        productCommitments={productCommitments?.data}
+        productReceipts={productReceipts?.data}
+        sharedUsers={wishlistShares}
+      />
+    </div>
   );
 };
 

@@ -37,42 +37,40 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
 
   return (
     <>
-      <div className=" relative h-full w-full">
-        <WishlistHeader
-          wishlist={wishlist}
-          userStatus={userStatus}
-          wishlistShares={wishlistShares}
-          session={session}
-        />
-        <section className="px-2 py-4 md:px-6">
-          {wishlist.products.length ? (
-            <ProductList
-              wishlistColor={wishlist.color}
-              canUserEdit={canUserEdit}
-              products={wishlist.products}
-            />
-          ) : (
-            <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
-              {canUserEdit ? (
-                <div className="flex w-fit flex-col items-center justify-center gap-4">
-                  <p className="text-balance text-center font-serif text-3xl font-medium md:text-4xl">
-                    {" "}
-                    Let&apos;s add your first product!
-                  </p>
-                  <AddProductSheetTrigger />
-                </div>
-              ) : (
-                <div>
-                  <p className="font-serif text-4xl font-medium">
-                    {" "}
-                    No products found...
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      </div>
+      <WishlistHeader
+        wishlist={wishlist}
+        userStatus={userStatus}
+        wishlistShares={wishlistShares}
+        session={session}
+      />
+      <section>
+        {wishlist.products.length ? (
+          <ProductList
+            wishlistColor={wishlist.color}
+            canUserEdit={canUserEdit}
+            products={wishlist.products}
+          />
+        ) : (
+          <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
+            {canUserEdit ? (
+              <div className="flex w-fit flex-col items-center justify-center gap-4">
+                <p className="text-balance text-center font-serif text-3xl font-medium md:text-4xl">
+                  {" "}
+                  Let&apos;s add your first product!
+                </p>
+                <AddProductSheetTrigger />
+              </div>
+            ) : (
+              <div>
+                <p className="font-serif text-4xl font-medium">
+                  {" "}
+                  No products found...
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
     </>
   );
 };

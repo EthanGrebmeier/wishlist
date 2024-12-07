@@ -1,18 +1,22 @@
+import TitleBar from "~/components/ui/title-bar";
+
 const ProductLoading = () => {
   return (
-    <div
-      aria-hidden="true"
-      className="flex w-full max-w-screen-sm flex-col gap-8 px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 "
-    >
-      <div className="grid gap-4 xl:grid-cols-[1fr_440px]">
-        <div className="skeleton relative flex aspect-square flex-1  rounded-md border-2 border-black bg-white">
-          {" "}
-        </div>
-        <div className="skeleton sm:rounded-md sm:border-2 sm:border-black ">
-          {" "}
+    <>
+      <TitleBar className="flex-col items-start justify-center gap-8">
+        <div className="h-10 w-44 animate-pulse rounded-md bg-slate-200 py-1"></div>
+      </TitleBar>
+      <div aria-hidden="true" className="flex w-full flex-col gap-8 ">
+        <div className="grid gap-4 md:grid-cols-[1fr_320px] xl:grid-cols-[1fr_440px]">
+          <div className="skeleton relative flex aspect-square flex-1  rounded-md border-2 border-black bg-white">
+            {" "}
+          </div>
+          <div className="skeleton sm:rounded-md sm:border-2 sm:border-black ">
+            {" "}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

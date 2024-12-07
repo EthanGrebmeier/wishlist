@@ -67,54 +67,56 @@ export default function Product({
   }, [product, setViewedProduct, wishlist, setViewedWishlist]);
 
   return (
-    <div className="flex w-full max-w-screen-sm flex-col gap-8  px-4 lg:py-4 lg:pt-10 xl:max-w-screen-xl xl:pr-8 xl:pt-4 ">
+    <div className="isolate flex w-full flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <div className="grid  gap-4 xl:grid-cols-[1fr_440px]">
-          <div className="hidden h-full max-h-[80svh] w-full xl:flex">
+        <div className="grid gap-4 md:grid-cols-[1fr_320px] xl:grid-cols-[1fr_440px]">
+          <div className="hidden h-full max-h-[80svh] w-full md:flex">
             <ProductImage product={product} />
           </div>
-          <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4 ">
+          <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4">
             <div className="flex flex-1 flex-col gap-4">
-              <div className="flex flex-col items-start justify-normal gap-2 xs:flex-row xs:items-center xs:justify-between ">
-                <Breadcrumbs wishlist={wishlist} session={session} />
-                {product.priority !== "normal" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="inline-block font-sans"
-                  >
-                    <Priority
-                      showText={true}
-                      priorityLevel={product.priority}
-                    />
-                  </motion.div>
-                )}
-              </div>
-
-              <div className="col-span-full flex items-center justify-between">
-                <div>
-                  <h1 className="max-w-[380px] font-serif text-3xl leading-8">
-                    {product.name}{" "}
-                  </h1>
-                  {product.brand && (
-                    <p className="text-pretty font-serif text-xl">
-                      {product.brand}
-                    </p>
-                  )}
-                  {product.price && (
-                    <p className="font-serif text-2xl">${product.price}</p>
+              <div className="flex flex-col gap-2 ">
+                <div className="flex flex-row flex-wrap items-center justify-between gap-2">
+                  <Breadcrumbs wishlist={wishlist} />
+                  {product.priority !== "normal" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="inline-block font-sans"
+                    >
+                      <Priority
+                        showText={true}
+                        priorityLevel={product.priority}
+                      />
+                    </motion.div>
                   )}
                 </div>
+
+                <div className="col-span-full flex items-center justify-between">
+                  <div>
+                    <h1 className="max-w-[380px] font-serif text-3xl leading-8">
+                      {product.name}{" "}
+                    </h1>
+                    {product.brand && (
+                      <p className="text-pretty font-serif text-xl">
+                        {product.brand}
+                      </p>
+                    )}
+                    {product.price && (
+                      <p className="font-serif text-2xl">${product.price}</p>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="flex h-full w-full xl:hidden">
+              <div className="flex h-full w-full md:hidden">
                 <ProductImage product={product} />
               </div>
 
               {product.description && (
                 <div className="flex w-full flex-col">
                   <p className="w-full  text-lg font-medium">About</p>
-                  <p className="flex-1 break-words text-lg leading-tight xl:max-w-[480px]">
+                  <p className="flex-1 break-words text-lg leading-tight md:max-w-[320px] lg:max-w-[480px]">
                     {product.description}
                   </p>
                 </div>
@@ -147,7 +149,7 @@ export default function Product({
           />
         )}
         {product.url && (
-          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black   p-4">
+          <div className="relative flex h-full w-full flex-col justify-between gap-2 rounded-lg border-2 border-black p-4">
             <div className="absolute right-4 top-4">
               <ColoredIconWrapper className="bg-orange-300">
                 <ShoppingBasketIcon size={20} />
