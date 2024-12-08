@@ -3,7 +3,7 @@
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import { cn } from "~/lib/utils";
 import { unshareWishlist } from "~/server/actions/wishlist";
 import type { User } from "~/types/user";
@@ -19,18 +19,15 @@ const UnshareWishlistButton = forwardRef<
   HTMLButtonElement,
   UnshareWishlistButtonProps
 >(({ wishlistId, sharedUser, className, onClick, ...rest }, ref) => {
-  const { execute, status } = useAction(unshareWishlist);
+  const { execute, status } = useAction(unshareWishlist, {
+    onSuccess: () => router.refresh(),
+  });
   const router = useRouter();
-
-  useEffect(() => {
-    if (status === "hasSucceeded") {
-      router.refresh();
-    }
-  }, [router, status]);
 
   return (
     <button
       onClick={(e) => {
+        e.preventDefault();
         onClick && onClick(e);
         execute({
           wishlistId,

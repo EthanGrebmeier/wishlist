@@ -51,6 +51,12 @@ const ShareWishlist = ({
     void getMagicLinkViaAction();
   }, [wishlist.id]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setFrame("userList");
+    }
+  }, [isOpen]);
+
   const content = useMemo(() => {
     if (frame === "userList" || !canUserEdit) {
       return (
