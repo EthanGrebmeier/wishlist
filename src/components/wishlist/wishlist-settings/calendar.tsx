@@ -2,9 +2,11 @@ import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import DatePicker from "../create-wishlist/date-picker";
 import { useWishlistSettingsForm } from "./context";
 import { CalendarIcon } from "lucide-react";
+import { parseISO } from "date-fns";
 
 export default function Calendar() {
   const { form, setFormValues } = useWishlistSettingsForm();
+  const dueDate = form.getValues("dueDate");
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2">
       <div className="flex w-full items-center justify-between">
@@ -20,9 +22,9 @@ export default function Calendar() {
       </div>
 
       <DatePicker
-        date={form.getValues("date")}
+        date={dueDate ? parseISO(dueDate) : undefined}
         setDate={(date) => {
-          setFormValues({ date });
+          setFormValues({ dueDate: date?.toISOString() });
         }}
       />
     </div>

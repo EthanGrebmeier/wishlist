@@ -19,7 +19,7 @@ import StatusButton from "~/components/ui/status-button";
 import ColorPicker from "../create-wishlist/color-picker";
 import { useAtomValue } from "jotai";
 import { wishlistToEditAtom } from "~/store/wishlist-settings";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useWishlistSettingsForm } from "./context";
 import { Button } from "~/components/ui/button";
 import ImageUpload from "~/components/ui/image/upload";
@@ -118,7 +118,9 @@ const WishlistSettingsForm = () => {
                 Icon={CalendarIcon}
                 label="Date"
                 input={(() => {
-                  const date = values.date;
+                  const date = values.dueDate
+                    ? parseISO(values.dueDate)
+                    : undefined;
                   return (
                     <button
                       type="button"

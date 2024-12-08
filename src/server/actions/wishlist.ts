@@ -102,7 +102,15 @@ export const updateWishlist = protectedAction
   .schema(wishlistSettingsSchema)
   .action(
     async ({
-      parsedInput: { name, date, color, isSecret, id, createdById, imageUrl },
+      parsedInput: {
+        name,
+        dueDate,
+        color,
+        isSecret,
+        id,
+        createdById,
+        imageUrl,
+      },
       ctx: { session },
     }) => {
       console.log("updating wishlist");
@@ -117,7 +125,7 @@ export const updateWishlist = protectedAction
       const wishlistValues = {
         createdById: createdById ?? session.user.id,
         name,
-        dueDate: date?.toDateString() ?? null,
+        dueDate: dueDate ?? null,
         color,
         isSecret,
         imageUrl,

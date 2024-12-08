@@ -30,7 +30,7 @@ export const wishlistSettingsSchema = z.object({
   imageUrl: z.string().nullable(),
   id: z.string().optional(),
   createdById: z.string(),
-  date: z.date().optional(),
+  dueDate: z.string().optional(),
   color: colorSchema,
   isSecret: z.boolean(),
 });

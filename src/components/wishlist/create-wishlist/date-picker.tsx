@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "~/components/ui/popover";
+import { startOfMonth } from "date-fns";
+import React from "react";
 
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import React, { type Dispatch, type SetStateAction } from "react";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 import { Calendar } from "~/components/ui/calendar";
 
 type DatePickerProps = {
@@ -19,7 +11,14 @@ type DatePickerProps = {
 };
 
 const DatePicker = ({ date, setDate }: DatePickerProps) => {
-  return <Calendar mode="single" selected={date} onSelect={setDate} />;
+  return (
+    <Calendar
+      defaultMonth={date ? startOfMonth(date) : undefined}
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+    />
+  );
 };
 
 export default DatePicker;

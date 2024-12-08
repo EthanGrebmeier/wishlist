@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { useAtom, useSetAtom } from "jotai";
 import { useSession } from "next-auth/react";
-import { HookActionStatus } from "next-safe-action/hooks";
+import type { HookActionStatus } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import {
   useState,
@@ -11,9 +11,9 @@ import {
   createContext,
   useCallback,
 } from "react";
-import { UseFormReturn } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 
-import { z } from "zod";
+import type { z } from "zod";
 import { wishlistSettingsSchema } from "~/schema/wishlist/wishlist";
 import { updateWishlist } from "~/server/actions/wishlist";
 import {
@@ -69,7 +69,8 @@ export const WishlistSettingsFormProvider = ({
           createdById: wishlistToEdit?.createdById ?? session.data?.user.id,
           name: wishlistToEdit?.name ?? initialValues?.name ?? "",
           imageUrl: wishlistToEdit?.imageUrl ?? initialValues?.imageUrl ?? "",
-          date: wishlistToEdit?.date ?? initialValues?.date ?? undefined,
+          dueDate:
+            wishlistToEdit?.dueDate ?? initialValues?.dueDate ?? undefined,
           color: wishlistToEdit?.color ?? initialValues?.color ?? "white",
           isSecret:
             wishlistToEdit?.isSecret ?? initialValues?.isSecret ?? false,
