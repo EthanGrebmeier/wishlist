@@ -24,7 +24,6 @@ import {
 } from "~/store/product-settings";
 import { canUserEditAtom, viewedWishlistAtom } from "~/store/wishlist-settings";
 import ProductCard from "../wishlist/product-list/product";
-import Breadcrumbs from "./breadcrumbs";
 import { useEffect } from "react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import { Button } from "~/components/ui/button";

@@ -16,7 +16,6 @@ import {
 } from "~/server/actions/wishlist";
 import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 import UnshareWishlistButton from "./unshare-wishlist-button";
-import { Button } from "~/components/ui/button";
 import StatusButton from "~/components/ui/status-button";
 
 type SharedUserMenuProps = {
