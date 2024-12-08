@@ -10,15 +10,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { setSharedUserType } from "~/server/actions/wishlist";
+import {
+  leaveWishlistAction,
+  setSharedUserType,
+} from "~/server/actions/wishlist";
 import type { Wishlist, WishlistSharesWithUser } from "~/types/wishlist";
 import UnshareWishlistButton from "./unshare-wishlist-button";
+import { Button } from "~/components/ui/button";
+import StatusButton from "~/components/ui/status-button";
 
 type SharedUserMenuProps = {
   userId: string;
   wishlistShare: WishlistSharesWithUser;
   wishlist: Wishlist;
   isOwner: boolean;
+  isYou: boolean;
 };
 
 const SharedUserMenu = ({
@@ -26,11 +32,18 @@ const SharedUserMenu = ({
   wishlist,
   isOwner,
   userId,
+  isYou,
 }: SharedUserMenuProps) => {
   const router = useRouter();
   const { execute, status } = useAction(setSharedUserType, {
     onSuccess: () => router.refresh(),
   });
+  const { execute: leaveWishlist, status: leaveWishlistStatus } = useAction(
+    leaveWishlistAction,
+    {
+      onSuccess: () => router.push(`/wishlist`),
+    },
+  );
 
   const roles = [
     {
@@ -52,6 +65,20 @@ const SharedUserMenu = ({
         }),
     },
   ];
+
+  if (isYou && !isOwner) {
+    return (
+      <StatusButton
+        status={leaveWishlistStatus}
+        loadingContent={{ text: "Leaving" }}
+        content={{ text: "Leave" }}
+        hasSucceededContent={{ text: "Left" }}
+        variant="destructive"
+        className="rounded-md border-none"
+        onClick={() => leaveWishlist({ wishlistId: wishlist.id })}
+      />
+    );
+  }
 
   if (wishlistShare.type === "invitee") {
     return <p className="pr-1 capitalize">Invited</p>;

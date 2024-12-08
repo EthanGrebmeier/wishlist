@@ -503,3 +503,27 @@ export const unshareWishlist = protectedAction
       };
     },
   );
+
+export const leaveWishlistAction = protectedAction
+  .schema(z.object({ wishlistId: z.string() }))
+  .action(async ({ parsedInput: { wishlistId }, ctx: { session } }) => {
+    // first, ensure the user is not the owner of the wishlist
+    const wishlist = await db.query.wishlists.findFirst({
+      where: and(
+        eq(wishlists.id, wishlistId),
+        eq(wishlists.createdById, session.user.id),
+      ),
+    });
+
+    if (wishlist) {
+      throw new Error("Access Denied");
+    }
+    await db
+      .delete(wishlistShares)
+      .where(
+        and(
+          eq(wishlistShares.sharedWithUserId, session.user.id),
+          eq(wishlistShares.wishlistId, wishlistId),
+        ),
+      );
+  });

@@ -40,6 +40,7 @@ const SharedUserItem = ({
       </div>
 
       <SharedUserMenu
+        isYou={userId === sharedUser.id}
         userId={userId}
         wishlistShare={wishlistShare}
         wishlist={wishlist}

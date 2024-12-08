@@ -91,7 +91,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
           shouldShow: true,
           backgroundColor: "#f9a8d4",
           icon: <ShareIcon size={25} />,
-          text: "Share List",
+          text: "Sharing",
           hideTextOnMobile: true,
           onClick: () => {
             setIsWishlistShareOpen(true);
