@@ -12,8 +12,8 @@ type PriorityProps = {
 };
 
 const priorityIcons = {
-  high: <ChevronsUp size={24} />,
-  low: <ChevronsDown size={24} />,
+  high: <ChevronsUp size={20} />,
+  low: <ChevronsDown size={20} />,
 };
 
 const Priority = ({
@@ -29,7 +29,7 @@ const Priority = ({
     <Tooltip text={`${priorityLevel} Priority`}>
       <div
         className={cn(
-          "flex h-fit w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black px-1 py-[2px] text-sm font-medium capitalize ",
+          "flex h-fit w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 text-sm font-medium capitalize ",
           priorityLevel === "high" ? "bg-yellow-400" : "bg-red-300",
           className,
         )}

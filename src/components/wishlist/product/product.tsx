@@ -72,7 +72,7 @@ export default function Product({
           <div className="hidden h-full max-h-[80svh] w-full md:flex">
             <ProductImage product={product} />
           </div>
-          <div className="flex flex-col gap-4 lg:rounded-lg lg:border-2 lg:border-black lg:p-4">
+          <div className="flex flex-col gap-4  lg:p-4">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col gap-2 ">
                 {product.priority !== "normal" && (
@@ -90,7 +90,7 @@ export default function Product({
                 )}
 
                 <div className="col-span-full flex items-center justify-between">
-                  <div>
+                  <div className="hidden md:block">
                     <h1 className="max-w-[380px] font-serif text-3xl leading-8">
                       {product.name}{" "}
                     </h1>

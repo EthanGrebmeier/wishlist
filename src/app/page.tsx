@@ -70,7 +70,7 @@ export default async function HomePage() {
           <Feature
             title="Share with friends and family."
             icon={<UserPlus />}
-            bgColor="bg-green-500"
+            bgColor="bg-green-400"
           />
         </div>
         <div className="flex flex-col items-center gap-4 border-t-2 border-black pt-16">

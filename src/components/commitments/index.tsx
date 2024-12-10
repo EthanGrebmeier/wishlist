@@ -29,7 +29,7 @@ export const Commitments = ({ commitments }: CommitmentsProps) => {
                         getBackgroundColor(wishlist.color ?? "white"),
                       )}
                     />
-                    <h2 className="font-serif text-3xl">{wishlist.name}</h2>
+                    <h2 className="font-serif text-2xl">{wishlist.name}</h2>
                   </div>
                 </Link>
                 <span className="text-sm ">
