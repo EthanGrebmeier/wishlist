@@ -50,7 +50,11 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
       }
     >
       {wishlist.dueDate && (
-        <DueDate className="absolute left-2 top-2 z-[10]" wishlist={wishlist} />
+        <DueDate
+          className="absolute left-2 top-2 z-[10]"
+          date={wishlist.dueDate}
+          color={wishlist.color}
+        />
       )}
       {canUserEdit ? (
         <div className="absolute right-2 top-2 z-10">

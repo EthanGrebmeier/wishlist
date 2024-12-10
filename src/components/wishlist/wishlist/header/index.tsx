@@ -84,7 +84,7 @@ const WishlistHeader = ({
                   wishlist.dueDate ? "justify-between" : "justify-end",
                 )}
               >
-                <DueDate wishlist={wishlist} />
+                <DueDate date={wishlist.dueDate} color={wishlist.color} />
               </div>
             )}
           </div>

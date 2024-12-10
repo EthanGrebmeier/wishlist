@@ -43,7 +43,7 @@ const Hero = () => {
             opacity: 1,
           }}
         >
-          <ColoredIconWrapper className="bg-blue-400">
+          <ColoredIconWrapper className="bg-blue-300">
             <Package size={65} />
           </ColoredIconWrapper>
         </FlyingIcon>

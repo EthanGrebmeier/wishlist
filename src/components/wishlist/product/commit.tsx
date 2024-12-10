@@ -95,7 +95,7 @@ export default function CommitProduct({
       <>
         <div className="flex flex-col gap-2">
           <div className="absolute right-4 top-4">
-            <ColoredIconWrapper className="bg-blue-200">
+            <ColoredIconWrapper className="bg-blue-300">
               <BookUserIcon size={20} />
             </ColoredIconWrapper>
           </div>

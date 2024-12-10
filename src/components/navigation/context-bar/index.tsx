@@ -262,7 +262,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
               animate={{ opacity: 1, height: 340 }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, type: "spring" }}
-              className="z-30 flex w-screen min-w-full max-w-[min(calc(100svw-32px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background "
+              className="z-30 flex w-screen min-w-full max-w-[min(calc(100svw-16px),440px)] xs:max-w-[min(calc(100svw-32px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background "
             >
               <div className="flex h-full w-full overflow-hidden">
                 {navigation}

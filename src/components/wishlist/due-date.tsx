@@ -10,24 +10,26 @@ import {
 import { Calendar, Clock } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { cn, getBackgroundColor } from "~/lib/utils";
-import type { Wishlist } from "~/types/wishlist";
 import { AnimatePresence, motion } from "framer-motion";
+import type { colorSchema } from "~/schema/wishlist/wishlist";
+import type { z } from "zod";
 
 type DueDateProps = {
   className?: string;
-  wishlist: Wishlist;
+  date: string;
+  color: z.infer<typeof colorSchema>;
 };
 
-const DueDate = ({ wishlist, className }: DueDateProps) => {
+const DueDate = ({ date, className, color }: DueDateProps) => {
   const [viewType, setViewType] = useState<"date" | "countdown">("date");
   const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
     const updateCountdown = () => {
-      if (!wishlist.dueDate) return;
+      if (!date) return;
 
       const now = new Date();
-      const dueDate = parseISO(wishlist.dueDate);
+      const dueDate = parseISO(date);
 
       const days = Math.max(differenceInDays(dueDate, now), 0);
       const hours = Math.max(differenceInHours(dueDate, now) % 24, 0);
@@ -41,9 +43,9 @@ const DueDate = ({ wishlist, className }: DueDateProps) => {
       const interval = setInterval(updateCountdown, 1000 * 60); // Update every minute
       return () => clearInterval(interval);
     }
-  }, [viewType, wishlist.dueDate]);
+  }, [viewType, date]);
 
-  if (!wishlist.dueDate) {
+  if (!date) {
     return null;
   }
 
@@ -52,12 +54,12 @@ const DueDate = ({ wishlist, className }: DueDateProps) => {
       layout
       onClick={() => setViewType(viewType === "date" ? "countdown" : "date")}
       className={cn(
-        "flex items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
-        getBackgroundColor(wishlist.color),
+        "flex h-fit w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
+        getBackgroundColor(color),
         className,
       )}
     >
-      <AnimatePresence initial mode="wait">
+      <AnimatePresence initial={false} mode="wait">
         {viewType === "date" ? (
           <motion.div
             key="date"
@@ -68,9 +70,7 @@ const DueDate = ({ wishlist, className }: DueDateProps) => {
             transition={{ duration: 0.2 }}
           >
             <Calendar size={20} />
-            <time className="text-sm">
-              {formatDate(parseISO(wishlist.dueDate), "P")}
-            </time>
+            <time className="text-sm">{formatDate(parseISO(date), "P")}</time>
           </motion.div>
         ) : (
           <motion.div

@@ -1,4 +1,10 @@
-import { ArrowRight, ContactRound, GiftIcon, ScrollIcon } from "lucide-react";
+import {
+  ArrowRight,
+  BookUserIcon,
+  ContactRound,
+  GiftIcon,
+  ScrollIcon,
+} from "lucide-react";
 import { getAllWishlists } from "~/lib/wishlist/getWishlist";
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
@@ -64,21 +70,21 @@ const MobileNavigation = async () => {
         </div>
         <div className="grid shrink-0 grid-cols-3 border-t-2 border-black ">
           <Link
-            className="flex flex-col items-center border-r-2 border-black bg-green-400 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
+            className="flex flex-col items-center border-r-2 border-black bg-blue-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
             href="/wishlist"
           >
-            <ScrollIcon size={24} />
-            <p className="font-bold">My Lists</p>
+            <BookUserIcon size={24} />
+            <p className="font-bold">Commitments</p>
           </Link>
           <Link
             className="flex flex-col items-center border-r-2 border-black bg-pink-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             href="/my-gifts"
           >
             <GiftIcon size={24} />
-            <p className="font-bold">My Gifts</p>
+            <p className="font-bold">Gifts</p>
           </Link>
           <SignInOutButton
-            className="flex flex-col items-center bg-blue-300 pb-1 pt-2 font-bold focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="flex flex-col items-center bg-yellow-300 pb-1 pt-2 font-bold focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             isSignedIn={!!session}
           />
         </div>

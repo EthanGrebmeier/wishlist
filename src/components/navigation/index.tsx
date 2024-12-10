@@ -1,7 +1,13 @@
 import { getServerAuthSession } from "~/server/auth";
 import NavLink from "./navlink";
 import SignInOutButton from "./sign-out";
-import { ArrowRight, Gift, Scroll, ShieldQuestion } from "lucide-react";
+import {
+  ArrowRight,
+  BookUserIcon,
+  Gift,
+  Scroll,
+  ShieldQuestion,
+} from "lucide-react";
 import MyWishlists from "./wishlist-list/my-wishlists";
 import {
   DropdownMenu,
@@ -31,7 +37,10 @@ const Navigation = async () => {
               </div>
               <MyWishlists />
             </div>
-            <div className="-ml-3">
+            <div className="-ml-3 flex flex-col">
+              <NavLink href="/my-commitments" Icon={BookUserIcon}>
+                My Commitments
+              </NavLink>
               <NavLink href="/my-gifts" Icon={Gift}>
                 My Gifts
               </NavLink>
