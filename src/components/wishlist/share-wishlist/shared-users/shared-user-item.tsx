@@ -22,7 +22,7 @@ const SharedUserItem = ({
   return (
     <div className="relative flex w-full items-center justify-between gap-4 pr-1 font-medium text-black">
       <div className="flex items-center gap-2">
-        <div className="relative aspect-square w-10 overflow-hidden rounded-full border-2 border-black object-cover">
+        <div className="relative size-9 overflow-hidden rounded-full border-2 border-black object-cover">
           {sharedUser.image && (
             <Image
               alt={sharedUser.name ?? ""}

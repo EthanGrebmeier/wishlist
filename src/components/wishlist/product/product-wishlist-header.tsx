@@ -27,24 +27,26 @@ const ProductWishlistHeader = ({
   wishlistShares,
 }: WishlistHeaderProps) => {
   const viewedProduct = useAtomValue(viewedProductAtom);
-
+  console.log(viewedProduct);
   return (
     <TitleBar
       wrapperClassName="sticky top-[72px] md:top-0"
       className=" w-full flex-col items-start gap-2 py-2"
     >
       <div
-        className={cn("flex w-full flex-1 items-start justify-between gap-4")}
+        className={cn("flex w-full flex-1 items-center justify-between gap-4 ")}
       >
-        <div className="flex flex-row items-start gap-2">
+        <div className="flex flex-row items-center gap-2 pt-1">
           <div
             className={cn(
-              "h-6 w-6 flex-shrink-0 rounded-full border-2 border-black ",
+              "size-5 flex-shrink-0 rounded-full border-2 border-black md:size-6 ",
               getBackgroundColor(wishlist.color),
             )}
           ></div>
           <Link className="underline" href={`/wishlist/${wishlist.id}`}>
-            <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+            <TitleBar.Title className=" text-lg sm:text-2xl">
+              {wishlist.name}
+            </TitleBar.Title>
           </Link>
         </div>
         <div className="flex items-center gap-2 ">
@@ -67,22 +69,26 @@ const ProductWishlistHeader = ({
           />
         </div>
       </div>
-      <div className="flex gap-4">
-        <div className="-mt-1 flex flex-col pt-2 md:hidden">
-          <p className="w-fit font-serif text-2xl ">{viewedProduct?.name}</p>
+      <div className="flex w-full justify-between gap-4 md:hidden">
+        <div className="-mt-1 flex flex-col pt-2">
+          <p className="w-fit font-serif text-2xl leading-6">
+            {viewedProduct?.name}
+          </p>
           <p className="font-serif text-lg">{viewedProduct?.brand}</p>
         </div>
-        {viewedProduct?.priority !== "normal" && (
-          <div className="flex shrink-0 flex-col items-end gap-2">
-            <Priority
-              showText={true}
-              priorityLevel={viewedProduct?.priority ?? "normal"}
-            />
-            {viewedProduct?.price && (
-              <p className="pr-1.5 text-xl">${viewedProduct?.price}</p>
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          <div className="h-8">
+            {viewedProduct?.priority !== "normal" && (
+              <Priority
+                showText={true}
+                priorityLevel={viewedProduct?.priority ?? "normal"}
+              />
             )}
           </div>
-        )}
+          {viewedProduct?.price && (
+            <p className="pr-1.5 text-xl">${viewedProduct?.price}</p>
+          )}
+        </div>
       </div>
     </TitleBar>
   );

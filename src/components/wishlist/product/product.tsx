@@ -118,19 +118,6 @@ export default function Product({
                 </div>
               )}
             </div>
-            {canUserEdit && (
-              <Button
-                variant="tertiary"
-                onClick={() => {
-                  setProductToEdit(product);
-                  setIsProductFormOpen(true);
-                }}
-                className="w-fit"
-                icon={<PencilIcon size={15} />}
-              >
-                Edit Product
-              </Button>
-            )}
           </div>
         </div>
       </div>

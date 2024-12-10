@@ -58,9 +58,9 @@ const WishlistHeader = ({
       className=" w-full flex-wrap items-center py-2 md:flex-col"
     >
       <div
-        className={cn("flex w-full flex-1 items-start justify-between gap-4")}
+        className={cn("flex w-full flex-1 items-center justify-between gap-4")}
       >
-        <div className="flex flex-row items-start gap-2">
+        <div className="flex flex-row items-center gap-2 pt-1">
           <div
             className={cn(
               "h-6 w-6 flex-shrink-0 rounded-full border-2 border-black ",
