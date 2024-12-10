@@ -71,7 +71,7 @@ const MobileNavigation = async () => {
         <div className="grid shrink-0 grid-cols-3 border-t-2 border-black ">
           <Link
             className="flex flex-col items-center border-r-2 border-black bg-blue-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
-            href="/wishlist"
+            href="/my-commitments"
           >
             <BookUserIcon size={24} />
             <p className="font-bold">Commitments</p>
