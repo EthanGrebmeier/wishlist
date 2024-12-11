@@ -15,6 +15,7 @@ import { scrapeProductData } from "~/server/actions/scrape";
 
 import { useProductForm } from "./form";
 import { useProductSheetNavigation } from "./navigation-context";
+import { removeQueryParams } from "~/lib/helpers";
 type AutofillContextType = {
   formError: string;
   setFormError: Dispatch<SetStateAction<string>>;
@@ -53,7 +54,7 @@ export const AutofillProvider = ({
         brand: "",
         name: data?.name ?? "",
         price: data?.price ?? "",
-        url: data?.url ?? "",
+        url: removeQueryParams(data?.url ?? ""),
         imageUrl: data?.images?.[0] ?? "",
         priority: "normal",
         wishlistId: productForm.getValues().wishlistId,
