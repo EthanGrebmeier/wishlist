@@ -44,7 +44,7 @@ const WishlistSettingsSheet = () => {
     >
       <WishlistSettingsFormProvider>
         <div className="flex w-full flex-col ">
-          <div className="flex w-full flex-col py-4">
+          <div className="flex w-full flex-col ">
             <WishlistSettingsForm />
           </div>
           <div

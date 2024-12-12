@@ -91,7 +91,7 @@ const ResponsiveSheet = ({
           <div
             className={cn(
               "overflow-y-auto px-4 pt-2",
-              shouldPadBottomMobile && "pb-[72px]",
+              shouldPadBottomMobile && "pb-[74px]",
             )}
             style={{
               maxHeight: `calc(100svh - ${headerHeight}px - 68px)`,
