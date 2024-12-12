@@ -50,7 +50,6 @@ const WishlistHeader = ({
   useEffect(() => {
     if (!didMount) {
       execute({ wishlistId: wishlist.id });
-      console.log("executed");
       setDidMount(true);
     }
   }, [execute, wishlist.id, didMount]);

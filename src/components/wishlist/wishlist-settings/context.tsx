@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import type { HookActionStatus } from "next-safe-action/hooks";
@@ -54,14 +55,18 @@ export const WishlistSettingsFormProvider = ({
   const [formError, setFormError] = useState("");
   const router = useRouter();
   const [wishlistToEdit, setWishlistToEdit] = useAtom(wishlistToEditAtom);
+  const queryClient = useQueryClient();
+
   const session = useSession();
 
   const isEditing = !!wishlistToEdit;
   const isOwner = wishlistToEdit?.createdById === session.data?.user.id;
   const setIsOpen = useSetAtom(isWishlistSettingsOpenAtom);
 
-  const { form, handleSubmitWithAction, action, resetFormAndAction } =
-    useHookFormAction(updateWishlist, zodResolver(wishlistSettingsSchema), {
+  const { form, handleSubmitWithAction, action } = useHookFormAction(
+    updateWishlist,
+    zodResolver(wishlistSettingsSchema),
+    {
       formProps: {
         mode: "onSubmit",
         defaultValues: {
@@ -77,21 +82,20 @@ export const WishlistSettingsFormProvider = ({
         },
       },
       actionProps: {
-        onExecute: () => {
-          console.log("executing");
-        },
         onError: (error) => {
           console.log(error);
           setFormError("Error updating wishlist");
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: ["wishlists"] });
           setTimeout(() => {
             setIsOpen(false);
             router.refresh();
           }, 600);
         },
       },
-    });
+    },
+  );
 
   const setFormValues = useCallback(
     (values: Partial<z.infer<typeof wishlistSettingsSchema>>) => {
@@ -109,12 +113,6 @@ export const WishlistSettingsFormProvider = ({
     },
     [form],
   );
-
-  useEffect(() => {
-    return () => {
-      resetFormAndAction();
-    };
-  }, []);
 
   return (
     <WishlistSettingsFormContext.Provider

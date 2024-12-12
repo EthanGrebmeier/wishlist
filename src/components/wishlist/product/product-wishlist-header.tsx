@@ -27,7 +27,6 @@ const ProductWishlistHeader = ({
   wishlistShares,
 }: WishlistHeaderProps) => {
   const viewedProduct = useAtomValue(viewedProductAtom);
-  console.log(viewedProduct);
   return (
     <TitleBar
       wrapperClassName="sticky top-[72px] md:top-0"

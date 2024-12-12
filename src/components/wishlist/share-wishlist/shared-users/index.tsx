@@ -39,7 +39,7 @@ const SharedUsers = ({
       <div
         className={cn(
           "grid max-h-[360px] w-full gap-2 overflow-y-auto  pb-2",
-          canUserEdit && " pb-6",
+          canUserEdit && " pb-4",
         )}
       >
         {wishlistShares.length ? (

@@ -165,7 +165,7 @@ const ShareWishlist = ({
             {content}
           </motion.div>
         </AnimatePresence>
-        <div className="flex w-full justify-between pb-4 md:pb-0">{Footer}</div>
+        <div className="flex w-full justify-between pb-4 ">{Footer}</div>
       </div>
     </ResponsiveSheet>
   );

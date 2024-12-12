@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { Loader, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -17,10 +18,11 @@ type DeleteWishListProps = {
 const DeleteWishlist = ({ wishlistId }: DeleteWishListProps) => {
   const router = useRouter();
   const setIsWishlistSettingsOpen = useSetAtom(isWishlistSettingsOpenAtom);
-
+  const queryClient = useQueryClient();
   const { execute, status } = useAction(deleteWishlist, {
-    onSuccess: () => {
+    onSuccess: async () => {
       setIsWishlistSettingsOpen(false);
+      await queryClient.invalidateQueries({ queryKey: ["wishlists"] });
       router.push("/wishlist");
     },
   });

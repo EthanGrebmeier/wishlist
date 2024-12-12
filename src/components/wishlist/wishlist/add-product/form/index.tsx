@@ -49,8 +49,6 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
 
-  console.log(form.formState.errors);
-
   return (
     <Form {...form}>
       <form className="flex h-full flex-col gap-2" onSubmit={handleSubmit}>
@@ -243,7 +241,6 @@ export const ProductFormProvider = ({
         onSuccess: ({ input }) => {
           const isDifferentWishlist =
             !productToEdit && wishlistId !== input.wishlistId;
-          console.log("isDifferentWishlist", isDifferentWishlist);
           setTimeout(() => {
             setIsOpen(false);
             if (isDifferentWishlist) {

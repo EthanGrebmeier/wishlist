@@ -216,7 +216,6 @@ const ModalContent = ({
                       if (selectedUserId === sharedUser.id) {
                         setSelectedUserId(undefined);
                       } else {
-                        console.log("setting selected user id", sharedUser.id);
                         setSelectedUserId(sharedUser.id);
                       }
                     }}

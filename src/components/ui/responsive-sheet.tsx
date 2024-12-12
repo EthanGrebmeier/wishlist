@@ -56,8 +56,6 @@ const ResponsiveSheet = ({
 
   const [ref, { height: headerHeight }] = useMeasure();
 
-  console.log(headerHeight);
-
   if (isDesktop) {
     return (
       <Sheet open={isOpen ?? internalIsOpen} onOpenChange={onOpenChange}>
