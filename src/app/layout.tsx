@@ -10,6 +10,7 @@ import { ourFileRouter } from "~/server/uploadthing";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { MotionConfig } from "framer-motion";
+import Providers from "~/context/providers";
 
 // const serif = Afacad({
 //   weight: ["400", "500", "600", "700"],
@@ -58,18 +59,20 @@ export default function RootLayout({
       <body
         className={`font-sans ${serif.variable} ${junicode.variable}  mx-auto max-w-[2200px] bg-background`}
       >
-        <MotionConfig reducedMotion="user">
-          <NextSSRPlugin
-            /**
-             * The `extractRouterConfig` will extract **only** the route configs
-             * from the router to prevent additional information from being
-             * leaked to the client. The data passed to the client is the same
-             * as if you were to fetch `/api/uploadthing` directly.
-             */
-            routerConfig={extractRouterConfig(ourFileRouter)}
-          />
-          <div className="h-screen w-full">{children}</div>
-        </MotionConfig>
+        <Providers>
+          <MotionConfig reducedMotion="user">
+            <NextSSRPlugin
+              /**
+               * The `extractRouterConfig` will extract **only** the route configs
+               * from the router to prevent additional information from being
+               * leaked to the client. The data passed to the client is the same
+               * as if you were to fetch `/api/uploadthing` directly.
+               */
+              routerConfig={extractRouterConfig(ourFileRouter)}
+            />
+            <div className="h-screen w-full">{children}</div>
+          </MotionConfig>
+        </Providers>
       </body>
     </html>
   );

@@ -14,6 +14,7 @@ import { useSetAtom } from "jotai";
 import { useAction } from "next-safe-action/hooks";
 import { updateWishlistViewedAt } from "~/server/actions/wishlist";
 import Link from "next/link";
+import { viewedProductAtom } from "~/store/product-settings";
 
 type WishlistHeaderProps = {
   wishlist: Wishlist;
@@ -34,6 +35,7 @@ const WishlistHeader = ({
 
   const setCanUserEdit = useSetAtom(canUserEditAtom);
   const setViewedWishlist = useSetAtom(viewedWishlistAtom);
+  const setViewedProduct = useSetAtom(viewedProductAtom);
   const { execute } = useAction(updateWishlistViewedAt);
 
   useEffect(() => {
@@ -42,7 +44,8 @@ const WishlistHeader = ({
 
   useEffect(() => {
     setViewedWishlist(wishlist);
-  }, [wishlist, setViewedWishlist]);
+    setViewedProduct(null);
+  }, [wishlist, setViewedWishlist, setViewedProduct]);
 
   useEffect(() => {
     if (!didMount) {

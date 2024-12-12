@@ -59,7 +59,7 @@ const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
                 />
               </FormControl>
 
-              <div className="flex min-h-5 items-center">
+              <div className="flex items-center">
                 <FormMessage />
                 {formError && (
                   <p className="text-sm text-red-400">{formError}</p>

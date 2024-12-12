@@ -109,7 +109,7 @@ const ModalContent = ({
                 purchasedByUserId: selectedUserId,
               });
             }}
-            className="relative  overflow-hidden pt-4"
+            className="relative  overflow-hidden  "
           >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
@@ -202,7 +202,7 @@ const ModalContent = ({
           }}
           className="flex w-full flex-col "
         >
-          <div className="pt-4">
+          <div>
             <h3 className="text-lg font-medium">Who got this for you?</h3>
             <p className="mb-4 text-balance text-sm tracking-tight">
               Select a user from the list below to credit them for the item

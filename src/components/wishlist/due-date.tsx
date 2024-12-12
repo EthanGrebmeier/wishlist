@@ -13,6 +13,7 @@ import { cn, getBackgroundColor } from "~/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import type { colorSchema } from "~/schema/wishlist/wishlist";
 import type { z } from "zod";
+import useMeasure from "react-use-measure";
 
 type DueDateProps = {
   className?: string;
@@ -44,6 +45,7 @@ const DueDate = ({ date, className, color }: DueDateProps) => {
       return () => clearInterval(interval);
     }
   }, [viewType, date]);
+  const [ref, { width }] = useMeasure();
 
   if (!date) {
     return null;
@@ -51,41 +53,43 @@ const DueDate = ({ date, className, color }: DueDateProps) => {
 
   return (
     <motion.button
-      layout
       onClick={() => setViewType(viewType === "date" ? "countdown" : "date")}
       className={cn(
-        "flex h-fit w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
+        "flex h-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
         getBackgroundColor(color),
         className,
       )}
+      animate={{ width: width + 12 }}
     >
-      <AnimatePresence initial={false} mode="wait">
-        {viewType === "date" ? (
-          <motion.div
-            key="date"
-            initial={{ opacity: 0, y: "110%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "110%" }}
-            className="flex items-center gap-2"
-            transition={{ duration: 0.2 }}
-          >
-            <Calendar size={20} />
-            <time className="text-sm">{formatDate(parseISO(date), "P")}</time>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="countdown"
-            initial={{ opacity: 0, y: "110%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "110%" }}
-            className="flex items-center gap-2"
-            transition={{ duration: 0.2 }}
-          >
-            <Clock size={20} />
-            <time className="text-sm">{countdown}</time>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div ref={ref}>
+        <AnimatePresence initial={false} mode="wait">
+          {viewType === "date" ? (
+            <motion.div
+              key="date"
+              initial={{ opacity: 0, y: "110%" }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: "110%" }}
+              className="flex items-center gap-2"
+              transition={{ duration: 0.2 }}
+            >
+              <Calendar size={20} />
+              <time className="text-sm">{formatDate(parseISO(date), "P")}</time>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="countdown"
+              initial={{ opacity: 0, y: "110%" }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: "110%" }}
+              className="flex items-center gap-2"
+              transition={{ duration: 0.2 }}
+            >
+              <Clock size={20} />
+              <time className="text-sm">{countdown}</time>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.button>
   );
 };

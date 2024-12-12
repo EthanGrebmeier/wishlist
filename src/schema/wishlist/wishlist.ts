@@ -34,3 +34,15 @@ export const wishlistSettingsSchema = z.object({
   color: colorSchema,
   isSecret: z.boolean(),
 });
+
+export const wishlistSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  imageUrl: z.string().nullable(),
+  createdById: z.string(),
+  dueDate: z.string().nullable(),
+  color: colorSchema,
+  isSecret: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});

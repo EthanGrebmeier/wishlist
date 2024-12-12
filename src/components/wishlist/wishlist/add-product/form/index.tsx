@@ -240,9 +240,17 @@ export const ProductFormProvider = ({
         onError: () => {
           setFormError("Error updating product");
         },
-        onSuccess: () => {
+        onSuccess: ({ input }) => {
+          const isDifferentWishlist =
+            !productToEdit && wishlistId !== input.wishlistId;
+          console.log("isDifferentWishlist", isDifferentWishlist);
           setTimeout(() => {
             setIsOpen(false);
+            if (isDifferentWishlist) {
+              router.push(`/wishlist/${input.wishlistId}`, {
+                scroll: true,
+              });
+            }
             router.refresh();
           }, 800);
         },

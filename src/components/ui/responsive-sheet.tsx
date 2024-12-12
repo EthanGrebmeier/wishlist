@@ -17,6 +17,7 @@ import {
 } from "./drawer";
 import { cn } from "~/lib/utils";
 import { XIcon } from "lucide-react";
+import useMeasure from "react-use-measure";
 
 type ResponsiveSheetProps = {
   children: React.ReactNode;
@@ -53,6 +54,10 @@ const ResponsiveSheet = ({
     setIsOpen ? setIsOpen(open) : setInternalIsOpen(open);
   };
 
+  const [ref, { height: headerHeight }] = useMeasure();
+
+  console.log(headerHeight);
+
   if (isDesktop) {
     return (
       <Sheet open={isOpen ?? internalIsOpen} onOpenChange={onOpenChange}>
@@ -61,7 +66,7 @@ const ResponsiveSheet = ({
         <SheetContent
           side="right"
           className={cn(
-            " right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-y-auto rounded-lg border-2 border-black",
+            " right-6 top-8 flex max-h-[calc(100svh-64px)] flex-col overflow-hidden rounded-lg border-2 border-black",
             contentClassName,
           )}
         >
@@ -71,7 +76,10 @@ const ResponsiveSheet = ({
           >
             <XIcon size={24} />
           </button>
-          <SheetHeader className="flex h-14 flex-row items-center justify-between overflow-hidden border-b border-black">
+          <SheetHeader
+            ref={ref}
+            className="flex flex-row items-center justify-between overflow-hidden border-b border-black px-4 pb-4 pt-8"
+          >
             <div className="flex items-center gap-2">
               {titleIcon}
               <SheetTitle className=" -mb-1 font-serif text-2xl font-medium">
@@ -80,7 +88,17 @@ const ResponsiveSheet = ({
             </div>
             {header}
           </SheetHeader>
-          <div className="flex-1">{children}</div>
+          <div
+            className={cn(
+              "overflow-y-auto px-4 pt-2",
+              shouldPadBottomMobile && "pb-[72px]",
+            )}
+            style={{
+              maxHeight: `calc(100svh - ${headerHeight}px - 68px)`,
+            }}
+          >
+            {children}
+          </div>
         </SheetContent>
       </Sheet>
     );
@@ -105,7 +123,7 @@ const ResponsiveSheet = ({
         </DrawerHeader>
         <div
           className={cn(
-            "max-h-[74svh] overflow-y-auto px-4",
+            "max-h-[74svh] overflow-y-auto px-4 pt-2",
             shouldPadBottomMobile && "pb-[68px]",
           )}
         >

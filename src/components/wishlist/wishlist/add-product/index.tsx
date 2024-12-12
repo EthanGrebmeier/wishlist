@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import ProductForm, { ProductFormFooter, ProductFormProvider } from "./form";
 import { Button } from "~/components/ui/button";
@@ -26,6 +26,7 @@ import {
   ProductSheetNavigationProvider,
   useProductSheetNavigation,
 } from "./navigation-context";
+import { WishlistSelect } from "./wishlist-select";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -38,6 +39,13 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
   const [isOpen, setIsOpen] = useAtom(isProductFormOpenAtom);
 
   const autofillRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setProductToEdit(undefined);
+      setFrame("form");
+    }
+  }, [isOpen, setProductToEdit, setFrame]);
 
   return (
     <ResponsiveSheet
@@ -87,7 +95,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
     >
       <ProductFormProvider wishlistId={wishlistId}>
         <AutofillProvider>
-          <div className="flex flex-col pt-4">
+          <div className="flex flex-col ">
             <AnimatePresence initial={false} mode="popLayout">
               {frame === "form" && (
                 <motion.div
@@ -98,6 +106,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   key="form"
                   className="flex flex-col gap-4"
                 >
+                  <WishlistSelect />
                   <ProductImageDisplay />
                   <ProductForm />
                 </motion.div>
@@ -132,7 +141,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   WebkitBackdropFilter:
                     "var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)",
                 }}
-                className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-4 backdrop-blur-lg md:relative md:mt-4 md:h-auto md:px-0  md:pt-4"
+                className="absolute bottom-0 left-0 right-0 flex h-16 flex-row items-center justify-between border-t border-black bg-transparent px-4 backdrop-blur-lg"
               >
                 {frame === "autofill" && (
                   <motion.div

@@ -49,7 +49,7 @@ const DeleteProductSheet = () => {
         </ColoredIconWrapper>
       }
     >
-      <div className="flex flex-col gap-2 py-4">
+      <div className="flex flex-col gap-2 pb-4">
         <p className="text-pretty text-lg font-medium leading-tight">
           Are you sure you would like to delete{" "}
           <span className="font-bold">{product.name}</span>?

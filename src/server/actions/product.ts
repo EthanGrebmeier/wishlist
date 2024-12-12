@@ -6,7 +6,7 @@ import {
   protectedAction,
 } from "~/lib/actions/protectedAction";
 
-import { productInputSchema, productSchema } from "~/schema/wishlist/product";
+import { productSchema } from "~/schema/wishlist/product";
 import { db } from "../db";
 import {
   productCommitments,
@@ -31,6 +31,19 @@ export const updateProduct = protectedAction
         session,
       });
     }
+    if (product.id) {
+      const existingProduct = await db.query.products.findFirst({
+        where: eq(products.id, product.id),
+      });
+
+      if (existingProduct?.wishlistId !== product.wishlistId) {
+        // We need to remove commitments to this product
+        await db
+          .delete(productCommitments)
+          .where(eq(productCommitments.productId, product.id));
+      }
+    }
+
     await db
       .insert(products)
       .values({
@@ -49,8 +62,6 @@ export const updateProduct = protectedAction
         updatedAt: new Date(),
       })
       .where(eq(wishlists.id, product.wishlistId));
-
-    console.log("Success");
 
     return {
       message: "success",
@@ -289,40 +300,3 @@ export const deleteProduct = protectedAction
       }
     },
   );
-
-export const addProduct = protectedAction
-  .schema(productInputSchema.extend({ wishlistId: z.string() }))
-  .action(async ({ parsedInput: product, ctx: { session } }) => {
-    const productValues = {
-      ...product,
-      id: generateId(),
-      createdById: session.user.id,
-    };
-
-    // ensure user is an editor of the wishlist
-    await checkUserIsWishlistEditor({
-      wishlistId: product.wishlistId,
-      session,
-    });
-
-    try {
-      await db.insert(products).values(productValues);
-      await db
-        .update(wishlists)
-        .set({
-          updatedAt: new Date(),
-        })
-        .where(eq(wishlists.id, product.wishlistId));
-    } catch (e) {
-      console.error("Error inserting product", e);
-      return {
-        message: "Error inserting product",
-      } as const;
-    }
-
-    revalidatePath(`/wishlist/${product.wishlistId}`);
-
-    return {
-      message: "success",
-    };
-  });
