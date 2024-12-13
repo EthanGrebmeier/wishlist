@@ -12,7 +12,7 @@ export const Commitments = ({ commitments }: CommitmentsProps) => {
   console.log(commitments);
   console.log(Object.entries(commitments));
   return (
-    <motion.div className="flex flex-col gap-2 ">
+    <motion.div className="isolate  flex flex-col gap-2">
       <LayoutGroup>
         <AnimatePresence mode="popLayout" initial={false}>
           {Object.entries(commitments).length ? (

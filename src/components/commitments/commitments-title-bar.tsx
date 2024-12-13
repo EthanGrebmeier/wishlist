@@ -21,8 +21,8 @@ export const CommitmentsTitleBar = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <TitleBar className="py-2  sm:py-0 ">
+    <div className="sticky top-2 z-10 flex flex-col gap-2">
+      <TitleBar className="translate-y-0  py-2 sm:py-0">
         <div className="flex w-full flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
             <ColoredIconWrapper className="bg-blue-300">

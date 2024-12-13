@@ -31,7 +31,7 @@ export const SearchBar = ({
   return (
     <div className={cn("relative ", className)}>
       <Input
-        className="w-full border-2 bg-transparent p-2 pr-8"
+        className="w-full border-2 bg-background p-2 pr-8"
         type="text"
         placeholder="Search"
         defaultValue={defaultValue}
