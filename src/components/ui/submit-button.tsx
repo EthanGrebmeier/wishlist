@@ -10,7 +10,7 @@ type SubmitButtonProps = {
   children?: ReactNode;
   icon?: ReactNode;
   variant?: VariantProps<typeof buttonVariants>["variant"];
-  size?: VariantProps<typeof buttonVariants>["size"];
+  rounding?: VariantProps<typeof buttonVariants>["rounding"];
   className?: string;
 };
 
@@ -20,7 +20,7 @@ export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
       children,
       icon,
       variant = "default",
-      size = "default",
+      rounding = "rounded",
       className,
       ...props
     },
@@ -38,7 +38,7 @@ export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
         }
         type="submit"
         variant={variant}
-        size={size}
+        rounding={rounding}
         className={className}
         disabled={formStatus.pending}
         ref={ref}
