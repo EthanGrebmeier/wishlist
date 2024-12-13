@@ -49,7 +49,6 @@ const ImageDisplay = ({
               onClick={removeImage}
               variant={"destructive"}
               icon={<Trash2Icon size={15} />}
-              size="icon"
             ></Button>
           )}
         </div>
