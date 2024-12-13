@@ -4,8 +4,14 @@ import { CommitmentsTitleBar } from "~/components/commitments/commitments-title-
 import { getUserCommitments } from "~/server/actions/commitments";
 import type { CommitmentWithProduct } from "~/types/commitments";
 
-const MyCommitmentsPage = async () => {
-  const commitments = await getUserCommitments();
+const MyCommitmentsPage = async ({
+  searchParams,
+}: {
+  searchParams: { search?: string };
+}) => {
+  const commitments = await getUserCommitments({
+    search: searchParams.search,
+  });
   const groupedCommitments = commitments.reduce(
     (acc, commitment) => {
       if (!acc[commitment.product.wishlistId]) {

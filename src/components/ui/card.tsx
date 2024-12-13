@@ -47,7 +47,7 @@ export const Card = ({
     <motion.li layout>
       <motion.div
         whileHover={{
-          translateY: shouldNotTranslate ? 0 : -4,
+          translateY: shouldNotTranslate ? 0 : -2,
         }}
         className="group relative isolate"
       >

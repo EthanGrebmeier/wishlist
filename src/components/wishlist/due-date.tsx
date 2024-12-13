@@ -53,9 +53,12 @@ const DueDate = ({ date, className, color }: DueDateProps) => {
 
   return (
     <motion.button
-      onClick={() => setViewType(viewType === "date" ? "countdown" : "date")}
+      onClick={(e) => {
+        e.stopPropagation();
+        setViewType(viewType === "date" ? "countdown" : "date");
+      }}
       className={cn(
-        "flex h-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
+        "flex h-fit w-fit items-center gap-2 overflow-hidden rounded-md border-2 border-black p-1 font-medium",
         getBackgroundColor(color),
         className,
       )}
