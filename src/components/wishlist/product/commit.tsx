@@ -3,7 +3,7 @@
 import CommitNew from "./commit-input";
 import type { WishlistProductCommitmentsWithUser } from "~/types/wishlist";
 import type { WishlistProduct } from "~/types/wishlist";
-import { BookUserIcon, InfoIcon, LockIcon } from "lucide-react";
+import { BookUserIcon, InfoIcon, LockIcon, TelescopeIcon } from "lucide-react";
 import { Tooltip } from "~/components/ui/tooltip";
 import type { Session } from "next-auth";
 import { useEffect, useMemo } from "react";
@@ -112,7 +112,7 @@ export default function CommitProduct({
                 {isWishlistSecret ? (
                   <LockIcon className="ml-1 inline " size={15} />
                 ) : (
-                  <InfoIcon className="ml-1 inline" size={15} />
+                  <TelescopeIcon className="ml-1 inline" size={15} />
                 )}
               </Tooltip>
             </h2>

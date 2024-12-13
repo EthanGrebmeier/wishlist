@@ -80,7 +80,7 @@ export default function Product({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-block font-sans"
+                    className="hidden font-sans md:inline-block "
                   >
                     <Priority
                       showText={true}
