@@ -50,13 +50,17 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
           },
         },
       },
+      wishlistShares: true,
     },
   });
 
-  if (
-    selectedWishlist?.isSecret &&
-    session?.user.id === selectedWishlist.createdById
-  ) {
+  const isEditor =
+    selectedWishlist?.wishlistShares.some(
+      (share) =>
+        share.sharedWithUserId === session?.user.id && share.type === "editor",
+    ) ?? session?.user.id === selectedWishlist?.createdById;
+
+  if (selectedWishlist?.isSecret && isEditor) {
     return {
       ...selectedWishlist,
       products: selectedWishlist.products.map((product) => ({
