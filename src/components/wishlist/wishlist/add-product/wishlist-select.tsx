@@ -28,7 +28,7 @@ export const WishlistSelect = ({
 }: WishlistSelectProps) => {
   const { data: wishlists, isLoading } = useQuery({
     queryKey: ["wishlists"],
-    queryFn: fetchWishlists,
+    queryFn: () => fetchWishlists({ editableOnly: true }),
     throwOnError: true,
   });
 

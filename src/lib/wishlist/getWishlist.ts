@@ -79,6 +79,7 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
 
 type getWishlistsArgs = {
   limit?: number;
+  editableOnly?: boolean;
 };
 
 export const getAllWishlists = async (config?: getWishlistsArgs) => {
@@ -128,6 +129,12 @@ export const getSharedWishlists = async (config?: getWishlistsArgs) => {
     },
     limit: config?.limit,
   });
+
+  if (config?.editableOnly) {
+    return sharedLists
+      .filter((share) => share.type === "editor")
+      .map((list) => list.wishlist);
+  }
 
   return sharedLists.map((list) => list.wishlist).filter(Boolean);
 };
