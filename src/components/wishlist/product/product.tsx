@@ -18,6 +18,7 @@ import ButtonLink from "~/components/ui/button-link";
 import { ChevronsRight, PencilIcon, ShoppingBasketIcon } from "lucide-react";
 import { useSetAtom } from "jotai";
 import {
+  isProductCopyOpenAtom,
   isProductFormOpenAtom,
   productToEditAtom,
   viewedProductAtom,
@@ -27,6 +28,7 @@ import ProductCard from "../wishlist/product-list/product";
 import { useEffect } from "react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import { Button } from "~/components/ui/button";
+import { CopyProductTrigger } from "./copy-product-trigger";
 
 type ProductPageProps = {
   wishlist: WishlistWithProducts;
@@ -47,8 +49,6 @@ export default function Product({
   canUserEdit,
   productReceipts,
 }: ProductPageProps) {
-  const setProductToEdit = useSetAtom(productToEditAtom);
-  const setIsProductFormOpen = useSetAtom(isProductFormOpenAtom);
   const setViewedProduct = useSetAtom(viewedProductAtom);
   const setViewedWishlist = useSetAtom(viewedWishlistAtom);
   const setCanUserEdit = useSetAtom(canUserEditAtom);
@@ -138,7 +138,7 @@ export default function Product({
                 <ShoppingBasketIcon size={20} />
               </ColoredIconWrapper>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h2 className="text-2xl font-medium ">Interested?</h2>
               <p>View item on {product.url.split("//")[1]?.split("/")[0]}</p>
             </div>
@@ -151,6 +151,7 @@ export default function Product({
             </ButtonLink>
           </div>
         )}
+        <CopyProductTrigger product={product} />
         {canUserEdit && (
           <>
             <ConfirmReceipt

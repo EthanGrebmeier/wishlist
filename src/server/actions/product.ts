@@ -300,3 +300,39 @@ export const deleteProduct = protectedAction
       }
     },
   );
+
+export const copyProduct = protectedAction
+  .schema(z.object({ productId: z.string(), wishlistId: z.string() }))
+  .action(
+    async ({ parsedInput: { productId, wishlistId }, ctx: { session } }) => {
+      const dbProduct = await getProduct({ productId });
+
+      if (!dbProduct) {
+        throw new Error("Product not found");
+      }
+
+      await checkUserIsWishlistEditor({
+        wishlistId: dbProduct.wishlistId,
+        session,
+      });
+
+      try {
+        await db.insert(products).values({
+          ...dbProduct,
+          createdById: session.user.id,
+          updatedAt: new Date(),
+          createdAt: new Date(),
+
+          id: generateId(),
+          wishlistId,
+        });
+      } catch (e) {
+        console.error("Error copying product", e);
+        throw new Error("Unable to copy product");
+      }
+
+      return {
+        message: "success",
+      };
+    },
+  );

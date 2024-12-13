@@ -11,22 +11,28 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { fetchWishlists } from "~/lib/wishlist/client/fetchWishlists";
-import { useProductForm } from "./form";
 import { cn, getBackgroundColor } from "~/lib/utils";
 import { useAtomValue } from "jotai";
 import { productToEditAtom } from "~/store/product-settings";
 
-export const WishlistSelect = () => {
+type WishlistSelectProps = {
+  wishlistId: string | null;
+  setWishlistId: (wishlistId: string) => void;
+  showWarning?: boolean;
+};
+
+export const WishlistSelect = ({
+  wishlistId,
+  setWishlistId,
+  showWarning = true,
+}: WishlistSelectProps) => {
   const { data: wishlists, isLoading } = useQuery({
     queryKey: ["wishlists"],
     queryFn: fetchWishlists,
     throwOnError: true,
   });
 
-  const { form } = useProductForm();
   const productToEdit = useAtomValue(productToEditAtom);
-
-  const wishlistId = form.watch("wishlistId");
 
   if (isLoading)
     return (
@@ -48,8 +54,6 @@ export const WishlistSelect = () => {
   const isDifferentWishlist =
     productToEdit && wishlistId !== productToEdit.wishlistId;
 
-  console.log(productToEdit, wishlistId);
-
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-lg" htmlFor="wishlist-select">
@@ -59,10 +63,7 @@ export const WishlistSelect = () => {
         </div>
       </Label>
 
-      <Select
-        value={wishlistId}
-        onValueChange={(value) => form.setValue("wishlistId", value)}
-      >
+      <Select value={wishlistId ?? undefined} onValueChange={setWishlistId}>
         <SelectTrigger id="wishlist-select">
           <SelectValue placeholder="Select a wishlist">
             <div className="flex items-center gap-2">
@@ -94,7 +95,7 @@ export const WishlistSelect = () => {
           })}
         </SelectContent>
       </Select>
-      {isDifferentWishlist && (
+      {isDifferentWishlist && showWarning && (
         <p className="text-sm text-red-500">
           Warning: Moving this product to another wishlist will delete all
           product commitments.

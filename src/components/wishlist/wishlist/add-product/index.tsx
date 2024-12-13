@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
 import ProductForm, { ProductFormFooter, ProductFormProvider } from "./form";
 import { Button } from "~/components/ui/button";
@@ -27,6 +27,7 @@ import {
   useProductSheetNavigation,
 } from "./navigation-context";
 import { WishlistSelect } from "./wishlist-select";
+import { AddProductWishlistSelect } from "./add-product-wishlist-select";
 
 type AddProductSheetProps = {
   wishlistId: string;
@@ -106,7 +107,7 @@ const ProductFormSheet = ({ wishlistId }: AddProductSheetProps) => {
                   key="form"
                   className="flex flex-col gap-4"
                 >
-                  <WishlistSelect />
+                  <AddProductWishlistSelect />
                   <ProductImageDisplay />
                   <ProductForm />
                 </motion.div>

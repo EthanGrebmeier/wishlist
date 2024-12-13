@@ -57,7 +57,7 @@ const ConfirmReceipt = ({
             <PackageCheck size={20} />
           </ColoredIconWrapper>
         </div>
-        <div className="flex flex-col gap-2">
+        <div>
           <h2 className="text-2xl font-medium">Item Received</h2>
           <p className=" text-pretty leading-tight">
             You have already received this item.
@@ -85,7 +85,7 @@ const ConfirmReceipt = ({
           <PackageCheck size={20} />
         </ColoredIconWrapper>
       </div>
-      <div className="flex flex-col gap-2">
+      <div>
         <h2 className="text-2xl font-medium">Received this item?</h2>
         <p className=" text-pretty leading-tight">
           Mark this item as received to move it to{" "}

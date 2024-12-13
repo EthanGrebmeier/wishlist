@@ -8,3 +8,7 @@ export const productToDeleteAtom = atom<WishlistProduct | null>(null);
 export const isProductDeleteOpenAtom = atom(false);
 
 export const viewedProductAtom = atom<WishlistProduct | null>(null);
+
+export const productToCopyAtom = atom<WishlistProduct | null>(null);
+
+export const isProductCopyOpenAtom = atom(false);
