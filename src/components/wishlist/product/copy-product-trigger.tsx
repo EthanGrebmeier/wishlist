@@ -31,13 +31,14 @@ export const CopyProductTrigger = ({ product }: CopyProductTriggerProps) => {
         </ColoredIconWrapper>
       </div>
       <Button
+        variant="secondary"
         className="w-fit"
         onClick={() => {
           setProductToCopy(product);
           setIsProductCopyOpen(true);
         }}
       >
-        Copy Product
+        Make a copy
       </Button>
     </div>
   );

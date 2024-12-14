@@ -111,7 +111,7 @@ const ModalContent = ({
             }}
             className="relative  overflow-hidden  "
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 pb-4">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                   <p className="text-lg font-medium"> Confirm </p>
@@ -120,43 +120,29 @@ const ModalContent = ({
                     Marking this item as received will move it{" "}
                   </p>
                 </div>
-                <div className="grid grid-cols-[1fr_auto_1fr] flex-row flex-nowrap items-center gap-2">
-                  <div>
-                    <p className="mb-2 text-xl font-medium "> From: </p>
-                    <MockCard
-                      className="relative"
-                      title={wishlist.name}
-                      color={getBackgroundColor(wishlist.color) ?? "bg-white"}
-                    >
-                      {wishlist.imageUrl ? (
-                        <Image
-                          alt={wishlist.name}
-                          fill
-                          src={wishlist.imageUrl}
-                          className="w-full object-cover object-center"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-green-100">
-                          {" "}
-                          <Scroll size={50} />{" "}
-                        </div>
+                <div className="grid grid-cols-[1fr_1fr] flex-row flex-nowrap items-center gap-4">
+                  <div className="w-full">
+                    <p className="mb-1 text-lg font-medium "> From: </p>
+                    <div
+                      className={cn(
+                        "w-full rounded-md border border-black p-2",
+                        getBackgroundColor(wishlist.color) ?? "bg-white",
                       )}
-                    </MockCard>
-                  </div>
-                  <ArrowRight className="animate-pulse" size={40} />
-
-                  <div>
-                    <p className="mb-2 text-xl font-medium "> To: </p>
-
-                    <MockCard
-                      title="My Gifts"
-                      color={getBackgroundColor("pink") ?? "bg-white"}
                     >
-                      <div className="flex h-full w-full items-center justify-center bg-green-100">
-                        {" "}
-                        <Gift size={50} />{" "}
-                      </div>
-                    </MockCard>
+                      <p className="text-lg font-medium">{wishlist.name}</p>
+                    </div>
+                  </div>
+
+                  <div className="w-full">
+                    <p className="mb-1 text-lg font-medium "> To: </p>
+
+                    <div
+                      className={cn(
+                        "w-full rounded-md border border-black bg-pink-300 p-2",
+                      )}
+                    >
+                      <p className="text-lg font-medium">My Gifts</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -200,7 +186,7 @@ const ModalContent = ({
             bounce: 0,
             duration: 0.4,
           }}
-          className="flex w-full flex-col "
+          className="flex w-full flex-col pb-4"
         >
           <div>
             <h3 className="text-lg font-medium">Who got this for you?</h3>

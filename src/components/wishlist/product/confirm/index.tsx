@@ -86,9 +86,12 @@ const ConfirmReceipt = ({
         </ColoredIconWrapper>
       </div>
       <div>
-        <h2 className="text-2xl font-medium">Received this item?</h2>
+        <h2 className="pr-8 text-2xl font-medium">Mark Product Received</h2>
+        <p className=" mb-0.5 text-pretty leading-tight">
+          Received this product?
+        </p>
         <p className=" text-pretty leading-tight">
-          Mark this item as received to move it to{" "}
+          Mark it as received to move it to{" "}
           <span className="font-serif"> My Gifts </span>
         </p>
       </div>

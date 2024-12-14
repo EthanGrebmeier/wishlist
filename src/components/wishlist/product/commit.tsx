@@ -93,28 +93,15 @@ export default function CommitProduct({
     }
     return (
       <>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col ">
           <div className="absolute right-4 top-4">
             <ColoredIconWrapper className="bg-blue-300">
               <BookUserIcon size={20} />
             </ColoredIconWrapper>
           </div>
           <div>
-            <h2 className="text-balance pr-6 text-2xl font-medium sm:text-wrap">
+            <h2 className="text-balance text-2xl font-medium sm:text-wrap">
               Commit to this item
-              <Tooltip
-                text={
-                  isWishlistSecret
-                    ? "This wishlist is secret, the owner will not see your commitment."
-                    : "The wishlist owner will be able to see your commitment."
-                }
-              >
-                {isWishlistSecret ? (
-                  <LockIcon className="ml-1 inline " size={15} />
-                ) : (
-                  <TelescopeIcon className="ml-1 inline" size={15} />
-                )}
-              </Tooltip>
             </h2>
           </div>
           <p className="max-w-[300px] text-pretty leading-tight">
@@ -135,7 +122,7 @@ export default function CommitProduct({
     <div
       ref={scope}
       id="commit-product-container"
-      className="relative flex w-full flex-col justify-between gap-2 rounded-lg border-2 border-black  p-4"
+      className="relative flex w-full flex-col justify-between gap-4 rounded-lg border-2 border-black  p-4"
     >
       {/* <div className="absolute right-4 top-4">
         <div className="flex text-xl ">

@@ -55,7 +55,7 @@ const CopyProductSheet = () => {
       <div className="flex flex-col gap-4 pb-4">
         <div>
           <h2 className="text-lg font-semibold">
-            Copying {productToCopy?.name}
+            Copying: {productToCopy?.name}
           </h2>
           <p className="text-sm text-muted-foreground">
             Copying a product will create a new product in your wishlist.

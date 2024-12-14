@@ -15,7 +15,12 @@ import type { Session } from "next-auth";
 import CommitProduct from "./commit";
 import ProductImage from "./product-image";
 import ButtonLink from "~/components/ui/button-link";
-import { ChevronsRight, PencilIcon, ShoppingBasketIcon } from "lucide-react";
+import {
+  ChevronsRight,
+  ExternalLinkIcon,
+  PencilIcon,
+  ShoppingBasketIcon,
+} from "lucide-react";
 import { useSetAtom } from "jotai";
 import {
   isProductCopyOpenAtom,
@@ -121,7 +126,7 @@ export default function Product({
           </div>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {((!wishlist.isSecret && canUserEdit) || !canUserEdit) && (
           <CommitProduct
             session={session}
@@ -139,15 +144,17 @@ export default function Product({
               </ColoredIconWrapper>
             </div>
             <div>
-              <h2 className="text-2xl font-medium ">Interested?</h2>
-              <p>View item on {product.url.split("//")[1]?.split("/")[0]}</p>
+              <h2 className="text-2xl font-medium ">Purchase Product</h2>
+              <p> Interested in purchasing this item?</p>
             </div>
             <ButtonLink
               href={product.url}
               target="_blank"
-              className="mt-2 w-fit gap-0"
+              className="mt-2 w-fit"
+              variant="secondary"
             >
-              Purchase item
+              View item on{" "}
+              {product.url.replace(/^(https?:\/\/)?(www\.)?/, "").split("/")[0]}
             </ButtonLink>
           </div>
         )}
