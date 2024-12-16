@@ -144,8 +144,17 @@ export default function Product({
               </ColoredIconWrapper>
             </div>
             <div>
-              <h2 className="text-2xl font-medium ">Purchase Product</h2>
-              <p> Interested in purchasing this item?</p>
+              <h2 className="text-2xl font-medium ">View Product</h2>
+              {productCommitments?.length ? (
+                <p className="leading-tight">
+                  This product has been purchased, but you can view it on the
+                  retailer&apos;s site.
+                </p>
+              ) : (
+                <p className="leading-tight">
+                  Interested in purchasing this item?
+                </p>
+              )}
             </div>
             <ButtonLink
               href={product.url}

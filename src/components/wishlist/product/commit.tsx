@@ -80,7 +80,7 @@ export default function CommitProduct({
     if (productCommitments?.length && !hasUserCommitted) {
       return (
         <>
-          <div className="flex flex-col gap-2">
+          <div>
             <h2 className="text-2xl font-medium">
               This item has been purchased!
             </h2>
@@ -103,12 +103,12 @@ export default function CommitProduct({
             <h2 className="text-balance text-2xl font-medium sm:text-wrap">
               Commit to this item
             </h2>
+            <p className="max-w-[300px] text-pretty leading-tight">
+              Selecting this will let other people on this wishlist know you are
+              providing this item
+              {isWishlistSecret ? ", but not the wishlist owner." : "."}
+            </p>
           </div>
-          <p className="max-w-[300px] text-pretty leading-tight">
-            Selecting this will let other people on this wishlist know you are
-            providing this item
-            {isWishlistSecret ? ", but not the wishlist owner." : "."}
-          </p>
         </div>
         <CommitNew
           product={product}
