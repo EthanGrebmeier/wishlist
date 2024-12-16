@@ -85,7 +85,7 @@ export default function Product({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="hidden font-sans md:inline-block "
+                    className="font-sans "
                   >
                     <Priority
                       showText={true}
@@ -95,7 +95,7 @@ export default function Product({
                 )}
 
                 <div className="col-span-full flex items-center justify-between">
-                  <div className="hidden md:block">
+                  <div>
                     <h1 className="max-w-[380px] font-serif text-3xl leading-8">
                       {product.name}{" "}
                     </h1>

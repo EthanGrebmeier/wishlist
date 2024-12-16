@@ -38,7 +38,7 @@ const ContextButton = forwardRef<HTMLDivElement, ContextButtonProps>(
         className={cn(
           " bg-black",
           isLeftmost ? "rounded-l-full" : "rounded-l-none",
-          isRightmost ? "lg:rounded-r-full" : "rounded-r-none",
+          isRightmost ? "xl:rounded-r-full" : "rounded-r-none",
           className,
         )}
       >
@@ -63,7 +63,7 @@ const ContextButton = forwardRef<HTMLDivElement, ContextButtonProps>(
               ? "rounded-l-full border-l-2"
               : "rounded-l-none border-l-0",
             isRightmost
-              ? "border-r-0 lg:rounded-r-full lg:border-r-2"
+              ? "border-r-0 xl:rounded-r-full xl:border-r-2"
               : "rounded-r-none ",
           )}
         >

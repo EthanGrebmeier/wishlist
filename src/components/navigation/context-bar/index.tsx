@@ -261,8 +261,8 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 340 }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, type: "spring" }}
-              className="z-30 flex w-screen min-w-full max-w-[min(calc(100svw-16px),440px)] overflow-hidden rounded-3xl border-2 border-black bg-background xs:max-w-[min(calc(100svw-32px),440px)] "
+              transition={{ duration: 0.2, type: "spring", bounce: 0.4 }}
+              className="z-30 flex w-screen min-w-full max-w-[min(calc(100svw-16px),440px)] overflow-hidden rounded-2xl border-2 border-black bg-background xs:max-w-[min(calc(100svw-32px),440px)] "
             >
               <div className="flex h-full w-full overflow-hidden">
                 {navigation}
@@ -313,7 +313,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
                   translateY: "0px",
                 }}
                 className={cn(
-                  " flex items-center gap-2 border-2 border-black bg-green-400 py-2 font-bold",
+                  " flex items-center gap-2 border-2 border-black bg-green-400 py-2 font-medium",
                   visibleActions.length === 0
                     ? "rounded-full px-4"
                     : "rounded-r-full pl-3 pr-4",

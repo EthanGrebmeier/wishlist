@@ -68,27 +68,6 @@ const ProductWishlistHeader = ({
           />
         </div>
       </div>
-      <div className="flex w-full justify-between gap-4 md:hidden">
-        <div className="-mt-1 flex flex-col pt-2">
-          <p className="w-fit font-serif text-2xl leading-6">
-            {viewedProduct?.name}
-          </p>
-          <p className="font-serif text-lg">{viewedProduct?.brand}</p>
-        </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          <div className="h-8">
-            {viewedProduct?.priority !== "normal" && (
-              <Priority
-                showText={true}
-                priorityLevel={viewedProduct?.priority ?? "normal"}
-              />
-            )}
-          </div>
-          {viewedProduct?.price && (
-            <p className="pr-1.5 text-xl">${viewedProduct?.price}</p>
-          )}
-        </div>
-      </div>
     </TitleBar>
   );
 };
