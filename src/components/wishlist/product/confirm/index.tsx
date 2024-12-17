@@ -60,7 +60,7 @@ const ConfirmReceipt = ({
         <div>
           <h2 className="text-2xl font-medium">Item Received</h2>
           <p className=" text-pretty leading-tight">
-            You have already received this item.
+            You have already received this product.
           </p>
         </div>
         <button

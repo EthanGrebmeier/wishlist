@@ -21,12 +21,12 @@ const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
 
   return (
-    <nav className="flex h-full w-full flex-col justify-between gap-8 lg:w-[220px] ">
+    <nav className="flex h-full w-full flex-col justify-between gap-8 lg:w-[240px] ">
       <div className="flex flex-col gap-2 px-3 md:px-0">
         {isSignedIn && (
           <div className="flex flex-col gap-2">
-            <div className="flex flex-1 flex-col overflow-y-auto lg:max-h-none">
-              <div className="sticky top-0 flex w-full justify-between bg-background">
+            <div className="flex flex-1 flex-col lg:max-h-none">
+              <div className="sticky top-0 flex w-full justify-between gap-4 bg-background">
                 <div className="flex items-center gap-2">
                   <Scroll size={20} />
                   <p className="text-lg font-semibold">My Wishlists</p>

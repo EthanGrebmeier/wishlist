@@ -17,11 +17,11 @@ const Logo = ({
   ariaHidden = false,
 }: LogoProps) => {
   return (
-    <div className={cn("relative flex items-center gap-4 mr-8", className)}>
+    <div className={cn("relative mr-8 flex items-center gap-4", className)}>
       <p
         className={cn(
           "font-serif  tracking-tight ",
-          size === "large" ? "text-5xl md:text-7xl" : "text-5xl lg:text-4xl",
+          size === "large" ? "text-5xl md:text-7xl" : "text-5xl",
           textClassName,
         )}
         aria-hidden={ariaHidden}

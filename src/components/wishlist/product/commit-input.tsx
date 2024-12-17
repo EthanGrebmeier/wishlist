@@ -95,7 +95,7 @@ export default function CommitNew({
         )}
       </AnimatePresence>
       <Label htmlFor="commit-checkbox">
-        I have purchased or plan to provide this item
+        I have purchased or plan to provide this product
       </Label>
     </div>
   );

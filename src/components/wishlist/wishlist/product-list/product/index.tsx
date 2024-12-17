@@ -54,7 +54,7 @@ const Product = ({
               )}
               {!hideStatus &&
                 (!!product.commitments?.length ? (
-                  <Tooltip text="This item has been purchased!">
+                  <Tooltip text="This product has been purchased!">
                     <div className="rounded-md border-2 border-black bg-green-300 px-1 py-[2px] font-medium ">
                       <BookUserIcon size={24} />
                     </div>

@@ -19,7 +19,7 @@ import SharedUserThumbnail from "../../share-wishlist/shared-users/shared-user-t
 import { cn, getBackgroundColor } from "~/lib/utils";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "~/components/ui/submit-button";
-import MockCard from "~/components/home/mock-card";
+
 import { type Session } from "next-auth";
 import Image from "next/image";
 import ResponsiveSheet from "~/components/ui/responsive-sheet";
@@ -35,7 +35,7 @@ const Modal = ({ wishlist, wishlistShares, product, session }: ModalProps) => {
   return (
     <ResponsiveSheet
       trigger={<Button>Mark as received</Button>}
-      title="Received this item?"
+      title="Product receipt"
       titleIcon={
         <ColoredIconWrapper className="bg-green-300">
           <PackageCheck size={20} />
@@ -117,7 +117,7 @@ const ModalContent = ({
                   <p className="text-lg font-medium"> Confirm </p>
                   <p className="text-sm">
                     {" "}
-                    Marking this item as received will move it{" "}
+                    Marking this product as received will move it{" "}
                   </p>
                 </div>
                 <div className="grid grid-cols-[1fr_1fr] flex-row flex-nowrap items-center gap-4">
@@ -191,7 +191,7 @@ const ModalContent = ({
           <div>
             <h3 className="text-lg font-medium">Who got this for you?</h3>
             <p className="mb-4 text-balance text-sm tracking-tight">
-              Select a user from the list below to credit them for the item
+              Select a user from the list below to credit them for the product
             </p>
             <ul className="mb-6 flex max-h-[210px] flex-col gap-1 overflow-y-auto rounded-md border border-black p-2">
               {wishlistShares.map(({ users: sharedUser }) => (
@@ -244,8 +244,8 @@ const ModalContent = ({
           >
             {" "}
             {selectedUserId
-              ? "Mark item received"
-              : "Skip and mark item received"}
+              ? "Mark product received"
+              : "Skip and mark product received"}
           </Button>{" "}
         </motion.div>
       );

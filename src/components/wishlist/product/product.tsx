@@ -152,7 +152,7 @@ export default function Product({
                 </p>
               ) : (
                 <p className="leading-tight">
-                  Interested in purchasing this item?
+                  Interested in purchasing this product?
                 </p>
               )}
             </div>
@@ -162,7 +162,7 @@ export default function Product({
               className="mt-2 w-fit"
               variant="secondary"
             >
-              View item on{" "}
+              View on{" "}
               {product.url.replace(/^(https?:\/\/)?(www\.)?/, "").split("/")[0]}
             </ButtonLink>
           </div>

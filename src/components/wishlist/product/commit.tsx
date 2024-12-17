@@ -82,10 +82,10 @@ export default function CommitProduct({
         <>
           <div>
             <h2 className="text-2xl font-medium">
-              This item has been purchased!
+              This product has been purchased!
             </h2>
             <p className="max-w-[300px] text-pretty leading-tight">
-              {productCommitments[0]?.user.name} has committed to this item.
+              {productCommitments[0]?.user.name} has committed to this product.
             </p>
           </div>
         </>
@@ -101,11 +101,11 @@ export default function CommitProduct({
           </div>
           <div>
             <h2 className="text-balance text-2xl font-medium sm:text-wrap">
-              Commit to this item
+              Commit to this product
             </h2>
             <p className="max-w-[300px] text-pretty leading-tight">
               Selecting this will let other people on this wishlist know you are
-              providing this item
+              providing this product
               {isWishlistSecret ? ", but not the wishlist owner." : "."}
             </p>
           </div>
