@@ -56,14 +56,10 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
           color={wishlist.color}
         />
       )}
-      {canUserEdit ? (
-        <div className="absolute right-2 top-2 z-10">
-          <WishlistMenu wishlist={wishlist} />
-        </div>
-      ) : (
-        <div className="absolute right-2 top-2 z-10 flex items-center justify-center gap-1 rounded-md border-2 border-black bg-purple-300 px-1 py-0.5">
+      {!canUserEdit && (
+        <div className="absolute right-2 top-2 z-10 flex items-center justify-center gap-1 rounded-md border-2 border-black bg-purple-200 px-0.5 py-0.5">
           <ContactRoundIcon size={24} />
-          <p className="text-sm font-bold">Shared</p>
+          <p className="hidden text-sm font-bold sm:block">Shared</p>
         </div>
       )}
     </Card>

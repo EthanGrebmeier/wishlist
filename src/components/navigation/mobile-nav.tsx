@@ -20,9 +20,9 @@ const MobileNavigation = async () => {
   return (
     <div className="flex h-full w-full flex-col gap-4 ">
       <div className="flex h-full w-full flex-col ">
-        <div className="flex items-center justify-between gap-2 border-b border-black  p-2">
+        <div className="flex items-center justify-between gap-2 border-b-2 border-black bg-green-400  p-2">
           <div className="ml-1 flex items-center gap-2">
-            <ScrollIcon size={20} />
+            <ScrollIcon size={24} />
             <p className=" text-lg font-semibold"> My Wishlists</p>
           </div>
           <NavLink className="w-fit text-sm" href="/wishlist">
@@ -68,25 +68,27 @@ const MobileNavigation = async () => {
               );
             })}
         </div>
-        <div className="grid shrink-0 grid-cols-3 border-t-2 border-black ">
+        <div className="flex flex-col gap-1 border-t-2 border-black bg-[#f5eace] py-1 pb-2 ">
           <Link
-            className="flex flex-col items-center border-r-2 border-black bg-blue-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
+            className="flex flex-1 items-center gap-2  px-2 py-1  focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
             href="/my-commitments"
           >
             <BookUserIcon size={24} />
-            <p className="font-bold">Commitments</p>
+            <p className="flex-1 text-lg font-semibold">Commitments</p>
           </Link>
-          <Link
-            className="flex flex-col items-center border-r-2 border-black bg-pink-300 pb-1 pt-2 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-            href="/my-gifts"
-          >
-            <GiftIcon size={24} />
-            <p className="font-bold">Gifts</p>
-          </Link>
-          <SignInOutButton
-            className="flex flex-col items-center bg-yellow-300 pb-1 pt-2 font-bold focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-            isSignedIn={!!session}
-          />
+          <div className="flex justify-between">
+            <Link
+              className="flex flex-1 items-center  gap-2  px-2 py-1  focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              href="/my-gifts"
+            >
+              <GiftIcon size={24} />
+              <p className="flex-1 text-lg font-semibold">Gifts</p>
+            </Link>
+            <SignInOutButton
+              className="flex flex-row-reverse items-center  gap-2  px-2 py-1  font-bold focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              isSignedIn={!!session}
+            />
+          </div>
         </div>
       </div>
     </div>
