@@ -23,7 +23,7 @@ const MobileNavigation = async () => {
         <div className="flex items-center justify-between gap-2 border-b-2 border-black bg-green-400  p-2">
           <div className="ml-1 flex items-center gap-2">
             <ScrollIcon size={24} />
-            <p className=" text-lg font-semibold"> My Wishlists</p>
+            <p className=" text-lg font-semibold">Wishlists</p>
           </div>
           <NavLink className="w-fit text-sm" href="/wishlist">
             View All <ArrowRight size={12} />
@@ -68,7 +68,7 @@ const MobileNavigation = async () => {
               );
             })}
         </div>
-        <div className="flex flex-col gap-1 border-t-2 border-black bg-[#f5eace] py-1 pb-2 ">
+        <div className="flex flex-col gap-1 border-t-2 border-black bg-[#fbf6ea] py-1 pb-2 ">
           <Link
             className="flex flex-1 items-center gap-2  px-2 py-1  focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2  "
             href="/my-commitments"

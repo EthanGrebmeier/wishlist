@@ -29,7 +29,7 @@ const Navigation = async () => {
               <div className="sticky top-0 flex w-full justify-between gap-4 bg-background">
                 <div className="flex items-center gap-2">
                   <Scroll size={20} />
-                  <p className="text-lg font-semibold">My Wishlists</p>
+                  <p className="text-lg font-semibold">Wishlists</p>
                 </div>
                 <NavLink className="w-fit text-sm" href="/wishlist">
                   View All <ArrowRight size={12} />

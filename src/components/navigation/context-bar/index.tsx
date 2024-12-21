@@ -171,14 +171,15 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
   const visibleActions = [...actions[currentAction], ...childrenActions].filter(
     (action) => action.shouldShow,
   );
-  const ref = useRef<HTMLDivElement>(null);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+  const openNavButtonContainerRef = useRef<HTMLDivElement>(null);
   const openNavButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsMobileNavOpen(false);
   }, [currentPath]);
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside([mobileNavRef, openNavButtonContainerRef], () => {
     setIsMobileNavOpen(false);
   });
 
@@ -194,7 +195,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
 
   useEffect(() => {
     if (isMobileNavOpen) {
-      const dialogElement = ref.current;
+      const dialogElement = mobileNavRef.current;
       const openNavButton = openNavButtonRef.current;
       if (dialogElement && openNavButton) {
         const focusableElements = dialogElement.querySelectorAll(
@@ -257,7 +258,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
         <AnimatePresence>
           {isMobile && isMobileNavOpen && (
             <motion.div
-              ref={ref}
+              ref={mobileNavRef}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 340 }}
               exit={{ opacity: 0, height: 0 }}
@@ -291,6 +292,7 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
           </div>
           <div className={cn("flex h-14 items-end  xl:hidden")}>
             <div
+              ref={openNavButtonContainerRef}
               className={cn(
                 "flex  bg-black",
                 visibleActions.length === 0

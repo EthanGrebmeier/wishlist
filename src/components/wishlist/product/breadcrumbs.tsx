@@ -10,7 +10,7 @@ export default function Breadcrumbs({ wishlist }: BreadcrumbsProps) {
   return (
     <div className="col-span-full flex items-center gap-1 text-base font-medium leading-none [&_p]:mt-[2px]">
       <Link className="hover:underline" href="/wishlist">
-        <p>My Wishlists</p>
+        <p>Wishlists</p>
       </Link>
       <p className="text-gray-400" aria-hidden="true">
         /

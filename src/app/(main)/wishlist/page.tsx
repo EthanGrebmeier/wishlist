@@ -14,7 +14,7 @@ const WishlistPage = async () => {
           <ColoredIconWrapper>
             <Scroll size="25" />
           </ColoredIconWrapper>
-          <TitleBar.Title>My Wishlists</TitleBar.Title>{" "}
+          <TitleBar.Title>Wishlists</TitleBar.Title>{" "}
         </span>
       </TitleBar>
       <Suspense>
