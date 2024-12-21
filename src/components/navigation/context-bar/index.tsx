@@ -202,9 +202,13 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
         const focusableElements = dialogElement.querySelectorAll(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
+        // we dont want to focus on the search input
         const firstFocusableElement = focusableElements[0] as HTMLElement;
+        if (firstFocusableElement.tagName === "INPUT") {
+          const secondFocusableElement = focusableElements[1] as HTMLElement;
+          secondFocusableElement.focus();
+        }
         const lastFocusableElement = openNavButton;
-        firstFocusableElement.focus();
 
         const handleTabKeyPress = (event: KeyboardEvent) => {
           if (event.key === "Tab") {
