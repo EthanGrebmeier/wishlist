@@ -162,7 +162,7 @@ export const SearchPopover = ({
             ref={resultsRef}
             id="search-results"
             role="listbox"
-            className="max-h-[300px] overflow-y-auto p-2"
+            className="relative max-h-[300px] overflow-y-auto p-2"
             tabIndex={-1}
           >
             <AnimatePresence mode="wait">
@@ -210,33 +210,37 @@ export const SearchPopover = ({
                   >
                     {searchResults.wishlists.map((wishlist) => (
                       <motion.div key={wishlist.id} className="overflow-hidden">
-                        <div className="flex flex-col gap-1">
-                          <Link
-                            href={`/wishlist/${wishlist.id}`}
-                            onClick={onLinkClick}
-                            onKeyDown={handleResultKeyDown}
-                            className="flex items-center gap-2 rounded-md p-2 hover:bg-secondary focus:bg-secondary focus:outline-none"
-                            role="option"
-                          >
-                            {wishlist.isOwner ? (
-                              <div
-                                className={cn(
-                                  "h-3 w-3 rounded-full border border-black",
-                                  getBackgroundColor(wishlist.color),
-                                )}
-                              />
-                            ) : (
-                              <ColoredIconWrapper
-                                className={cn(
-                                  "rounded-sm border bg-white",
-                                  getBackgroundColor(wishlist.color),
-                                )}
-                              >
-                                <ContactRound size={12} />
-                              </ColoredIconWrapper>
-                            )}
-                            <span className="font-medium">{wishlist.name}</span>
-                          </Link>
+                        <div className="flex flex-col">
+                          <div>
+                            <Link
+                              href={`/wishlist/${wishlist.id}`}
+                              onClick={onLinkClick}
+                              onKeyDown={handleResultKeyDown}
+                              className="flex items-center gap-2 rounded-md p-2 hover:bg-secondary focus:bg-secondary focus:outline-none"
+                              role="option"
+                            >
+                              {wishlist.isOwner ? (
+                                <div
+                                  className={cn(
+                                    "h-3 w-3 rounded-full border border-black",
+                                    getBackgroundColor(wishlist.color),
+                                  )}
+                                />
+                              ) : (
+                                <ColoredIconWrapper
+                                  className={cn(
+                                    "rounded-sm border bg-white",
+                                    getBackgroundColor(wishlist.color),
+                                  )}
+                                >
+                                  <ContactRound size={12} />
+                                </ColoredIconWrapper>
+                              )}
+                              <span className="font-medium">
+                                {wishlist.name}
+                              </span>
+                            </Link>
+                          </div>
                           {wishlist.products.length > 0 && (
                             <div className="ml-5 flex flex-col gap-1 text-sm text-muted-foreground">
                               {wishlist.products.map((product) => (
