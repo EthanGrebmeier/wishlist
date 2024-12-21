@@ -34,6 +34,7 @@ import { gridDisplayAtom } from "~/store/grid-display";
 import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
 import { usePreventScroll } from "@react-aria/overlays";
 import { useContextBar } from "~/context/context-bar-context";
+import { SearchPopover } from "../search-popover";
 
 type ContextBarProps = {
   navigation: React.ReactNode;
@@ -254,11 +255,16 @@ export const ContextBar = ({ navigation }: ContextBarProps) => {
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-4 right-1/2 z-20 flex translate-x-1/2 flex-col items-center overflow-hidden ">
+      <div
+        ref={mobileNavRef}
+        className="fixed bottom-4 right-1/2 z-20 flex translate-x-1/2 flex-col items-center gap-2 "
+      >
         <AnimatePresence>
           {isMobile && isMobileNavOpen && (
+            <SearchPopover alignPopover="center" />
+          )}
+          {isMobile && isMobileNavOpen && (
             <motion.div
-              ref={mobileNavRef}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 340 }}
               exit={{ opacity: 0, height: 0 }}

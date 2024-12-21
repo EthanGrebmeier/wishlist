@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import Link from "~/components/ui/link";
+import { SearchPopover } from "./search-popover";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
@@ -25,6 +26,7 @@ const Navigation = async () => {
       <div className="flex flex-col gap-2 px-3 md:px-0">
         {isSignedIn && (
           <div className="flex flex-col gap-2">
+            <SearchPopover />
             <div className="flex flex-1 flex-col lg:max-h-none">
               <div className="sticky top-0 flex w-full justify-between gap-4 bg-background">
                 <div className="flex items-center gap-2">

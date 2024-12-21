@@ -1,5 +1,5 @@
-import { SearchIcon } from "lucide-react";
-import { useEffect } from "react";
+import { SearchIcon, XIcon } from "lucide-react";
+import { forwardRef, useEffect } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { cn } from "~/lib/utils";
 import { Input } from "./input";
@@ -8,45 +8,88 @@ type SearchBarProps = {
   onChange: (value: string) => void;
   shouldDebounce?: boolean;
   defaultValue?: string;
+  value?: string;
   className?: string;
+  inputClassName?: string;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 };
 
-export const SearchBar = ({
-  onChange,
-  shouldDebounce = false,
-  defaultValue = "",
-  className,
-}: SearchBarProps) => {
-  const [debouncedValue, setDebouncedValue] = useDebounceValue(
-    defaultValue,
-    300,
-  );
+export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
+  (
+    {
+      onChange,
+      shouldDebounce = false,
+      defaultValue = "",
+      value,
+      className,
+      inputClassName,
+      onKeyDown,
+    },
+    ref,
+  ) => {
+    const [debouncedValue, setDebouncedValue] = useDebounceValue(
+      defaultValue,
+      300,
+    );
 
-  useEffect(() => {
-    if (shouldDebounce) {
-      onChange(debouncedValue);
-    }
-  }, [debouncedValue, shouldDebounce, onChange]);
+    useEffect(() => {
+      if (shouldDebounce) {
+        onChange(debouncedValue);
+      }
+    }, [debouncedValue, shouldDebounce, onChange]);
 
-  return (
-    <div className={cn("relative ", className)}>
-      <Input
-        className="w-full border-2 bg-background p-2 pr-8"
-        type="text"
-        placeholder="Search"
-        defaultValue={defaultValue}
-        onChange={(e) => {
-          if (shouldDebounce) {
-            setDebouncedValue(e.target.value);
-          } else {
-            onChange(e.target.value);
-          }
-        }}
-      />
-      <SearchIcon
-        size={24}
-        className="absolute right-2 top-1/2 -translate-y-1/2"
-      />
-    </div>
-  );
-};
+    const handleClear = () => {
+      if (shouldDebounce) {
+        setDebouncedValue("");
+      } else {
+        onChange("");
+      }
+      if (ref && "current" in ref && ref.current) {
+        ref.current.value = "";
+        ref.current.focus();
+      }
+    };
+
+    const showClearButton =
+      value !== undefined ? value.length > 0 : defaultValue.length > 0;
+
+    return (
+      <div className={cn("relative ", className)}>
+        <Input
+          ref={ref}
+          className={cn(
+            "w-full border-2 bg-background p-2 pr-16",
+            inputClassName,
+          )}
+          type="text"
+          placeholder="Search"
+          defaultValue={defaultValue}
+          value={value}
+          onChange={(e) => {
+            if (shouldDebounce) {
+              setDebouncedValue(e.target.value);
+            } else {
+              onChange(e.target.value);
+            }
+          }}
+          onKeyDown={onKeyDown}
+        />
+        <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+          {showClearButton ? (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="rounded-sm p-1 hover:bg-secondary"
+            >
+              <XIcon size={16} className="text-muted-foreground" />
+            </button>
+          ) : (
+            <SearchIcon size={20} className="text-muted-foreground" />
+          )}
+        </div>
+      </div>
+    );
+  },
+);
+
+SearchBar.displayName = "SearchBar";
