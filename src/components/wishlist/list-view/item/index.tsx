@@ -4,18 +4,22 @@ import WishlistMenu from "./menu";
 import { getBackgroundColor } from "~/lib/utils";
 import DueDate from "../../due-date";
 import { ContactRoundIcon, Scroll } from "lucide-react";
-import type { UserTypeWithOwner } from "~/types/user";
 import Card from "~/components/ui/card";
 import Image from "next/image";
 
 export type ListItemProps = {
   wishlist: WishlistWithProducts;
   canUserEdit: boolean;
-  userType: UserTypeWithOwner;
+  isOwner: boolean;
   animationDelay?: number;
 };
 
-const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
+const ListItem = ({
+  wishlist,
+  canUserEdit,
+  isOwner,
+  animationDelay,
+}: ListItemProps) => {
   const { name, id, color } = wishlist;
 
   return (
@@ -56,7 +60,7 @@ const ListItem = ({ wishlist, canUserEdit, animationDelay }: ListItemProps) => {
           color={wishlist.color}
         />
       )}
-      {!canUserEdit && (
+      {!isOwner && (
         <div className="absolute right-2 top-2 z-10 flex items-center justify-center gap-1 rounded-md border-2 border-black bg-purple-200 px-0.5 py-0.5">
           <ContactRoundIcon size={24} />
           <p className="hidden text-sm font-bold sm:block">Shared</p>

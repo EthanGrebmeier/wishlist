@@ -3,8 +3,7 @@ import { Suspense } from "react";
 import ColoredIconWrapper from "~/components/ui/colored-icon-wrapper";
 import TitleBar from "~/components/ui/title-bar";
 import { DeleteWishlistSheet } from "~/components/wishlist/delete-wishlist-sheet";
-import WishlistGrid from "~/components/wishlist/list-view/wishlist-grid";
-import { getAllWishlists } from "~/lib/wishlist/getWishlist";
+import { WishlistGridWrapper } from "~/components/wishlist/list-view/wishlist-grid-wrapper";
 
 const WishlistPage = async () => {
   return (
@@ -18,7 +17,7 @@ const WishlistPage = async () => {
         </span>
       </TitleBar>
       <Suspense>
-        <WishlistGrid getWishlists={getAllWishlists} />
+        <WishlistGridWrapper />
       </Suspense>
       <DeleteWishlistSheet />
     </>

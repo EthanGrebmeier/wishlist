@@ -1,9 +1,7 @@
 import React from "react";
 import ListItem from ".";
-import { getSharedUserType } from "~/lib/wishlist/getSharedUsers";
 import type { Session } from "next-auth";
 import type { WishlistWithProducts } from "~/types/wishlist";
-import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 
 type ListItemServerWrapperProps = {
   session: Session;
@@ -11,28 +9,16 @@ type ListItemServerWrapperProps = {
   animationDelay?: number;
 };
 
-const ListItemServerWrapper = async ({
+const ListItemServerWrapper = ({
   session,
   wishlist,
   animationDelay,
 }: ListItemServerWrapperProps) => {
-  const wishlistShareType = await getSharedUserType({
-    wishlistId: wishlist.id,
-    session,
-  });
-
-  if (!wishlistShareType) {
-    // Somehow caught a state where this list is no longer shared with the user
-    return null;
-  }
-
-  const canUserEdit = wishlist.createdById === session.user.id;
-
   return (
     <ListItem
       wishlist={wishlist}
-      canUserEdit={canUserEdit}
-      userType={wishlistShareType}
+      canUserEdit={wishlist.canEdit}
+      isOwner={wishlist.isOwner}
       animationDelay={animationDelay}
     />
   );

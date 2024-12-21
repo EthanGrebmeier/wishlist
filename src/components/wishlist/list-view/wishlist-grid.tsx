@@ -1,18 +1,17 @@
-import { getServerAuthSession } from "~/server/auth";
+"use client";
+
 import type { WishlistWithProducts } from "~/types/wishlist";
 import ListView from ".";
 import ListItemServerWrapper from "./item/server-wrapper";
 import { CreateWishlistButton } from "./create-wishlist-button";
+import { useSession } from "next-auth/react";
 
 type WishlistGridProps = {
-  getWishlists: () => Promise<WishlistWithProducts[]>;
+  wishlists: WishlistWithProducts[];
 };
 
-const WishlistGrid = async ({ getWishlists }: WishlistGridProps) => {
-  const [wishlists, session] = await Promise.all([
-    getWishlists(),
-    getServerAuthSession(),
-  ]);
+const WishlistGrid = ({ wishlists }: WishlistGridProps) => {
+  const { data: session } = useSession();
 
   if (!session) {
     return null;

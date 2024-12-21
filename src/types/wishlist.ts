@@ -14,6 +14,8 @@ export type Wishlist = typeof wishlists.$inferSelect;
 
 export interface WishlistWithProducts extends Wishlist {
   products: WishlistProduct[];
+  canEdit: boolean;
+  isOwner: boolean;
 }
 
 export type WishlistProduct = typeof products.$inferSelect;

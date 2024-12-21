@@ -95,7 +95,7 @@ export const getUserWishlists = async (config?: getWishlistsArgs) => {
     redirect("/");
   }
 
-  return db.query.wishlists.findMany({
+  const userWishlists = await db.query.wishlists.findMany({
     where: eq(wishlists.createdById, userSession.user.id),
     with: {
       products: true,
@@ -103,6 +103,12 @@ export const getUserWishlists = async (config?: getWishlistsArgs) => {
     orderBy: desc(wishlists.updatedAt),
     limit: config?.limit,
   });
+
+  return userWishlists.map((wishlist) => ({
+    ...wishlist,
+    canEdit: true,
+    isOwner: true,
+  }));
 };
 
 export const getSharedWishlists = async (config?: getWishlistsArgs) => {
@@ -133,8 +139,18 @@ export const getSharedWishlists = async (config?: getWishlistsArgs) => {
   if (config?.editableOnly) {
     return sharedLists
       .filter((share) => share.type === "editor")
-      .map((list) => list.wishlist);
+      .map((list) => ({
+        ...list.wishlist,
+        canEdit: true,
+        isOwner: list.wishlist.createdById === session.user.id,
+      }));
   }
 
-  return sharedLists.map((list) => list.wishlist).filter(Boolean);
+  return sharedLists
+    .map((list) => ({
+      ...list.wishlist,
+      canEdit: list.type === "editor",
+      isOwner: list.wishlist.createdById === session.user.id,
+    }))
+    .filter(Boolean);
 };
