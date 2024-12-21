@@ -67,6 +67,8 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
         ...product,
         commitments: [],
       })),
+      canEdit: isEditor,
+      isOwner: session?.user.id === selectedWishlist.createdById,
     };
   }
 
@@ -74,7 +76,11 @@ export const getWishlist = async ({ wishlistId }: { wishlistId: string }) => {
     throw new Error(`No wishlist found by ID ${wishlistId}`);
   }
 
-  return selectedWishlist;
+  return {
+    ...selectedWishlist,
+    canEdit: isEditor,
+    isOwner: session?.user.id === selectedWishlist.createdById,
+  };
 };
 
 type getWishlistsArgs = {

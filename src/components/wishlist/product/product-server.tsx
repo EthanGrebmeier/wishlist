@@ -8,7 +8,6 @@ import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistE
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { getSharedUsers } from "~/lib/wishlist/getSharedUsers";
 import Product from "./product";
-import WishlistHeader from "../wishlist/header";
 import ProductWishlistHeader from "./product-wishlist-header";
 
 type ProductProps = {
