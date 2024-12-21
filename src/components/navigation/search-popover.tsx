@@ -147,6 +147,7 @@ export const SearchPopover = ({
         aria-expanded={showPopover}
         aria-controls="search-results"
         aria-haspopup="listbox"
+        placeholder="Search"
         // role="combobox"
       />
       {showPopover && (

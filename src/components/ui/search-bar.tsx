@@ -12,6 +12,7 @@ type SearchBarProps = {
   className?: string;
   inputClassName?: string;
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  placeholder?: string;
 };
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
@@ -24,6 +25,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
       className,
       inputClassName,
       onKeyDown,
+      placeholder = "Search",
     },
     ref,
   ) => {
@@ -58,11 +60,11 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
         <Input
           ref={ref}
           className={cn(
-            "w-full border-2 bg-background p-2 pr-16",
+            "w-full overflow-ellipsis border-2 bg-background p-2 pr-7",
             inputClassName,
           )}
           type="text"
-          placeholder="Search"
+          placeholder={placeholder}
           defaultValue={defaultValue}
           value={value}
           onChange={(e) => {

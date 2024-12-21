@@ -24,7 +24,7 @@ const FilterButton = ({
     <button
       onClick={onClick}
       className={cn(
-        "relative z-10 border-black px-1 py-0.5 text-base font-medium",
+        "relative z-10 border-black px-1 py-0.5 text-base font-medium transition-colors duration-150 hover:bg-green-200",
         side === "left" && "border-r-2 pl-2",
         side === "right" && "border-l-2 pr-2",
         className,
