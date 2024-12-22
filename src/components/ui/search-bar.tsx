@@ -69,12 +69,8 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 
     const showClearButton =
       value !== undefined ? value.length > 0 : defaultValue.length > 0;
+    const isMac = navigator.userAgent?.toLowerCase().includes("mac");
 
-    const isMac =
-      typeof window !== "undefined" &&
-      (/Mac|iPhone|iPod|iPad/.test(navigator.userAgent) ||
-        // @ts-expect-error - userAgentData is not yet in the TypeScript DOM lib
-        navigator.userAgentData?.platform?.toLowerCase().includes("mac"));
     const shortcutText = isMac ? "⌘K" : "Ctrl+K";
 
     return (

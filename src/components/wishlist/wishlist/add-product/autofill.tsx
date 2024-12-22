@@ -25,6 +25,20 @@ import { useAutofillForm } from "./autofill-context";
 const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
   const { form, execute, formError } = useAutofillForm();
 
+  const handleUrlChange = async (value: string) => {
+    form.setValue("url", value);
+    try {
+      // Basic URL validation
+      new URL(value);
+      // Let the form state update before submitting
+      setTimeout(() => {
+        void execute({ pageToScrape: value });
+      }, 0);
+    } catch {
+      // Not a valid URL, just update the form value
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -48,12 +62,15 @@ const ScrapeInput = forwardRef<HTMLFormElement>(({}, ref) => {
                     tooltip: "Paste Copied URL",
                     onClick: () => {
                       void (async () => {
-                        form.setValue(
-                          "url",
-                          await navigator.clipboard.readText(),
-                        );
+                        const clipboardText =
+                          await navigator.clipboard.readText();
+                        void handleUrlChange(clipboardText);
                       })();
                     },
+                  }}
+                  onPaste={(e) => {
+                    const pastedText = e.clipboardData.getData("text");
+                    void handleUrlChange(pastedText);
                   }}
                   {...field}
                 />

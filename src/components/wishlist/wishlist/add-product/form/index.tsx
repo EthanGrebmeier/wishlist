@@ -10,7 +10,6 @@ import {
   SquarePenIcon,
   StoreIcon,
 } from "lucide-react";
-import { type HookActionStatus } from "next-safe-action/hooks";
 import React, {
   createContext,
   type Dispatch,
@@ -20,11 +19,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { type UseFormReturn } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField } from "~/components/ui/form";
 import { productSchema } from "~/schema/wishlist/product";
-import { updateProduct } from "~/server/actions/product";
 import {
   HorizontalInputWrapper,
   HorizontalTextInput,
@@ -45,7 +43,9 @@ import {
   productToEditAtom,
 } from "~/store/product-settings";
 import StatusButton from "~/components/ui/status-button";
-import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { Checkbox } from "~/components/ui/checkbox";
+import { useMutation } from "@tanstack/react-query";
+
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
 
@@ -159,27 +159,57 @@ const ProductForm = () => {
 };
 
 export const ProductFormFooter = () => {
-  const { handleSubmit, isEditing, status } = useProductForm();
+  const { handleSubmit, isEditing, mutation, createAnother, setCreateAnother } =
+    useProductForm();
 
   return (
-    <div className="flex w-full justify-end">
-      <StatusButton
-        onClick={handleSubmit}
-        status={status}
-        content={{
-          text: isEditing ? "Update Product" : "Add Product",
-          Icon: FilePlus,
-        }}
-        loadingContent={{
-          text: "Adding Product...",
-          Icon: LoaderCircleIcon,
-          shouldSpin: true,
-        }}
-        hasSucceededContent={{
-          text: "Success!",
-          Icon: FilePlus,
-        }}
-      />
+    <div className="flex w-full items-center justify-between">
+      <div className="flex items-center gap-2">
+        {!isEditing && (
+          <>
+            <Checkbox
+              id="createAnother"
+              checked={createAnother}
+              onCheckedChange={(checked) =>
+                setCreateAnother(checked as boolean)
+              }
+            />
+            <label
+              htmlFor="createAnother"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Create Multiple
+            </label>
+          </>
+        )}
+      </div>
+      <div className={!isEditing ? "ml-auto" : ""}>
+        <StatusButton
+          onClick={handleSubmit}
+          status={
+            mutation.isPending
+              ? "executing"
+              : mutation.isSuccess
+                ? "hasSucceeded"
+                : mutation.isError
+                  ? "hasErrored"
+                  : "idle"
+          }
+          content={{
+            text: isEditing ? "Update Product" : "Add Product",
+            Icon: FilePlus,
+          }}
+          loadingContent={{
+            text: "Adding Product...",
+            Icon: LoaderCircleIcon,
+            shouldSpin: true,
+          }}
+          hasSucceededContent={{
+            text: "Success!",
+            Icon: FilePlus,
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -192,7 +222,11 @@ type ProductFormContextType = {
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   setFormValues: (values: z.infer<typeof productSchema>) => void;
   setImageUrl: (imageUrl: string) => void;
-  status: HookActionStatus;
+  mutation: ReturnType<
+    typeof useMutation<unknown, Error, z.infer<typeof productSchema>>
+  >;
+  createAnother: boolean;
+  setCreateAnother: Dispatch<SetStateAction<boolean>>;
 };
 
 const ProductFormContext = createContext<ProductFormContextType | null>(null);
@@ -211,48 +245,94 @@ export const ProductFormProvider = ({
   const setIsOpen = useSetAtom(isProductFormOpenAtom);
   const productToEdit = useAtomValue(productToEditAtom);
   const [formError, setFormError] = useState("");
+  const [createAnother, setCreateAnother] = useState(false);
   const router = useRouter();
 
   const isEditing = Boolean(productToEdit);
 
-  const { form, handleSubmitWithAction, action } = useHookFormAction(
-    updateProduct,
-    zodResolver(productSchema),
-    {
-      formProps: {
-        mode: "onSubmit",
-        defaultValues: {
-          name: productToEdit?.name ?? "",
-          description: productToEdit?.description ?? "",
-          brand: productToEdit?.brand ?? "",
-          quantity: productToEdit?.quantity ?? "1",
-          price: productToEdit?.price ?? "",
-          url: productToEdit?.url ?? "",
-          priority: productToEdit?.priority ?? "normal",
-          imageUrl: productToEdit?.imageUrl ?? "",
-          id: productToEdit?.id,
-          wishlistId: productToEdit?.wishlistId ?? wishlistId,
-        },
-      },
-      actionProps: {
-        onError: () => {
-          setFormError("Error updating product");
-        },
-        onSuccess: ({ input }) => {
-          const isDifferentWishlist =
-            !productToEdit && wishlistId !== input.wishlistId;
-          setTimeout(() => {
-            setIsOpen(false);
-            if (isDifferentWishlist) {
-              router.push(`/wishlist/${input.wishlistId}`, {
-                scroll: true,
-              });
-            }
-            router.refresh();
-          }, 800);
-        },
-      },
+  const form = useForm<z.infer<typeof productSchema>>({
+    resolver: zodResolver(productSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      name: productToEdit?.name ?? "",
+      description: productToEdit?.description ?? "",
+      brand: productToEdit?.brand ?? "",
+      quantity: productToEdit?.quantity ?? "1",
+      price: productToEdit?.price ?? "",
+      url: productToEdit?.url ?? "",
+      priority: productToEdit?.priority ?? "normal",
+      imageUrl: productToEdit?.imageUrl ?? "",
+      id: productToEdit?.id,
+      wishlistId: productToEdit?.wishlistId ?? wishlistId,
     },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (values: z.infer<typeof productSchema>) => {
+      const response = await fetch("/api/product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
+
+      return response.json();
+    },
+    onSuccess: (_, variables) => {
+      const isDifferentWishlist =
+        !productToEdit && wishlistId !== variables.wishlistId;
+
+      if (createAnother && !isEditing) {
+        // Clear form fields but keep wishlistId
+        setFormValues({
+          name: "",
+          description: "",
+          brand: "",
+          quantity: "1",
+          price: "",
+          url: "",
+          priority: "normal",
+          imageUrl: "",
+          wishlistId: variables.wishlistId,
+        });
+        router.refresh();
+        // Reset mutation state after a short delay
+        setTimeout(() => {
+          mutation.reset();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          setIsOpen(false);
+          if (isDifferentWishlist) {
+            router.push(`/wishlist/${variables.wishlistId}`, {
+              scroll: true,
+            });
+          }
+          router.refresh();
+        }, 800);
+      }
+    },
+    onError: (error) => {
+      console.error("Error submitting form:", error);
+      setFormError("Error updating product");
+    },
+  });
+
+  const handleSubmit = useCallback(
+    async (e?: React.BaseSyntheticEvent) => {
+      if (e) {
+        e.preventDefault();
+      }
+
+      const values = form.getValues();
+      mutation.mutate(values);
+    },
+    [form, mutation],
   );
 
   const setFormValues = useCallback(
@@ -279,17 +359,20 @@ export const ProductFormProvider = ({
   const setImageUrl = (imageUrl: string) => {
     form.setValue("imageUrl", imageUrl);
   };
+
   return (
     <ProductFormContext.Provider
       value={{
         form,
-        handleSubmit: handleSubmitWithAction,
+        handleSubmit,
         formError,
         setFormError,
         setFormValues,
         isEditing,
         setImageUrl,
-        status: action.status,
+        mutation,
+        createAnother,
+        setCreateAnother,
       }}
     >
       {children}
