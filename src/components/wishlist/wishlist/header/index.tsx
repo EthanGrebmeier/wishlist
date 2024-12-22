@@ -56,6 +56,9 @@ const WishlistHeader = ({
 
   return (
     <TitleBar
+      onClick={() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
       wrapperClassName="sticky top-[72px] md:top-0"
       className=" w-full flex-wrap items-center py-2 md:flex-col"
     >

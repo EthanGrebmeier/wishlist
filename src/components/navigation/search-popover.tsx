@@ -50,6 +50,19 @@ export const SearchPopover = ({
     setShowPopover(showPopover);
   }, [debouncedSearch]);
 
+  // Add global keyboard shortcut for Command+K
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+    return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       setShowPopover(false);
@@ -64,13 +77,7 @@ export const SearchPopover = ({
       firstFocusable?.focus();
     }
 
-    // Handle Tab key when popover is open
-    if (e.key === "Tab" && showPopover) {
-      e.preventDefault();
-      const firstFocusable =
-        resultsRef.current?.querySelector<HTMLElement>("a, button");
-      firstFocusable?.focus();
-    }
+    // Let the SearchBar component handle Tab key
   };
 
   const handleResultKeyDown = (e: React.KeyboardEvent) => {
@@ -148,6 +155,7 @@ export const SearchPopover = ({
         aria-controls="search-results"
         aria-haspopup="listbox"
         placeholder="Search"
+        showShortcut={true}
         // role="combobox"
       />
       {showPopover && (

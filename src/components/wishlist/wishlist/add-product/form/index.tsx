@@ -95,7 +95,7 @@ const ProductForm = () => {
             <HorizontalInputWrapper
               Icon={BanknoteIcon}
               label="Price"
-              input={<HorizontalTextInput placeholder="$20" {...field} />}
+              input={<HorizontalTextInput placeholder="20" {...field} />}
             />
           )}
         />

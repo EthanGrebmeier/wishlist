@@ -5,11 +5,20 @@ type TitleBarProps = {
   children?: ReactNode;
   className?: string;
   wrapperClassName?: string;
+  onClick?: () => void;
 };
 
-const TitleBar = ({ children, className, wrapperClassName }: TitleBarProps) => {
+const TitleBar = ({
+  children,
+  className,
+  wrapperClassName,
+  onClick,
+}: TitleBarProps) => {
   return (
-    <div className="sticky top-0 z-10 mx-auto -mt-2 mb-2 w-full bg-background">
+    <div
+      onClick={onClick}
+      className="sticky top-0 z-10 mx-auto -mt-2 mb-2 w-full bg-background"
+    >
       <div className={cn("translate-y-2 bg-none", wrapperClassName)}>
         <div
           className={cn(

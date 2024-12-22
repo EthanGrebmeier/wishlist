@@ -18,22 +18,20 @@ const FilterButton = ({
   onClick,
   className,
   children,
-  side,
 }: FilterButtonProps) => {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "relative z-10 border-black px-1 py-0.5 text-base font-medium transition-colors duration-150 hover:bg-green-200",
-        side === "left" && "border-r-2 pl-2",
-        side === "right" && "border-l-2 pr-2",
+        "relative z-10 rounded-sm px-1 py-0.5 text-base font-medium transition-colors duration-150 hover:bg-green-200",
+
         className,
       )}
     >
       {isActive && (
         <motion.div
           layoutId="active-filter"
-          className="absolute inset-0 -z-10 bg-green-400"
+          className="absolute inset-0 -z-10 rounded-sm border-2 border-black bg-green-400"
           transition={{ type: "spring", bounce: 0.2, duration: 0.2 }}
         />
       )}
@@ -46,11 +44,10 @@ export const WishlistFilter = () => {
   const [wishlistType, setWishlistType] = useAtom(wishlistTypeAtom);
 
   return (
-    <div className="isolate flex w-fit items-center overflow-hidden rounded-full border-2 border-black">
+    <div className="isolate flex h-10 w-fit items-center gap-1 overflow-hidden rounded-md border-2 border-black px-1">
       <FilterButton
         isActive={wishlistType === "all"}
         onClick={() => setWishlistType("all")}
-        side="left"
       >
         All Lists
       </FilterButton>
@@ -63,7 +60,6 @@ export const WishlistFilter = () => {
       <FilterButton
         isActive={wishlistType === "shared"}
         onClick={() => setWishlistType("shared")}
-        side="right"
       >
         Shared Lists
       </FilterButton>
