@@ -45,6 +45,7 @@ import {
 import StatusButton from "~/components/ui/status-button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { useMutation } from "@tanstack/react-query";
+import { Tooltip } from "~/components/ui/tooltip";
 
 const ProductForm = () => {
   const { form, handleSubmit } = useProductForm();
@@ -166,21 +167,23 @@ export const ProductFormFooter = () => {
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-2">
         {!isEditing && (
-          <>
-            <Checkbox
-              id="createAnother"
-              checked={createAnother}
-              onCheckedChange={(checked) =>
-                setCreateAnother(checked as boolean)
-              }
-            />
-            <label
-              htmlFor="createAnother"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Create Multiple
-            </label>
-          </>
+          <Tooltip text="Add another product after this one">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="createAnother"
+                checked={createAnother}
+                onCheckedChange={(checked) =>
+                  setCreateAnother(checked as boolean)
+                }
+              />
+              <label
+                htmlFor="createAnother"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Create Multiple
+              </label>
+            </div>
+          </Tooltip>
         )}
       </div>
       <div className={!isEditing ? "ml-auto" : ""}>
