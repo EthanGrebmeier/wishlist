@@ -1,7 +1,11 @@
+"use client";
+
+import { useSetAtom } from "jotai";
 import Image from "next/image";
 import React, { type ReactNode } from "react";
 import { Tooltip } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
+import { isWishlistShareOpenAtom } from "~/store/wishlist-settings";
 import type { WishlistSharesWithUser } from "~/types/wishlist";
 
 export const SharedUserThumbnail = ({
@@ -11,15 +15,20 @@ export const SharedUserThumbnail = ({
   children: ReactNode;
   className?: string;
 }) => {
+  const setIsWishlistShareOpen = useSetAtom(isWishlistShareOpenAtom);
   return (
-    <div
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsWishlistShareOpen(true);
+      }}
       className={cn(
         "size-9 overflow-hidden rounded-full border-2 border-black object-cover",
         className,
       )}
     >
       {children}
-    </div>
+    </button>
   );
 };
 

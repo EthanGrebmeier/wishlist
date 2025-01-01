@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { getUserShareType } from "~/lib/wishlist/getUserShareType";
 import { verifyUserIsWishlistEditor } from "~/lib/wishlist/verifyUserIsWishlistEditor";
 import { AddProductSheetTrigger } from "./add-product";
+import { WishlistProductWithCommitmentsWithUser } from "~/types/wishlist";
 
 type ViewWishlistProps = {
   wishlistId: string;
@@ -34,6 +35,17 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
     session,
   });
   const canUserEdit = verifyUserIsWishlistEditor(userStatus);
+  const shouldHidePurchased = wishlist.canEdit && wishlist.isSecret;
+
+  const unpurchased: WishlistProductWithCommitmentsWithUser[] = [];
+  const purchased: WishlistProductWithCommitmentsWithUser[] = [];
+  wishlist.products.forEach((product) => {
+    if (product.commitments?.length) {
+      purchased.push(product);
+    } else {
+      unpurchased.push(product);
+    }
+  });
 
   return (
     <>
@@ -45,11 +57,35 @@ const ViewWishlist = async ({ wishlistId }: ViewWishlistProps) => {
       />
       <section>
         {wishlist.products.length ? (
-          <ProductList
-            wishlistColor={wishlist.color}
-            canUserEdit={canUserEdit}
-            products={wishlist.products}
-          />
+          <div className="flex flex-col gap-4">
+            {unpurchased.length ? (
+              <div className="flex flex-col gap-2">
+                <p className="font-serif text-2xl font-medium">
+                  {" "}
+                  Unpurchased Products
+                </p>
+
+                <ProductList
+                  wishlistColor={wishlist.color}
+                  canUserEdit={canUserEdit}
+                  products={unpurchased}
+                />
+              </div>
+            ) : null}
+            {purchased.length ? (
+              <div className="flex flex-col gap-2">
+                <p className="font-serif text-2xl font-medium">
+                  {" "}
+                  Purchased Products
+                </p>
+                <ProductList
+                  wishlistColor={wishlist.color}
+                  canUserEdit={canUserEdit}
+                  products={purchased}
+                />
+              </div>
+            ) : null}
+          </div>
         ) : (
           <div className="mt-24 flex h-full w-full flex-col items-center justify-center gap-8">
             {canUserEdit ? (

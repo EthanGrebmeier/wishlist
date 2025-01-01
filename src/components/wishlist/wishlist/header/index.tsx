@@ -55,58 +55,62 @@ const WishlistHeader = ({
   }, [execute, wishlist.id, didMount]);
 
   return (
-    <TitleBar
-      onClick={() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }}
-      wrapperClassName="sticky top-[72px] md:top-0"
-      className=" w-full flex-wrap items-center py-2 md:flex-col"
-    >
-      <div
-        className={cn("flex w-full flex-1 items-center justify-between gap-4")}
+    <>
+      <TitleBar
+        onClick={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        wrapperClassName="sticky top-[72px] md:top-0"
+        className=" w-full flex-wrap items-center py-2 md:flex-col"
       >
-        <div className="flex flex-row items-center gap-2 pt-1">
-          <div
-            className={cn(
-              "h-6 w-6 flex-shrink-0 rounded-full border-2 border-black ",
-              getBackgroundColor(wishlist.color),
-            )}
-          ></div>
-          {shouldLink ? (
-            <Link className="underline" href={`/wishlist/${wishlist.id}`}>
-              <TitleBar.Title>{wishlist.name}</TitleBar.Title>
-            </Link>
-          ) : (
-            <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+        <div
+          className={cn(
+            "flex w-full flex-1 items-center justify-between gap-4",
           )}
-        </div>
-        <div className="flex items-center gap-2 ">
-          <div className="flex flex-col items-end gap-2  md:flex-row">
-            {wishlist.dueDate && (
-              <div
-                className={cn(
-                  "flex w-full items-center justify-between ",
-                  wishlist.dueDate ? "justify-between" : "justify-end",
-                )}
-              >
-                <DueDate date={wishlist.dueDate} color={wishlist.color} />
-              </div>
+        >
+          <div className="flex flex-row items-center gap-2 pt-1">
+            <div
+              className={cn(
+                "h-6 w-6 flex-shrink-0 rounded-full border-2 border-black ",
+                getBackgroundColor(wishlist.color),
+              )}
+            ></div>
+            {shouldLink ? (
+              <Link className="underline" href={`/wishlist/${wishlist.id}`}>
+                <TitleBar.Title>{wishlist.name}</TitleBar.Title>
+              </Link>
+            ) : (
+              <TitleBar.Title>{wishlist.name}</TitleBar.Title>
             )}
           </div>
-          <SharedUserThumbnailView
-            wishlistShares={wishlistShares.filter(
-              (share) => share.type !== "invitee",
-            )}
-          />
+          <div className="flex items-center gap-2 ">
+            <div className="flex flex-col items-end gap-2  md:flex-row">
+              {wishlist.dueDate && (
+                <div
+                  className={cn(
+                    "flex w-full items-center justify-between ",
+                    wishlist.dueDate ? "justify-between" : "justify-end",
+                  )}
+                >
+                  <DueDate date={wishlist.dueDate} color={wishlist.color} />
+                </div>
+              )}
+            </div>
+            <SharedUserThumbnailView
+              wishlistShares={wishlistShares.filter(
+                (share) => share.type !== "invitee",
+              )}
+            />
+          </div>
         </div>
-      </div>
+      </TitleBar>
       <ShareWishlist
         wishlistShares={wishlistShares}
         wishlist={wishlist}
         userStatus={userStatus}
         userId={session.user.id}
       />
-    </TitleBar>
+    </>
   );
 };
 

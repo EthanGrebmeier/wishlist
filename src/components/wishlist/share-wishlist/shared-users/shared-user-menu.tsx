@@ -73,7 +73,6 @@ const SharedUserMenu = ({
         content={{ text: "Leave" }}
         hasSucceededContent={{ text: "Left" }}
         variant="destructive"
-        className="rounded-md border-none"
         onClick={() => leaveWishlist({ wishlistId: wishlist.id })}
       />
     );
