@@ -5,6 +5,7 @@ import { cn } from "~/lib/utils";
 import { Input } from "./input";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
+import { ShortcutIndicator } from "./shortcut-indicator";
 
 type SearchBarProps = {
   onChange: (value: string) => void;
@@ -69,9 +70,6 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 
     const showClearButton =
       value !== undefined ? value.length > 0 : defaultValue.length > 0;
-    const isMac = navigator.userAgent?.toLowerCase().includes("mac");
-
-    const shortcutText = isMac ? "⌘K" : "Ctrl+K";
 
     return (
       <div className={cn("relative ", className)}>
@@ -86,7 +84,6 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
           )}
           type="text"
           placeholder={placeholder}
-          defaultValue={defaultValue}
           value={value}
           onChange={(e) => {
             if (shouldDebounce) {
@@ -101,19 +98,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
         />
         <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-2">
           <AnimatePresence initial={false} mode="wait">
-            {showShortcut && !isFocused && (
-              <motion.div
-                key="shortcut"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <kbd className="hidden rounded-md border border-black bg-gray-100 px-1 py-0.5 text-xs tracking-widest sm:inline-block">
-                  {shortcutText}
-                </kbd>
-              </motion.div>
-            )}
+            {showShortcut && !isFocused && <ShortcutIndicator />}
           </AnimatePresence>
           <AnimatePresence initial={false} mode="wait">
             {showClearButton ? (

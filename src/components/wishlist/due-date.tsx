@@ -62,7 +62,7 @@ const DueDate = ({ date, className, color }: DueDateProps) => {
         getBackgroundColor(color),
         className,
       )}
-      animate={{ width: width + 12 }}
+      layout
     >
       <div ref={ref}>
         <AnimatePresence initial={false} mode="wait">
