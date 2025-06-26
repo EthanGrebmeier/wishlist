@@ -6,3 +6,7 @@ Fillaneed is a wishlist builder built with the following stack
 - [NextAuth.js](https://next-auth.js.org)
 - [Drizzle](https://orm.drizzle.team)
 - [Tailwind CSS](https://tailwindcss.com)
+
+
+View the live deployment at:
+https://fillaneed.xyz
