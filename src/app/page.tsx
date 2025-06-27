@@ -56,20 +56,20 @@ export default async function HomePage() {
         </div>
         <div className="grid gap-8 border-t-2 border-black pt-16 md:grid-cols-3 md:gap-4">
           <Feature
-            title="Keep it a secret."
+            title="Keep it a secret"
             description='Enable "Keep it a secret mode" to hide what gifts friends and family have bought you'
-            icon={<Lock size={30} />}
+            icon={<Lock size={20} />}
             bgColor="bg-yellow-400"
           />
           <Feature
-            title="Easily add products."
+            title="Easily add products"
             description="Autofill product details quickly with a link"
-            icon={<SparklesIcon size={30} />}
+            icon={<SparklesIcon size={20} />}
             bgColor="bg-indigo-300"
           />
           <Feature
-            title="Share with friends and family."
-            icon={<UserPlus />}
+            title="Share with friends and family"
+            icon={<UserPlus size={20} />}
             bgColor="bg-green-400"
           />
         </div>
