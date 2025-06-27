@@ -17,6 +17,7 @@ import {
 } from "../ui/dropdown-menu";
 import Link from "~/components/ui/link";
 import { SearchPopover } from "./search-popover";
+import { AddWishlistButton } from "./add-wishlist-button";
 
 const Navigation = async () => {
   const isSignedIn = Boolean(await getServerAuthSession());
@@ -28,14 +29,11 @@ const Navigation = async () => {
           <div className="flex flex-col gap-2">
             <SearchPopover />
             <div className="flex flex-1 flex-col lg:max-h-none">
-              <div className="sticky top-0 flex w-full justify-between gap-4 bg-background">
-                <div className="flex items-center gap-2">
-                  <Scroll size={20} />
-                  <p className="text-lg font-semibold">Wishlists</p>
-                </div>
-                <NavLink className="w-fit text-sm" href="/wishlist">
-                  View All <ArrowRight size={12} />
+              <div className="sticky top-0 flex w-full items-center justify-between gap-4 bg-background">
+                <NavLink Icon={Scroll} className="-ml-3" href="/wishlist">
+                  Wishlists
                 </NavLink>
+                <AddWishlistButton />
               </div>
               <MyWishlists />
             </div>
