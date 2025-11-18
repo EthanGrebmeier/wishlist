@@ -12,6 +12,9 @@ type ProductViewPageProps = {
   };
 };
 
+// Disable caching to ensure fresh data on every visit
+export const dynamic = 'force-dynamic';
+
 const ProductViewPage = async ({ params }: ProductViewPageProps) => {
   const { productId } = params;
 
