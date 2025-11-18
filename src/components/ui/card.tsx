@@ -13,6 +13,7 @@ type ListItemProps = {
   href: string;
   onClick?: () => void;
   animationDelay?: number;
+  prefetch?: boolean;
 };
 
 export const Card = ({
@@ -22,6 +23,7 @@ export const Card = ({
   backgroundColor,
   href,
   onClick,
+  prefetch = true,
 }: ListItemProps) => {
   const shouldNotTranslate = useReducedMotion();
 
@@ -53,7 +55,7 @@ export const Card = ({
       >
         {children}
         {href ? (
-          <Link className="text-xl font-medium" href={href}>
+          <Link className="text-xl font-medium" href={href} prefetch={prefetch}>
             {content}
           </Link>
         ) : onClick ? (

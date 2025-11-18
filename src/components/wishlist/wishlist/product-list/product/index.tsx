@@ -39,6 +39,7 @@ const Product = ({
     <Card
       onClick={handleClick}
       href={`/product/${product.id}`}
+      prefetch={false}
       animationDelay={animationDelay}
       backgroundColor={getBackgroundColor(wishlistColor)}
       topContent={
